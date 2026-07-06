@@ -3,7 +3,7 @@
 # Runs against the CVMFS source to get accurate metadata.
 
 SRC="/cvmfs/sphenix.opensciencegrid.org/calibrations/sphnxpro/cdb"
-OUT="/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/cdb_manifest.yaml"
+OUT="/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/cdb_manifest.yaml"
 
 cat > "$OUT" <<'HEADER'
 # sPHENIX Conditions Database (CDB) — Offline Payload Manifest

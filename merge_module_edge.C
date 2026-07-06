@@ -11,9 +11,9 @@
 
 void merge_module_edge()
 {
-  const char* static_file = "/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION/5a/3d/5a3d0b9b5268b8bc6921ddd16e801c8f_static_only.distortion_map.hist.root";
-  const char* module_edge_file = "/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_Module_Edge/90/c9/90c95346a3e25a7a0753d71c46becbc6_residual_map_field_layers10iter_2D_acts_static_enabled.hist.root";
-  const char* output_file = "/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION_with_ModuleEdge.root";
+  const char* static_file = "/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION/5a/3d/5a3d0b9b5268b8bc6921ddd16e801c8f_static_only.distortion_map.hist.root";
+  const char* module_edge_file = "/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_Module_Edge/90/c9/90c95346a3e25a7a0753d71c46becbc6_residual_map_field_layers10iter_2D_acts_static_enabled.hist.root";
+  const char* output_file = "/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION_with_ModuleEdge.root";
 
   // Open source files
   TFile* f_static = TFile::Open(static_file, "READ");

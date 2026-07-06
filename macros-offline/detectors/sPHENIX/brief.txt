@@ -1267,8 +1267,8 @@
   Ran 1 shell command (ctrl+o to expand)
 ● Task Output b0djdii33
   ⎿  === leftover Option-2 download? ===
-     /home/yaminocellist/sPHENIX/Singularity/cvmfs/sphenix.sdcc.bnl.gov
-     /home/yaminocellist/sPHENIX/Singularity/updatebuild.sh
+     /home/rog/sPHENIX/3D_ClusterFindingMLSingularity/cvmfs/sphenix.sdcc.bnl.gov
+     /home/rog/sPHENIX/3D_ClusterFindingMLSingularity/updatebuild.sh
      … +8 lines (ctrl+o to expand)
 
 ● Background command "Find newest file-based build and any Option-2 leftover" completed (exit code 0)

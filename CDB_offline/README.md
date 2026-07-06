@@ -61,7 +61,7 @@ cp CDB_offline/TRACKINGALIGNMENT/46/d0/46d02ad977567c26885ee9c9e9539c76_tracking
 | INTT_Hotmap | 1 | 36K | Legacy hot map |
 | INTT_STREAMING_FEE_OFFSET | 2 | 34K | Streaming FEE timing offsets |
 
-### Tracking — TPC (3,698 files, ~389 MB)
+### Tracking — TPC (3,699 files, ~399 MB)
 
 | Domain | Files | Size | Description |
 |--------|-------|------|-------------|
@@ -82,6 +82,7 @@ cp CDB_offline/TRACKINGALIGNMENT/46/d0/46d02ad977567c26885ee9c9e9539c76_tracking
 | TPC_DRIFT_VELOCITY_default | 1 | 20K | Default drift velocity |
 | TPC_LAMINATION_FIT_CORRECTION_default | 1 | 323K | Default lamination correction |
 | TPC_TZERO_OFFSET_default | 1 | 20K | Default T-zero offset |
+| PHGARFIELD_GAS | 1 | 9.9M | Magboltz gas table (Ar75/CF4-20/iso-5); **not read by the sim** — parametric, see note below |
 
 ### Tracking — TPOT/Micromegas (1 file, 80 KB)
 
@@ -186,6 +187,56 @@ Each line: `hitsetkey  alpha  beta  gamma  dx  dy  dz`
 - Columns 2-4: Millepede rotation angles (alpha, beta, gamma) in radians
 - Columns 5-7: Translation offsets (dx, dy, dz) in cm
 - Optional columns 8-10: Global rotation corrections (dgrx, dgry, dgrz)
+
+---
+
+## PHGARFIELD_GAS — Magboltz gas table is **not** consumed by the sim
+
+*Research record, 2026-06-29. Scanned: local `coresoftware` @ `production_A_01-483-g21f9fed50`;
+CVMFS `ana.220`–`ana.331` (gcc-8.3) and `ana.333`–`ana.479` + `new.*` (gcc-12.1.0).*
+
+**Domain:** `PHGARFIELD_GAS/a8/51/a8516e920f926da938f7f138aed548e6_Ar75_CF20_iso5.gas`
+(1 file, 9.9 MB ASCII Magboltz table — `CF4 20%, Ar 75%, iC4H10 5%, T=301.65 K, p=1.003 atm`).
+
+**Verdict:** `run_batch_sim.sh` does **not** open this file, and no sPHENIX release does either.
+sPHENIX consumes gas physics **parametrically**: the transport properties are extracted from the
+gas table offline (once) and entered as parameters. This `.gas` payload is a **provenance/archive
+artifact** — like the 1,051 `TPC_DRIFT_VELOCITY` files, it is present in the mirror but not read
+by the simulation chain.
+
+**Where the gas numbers actually live** (`macros-offline/common/G4_TPC.C`, matching the upstream
+`PHG4TpcElectronDrift.cc` defaults for the `Ar75_CF20_iso5` mixture):
+
+| Quantity | Value | Location |
+|----------|-------|----------|
+| drift velocity (sim) | 0.007550 cm/ns | `G4_TPC.C:69` |
+| longitudinal diffusion | 0.014596 cm/√cm | `G4_TPC.C:118` |
+| transverse diffusion | 0.005313 cm/√cm | `G4_TPC.C:119` |
+| Ar / CF4 / isobutane fractions | 0.75 / 0.20 / 0.05 | `PHG4TpcElectronDrift.cc:943-946` |
+
+The `*_frac` params feed only a dE/dx primary-ionization sum (`PHG4TpcElectronDrift.cc:267-301`),
+never a gas-table read.
+
+**Evidence (each independently conclusive):**
+
+1. The only `.gas` reader in `coresoftware` is `offline/packages/PHGarfield/` (`LoadGasFile`/
+   `MergeGasFile`). `libPHGarfield.so` is built in **zero** releases. It is a private dev tool:
+   not registered in any macro, loads `PART_<i>.gas` from a hardcoded BNL path
+   (`/direct/phenix+u/.../hemmick/.../gasfiles/`, not the CDB), and its `process_event()` is a stub.
+2. Garfield++/`MediumMagboltz` is **absent** from both external stacks (gcc-8.3, gcc-12.1.0) — no
+   release could load a gas table even if asked.
+3. The string `PHGARFIELD_GAS` appears nowhere in `coresoftware`; nothing calls
+   `getUrl("PHGARFIELD_GAS")`. `ana.479` key libs (`libg4tpc/libtpc/libffamodules/libcdbobjects`)
+   and TPC headers contain no gas-table API.
+4. `run_batch_sim.sh` references only `TRACKINGALIGNMENT`, `FIELDMAP*`, and the TPC distortion maps.
+
+**Cross-release evolution (`ana.331` → `ana.479`):** method unchanged
+(gas mixture → offline Magboltz, once → parametric constants → sim). The only new knob is
+`use_PDG_gas_params()` (since **`ana.432`**, `PHG4TpcElectronDrift.cc:285-295`), which swaps the
+per-gas dE/dx + primary-electron constants to PDG-2024 values feeding `electrons_per_gev`.
+Diffusion and drift velocity remain macro-set parameters. This affects signal amplitude / hit
+count only — **not** the distorted-hit geometry the distortion study targets — so it is cosmetic
+here. Upgrading the image from `ana.331` would **not** make the `.gas` file get consumed.
 
 ---
 

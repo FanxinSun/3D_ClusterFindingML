@@ -98,7 +98,10 @@ int G4Setup()
   if (stringline.fail())
   {  // conversion to double fails -> we have a string
 
-    if (G4MAGNET::magfield.find("sphenix3dbigmapxyz") != string::npos ||
+    // 3D cartesian (x,y,z) maps: the big/gap/steel "sphenix3dbigmapxyz*", the tracking
+    // "sphenix3dtrackingmapxyz", and any "*cartesian*" map all use the XYZ layout.
+    if (G4MAGNET::magfield.find("xyz") != string::npos ||
+        G4MAGNET::magfield.find("cartesian") != string::npos ||
         G4MAGNET::magfield == "CDB")
     {
       g4Reco->set_field_map(G4MAGNET::magfield, PHFieldConfig::Field3DCartesian);

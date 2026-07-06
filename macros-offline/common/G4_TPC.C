@@ -81,21 +81,21 @@ namespace G4TPC
   // To revert to static-only, point this back at:
   //   .../5a/3d/5a3d0b9b5268b8bc6921ddd16e801c8f_static_only.distortion_map.hist.root
   bool ENABLE_STATIC_DISTORTIONS = true;
-  auto static_distortion_filename = std::string("/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION_with_ModuleEdge.root");
+  auto static_distortion_filename = std::string("/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION_with_ModuleEdge.root");
 
   bool ENABLE_TIME_ORDERED_DISTORTIONS = true;
-  std::string time_ordered_distortion_filename = std::string("/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_TIMEORDERED_DISTORTION/51/72/51725df52f40ba2f3b5208fdd1bd39c2_TimeOrderedDistortions.root");
+  std::string time_ordered_distortion_filename = std::string("/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_TIMEORDERED_DISTORTION/51/72/51725df52f40ba2f3b5208fdd1bd39c2_TimeOrderedDistortions.root");
 
   // distortion corrections (applied during tracking/reco, not during G4 hit generation)
   bool ENABLE_CORRECTIONS = true;
-  auto correction_filename = std::string("/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_CORRECTION_MODEL/ec/7b/ec7bd756f9fc7274af6b479ee39580e3_static_only_inverted_10-new.root");
+  auto correction_filename = std::string("/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_CORRECTION_MODEL/ec/7b/ec7bd756f9fc7274af6b479ee39580e3_static_only_inverted_10-new.root");
 
   // module-edge distortion corrections (loaded into slot 1 of TpcLoadDistortionCorrection)
   // DISABLED: module-edge is now applied during SIMULATION (merged into
   // static_distortion_filename above), not as a reco correction. Re-enabling this would
   // correct the module-edge distortion back out at tracking time, defeating the purpose.
   bool ENABLE_MODULE_EDGE_CORRECTIONS = false;
-  auto module_edge_correction_filename = std::string("/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_Module_Edge/90/c9/90c95346a3e25a7a0753d71c46becbc6_residual_map_field_layers10iter_2D_acts_static_enabled.hist.root");
+  auto module_edge_correction_filename = std::string("/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_Module_Edge/90/c9/90c95346a3e25a7a0753d71c46becbc6_residual_map_field_layers10iter_2D_acts_static_enabled.hist.root");
 
   // enable central membrane g4hits generation
   bool ENABLE_CENTRAL_MEMBRANE_HITS = false;
@@ -271,6 +271,21 @@ void TPC_Cells()
   double tpc_readout_time = G4TPC::maxDriftLength / G4TPC::tpc_drift_velocity_sim;  // ns
   double extended_readout_time = 0.0;
   if(TRACKING::pp_mode) extended_readout_time = TRACKING::pp_extended_readout_time;
+  if (gSystem->Getenv("TPC_EXTENDED_READOUT_NS"))
+  {
+    // Match the real streaming-style readout depth (run-79507 window ~ 51 us total = full
+    // drift 13.97 us + ~37 us). Folded entirely into max_time; edrift's internal
+    // extended_readout_time (default 7000 ns) is zeroed to avoid double-counting, and the
+    // padplane gets the same value so its time axis (MaxT/NTBins) records the late hits.
+    extended_readout_time = atof(gSystem->Getenv("TPC_EXTENDED_READOUT_NS"));
+    edrift->set_double_param("extended_readout_time", 0);
+    // ana.331 padplane has no 'extended_readout_time' param; its recording axis is
+    // MaxT = 2*maxdriftlength/v_drift. Inflate its maxdriftlength (pure readout
+    // bookkeeping -- true drift stays bounded by the G4 gas volume and edrift's
+    // max_time) so late pileup hits get time bins: MaxT -> 2*drift + extended.
+    padplane->set_double_param("maxdriftlength",
+                               G4TPC::maxDriftLength + 0.5 * extended_readout_time * G4TPC::tpc_drift_velocity_sim);
+  }
   edrift->set_double_param("max_time", tpc_readout_time + extended_readout_time);
   std::cout << "PHG4TpcElectronDrift readout window is from 0 to " <<  tpc_readout_time + extended_readout_time << std::endl;
 
@@ -318,21 +333,44 @@ void TPC_Clustering()
   // Cluster Hits
   //-------------
 
+  // --- optional: mask dead TPC channels (real-data TPC_DEADCHANNELMAP payload from
+  //     CDB_offline) BEFORE clustering, so sim occupancy sees the same dead regions.
+  //     Env-gated: TPC_DEADMAP=<payload.root> + TRKRNTUP_SO + TPC_DEADMASK_H.
+  if (gSystem->Getenv("TPC_DEADMAP") && gSystem->Getenv("TRKRNTUP_SO") && gSystem->Getenv("TPC_DEADMASK_H"))
+  {
+    gSystem->Load(gSystem->Getenv("TRKRNTUP_SO"));
+    gROOT->ProcessLine(Form("#include \"%s\"", gSystem->Getenv("TPC_DEADMASK_H")));
+    gROOT->ProcessLine(Form("{ TpcDeadChannelMasker* _dm = new TpcDeadChannelMasker(\"%s\");"
+                            " Fun4AllServer::instance()->registerSubsystem(_dm); }",
+                            gSystem->Getenv("TPC_DEADMAP")));
+    std::cout << "[TpcDeadChannelMasker] registered, payload = " << gSystem->Getenv("TPC_DEADMAP") << std::endl;
+  }
+
   // For the Tpc
   //==========
   if( G4TPC::USE_SIMPLE_CLUSTERIZER )
   {
-    
+
     auto tpcclusterizer = new TpcSimpleClusterizer;
     tpcclusterizer->Verbosity(verbosity);
     se->registerSubsystem(tpcclusterizer);
-    
+
   } else {
 
     auto tpcclusterizer = new TpcClusterizer;
     tpcclusterizer->Verbosity(verbosity);
     tpcclusterizer->set_cluster_version(G4TRACKING::cluster_version);
     tpcclusterizer->set_do_hit_association( G4TPC::DO_HIT_ASSOCIATION );
+    {
+      // Island-like size windows. ana.331 defaults (half 3/5 -> max 7 pads / 11-12 tbins)
+      // guillotine exactly the merged/looper clusters dense AuAu events produce; the real
+      // 2025 island reco is uncapped (phisize up to 97, zsize up to 126).
+      int hphi = gSystem->Getenv("TPC_CLUS_HALF_PHI") ? atoi(gSystem->Getenv("TPC_CLUS_HALF_PHI")) : 16;
+      int hz   = gSystem->Getenv("TPC_CLUS_HALF_Z")   ? atoi(gSystem->Getenv("TPC_CLUS_HALF_Z"))   : 40;
+      tpcclusterizer->set_max_cluster_half_size_phi(hphi);
+      tpcclusterizer->set_max_cluster_half_size_z(hz);
+      std::cout << "TpcClusterizer max cluster half sizes: phi " << hphi << " z " << hz << std::endl;
+    }
     se->registerSubsystem(tpcclusterizer);
 
   }

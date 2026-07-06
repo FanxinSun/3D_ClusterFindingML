@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<HIJING>
+  <EFRM>200.0</EFRM>
+  <FRAME>CMS</FRAME>
+  <PROJ>A</PROJ>
+  <TARG>A</TARG>
+  <IAP>197</IAP>
+  <IZP>79</IZP>
+  <IAT>197</IAT>
+  <IZT>79</IZT>
+  <BMIN>0.0</BMIN>
+  <BMAX>20.0</BMAX>
+  <N>25</N>
+  <KEEP_SPECTATORS>0</KEEP_SPECTATORS>
+  <OUTPUT>auau200_signal.dat</OUTPUT>
+  <RANDOM>
+    <SEED>20260704</SEED>
+  </RANDOM>
+</HIJING>

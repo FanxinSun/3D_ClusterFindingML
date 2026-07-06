@@ -572,6 +572,7 @@ void InputManagers()
     double time_window = 105.5 / PILEUP::TpcDriftVelocity;
     double extended_readout_time = 0.0;
     if(TRACKING::pp_mode) extended_readout_time = TRACKING::pp_extended_readout_time;
+    if (gSystem->Getenv("TPC_EXTENDED_READOUT_NS")) extended_readout_time = atof(gSystem->Getenv("TPC_EXTENDED_READOUT_NS"));  // keep pileup window in sync with the TPC readout depth (-13.97us .. +51us)
     INPUTMANAGER::HepMCPileupInputManager->set_time_window(-time_window, time_window + extended_readout_time);
     cout << "Pileup window is from " << -time_window << " to " <<  time_window + extended_readout_time << endl;
     se->registerInputManager(INPUTMANAGER::HepMCPileupInputManager);

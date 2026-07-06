@@ -132,6 +132,24 @@ int Fun4All_DistortionSim(
   //  Input::HEPMC = true;
   INPUTHEPMC::filename = inputFile;
 
+  // --- env-gated HepMC input (local sHijing Au+Au etc., no BNL needed):
+  //     HEPMC_FILE=<hepmc.dat> [PILEUPRATE=<Hz> PILEUP_FILE=<hepmc.dat>]
+  if (gSystem->Getenv("HEPMC_FILE"))
+  {
+    Input::HEPMC = true;
+    Input::SIMPLE = false;
+    INPUTHEPMC::filename = gSystem->Getenv("HEPMC_FILE");
+    if (gSystem->Getenv("PILEUPRATE"))
+    {
+      Input::PILEUPRATE = atof(gSystem->Getenv("PILEUPRATE"));
+      PILEUP::pileupfile = gSystem->Getenv("PILEUP_FILE") ? gSystem->Getenv("PILEUP_FILE")
+                                                          : gSystem->Getenv("HEPMC_FILE");
+    }
+    std::cout << ">>> HepMC input: " << INPUTHEPMC::filename
+              << "  PILEUPRATE=" << Input::PILEUPRATE
+              << (Input::PILEUPRATE > 0 ? ("  pileupfile=" + PILEUP::pileupfile) : "") << std::endl;
+  }
+
   // Event pile up simulation with collision rate in Hz MB collisions.
   //Input::PILEUPRATE = 100e3;
 
@@ -140,6 +158,20 @@ int Fun4All_DistortionSim(
   //-----------------
   // This creates the input generator(s)
   InputInit();
+
+  // z-vertex smear for env-gated HepMC input (approximate real Au+Au sigma_z ~ 7 cm)
+  if (gSystem->Getenv("HEPMC_FILE"))
+  {
+    INPUTMANAGER::HepMCInputManager->set_vertex_distribution_function(
+        PHHepMCGenHelper::Gaus, PHHepMCGenHelper::Gaus, PHHepMCGenHelper::Gaus, PHHepMCGenHelper::Gaus);
+    INPUTMANAGER::HepMCInputManager->set_vertex_distribution_width(0.01, 0.01, 7.0, 0);
+    if (INPUTMANAGER::HepMCPileupInputManager)
+    {
+      INPUTMANAGER::HepMCPileupInputManager->set_vertex_distribution_function(
+          PHHepMCGenHelper::Gaus, PHHepMCGenHelper::Gaus, PHHepMCGenHelper::Gaus, PHHepMCGenHelper::Gaus);
+      INPUTMANAGER::HepMCPileupInputManager->set_vertex_distribution_width(0.01, 0.01, 7.0, 0);
+    }
+  }
 
   //--------------
   // Set generator specific options
@@ -486,12 +518,39 @@ int Fun4All_DistortionSim(
       Enable::TRACKING_EVAL  = true;   // -> ntp_hit / ntp_cluster
       Enable::TRACKING_QA    = false;
 
-      // Ensure the distortion map is the merged static+module-edge file (the user's
-      // G4_TPC.C already sets this when macros-offline/common is on ROOT_INCLUDE_PATH;
-      // this line just makes the intent explicit). Applied during electron drift.
-      G4TPC::ENABLE_STATIC_DISTORTIONS = true;
-      G4TPC::static_distortion_filename =
-        "/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION_with_ModuleEdge.root";
+      // TPC distortion config, selected by the DISTORTION_MODE env (set by run_batch_sim.sh).
+      // Applied during electron drift by PHG4TpcDistortion. Default = merged.
+      const std::string CDBROOT = "/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/";
+      const std::string f_merged = CDBROOT + "TPC_STATIC_DISTORTION_with_ModuleEdge.root";
+      const std::string f_static = CDBROOT + "TPC_STATIC_DISTORTION/5a/3d/5a3d0b9b5268b8bc6921ddd16e801c8f_static_only.distortion_map.hist.root";
+      const std::string f_timeord = CDBROOT + "TPC_TIMEORDERED_DISTORTION/51/72/51725df52f40ba2f3b5208fdd1bd39c2_TimeOrderedDistortions.root";
+      const char* dm_env = gSystem->Getenv("DISTORTION_MODE");
+      const std::string dm = dm_env ? std::string(dm_env) : std::string("merged");
+      if (dm == "none")
+      {
+        G4TPC::ENABLE_STATIC_DISTORTIONS = false;
+        G4TPC::ENABLE_TIME_ORDERED_DISTORTIONS = false;
+      }
+      else if (dm == "static")
+      {
+        G4TPC::ENABLE_STATIC_DISTORTIONS = true;
+        G4TPC::static_distortion_filename = f_static;
+        G4TPC::ENABLE_TIME_ORDERED_DISTORTIONS = false;
+      }
+      else if (dm == "merged_timeordered")
+      {
+        G4TPC::ENABLE_STATIC_DISTORTIONS = true;
+        G4TPC::static_distortion_filename = f_merged;
+        G4TPC::ENABLE_TIME_ORDERED_DISTORTIONS = true;
+        G4TPC::time_ordered_distortion_filename = f_timeord;
+      }
+      else  // "merged" (default): static-only map merged with module-edge, no time-ordered
+      {
+        G4TPC::ENABLE_STATIC_DISTORTIONS = true;
+        G4TPC::static_distortion_filename = f_merged;
+        G4TPC::ENABLE_TIME_ORDERED_DISTORTIONS = false;
+      }
+      std::cout << ">>> DISTORTION_MODE = " << dm << std::endl;
   }
 
   // calorimeters off entirely (they crash on CDB lookup in ana.331 even with local files)

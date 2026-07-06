@@ -520,6 +520,7 @@ void Tracking_Eval(const std::string& outputfile)
   eval->set_use_initial_vertex(G4TRACKING::g4eval_use_initial_vertex);
   bool embed_scan = true;
   if(TRACKING::pp_mode) embed_scan = false;
+  if(getenv("SVTX_SCAN_ALL")) embed_scan = false;  // SVTX_SCAN_ALL=1 -> dump ALL reco clusters/tracks (ungate embedded-match filter); needed because tracking yields 0 tracks locally so nothing matches
   eval->scan_for_embedded(embed_scan);   // take all tracks if false - take only embedded tracks if true
   eval->scan_for_primaries(embed_scan);  // defaults to only thrown particles for ntp_gtrack
   std::cout << "SvtxEvaluator: pp_mode set to " << TRACKING::pp_mode << " and scan_for_embedded set to " << embed_scan << std::endl;
@@ -527,6 +528,23 @@ void Tracking_Eval(const std::string& outputfile)
   eval->set_cluster_version(G4TRACKING::cluster_version);
 
   se->registerSubsystem(eval);
+
+  // --- optional: locally-built TrkrNtuplizer cluster-only port (ana.331) ---
+  // Env-gated so normal runs are untouched. References to the class live only inside
+  // ProcessLine strings (parsed after lib+header load), so this compiles even when off.
+  if (getenv("TRKRNTUP_SO") && getenv("TRKRNTUP_H"))
+  {
+    gSystem->Load(getenv("TRKRNTUP_SO"));
+    gROOT->ProcessLine(Form("#include \"%s\"", getenv("TRKRNTUP_H")));
+    const char *tnout = getenv("TRKRNTUP_OUT") ? getenv("TRKRNTUP_OUT") : "trkrntuple.root";
+    gROOT->ProcessLine(Form("{ TrkrNtuplizer* _tnp = new TrkrNtuplizer(\"TrkrNtuplizer\", \"%s\");"
+                            " _tnp->do_cluster_eval(true); _tnp->do_hit_eval(false);"
+                            " _tnp->do_info_eval(true); _tnp->do_vertex_eval(false);"
+                            " _tnp->do_clus_trk_eval(false); _tnp->do_track_eval(false);"
+                            " Fun4AllServer::instance()->registerSubsystem(_tnp); }",
+                            tnout));
+    std::cout << "[TrkrNtuplizer port] registered; output = " << tnout << std::endl;
+  }
 
   return;
 }

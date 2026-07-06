@@ -11,7 +11,7 @@ void apply_distortions() {
     TpcDistortionCorrectionContainer dcc;
     
     // Choose one of the static distortion maps you downloaded from the CDB
-    std::string distortion_file = "/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION/5a/3d/5a3d0b9b5268b8bc6921ddd16e801c8f_static_only.distortion_map.hist.root";
+    std::string distortion_file = "/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline/TPC_STATIC_DISTORTION/5a/3d/5a3d0b9b5268b8bc6921ddd16e801c8f_static_only.distortion_map.hist.root";
     
     std::cout << "Loading histograms from: " << distortion_file << std::endl;
     dcc.load_histograms(distortion_file);
@@ -25,7 +25,7 @@ void apply_distortions() {
     TpcDistortionCorrection tpc_distortion_correction;
 
     // Now let's open your idealized clusters NTuple
-    std::string ntuple_file = "/home/yaminocellist/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root";
+    std::string ntuple_file = "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root";
     TFile *f = TFile::Open(ntuple_file.c_str());
     if (!f || f->IsZombie()) {
         std::cout << "Error opening NTuple file" << std::endl;

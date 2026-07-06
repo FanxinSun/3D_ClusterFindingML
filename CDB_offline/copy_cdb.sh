@@ -6,7 +6,7 @@
 # Tracking-relevant domains are small & fast; calorimeter domains are huge.
 
 SRC="/cvmfs/sphenix.opensciencegrid.org/calibrations/sphnxpro/cdb"
-DST="/home/yaminocellist/sPHENIX/3D_ClusterFindingML/CDB_offline"
+DST="/home/rog/sPHENIX/3D_ClusterFindingML/CDB_offline"
 
 if [ ! -d "$SRC" ]; then
   echo "ERROR: CVMFS source not mounted at $SRC" >&2
