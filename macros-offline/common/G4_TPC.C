@@ -279,12 +279,18 @@ void TPC_Cells()
     // padplane gets the same value so its time axis (MaxT/NTBins) records the late hits.
     extended_readout_time = atof(gSystem->Getenv("TPC_EXTENDED_READOUT_NS"));
     edrift->set_double_param("extended_readout_time", 0);
-    // ana.331 padplane has no 'extended_readout_time' param; its recording axis is
-    // MaxT = 2*maxdriftlength/v_drift. Inflate its maxdriftlength (pure readout
-    // bookkeeping -- true drift stays bounded by the G4 gas volume and edrift's
-    // max_time) so late pileup hits get time bins: MaxT -> 2*drift + extended.
-    padplane->set_double_param("maxdriftlength",
-                               G4TPC::maxDriftLength + 0.5 * extended_readout_time * G4TPC::tpc_drift_velocity_sim);
+    // NOTE: do NOT inflate the padplane's maxdriftlength to grow its recording axis.
+    // The ana.331 clusterizer reconstructs z = maxdrift - t*v from the SAME geometry,
+    // so inflating it shifts every cluster z by the inflation (verified: in-time
+    // clusters land beyond the surfaces and are LOST, late hits masquerade in-time).
+    // The ana.331-safe ceiling is the padplane's natural MaxT = 2*drift = 27947 ns,
+    // i.e. extended_readout_time <= ~14000 ns is fully recorded; beyond is dropped.
+    if (extended_readout_time > 14000)
+    {
+      std::cout << "TPC_EXTENDED_READOUT_NS " << extended_readout_time
+                << " ns exceeds the ana.331 padplane recording ceiling (~14000 ns beyond full drift);"
+                << " hits arriving after 27947 ns will not be recorded." << std::endl;
+    }
   }
   edrift->set_double_param("max_time", tpc_readout_time + extended_readout_time);
   std::cout << "PHG4TpcElectronDrift readout window is from 0 to " <<  tpc_readout_time + extended_readout_time << std::endl;

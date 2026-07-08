@@ -24,7 +24,9 @@ export SINGULARITYENV_SVTX_SCAN_ALL=1
 export SINGULARITYENV_TRKRNTUP_SO=$PORT/libTrkrNtuplizerMin.so
 export SINGULARITYENV_TRKRNTUP_H=$PORT/TrkrNtuplizerMin.h
 export SINGULARITYENV_TRKRNTUP_OUT=${OUT%.root}_trkrntuple.root
-export SINGULARITYENV_TPC_EXTENDED_READOUT_NS=${TPC_EXTENDED_READOUT_NS:-37000}
+# 14000 ns = ana.331 recording ceiling (padplane MaxT = 2x full drift = 27947 ns);
+# larger values shift the clusterizer z-map via the shared geometry -> cluster corruption
+export SINGULARITYENV_TPC_EXTENDED_READOUT_NS=${TPC_EXTENDED_READOUT_NS:-14000}
 export SINGULARITYENV_TPC_DEADMAP=${TPC_DEADMAP:-$REPO/CDB_offline/TPC_DEADCHANNELMAP/ff/c3/ffc3f6498934c5a8ba31065292c6ebcc_TPCDeadMap_79471.root}
 export SINGULARITYENV_TPC_DEADMASK_H=$PORT/TpcDeadMasker.h
 if [ -n "$HEPMC" ]; then export SINGULARITYENV_HEPMC_FILE=$HEPMC; fi
