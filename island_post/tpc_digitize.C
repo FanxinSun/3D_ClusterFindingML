@@ -1,0 +1,484 @@
+// tpc_digitize.C — detached TPC response digitizer v2 (two-stage, calibration-ready).
+//
+//  STAGE A  tpc_transport(in, raw.root, NEV)
+//    ntp_g4hit -> ionization -> drift+diffusion -> GEM gain -> zigzag pads ->
+//    SAMPA Gamma4 time shares -> RAW pixel charge tree "raw_pix" (no electronics).
+//    Expensive (~90 s/AuAu event) but runs ONCE.
+//
+//  STAGE B  tpc_readout(raw.root, out.root, gaincal, thr_adu, ret_pre, ret_post)
+//    gain scale (exact: exponential draws scale linearly) -> mV -> ADU + ENC noise ->
+//    clamp 1023 -> PEDESTAL SUBTRACT (74.4; real saturation bump at ~950 = 1023-ped) ->
+//    ZS threshold + SAMPA-DSP pre/post-sample retention -> "ntp_hit" pixel tree
+//    (islandize.C / hits_profile.C compatible). Seconds per iteration -> scan-friendly.
+//
+//  tpc_digitize(in, out, NEV) = A + B with day-1-compatible defaults.
+//
+// Physics sources: coresoftware master (see PIPELINE.md component table).
+// usage examples:
+//   root -b -q 'tpc_digitize.C+("eval.root","digi.root",2)'
+//   root -l -b -q 'tpc_digitize.C+' -e 'tpc_transport("eval.root","raw2.root",2)'
+//   root -l -b -q 'tpc_digitize.C+' -e 'tpc_readout("raw2.root","digi.root",0.84,8,1,2)'
+
+#include <TFile.h>
+#include <TNtuple.h>
+#include <TRandom3.h>
+#include <TTree.h>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <unordered_map>
+#include <vector>
+
+namespace CFG
+{
+const double VDRIFT = 0.0080;    // cm/ns (real calibration)
+const double HALFZ = 105.5;      // cm
+const double CLOCK = 53.0;       // ns
+const int NTBIN = 965;           // ~51.1 us window
+const double TS = 55.0;          // ns SAMPA v5 peaking time
+const double EPG = 28.43e6;      // electrons per GeV
+const double GAIN = 1400.;       // GEM mean gain (calibrate via gaincal in stage B)
+const double CLOUD = 0.04;       // cm GEM cloud sigma
+const double DIFF_T = 0.005313;  // cm/sqrt(cm)
+const double DIFF_L = 0.014596;  // cm/sqrt(cm)
+const double N_SIGMA = 5;
+const double MV_PER_E = 7.68e-3;          // mV per electron (peak, incl x2.4)
+const double ADU_PER_MV = 1024. / 2200.;  // 10-bit over 2.2 V
+const double NOISE_ADU = 670. * (7.68e-3 / 2.4) * (1024. / 2200.);  // ENC in ADU (~1.0)
+const double PEDESTAL = 74.4;    // ADU (TpcClusterizer.h; real saturation bump 1023-ped~949)
+const bool GAPS = true;
+const double GAPPHASE = M_PI / 12.;
+const double ACTIVE[3] = {0.5024, 0.5087, 0.5097};
+}  // namespace CFG
+
+namespace TDG
+{
+struct Lay
+{
+  int nbins;
+  double radius, slope, phi0;
+};
+Lay GEO[55];
+bool geo_ok = false;
+
+void loadGeo()
+{
+  if (geo_ok)
+  {
+    return;
+  }
+  FILE *g = fopen("tpc_geom_table.txt", "r");
+  if (!g)
+  {
+    printf("ERROR: no tpc_geom_table.txt — run geomfit.C first\n");
+    return;
+  }
+  char line[256];
+  while (fgets(line, 256, g))
+  {
+    int L, nb;
+    double r, sl, p0, p1;
+    if (line[0] == '#')
+    {
+      continue;
+    }
+    if (sscanf(line, "%d %d %lf %lf %lf %lf", &L, &nb, &r, &sl, &p0, &p1) == 6)
+    {
+      GEO[L] = {nb, r, sl, p0};
+    }
+  }
+  fclose(g);
+  geo_ok = true;
+}
+
+struct Cell
+{
+  float q = 0;
+  float qbest = 0;
+  int trk = -9999;
+};
+
+double g4pulse(double dt)
+{
+  if (dt <= 0)
+  {
+    return 0;
+  }
+  double x = dt / CFG::TS;
+  return std::exp(-4 * x) * std::pow(x, 4.0);
+}
+
+const int NLUT = 212;
+float LUT[NLUT][8];
+void buildLUT()
+{
+  for (int iu = 0; iu < NLUT; ++iu)
+  {
+    double u = (iu + 0.5) * CFG::CLOCK / NLUT;
+    double tot = 0;
+    double tfe = CFG::CLOCK - u;
+    LUT[iu][0] = 0.5 * g4pulse(tfe) * tfe;
+    tot += LUT[iu][0];
+    for (int k = 1; k < 8; ++k)
+    {
+      double s = 0;
+      for (int is = 0; is < 6; ++is)
+      {
+        s += g4pulse(k * CFG::CLOCK - u + (is + 0.5) * CFG::CLOCK / 6.) * (CFG::CLOCK / 6.);
+      }
+      LUT[iu][k] = s;
+      tot += s;
+    }
+    for (int k = 0; k < 8; ++k)
+    {
+      LUT[iu][k] = (tot > 0) ? LUT[iu][k] / tot : 0;
+    }
+  }
+}
+
+inline double gaus(double x, double s) { return std::exp(-0.5 * x * x / (s * s)) / (s * std::sqrt(2 * M_PI)); }
+inline int region(int L) { return (L < 23) ? 0 : (L < 39 ? 1 : 2); }
+
+bool inGap(double phi, int reg)
+{
+  if (!CFG::GAPS)
+  {
+    return false;
+  }
+  const double SEC = M_PI / 6.;
+  double half_gap = 0.5 * (SEC - CFG::ACTIVE[reg]);
+  double m = std::fmod(phi - CFG::GAPPHASE + 4 * M_PI, SEC);
+  return (m < half_gap || m > SEC - half_gap);
+}
+
+void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &share)
+{
+  pads.clear();
+  share.clear();
+  const Lay &g = GEO[L];
+  const double radius = g.radius;
+  const double step = g.slope;
+  const double rphi = phi * radius;
+  int blo = (int) std::floor((phi - (CFG::N_SIGMA * CFG::CLOUD / radius) - step - g.phi0) / step);
+  int bhi = (int) std::floor((phi + (CFG::N_SIGMA * CFG::CLOUD / radius) + step - g.phi0) / step);
+  int npads = bhi - blo;
+  if (npads < 0 || npads > 9)
+  {
+    npads = 9;
+  }
+  const double pitch = step * radius;
+  for (int ip = 0; ip <= npads; ++ip)
+  {
+    int pad = blo + ip;
+    if (pad >= g.nbins)
+    {
+      pad -= g.nbins;
+    }
+    if (pad < 0)
+    {
+      pad += g.nbins;
+    }
+    double x = (g.phi0 + g.slope * pad) * radius - rphi;
+    if (x > M_PI * radius)
+    {
+      x -= 2 * M_PI * radius;
+    }
+    if (x < -M_PI * radius)
+    {
+      x += 2 * M_PI * radius;
+    }
+    const double s = CFG::CLOUD;
+    double ov = (pitch - x) * (std::erf(x / (M_SQRT2 * s)) - std::erf((x - pitch) / (M_SQRT2 * s))) / (pitch * 2) +
+                (pitch + x) * (std::erf((x + pitch) / (M_SQRT2 * s)) - std::erf(x / (M_SQRT2 * s))) / (pitch * 2) +
+                (gaus(x - pitch, s) - gaus(x, s)) * s * s / pitch +
+                (gaus(x + pitch, s) - gaus(x, s)) * s * s / pitch;
+    if (ov > 1e-6)
+    {
+      pads.push_back(pad);
+      share.push_back(ov);
+    }
+  }
+}
+}  // namespace TDG
+using namespace TDG;
+
+// ---------------- STAGE A: transport ----------------
+void tpc_transport(const char *in, const char *rawout, int NEV = 2)
+{
+  loadGeo();
+  if (!geo_ok)
+  {
+    return;
+  }
+  buildLUT();
+  TRandom3 rng(20260708);
+
+  TFile *fi = TFile::Open(in);
+  TTree *t = (TTree *) fi->Get("ntp_g4hit");
+  float event, glayer, gx, gy, gz, gt, gpl, gpx, gpy, gpz, gedep, gtrackID;
+  t->SetBranchStatus("*", 0);
+  for (const char *b : {"event", "glayer", "gx", "gy", "gz", "gt", "gpl", "gpx", "gpy", "gpz", "gedep", "gtrackID"})
+  {
+    t->SetBranchStatus(b, 1);
+  }
+  t->SetBranchAddress("event", &event);
+  t->SetBranchAddress("glayer", &glayer);
+  t->SetBranchAddress("gx", &gx);
+  t->SetBranchAddress("gy", &gy);
+  t->SetBranchAddress("gz", &gz);
+  t->SetBranchAddress("gt", &gt);
+  t->SetBranchAddress("gpl", &gpl);
+  t->SetBranchAddress("gpx", &gpx);
+  t->SetBranchAddress("gpy", &gpy);
+  t->SetBranchAddress("gpz", &gpz);
+  t->SetBranchAddress("gedep", &gedep);
+  t->SetBranchAddress("gtrackID", &gtrackID);
+
+  TFile *fo = new TFile(rawout, "RECREATE");
+  TNtuple *o = new TNtuple("raw_pix", "raw pixel charge (pre-electronics)",
+                           "event:layer:side:pad:tbin:q:trk");
+
+  std::unordered_map<uint64_t, Cell> pix;
+  std::vector<int> pads;
+  std::vector<double> pshare;
+  long npix = 0, ne = 0;
+  int curev = -1;
+
+  auto flush = [&](int ev) {
+    for (auto &kv : pix)
+    {
+      uint64_t k = kv.first;
+      float row[7] = {(float) ev, (float) (k >> 40U), (float) ((k >> 32U) & 0xFF),
+                      (float) ((k >> 16U) & 0xFFFF), (float) (k & 0xFFFF),
+                      kv.second.q, (float) kv.second.trk};
+      o->Fill(row);
+      npix++;
+    }
+    pix.clear();
+  };
+
+  Long64_t N = t->GetEntries();
+  for (Long64_t i = 0; i < N; ++i)
+  {
+    t->GetEntry(i);
+    int ev = (int) event;
+    if (ev >= NEV)
+    {
+      break;
+    }
+    if (ev != curev)
+    {
+      if (curev >= 0)
+      {
+        flush(curev);
+        printf("  transport: event %d done (%ld raw pixels, %ld electrons)\n", curev, npix, ne);
+      }
+      curev = ev;
+    }
+    int L = (int) glayer;
+    if (L < 7 || L > 54 || gedep <= 0)
+    {
+      continue;
+    }
+    int nel = rng.Poisson((double) gedep * CFG::EPG);
+    if (nel <= 0)
+    {
+      continue;
+    }
+    ne += nel;
+    double pl = std::isfinite(gpl) ? (double) gpl : 0.;  // evaluator writes gpl=NaN for TPC
+    double pn = std::sqrt((double) gpx * gpx + (double) gpy * gpy + (double) gpz * gpz);
+    double dx = pn > 0 ? gpx / pn : 0, dy = pn > 0 ? gpy / pn : 0, dz = pn > 0 ? gpz / pn : 0;
+    for (int ie = 0; ie < nel; ++ie)
+    {
+      double u = rng.Uniform() - 0.5;
+      double x = gx + dx * pl * u, y = gy + dy * pl * u, z = gz + dz * pl * u;
+      if (!std::isfinite(x) || !std::isfinite(z) || std::fabs(z) > CFG::HALFZ)
+      {
+        continue;
+      }
+      int sd = (z >= 0) ? 1 : 0;
+      double Ld = CFG::HALFZ - std::fabs(z);
+      double sT = CFG::DIFF_T * std::sqrt(Ld);
+      x += rng.Gaus(0., sT);
+      y += rng.Gaus(0., sT);
+      double tarr = gt + Ld / CFG::VDRIFT + rng.Gaus(0., CFG::DIFF_L * std::sqrt(Ld)) / CFG::VDRIFT;
+      if (!(tarr >= 0 && tarr < CFG::NTBIN * CFG::CLOCK))
+      {
+        continue;
+      }
+      double phi = std::atan2(y, x);
+      if (inGap(phi, region(L)))
+      {
+        continue;
+      }
+      double q = rng.Exp(CFG::GAIN);
+      zigzag(L, phi, pads, pshare);
+      if (pads.empty())
+      {
+        continue;
+      }
+      int tb0 = (int) (tarr / CFG::CLOCK);
+      int iu = (int) ((tarr - tb0 * CFG::CLOCK) / CFG::CLOCK * NLUT);
+      iu = std::max(0, std::min(NLUT - 1, iu));
+      for (size_t ip = 0; ip < pads.size(); ++ip)
+      {
+        for (int k = 0; k < 8; ++k)
+        {
+          int tb = tb0 + k;
+          if (tb >= CFG::NTBIN)
+          {
+            break;
+          }
+          float dq = (float) (q * pshare[ip] * LUT[iu][k]);
+          if (dq <= 0)
+          {
+            continue;
+          }
+          uint64_t key = ((uint64_t) L << 40U) | ((uint64_t) sd << 32U) |
+                         ((uint64_t) (uint32_t) pads[ip] << 16U) | (uint64_t) tb;
+          Cell &c = pix[key];
+          c.q += dq;
+          if (dq > c.qbest)
+          {
+            c.qbest = dq;
+            c.trk = (int) gtrackID;
+          }
+        }
+      }
+    }
+  }
+  if (curev >= 0)
+  {
+    flush(curev);
+  }
+  printf("tpc_transport: %s -> %s : %ld raw pixels, %ld electrons (%d events)\n", in, rawout, npix, ne, NEV);
+  fo->cd();
+  o->Write();
+  fo->Close();
+}
+
+// ---------------- STAGE B: electronics/readout ----------------
+void tpc_readout(const char *rawin, const char *out,
+                 double gaincal = 1.0, double thr_adu = 15.0,
+                 int ret_pre = 0, int ret_post = 0, int seed = 4711)
+{
+  loadGeo();
+  if (!geo_ok)
+  {
+    return;
+  }
+  TRandom3 rng(seed);
+  TFile *fi = TFile::Open(rawin);
+  TNtuple *r = (TNtuple *) fi->Get("raw_pix");
+  float ev, L, sd, pad, tb, q, trk;
+  r->SetBranchAddress("event", &ev);
+  r->SetBranchAddress("layer", &L);
+  r->SetBranchAddress("side", &sd);
+  r->SetBranchAddress("pad", &pad);
+  r->SetBranchAddress("tbin", &tb);
+  r->SetBranchAddress("q", &q);
+  r->SetBranchAddress("trk", &trk);
+
+  struct Row
+  {
+    uint64_t col;  // (event,layer,side,pad)
+    int tb;
+    float q, trk;
+  };
+  std::vector<Row> v;
+  v.reserve((size_t) r->GetEntries());
+  for (Long64_t i = 0; i < r->GetEntries(); ++i)
+  {
+    r->GetEntry(i);
+    uint64_t col = ((uint64_t) (uint32_t) ev << 40U) | ((uint64_t) (uint32_t) L << 32U) |
+                   ((uint64_t) (((int) sd) ? 1 : 0) << 24U) | (uint64_t) (uint32_t) pad;
+    v.push_back({col, (int) tb, q, trk});
+  }
+  std::sort(v.begin(), v.end(), [](const Row &a, const Row &b) {
+    return a.col == b.col ? a.tb < b.tb : a.col < b.col;
+  });
+
+  TFile *fo = new TFile(out, "RECREATE");
+  TNtuple *o = new TNtuple("ntp_hit", "digitized pixels",
+                           "event:layer:phibin:zbin:tbin:adc:zelem:phi:z:gtrackID");
+  long nkept = 0;
+  size_t i = 0;
+  std::vector<double> adu;
+  std::vector<char> keep;
+  while (i < v.size())
+  {
+    size_t j = i;
+    while (j < v.size() && v[j].col == v[i].col)
+    {
+      ++j;
+    }
+    // electronics for this pad column
+    adu.assign(j - i, 0.);
+    keep.assign(j - i, 0);
+    for (size_t k = i; k < j; ++k)
+    {
+      double a = v[k].q * gaincal * CFG::MV_PER_E * CFG::ADU_PER_MV + CFG::PEDESTAL + rng.Gaus(0., CFG::NOISE_ADU);
+      if (a > 1023)
+      {
+        a = 1023;  // 10-bit saturation BEFORE pedestal subtraction
+      }
+      adu[k - i] = a - CFG::PEDESTAL;  // real-data convention: pedestal-subtracted
+    }
+    // ZS + SAMPA-DSP retention: keep above-threshold samples plus ret_pre/ret_post
+    // CONSECUTIVE-tbin neighbours of any above-threshold sample
+    for (size_t k = 0; k < adu.size(); ++k)
+    {
+      if (adu[k] >= thr_adu)
+      {
+        keep[k] = 1;
+        for (int d = 1; d <= ret_pre; ++d)
+        {
+          if (k >= (size_t) d && v[i + k].tb - v[i + k - d].tb == d)
+          {
+            keep[k - d] = 1;
+          }
+        }
+        for (int d = 1; d <= ret_post; ++d)
+        {
+          if (k + d < adu.size() && v[i + k + d].tb - v[i + k].tb == d)
+          {
+            keep[k + d] = 1;
+          }
+        }
+      }
+    }
+    for (size_t k = 0; k < adu.size(); ++k)
+    {
+      if (!keep[k] || adu[k] <= 0)
+      {
+        continue;
+      }
+      const Row &w = v[i + k];
+      int LL = (int) ((w.col >> 32U) & 0xFF);
+      int ss = (int) ((w.col >> 24U) & 0x1);
+      int pp = (int) (w.col & 0xFFFFFF);
+      double phi = GEO[LL].phi0 + GEO[LL].slope * pp;
+      double zapp = (ss == 1 ? 1 : -1) * (CFG::HALFZ - w.tb * CFG::CLOCK * CFG::VDRIFT);
+      float row[10] = {(float) (w.col >> 40U), (float) LL, (float) pp, (float) w.tb, (float) w.tb,
+                       (float) adu[k], (float) ss, (float) phi, (float) zapp, w.trk};
+      o->Fill(row);
+      nkept++;
+    }
+    i = j;
+  }
+  printf("tpc_readout: %s -> %s : %ld pixels kept (gaincal=%.3f thr=%.1f ret=%d/%d)\n",
+         rawin, out, nkept, gaincal, thr_adu, ret_pre, ret_post);
+  fo->cd();
+  o->Write();
+  fo->Close();
+}
+
+// ---------------- wrapper (day-1 compatible defaults) ----------------
+void tpc_digitize(const char *in = "/home/rog/sPHENIX/3D_ClusterFindingML/macros-offline/detectors/sPHENIX/exam5_g4svtx_eval.root",
+                  const char *out = "digi_sim.root", int NEV = 2)
+{
+  tpc_transport(in, "raw_pix.root", NEV);
+  tpc_readout("raw_pix.root", out, 1.0, 15.0, 0, 0);
+}

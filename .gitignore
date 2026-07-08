@@ -41,6 +41,7 @@ Thumbs.db
 memory/
 ML_Ground_Truth_Hits.csv
 GroundTruth_Making/*.csv
+PIPELINE.md
 
 *_backup*
 Simulations/dataset
