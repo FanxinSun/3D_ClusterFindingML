@@ -1,0 +1,171 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1240 724" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pipeline detachment workflow">
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" class="ahead"/></marker></defs>
+<style>
+svg{width:100%;height:auto;display:block;font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-ui,sans-serif}
+.lane{fill:#EDF1F6;stroke:#C3CFDA;stroke-width:1}
+.lane-l{fill:#EBF4F0}
+.lanelabel{font-size:14px;font-weight:700;letter-spacing:.08em;fill:#1C2733}
+.lanenote{font-size:12px;fill:#51616F}
+.node rect{fill:#FFFFFF;stroke-width:1.5}
+.node .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.12em;fill:#51616F}
+.node .ntitle{font-size:15.5px;font-weight:700;fill:#1C2733}
+.node .nsub{font-size:12px;fill:#51616F}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+.st-done rect{stroke:#8CBEA2}
+.st-amber rect{stroke:#D9B25C}
+.st-future rect{stroke:#97A5B4;stroke-dasharray:6 4}
+.st-next rect{stroke:#7FB9CC;stroke-dasharray:6 4}
+.chip text{font-size:10.5px;font-weight:700;letter-spacing:.04em}
+.ch-done rect{fill:#E8F3EC} .ch-done text{fill:#2F7D50}
+.ch-amber rect{fill:#FAF0D7} .ch-amber text{fill:#9A6B00}
+.ch-future rect{fill:#EDF1F6} .ch-future text{fill:#5D6B7A}
+.ch-next rect{fill:#E3F1F6} .ch-next text{fill:#0E7C9C}
+.art rect{fill:#E3F1F6;stroke:#7FB9CC;stroke-width:1.5}
+.art .atag{font-size:10px;font-weight:700;letter-spacing:.12em;fill:#0E7C9C}
+.art .atitle{font-size:16px;font-weight:700;fill:#1C2733}
+.art .asub{font-size:11.5px;fill:#51616F}
+.flow{fill:none;stroke:#51616F;stroke-width:1.8}
+.ahead{fill:#51616F}
+.rail rect{fill:#FFFFFF;stroke:#C3CFDA;stroke-width:1}
+.rail text{font-size:11.5px;font-weight:600;fill:#51616F}
+.rail .railnote{font-weight:400;font-size:11.5px}
+.pnote rect{fill:#FFFFFF;stroke:#97A5B4;stroke-dasharray:5 4;stroke-width:1.2}
+.pnote text{font-size:11.5px;font-weight:600;fill:#51616F;letter-spacing:.02em}
+.plink{stroke:#97A5B4;stroke-width:1.2;stroke-dasharray:3 3;fill:none}
+</style>
+<rect x="0" y="0" width="1240" height="724" fill="#F7F9FB"/>
+  <rect class="lane lane-c" x="24" y="20" width="1192" height="220" rx="14"/>
+  <text class="lanelabel" x="46" y="50">CONTAINER · ana.331 via CVMFS</text>
+  <text class="lanenote" x="1194" y="50" text-anchor="end">one job type remains · runs only when content/statistics change</text>
+  <rect class="lane lane-l" x="24" y="392" width="1192" height="312" rx="14"/>
+  <text class="lanelabel" x="46" y="422">LOCAL · ROOT 6.40 / gcc — detached</text>
+  <text class="lanenote" x="1194" y="422" text-anchor="end">iterate in seconds–minutes · no BNL, no container</text>
+
+  <g class="node st-done">
+    <rect x="48" y="76" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="64" y="100">STAGE 1</text>
+    <text class="ntitle" x="64" y="123">Event generation</text>
+    <text class="nsub mono" x="64" y="143">sHijing → HepMC</text>
+    <g class="chip ch-done">
+      <rect x="64" y="154" width="118" height="22" rx="11"/>
+      <text x="123.0" y="169" text-anchor="middle">STANDALONE ✓</text>
+    </g>
+  </g>
+
+  <g class="node st-amber">
+    <rect x="336" y="76" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="352" y="100">STAGE 2</text>
+    <text class="ntitle" x="352" y="123">Pileup mixing</text>
+    <text class="nsub mono" x="352" y="143">HepMCPileupInputMgr</text>
+    <g class="chip ch-amber">
+      <rect x="352" y="154" width="196" height="22" rx="11"/>
+      <text x="450.0" y="169" text-anchor="middle">MACHINERY ✓ · PARAMS ← P1</text>
+    </g>
+  </g>
+
+  <g class="node st-future">
+    <rect x="624" y="76" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="640" y="100">STAGE 3</text>
+    <text class="ntitle" x="640" y="123">Geant4 transport</text>
+    <text class="nsub mono" x="640" y="143">full detector + field</text>
+    <g class="chip ch-future">
+      <rect x="640" y="154" width="180" height="22" rx="11"/>
+      <text x="730.0" y="169" text-anchor="middle">IN CONTAINER · P5 LATER</text>
+    </g>
+  </g>
+
+  <g class="node st-done">
+    <rect x="912" y="76" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="928" y="100">G4 DUMP</text>
+    <text class="ntitle" x="928" y="123">Deposit dump</text>
+    <text class="nsub mono" x="928" y="143">SvtxEvaluator → ntp_g4hit</text>
+    <g class="chip ch-future">
+      <rect x="928" y="154" width="200" height="22" rx="11"/>
+      <text x="1028.0" y="169" text-anchor="middle">WORKS ✓ · OPT. G4HitDumper</text>
+    </g>
+  </g>
+
+  <g class="art art-acc">
+    <rect x="470" y="268" width="330" height="92" rx="10"/>
+    <text class="atag" x="486" y="290">HANDOFF ARTIFACT</text>
+    <text class="atitle mono" x="486" y="316">ntp_g4hit</text>
+    <text class="asub" x="486" y="338">deposits + truth + times — never invalidated</text>
+  </g>
+
+  <g class="art art-acc">
+    <rect x="912" y="268" width="280" height="92" rx="10"/>
+    <text class="atag" x="928" y="290">REAL-DATA ARTIFACT</text>
+    <text class="atitle mono" x="928" y="316">run 79507 ntuplizer</text>
+    <text class="asub" x="928" y="338">25.7M TPC hits · same local chain</text>
+  </g>
+
+  <g class="node st-done">
+    <rect x="48" y="452" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="64" y="476">STAGES 4–5</text>
+    <text class="ntitle" x="64" y="499">TPC response + labels</text>
+    <text class="nsub mono" x="64" y="519">tpc_digitize.C · config B3</text>
+    <g class="chip ch-done">
+      <rect x="64" y="530" width="204" height="22" rx="11"/>
+      <text x="166.0" y="545" text-anchor="middle">P0 ✓ DETACHED + CALIBRATED</text>
+    </g>
+  </g>
+
+  <g class="node st-done">
+    <rect x="336" y="452" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="352" y="476">STAGE 6</text>
+    <text class="ntitle" x="352" y="499">Island clustering</text>
+    <text class="nsub mono" x="352" y="519">islandize.C</text>
+    <g class="chip ch-done">
+      <rect x="352" y="530" width="176" height="22" rx="11"/>
+      <text x="440.0" y="545" text-anchor="middle">DETACHED ✓ · REAL + SIM</text>
+    </g>
+  </g>
+
+  <g class="node st-done">
+    <rect x="624" y="452" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="640" y="476">STAGE 7</text>
+    <text class="ntitle" x="640" y="499">91-branch + truth</text>
+    <text class="nsub mono" x="640" y="519">islandize91.C</text>
+    <g class="chip ch-done">
+      <rect x="640" y="530" width="120" height="22" rx="11"/>
+      <text x="700.0" y="545" text-anchor="middle">P2 ✓ DETACHED</text>
+    </g>
+  </g>
+
+  <g class="node st-next">
+    <rect x="912" y="452" width="250" height="110" rx="10"/>
+    <text class="eyebrow" x="928" y="476">STAGE 11</text>
+    <text class="ntitle" x="928" y="499">ML training</text>
+    <text class="nsub mono" x="928" y="519">island91_sim / real.root</text>
+    <g class="chip ch-next">
+      <rect x="928" y="530" width="64" height="22" rx="11"/>
+      <text x="960.0" y="545" text-anchor="middle">NEXT</text>
+    </g>
+  </g>
+  <g class="rail">
+    <rect x="48" y="616" width="250" height="42" rx="10"/><text x="173" y="642" text-anchor="middle">STAGE 8 · CDB_offline payloads ✓</text>
+    <rect x="336" y="616" width="250" height="42" rx="10"/><text x="461" y="642" text-anchor="middle">STAGE 9 · validation harness ✓</text>
+    <rect x="624" y="616" width="250" height="42" rx="10"/><text x="749" y="642" text-anchor="middle">STAGE 10 · run_one.sh ✓</text>
+    <text class="railnote" x="912" y="636">file-based support — feeds both lanes;</text>
+    <text class="railnote" x="912" y="652">no network, no rebuild</text>
+  </g>
+  <path class="flow" d="M 298,131 L 332,131" marker-end="url(#ah)"/>
+  <path class="flow" d="M 586,131 L 620,131" marker-end="url(#ah)"/>
+  <path class="flow" d="M 874,131 L 908,131" marker-end="url(#ah)"/>
+  <path class="flow" d="M 1037,186 L 1037,240 L 635,240 L 635,264" marker-end="url(#ah)"/>
+  <path class="flow" d="M 635,360 L 635,418 L 173,418 L 173,448" marker-end="url(#ah)"/>
+  <path class="flow" d="M 1052,360 L 1052,434 L 461,434 L 461,448" marker-end="url(#ah)"/>
+  <path class="flow" d="M 298,507 L 332,507" marker-end="url(#ah)"/>
+  <path class="flow" d="M 586,507 L 620,507" marker-end="url(#ah)"/>
+  <path class="flow" d="M 874,507 L 908,507" marker-end="url(#ah)"/>
+  <g class="pnote">
+    <rect x="48" y="198" width="1114" height="30" rx="8"/>
+    <text x="605" y="217" text-anchor="middle">P3 · STATISTICS BATCH — the next run of THIS lane: executes P1&#8217;s rate/window spec · 100+ events · parallel via run_one.sh</text>
+  </g>
+  <line class="plink" x1="461" y1="562" x2="461" y2="572"/>
+  <g class="pnote">
+    <rect x="336" y="572" width="250" height="30" rx="8"/>
+    <text x="461" y="591" text-anchor="middle">P4 · OPTIONAL IN-CHAIN VARIANT</text>
+  </g>
+</svg>
