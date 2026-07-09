@@ -36,10 +36,12 @@ const double VDRIFT = 0.0080;    // cm/ns (real calibration)
 const double HALFZ = 105.5;      // cm
 const double CLOCK = 53.0;       // ns
 const int NTBIN = 965;           // ~51.1 us window
-const double TS = 55.0;          // ns SAMPA v5 peaking time
+const double TS = 45.0;          // ns EFFECTIVE peaking time — day-2 calibrated vs real
+                                 // run-length + near-threshold spectrum (master default 55;
+                                 // 45 shortens the Gamma4 tail to match real runs at low thr)
 const double EPG = 28.43e6;      // electrons per GeV
 const double GAIN = 1400.;       // GEM mean gain (calibrate via gaincal in stage B)
-const double CLOUD = 0.04;       // cm GEM cloud sigma
+const double CLOUD = 0.06;       // cm GEM cloud sigma (day-2.2: 0.04 master default -> 0.06 calibrated on island phisize)
 const double DIFF_T = 0.005313;  // cm/sqrt(cm)
 const double DIFF_L = 0.014596;  // cm/sqrt(cm)
 const double N_SIGMA = 5;
@@ -362,7 +364,8 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2)
 // ---------------- STAGE B: electronics/readout ----------------
 void tpc_readout(const char *rawin, const char *out,
                  double gaincal = 1.0, double thr_adu = 15.0,
-                 int ret_pre = 0, int ret_post = 0, int seed = 4711)
+                 int ret_pre = 0, int ret_post = 0, int seed = 4711,
+                 const char *deadmap = "", double thr2_adu = -1.0, double p_keep = 1.0, double sigma_pad = 0.0, double p2 = 0.0)
 {
   loadGeo();
   if (!geo_ok)
@@ -370,6 +373,48 @@ void tpc_readout(const char *rawin, const char *out,
     return;
   }
   TRandom3 rng(seed);
+
+  // optional dead-channel mask: TPC_DEADCHANNELMAP payload (Multiple tree, LOCAL pad
+  // within sector). Key = (layer, side, sector, localpad); sector assumed = globalpad/nper.
+  std::unordered_map<uint32_t, char> dead;
+  if (deadmap && deadmap[0])
+  {
+    TFile *fd = TFile::Open(deadmap);
+    TTree *td = fd ? (TTree *) fd->Get("Multiple") : nullptr;
+    if (td)
+    {
+      // payload Ipad convention is FEE-relative (values exceed pads/sector); use the
+      // unambiguous channel POSITION (Fx,Fy in mm) -> phi -> global pad via our geometry
+      Int_t dl, dside;
+      Float_t fx, fy;
+      td->SetBranchAddress("Ilayer", &dl);
+      td->SetBranchAddress("Iside", &dside);
+      td->SetBranchAddress("Fx", &fx);
+      td->SetBranchAddress("Fy", &fy);
+      for (long k = 0; k < td->GetEntries(); ++k)
+      {
+        td->GetEntry(k);
+        if (dl < 7 || dl > 54)
+        {
+          continue;
+        }
+        double phi = std::atan2((double) fy, (double) fx);
+        int pad = (int) std::lround((phi - GEO[dl].phi0) / GEO[dl].slope - 0.0);
+        if (pad < 0)
+        {
+          pad += GEO[dl].nbins;
+        }
+        if (pad >= GEO[dl].nbins)
+        {
+          pad -= GEO[dl].nbins;
+        }
+        dead[((uint32_t) dl << 20U) | ((uint32_t) dside << 16U) | (uint32_t) pad] = 1;
+      }
+      printf("tpc_readout: dead map %s -> %zu (layer,side,globalpad) channels\n", deadmap, dead.size());
+      fd->Close();
+    }
+  }
+  long nmasked = 0;
   TFile *fi = TFile::Open(rawin);
   TNtuple *r = (TNtuple *) fi->Get("raw_pix");
   float ev, L, sd, pad, tb, q, trk;
@@ -417,17 +462,25 @@ void tpc_readout(const char *rawin, const char *out,
     // electronics for this pad column
     adu.assign(j - i, 0.);
     keep.assign(j - i, 0);
+    double gpad = 1.0;
+    if (sigma_pad > 0)
+    {
+      TRandom3 gr((UInt_t) (v[i].col & 0xFFFFFFFFFFULL));  // static per (layer,side,pad)
+      gpad = std::exp(gr.Gaus(0., sigma_pad) - 0.5 * sigma_pad * sigma_pad);
+    }
     for (size_t k = i; k < j; ++k)
     {
-      double a = v[k].q * gaincal * CFG::MV_PER_E * CFG::ADU_PER_MV + CFG::PEDESTAL + rng.Gaus(0., CFG::NOISE_ADU);
+      double a = v[k].q * gpad * gaincal * CFG::MV_PER_E * CFG::ADU_PER_MV + CFG::PEDESTAL + rng.Gaus(0., CFG::NOISE_ADU);
       if (a > 1023)
       {
         a = 1023;  // 10-bit saturation BEFORE pedestal subtraction
       }
-      adu[k - i] = a - CFG::PEDESTAL;  // real-data convention: pedestal-subtracted
+      // real ADC is an integer ADU count; quantize like the hardware, then subtract pedestal
+      adu[k - i] = std::round(a - CFG::PEDESTAL);
     }
     // ZS + SAMPA-DSP retention: keep above-threshold samples plus ret_pre/ret_post
     // CONSECUTIVE-tbin neighbours of any above-threshold sample
+    const double t2 = (thr2_adu >= 0) ? thr2_adu : thr_adu;  // two-tier ZS: neighbours kept if >= thr2
     for (size_t k = 0; k < adu.size(); ++k)
     {
       if (adu[k] >= thr_adu)
@@ -437,14 +490,28 @@ void tpc_readout(const char *rawin, const char *out,
         {
           if (k >= (size_t) d && v[i + k].tb - v[i + k - d].tb == d)
           {
-            keep[k - d] = 1;
+            if (adu[k - d] >= t2 && (p_keep >= 1.0 || rng.Uniform() < p_keep))
+            {
+              keep[k - d] = 1;
+            }
+            else if (adu[k - d] >= 1 && p2 > 0 && rng.Uniform() < p2)
+            {
+              keep[k - d] = 1;  // sub-floor retention: real ZS leaks a flat trace (B3)
+            }
           }
         }
         for (int d = 1; d <= ret_post; ++d)
         {
           if (k + d < adu.size() && v[i + k + d].tb - v[i + k].tb == d)
           {
-            keep[k + d] = 1;
+            if (adu[k + d] >= t2 && (p_keep >= 1.0 || rng.Uniform() < p_keep))
+            {
+              keep[k + d] = 1;
+            }
+            else if (adu[k + d] >= 1 && p2 > 0 && rng.Uniform() < p2)
+            {
+              keep[k + d] = 1;  // sub-floor retention: real ZS leaks a flat trace (B3)
+            }
           }
         }
       }
@@ -459,6 +526,15 @@ void tpc_readout(const char *rawin, const char *out,
       int LL = (int) ((w.col >> 32U) & 0xFF);
       int ss = (int) ((w.col >> 24U) & 0x1);
       int pp = (int) (w.col & 0xFFFFFF);
+      if (!dead.empty())
+      {
+        uint32_t dkey = ((uint32_t) LL << 20U) | ((uint32_t) ss << 16U) | (uint32_t) pp;
+        if (dead.count(dkey))
+        {
+          nmasked++;
+          continue;
+        }
+      }
       double phi = GEO[LL].phi0 + GEO[LL].slope * pp;
       double zapp = (ss == 1 ? 1 : -1) * (CFG::HALFZ - w.tb * CFG::CLOCK * CFG::VDRIFT);
       float row[10] = {(float) (w.col >> 40U), (float) LL, (float) pp, (float) w.tb, (float) w.tb,
@@ -468,8 +544,8 @@ void tpc_readout(const char *rawin, const char *out,
     }
     i = j;
   }
-  printf("tpc_readout: %s -> %s : %ld pixels kept (gaincal=%.3f thr=%.1f ret=%d/%d)\n",
-         rawin, out, nkept, gaincal, thr_adu, ret_pre, ret_post);
+  printf("tpc_readout: %s -> %s : %ld pixels kept, %ld dead-masked (gaincal=%.3f thr=%.1f ret=%d/%d p=%.2f)\n",
+         rawin, out, nkept, nmasked, gaincal, thr_adu, ret_pre, ret_post, p_keep);
   fo->cd();
   o->Write();
   fo->Close();

@@ -12,8 +12,8 @@ void make_ref(){
   h->SetBranchAddress("phibin",&phibin); h->SetBranchAddress("tbin",&tb);
   h->SetBranchAddress("adc",&adc); h->SetBranchAddress("zelem",&side); h->SetBranchAddress("phi",&phi);
   TFile*o=new TFile("ref_real.root","RECREATE");
-  TH1D* r_adc  = new TH1D("r_adc","real per-pixel ADC;ADC",1100,0,1100);
-  TH1D* r_adcz = new TH1D("r_adcz","real ADC near threshold;ADC",240,0,120);
+  TH1D* r_adc  = new TH1D("r_adc","real per-pixel ADC;ADC",1101,-0.5,1100.5);
+  TH1D* r_adcz = new TH1D("r_adcz","real ADC near threshold;ADC",121,-0.5,120.5);
   TH1D* r_run  = new TH1D("r_run","real run length;consecutive tbins",25,0.5,25.5);
   TH1D* r_lay  = new TH1D("r_lay","real hits/event/layer;layer",48,6.5,54.5);
   TH1D* r_fold = new TH1D("r_fold","real phi fold;phi mod 30deg",120,0,0.5236);
