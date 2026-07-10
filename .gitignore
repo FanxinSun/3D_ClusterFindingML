@@ -64,3 +64,13 @@ GroundTruth_Making/cluster_ml_env
 GroundTruth_Making/*.yml
 
 Visualizing/csv/
+
+# Regenerable HepMC derivatives (recipes: hepmc_*/make_*chunks.py + XML seeds;
+# sha256 ledger: island_post/production_manifest.txt). Committed .dat stay tracked.
+hepmc_auau/auau200_lib500.dat
+hepmc_auau/p3_chunk_*.dat
+hepmc_pau/pau_chunk_*.dat
+
+# laser_try host-side binaries (rebuild: laser_try/build.sh)
+laser_try/cm_gen
+laser_try/dl_gen

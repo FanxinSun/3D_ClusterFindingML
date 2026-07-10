@@ -35,3 +35,25 @@ aac47225dc6ccc4bba3fdd81c083827a674ad5ad0369253206c46b72acb081fa  3.9G  frames_p
 30eef96b3d2309c2940c761aa60d1553e24bedf961d0377942dcaf94ad0481f5  4.2G  frames_pau_production_v3.root
 43173f660aaf089c38e8c9a2be8036fd69e94616994b5bdfb537f3a642e556a0  3.8G  frames_pau_production_v31.root
 50aa3e2b0d7239d4d482bed31fd01fdea01bd6e1e5bd70b3a8cc6211425cf86b  4.1G  frames_pau_production_v32.root
+
+# ---------------------------------------------------------------------------
+# HepMC generator inputs (../hepmc_pau, ../hepmc_auau)
+# Provenance policy: pau200.dat + pau200_lib.dat ARE committed to git (primary
+# sources of the pAu production line, like the already-tracked AuAu signal/
+# pileup files). Chunk files are NOT committed — regenerate byte-identically
+# (verified 2026-07-11) with hepmc_pau/make_chunks.py and
+# hepmc_auau/make_p3_chunks.py. auau200_lib500.dat (142M, exceeds GitHub's
+# 100M limit; never consumed by any production) regenerates from lib500.xml
+# (sHIJING, SEED 20260709, 500 events).
+# pau200.dat:     sHIJING pau200.xml  SEED 20260709,  60 events (P1 species test)
+# pau200_lib.dat: sHIJING pau_lib.xml SEED 20260713, 300 events (G4 library source)
+c7111464d2953d1ad581859a73051441d559070ad659d2915227b939b4898868  723K  hepmc_pau/pau200.dat
+e1bdb5693794e1fedefeb67d24b58daac1070c42887cbcf395309b8d57d88ab1  3.7M  hepmc_pau/pau200_lib.dat
+af02196059c8184e9ab765b5e4e7e79aaf8f2357ec2175e127ba6fd1ca08518b  1.8M  hepmc_pau/pau_chunk_a.dat
+3844c90b00fb9977d3de30643c8b62cfc2159ab17f51ae7c91f7d1d9fec0e190  1.9M  hepmc_pau/pau_chunk_b.dat
+2c3e4f595f7ae3cddd90b39807a974bdc3e463f0455100f47c9ab35653337946  958K  hepmc_pau/pau_chunk_c.dat
+380b4b9c84460b3d3b8c99ef7728b208bd1f8131f366b2fb383ffa88187d6d78  992K  hepmc_pau/pau_chunk_d.dat
+4060d225f93f9dde08997f2de1de28c3021d658ed0058128f9eba23dff9af9ec  142M  hepmc_auau/auau200_lib500.dat
+537369ac354a57bc522d8b1f8f9a13c84828ef45f68fe27af366f10ac4f4c0fc  7.4M  hepmc_auau/p3_chunk_a.dat
+162f33855988b705bc643bf9f08a00fde9687870e68911031a98913c1202bbe1  8.7M  hepmc_auau/p3_chunk_b.dat
+467bf83a79e68166eb5b517033255f4010a3e4a545dcf9882e769a51fc79465a   11M  hepmc_auau/p3_chunk_c.dat
