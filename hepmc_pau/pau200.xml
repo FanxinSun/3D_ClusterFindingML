@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<HIJING>
+  <EFRM>200.0</EFRM>
+  <FRAME>CMS</FRAME>
+  <PROJ>P</PROJ>
+  <TARG>A</TARG>
+  <IAP>1</IAP>
+  <IZP>1</IZP>
+  <IAT>197</IAT>
+  <IZT>79</IZT>
+  <BMIN>0.0</BMIN>
+  <BMAX>10.0</BMAX>
+  <N>60</N>
+  <KEEP_SPECTATORS>0</KEEP_SPECTATORS>
+  <OUTPUT>pau200.dat</OUTPUT>
+  <RANDOM>
+    <SEED>20260709</SEED>
+  </RANDOM>
+</HIJING>

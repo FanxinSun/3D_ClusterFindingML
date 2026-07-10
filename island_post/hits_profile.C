@@ -62,3 +62,29 @@ void hits_profile(){
   c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/hit_profile.png");
   printf("saved hit_profile.png\n");
 }
+
+// exam6/pAu replot (2026-07-10): same 6 panels, sim = composed pAu frames v2 (P0-P3 bridge).
+// The original hits_profile() above is kept as the AuAu/exam5-era record (5-bin comb discovery).
+void hits_profile_pau(){
+  gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.05);
+  HP r=profile("/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",false,"real");
+  HP s=profile("digi_frames_production_v32.root",true,"pauv2");
+  auto d2=[&](TH1*a,TH1*b,const char*xt,const char*ti,bool logy,bool scaleEv){
+    if(scaleEv){a->Scale(1./r.nev); b->Scale(1./s.nev);} else {if(a->Integral()>0)a->Scale(1./a->Integral()); if(b->Integral()>0)b->Scale(1./b->Integral());}
+    a->SetLineColor(kBlue+1);a->SetLineWidth(2); b->SetLineColor(kMagenta+1);b->SetLineWidth(2);
+    double mx=std::max(a->GetMaximum(),b->GetMaximum()); a->SetMaximum(logy?mx*2:mx*1.3);
+    if(logy){gPad->SetLogy(); a->SetMinimum(1e-7);} else a->SetMinimum(0);
+    a->SetTitle(ti); a->GetXaxis()->SetTitle(xt); a->GetYaxis()->SetTitle(scaleEv?"per frame":"norm.");
+    a->Draw("HIST"); b->Draw("HIST SAME");
+    TLegend*L=new TLegend(0.45,0.76,0.89,0.89);L->SetBorderSize(0);L->SetFillStyle(0);
+    L->AddEntry(a,"REAL ntp_hit","l"); L->AddEntry(b,"SIM pAu frames v2","l"); L->Draw(); };
+  TCanvas c("c","",1500,950); c.Divide(3,2);
+  c.cd(1); d2((TH1*)r.run->Clone(),(TH1*)s.run->Clone(),"consecutive tbins per pad","time-column run length",true,false);
+  c.cd(2); d2(r.run,s.run,"consecutive tbins per pad","run length (linear zoom)",false,false); r.run->GetXaxis()->SetRangeUser(0.5,10.5);
+  c.cd(3); d2(r.adc,s.adc,"per-hit ADC","per-hit ADC spectrum",true,false);
+  c.cd(4); d2(r.adcz,s.adcz,"per-hit ADC","ADC near threshold (ZS region)",true,false);
+  c.cd(5); d2(r.lay,s.lay,"TPC layer","hits/frame per layer  [occupancy]",true,true);
+  c.cd(6); d2(r.fold,s.fold,"phi mod 30#circ [rad]","sector-gap structure",false,false);
+  c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/hit_profile.png");
+  printf("saved hit_profile.png (pAu v2)\n");
+}

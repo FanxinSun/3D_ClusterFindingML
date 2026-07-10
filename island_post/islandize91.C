@@ -111,7 +111,7 @@ enum
 }  // namespace I91
 using namespace I91;
 
-void islandize91(const char *pixels, const char *out, int isSim, const char *truthsrc = "")
+void islandize91(const char *pixels, const char *out, int isSim, const char *truthsrc = "", const char *sidecar = "")
 {
   if (!loadGeo())
   {
@@ -163,6 +163,40 @@ void islandize91(const char *pixels, const char *out, int isSim, const char *tru
     }
   }
 
+  // --- v2 sidecar: frame-scoped truth from frame_composer (key = event<<32 | newid)
+  const bool SIDE = sidecar && sidecar[0];
+  std::unordered_map<uint64_t, TruthRec> stab;
+  if (SIDE)
+  {
+    TFile *fs = TFile::Open(sidecar);
+    TTree *t = fs ? (TTree *) fs->Get("frame_truth") : nullptr;
+    if (!t)
+    {
+      printf("islandize91: no frame_truth in %s\n", sidecar);
+      return;
+    }
+    float ev, nid, gpt, gfl, gem, gpr;
+    t->SetBranchAddress("event", &ev);
+    t->SetBranchAddress("newid", &nid);
+    t->SetBranchAddress("gpt", &gpt);
+    t->SetBranchAddress("gflavor", &gfl);
+    t->SetBranchAddress("gembed", &gem);
+    t->SetBranchAddress("gprimary", &gpr);
+    Long64_t N = t->GetEntries();
+    for (Long64_t i = 0; i < N; ++i)
+    {
+      t->GetEntry(i);
+      TruthRec r;
+      r.pt = gpt;
+      r.flavor = gfl;
+      r.embed = gem;
+      r.primary = gpr;
+      stab[(((uint64_t) (uint32_t) ev) << 32U) | (uint32_t) (int32_t) nid] = r;
+    }
+    printf("islandize91: sidecar truth %zu (frame,id) entries from %s\n", stab.size(), sidecar);
+    fs->Close();
+  }
+
   // --- read pixels
   TFile *fi = TFile::Open(pixels);
   TTree *h = (TTree *) fi->Get("ntp_hit");
@@ -197,6 +231,10 @@ void islandize91(const char *pixels, const char *out, int isSim, const char *tru
     if (layer < 7 || layer > 54 || adc <= 0)
     {
       continue;
+    }
+    if (!isSim && ((int) side) == 0)
+    {
+      z -= 105.5f;  // real-ntuple side0 z convention quirk (canon.h)
     }
     int sd = ((int) side == 1) ? 1 : 0;
     uint64_t key = ((uint64_t) (uint32_t) event << 24U) | ((uint64_t) (uint32_t) layer << 8U) | (uint64_t) sd;
@@ -318,7 +356,7 @@ void islandize91(const char *pixels, const char *out, int isSim, const char *tru
         phe = std::max(phe, p.pad);
         tlo = std::min(tlo, p.tb);
         the = std::max(the, p.tb);
-        if (p.trk != -9999)
+        if (p.trk != -9999 && !(SIDE && p.trk == 0))
         {
           trkq[p.trk] += p.adc;
         }
@@ -413,14 +451,31 @@ void islandize91(const char *pixels, const char *out, int isSim, const char *tru
       int cls = isSim ? 2 : -1;  // default: noise/unmatched (sim), no-truth (real)
       if (isSim && bestid != -9999)
       {
-        auto it = ttab.find(bestid);
-        if (it != ttab.end())
+        const TruthRec *tr = nullptr;
+        if (SIDE)
         {
-          gpt = it->second.pt;
-          gfl = it->second.flavor;
-          gem = it->second.embed;
-          gpr = it->second.primary;
-          cls = (gpt >= 0 && gpt < PT_LOOP) ? 1 : 0;
+          auto it = stab.find((((uint64_t) (uint32_t) ev) << 32U) | (uint32_t) (int32_t) bestid);
+          if (it != stab.end())
+          {
+            tr = &it->second;
+          }
+        }
+        else
+        {
+          auto it = ttab.find(bestid);
+          if (it != ttab.end())
+          {
+            tr = &it->second;
+          }
+        }
+        if (tr)
+        {
+          gpt = tr->pt;
+          gfl = tr->flavor;
+          gem = tr->embed;
+          gpr = tr->primary;
+          // pt<0 = sentinel (no kinematics known, e.g. injected calibration flash) -> noise
+          cls = (gpt < 0) ? 2 : ((gpt < PT_LOOP) ? 1 : 0);
         }
       }
       if (isSim && cls >= 0 && cls <= 2)

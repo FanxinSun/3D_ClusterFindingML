@@ -53,14 +53,14 @@ svg{width:100%;height:auto;display:block;font-family:"Avenir Next","Helvetica Ne
     </g>
   </g>
 
-  <g class="node st-amber">
+  <g class="node st-done">
     <rect x="336" y="76" width="250" height="110" rx="10"/>
-    <text class="eyebrow" x="352" y="100">STAGE 2</text>
+    <text class="eyebrow" x="352" y="100">STAGE 2 · RETIRED</text>
     <text class="ntitle" x="352" y="123">Pileup mixing</text>
-    <text class="nsub mono" x="352" y="143">HepMCPileupInputMgr</text>
-    <g class="chip ch-amber">
+    <text class="nsub mono" x="352" y="143">→ local frame_composer.C</text>
+    <g class="chip ch-done">
       <rect x="352" y="154" width="196" height="22" rx="11"/>
-      <text x="450.0" y="169" text-anchor="middle">MACHINERY ✓ · PARAMS ← P1</text>
+      <text x="450.0" y="169" text-anchor="middle">DETACHED VIA COMPOSER ✓</text>
     </g>
   </g>
 
@@ -103,8 +103,8 @@ svg{width:100%;height:auto;display:block;font-family:"Avenir Next","Helvetica Ne
   <g class="node st-done">
     <rect x="48" y="452" width="250" height="110" rx="10"/>
     <text class="eyebrow" x="64" y="476">STAGES 4–5</text>
-    <text class="ntitle" x="64" y="499">TPC response + labels</text>
-    <text class="nsub mono" x="64" y="519">tpc_digitize.C · config B3</text>
+    <text class="ntitle" x="64" y="499">TPC response + frames</text>
+    <text class="nsub mono" x="64" y="519">tpc_digitize + frame_composer</text>
     <g class="chip ch-done">
       <rect x="64" y="530" width="204" height="22" rx="11"/>
       <text x="166.0" y="545" text-anchor="middle">P0 ✓ DETACHED + CALIBRATED</text>
@@ -139,8 +139,8 @@ svg{width:100%;height:auto;display:block;font-family:"Avenir Next","Helvetica Ne
     <text class="ntitle" x="928" y="499">ML training</text>
     <text class="nsub mono" x="928" y="519">island91_sim / real.root</text>
     <g class="chip ch-next">
-      <rect x="928" y="530" width="64" height="22" rx="11"/>
-      <text x="960.0" y="545" text-anchor="middle">NEXT</text>
+      <rect x="928" y="530" width="130" height="22" rx="11"/>
+      <text x="993.0" y="545" text-anchor="middle">DATASET READY</text>
     </g>
   </g>
   <g class="rail">
@@ -161,7 +161,7 @@ svg{width:100%;height:auto;display:block;font-family:"Avenir Next","Helvetica Ne
   <path class="flow" d="M 874,507 L 908,507" marker-end="url(#ah)"/>
   <g class="pnote">
     <rect x="48" y="198" width="1114" height="30" rx="8"/>
-    <text x="605" y="217" text-anchor="middle">P3 · STATISTICS BATCH — the next run of THIS lane: executes P1&#8217;s rate/window spec · 100+ events · parallel via run_one.sh</text>
+    <text x="605" y="217" text-anchor="middle">P3 · DELIVERED — 250 labeled p+Au frames @ 240 kHz → island91_frames_production.root (5.57M clusters, 48/51 track/looper)</text>
   </g>
   <line class="plink" x1="461" y1="562" x2="461" y2="572"/>
   <g class="pnote">

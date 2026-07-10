@@ -1,0 +1,37 @@
+# PRODUCTION MANIFEST — frame-production version ledger (2026-07-11)
+# Data files are NOT in git (33 GB, *.root ignored by design). This manifest IS.
+# Regeneration: deterministic (fixed seeds) via run_production.sh configured per the
+# table below + tpc_digitize.C CLOUD constant; ~22 min/version (transport+produce).
+#
+# version | cloud | gain | sigma_pad | tail(f/tau) | rate/spec        | flash                                   | composer seeds
+# v1      | 0.06  | 0.70 | 0         | -           | 240 flat         | none                                    | 2026080i
+# v2      | 0.06  | 0.70 | 0         | -           | 390 flat         | none                                    | 2026090i
+# v2.1    | 0.06  | 0.70 | 0         | -           | 390 flat         | unweighted lib, uniform I, spec knee-A, jitter 1.5 | 2026090i
+# v2.2    | 0.06  | 0.70 | 0         | -           | 390 flat         | weighted(1.25/0.40)+disp(sd1.1,pd2.0)+blur0.75, knee-B | 2026090i
+# v3      | 0.12  | 0.74 | 0         | -           | RSPEC 153-283    | as v2.2                                 | 2026091i
+# v3.1    | 0.12  | 0.74 | 0         | 0.025/7 (PRE-CLAMP BUG: exact regen impossible from HEAD; artifact+backup only) | RSPEC 142-261 | as v2.2 | 2026091i
+# v3.2    | 0.12  | 0.87 | 0.55      | 0.021/7+clamp| RSPEC 154-283   | as v2.2                                 | 2026091i
+# knee-A spec: 0.0255..0.0297 x10 + 3.0:0.25 ; knee-B: 0.008..0.037 x10 + 2.2:0.25
+#
+# sha256  size  file
+22cc5c9bbed2deb6a686096a7b804b6b2a1ff5796d51d35700f33e261fd69e77  321M  digi_frames_production.root
+c787aca4f53f7f93d8e13ce489b702ea01f4396fa12f49dbf0f286d810bb73c8  545M  digi_frames_production_v2.root
+88721a6f27d20f3685085fa28c81aeec670fc53b4715ab04c3c504f3e67cac62  561M  digi_frames_production_v21.root
+901e9ae44e9e82de5494aae624edf5d7613ec17356f45d49d210bb8bf2eb5576  535M  digi_frames_production_v22.root
+19b11b9a51b156482d7cec7052e6cf159d94e3bda0c74d6366925441ed570f1f  429M  digi_frames_production_v3.root
+4e9a6c7dac8cd0630915e9aaa3a0c20750089d89dfb468e40fa857e0ff52fd6f  496M  digi_frames_production_v31.root
+bbbab16b6fc64e2e2a49f22bf8e72919531991719120f2b6e2e5ec8e64d6368f  531M  digi_frames_production_v32.root
+e3d2cc438d515bab6794c956711af13793b19c403f73e4f938e8481fdef870d1  295M  island91_frames_production.root
+eaaca82c2dba1c30e95e41681d8a0d7440d5d8a61904069773483e76088f24cd  504M  island91_frames_production_v2.root
+a3450ef669a3a4419e986df1632bf7e600ae6bf9959c0881dec8319e48405bc8  522M  island91_frames_production_v21.root
+00c8ce92c2651b9aea971295cd290c5560a63cf83302efecee4401dc5c48204e  496M  island91_frames_production_v22.root
+c3d700538d6b7f96a28fb20894b4139df1a9bf1bf529bc9a9107f36ffc909450  337M  island91_frames_production_v3.root
+f636d106d6ed82cab79a6ce9e56f0ee587135230e90ed03c9438600d285139cc  327M  island91_frames_production_v31.root
+173fb1afba89632b9f80b8c636dbb3719550b3548f2eaa81c1799c4fe35a0b7d  354M  island91_frames_production_v32.root
+00d654ad1e2709ffe9029c8724d2aee44fa8c33b0b86dda668b2a4f2014b3282  2.3G  frames_pau_production.root
+aac47225dc6ccc4bba3fdd81c083827a674ad5ad0369253206c46b72acb081fa  3.9G  frames_pau_production_v2.root
+1c7b490635128a6e48bb0e71e3d98d58b8a23d5fc9a1a1b26ae206e99c5f4d19  4.4G  frames_pau_production_v21.root
+9b9399c9eaceb79e921de22acb066b3533f6fea87b0fff82b313f4579d4f9c6c  4.5G  frames_pau_production_v22.root
+30eef96b3d2309c2940c761aa60d1553e24bedf961d0377942dcaf94ad0481f5  4.2G  frames_pau_production_v3.root
+43173f660aaf089c38e8c9a2be8036fd69e94616994b5bdfb537f3a642e556a0  3.8G  frames_pau_production_v31.root
+50aa3e2b0d7239d4d482bed31fd01fdea01bd6e1e5bd70b3a8cc6211425cf86b  4.1G  frames_pau_production_v32.root

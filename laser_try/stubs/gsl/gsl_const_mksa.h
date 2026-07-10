@@ -1,0 +1,2 @@
+#pragma once
+#define GSL_CONST_MKSA_SPEED_OF_LIGHT (2.99792458e8)

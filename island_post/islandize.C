@@ -69,7 +69,9 @@ void island(const char *in, const char *out, bool isSim)
     }
     int sd = ((int) side == 1) ? 1 : 0;
     uint64_t key = ((uint64_t) (uint32_t) event << 24U) | ((uint64_t) (uint32_t) layer << 8U) | (uint64_t) sd;
-    groups[key].push_back({(int) phibin, (int) tb, adc, phi, z});
+    // real-ntuple convention quirk (canon.h): side0 z = v*t, offset +105.5 vs physical
+    float zc = (!isSim && ((int) side) == 0) ? z - 105.5f : z;
+    groups[key].push_back({(int) phibin, (int) tb, adc, phi, zc});
     if (i % 5000000 == 0)
     {
       printf("  read %lld/%lld hits (%zu groups)\n", i, N, groups.size());

@@ -41,7 +41,7 @@ const double TS = 45.0;          // ns EFFECTIVE peaking time — day-2 calibrat
                                  // 45 shortens the Gamma4 tail to match real runs at low thr)
 const double EPG = 28.43e6;      // electrons per GeV
 const double GAIN = 1400.;       // GEM mean gain (calibrate via gaincal in stage B)
-const double CLOUD = 0.06;       // cm GEM cloud sigma (day-2.2: 0.04 master default -> 0.06 calibrated on island phisize)
+const double CLOUD = 0.12;
 const double DIFF_T = 0.005313;  // cm/sqrt(cm)
 const double DIFF_L = 0.014596;  // cm/sqrt(cm)
 const double N_SIGMA = 5;
@@ -365,7 +365,8 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2)
 void tpc_readout(const char *rawin, const char *out,
                  double gaincal = 1.0, double thr_adu = 15.0,
                  int ret_pre = 0, int ret_post = 0, int seed = 4711,
-                 const char *deadmap = "", double thr2_adu = -1.0, double p_keep = 1.0, double sigma_pad = 0.0, double p2 = 0.0)
+                 const char *deadmap = "", double thr2_adu = -1.0, double p_keep = 1.0, double sigma_pad = 0.0, double p2 = 0.0,
+                 double tail_frac = 0.0, double tail_tau = 4.0)
 {
   loadGeo();
   if (!geo_ok)
@@ -481,6 +482,31 @@ void tpc_readout(const char *rawin, const char *out,
     // ZS + SAMPA-DSP retention: keep above-threshold samples plus ret_pre/ret_post
     // CONSECUTIVE-tbin neighbours of any above-threshold sample
     const double t2 = (thr2_adu >= 0) ? thr2_adu : thr_adu;  // two-tier ZS: neighbours kept if >= thr2
+    // B4: SAMPA/ion tail — big pulses induce a decaying tail that re-crosses threshold,
+    // elongating high-charge clusters in TIME (real zsize grows with adc; sim did not).
+    if (tail_frac > 0)
+    {
+      double state = 0.;
+      int prevtb = -1000000;
+      for (size_t k = 0; k < adu.size(); ++k)
+      {
+        int tb = v[i + k].tb;
+        if (prevtb > -1000000)
+        {
+          state *= std::exp(-(tb - prevtb) / tail_tau);
+        }
+        adu[k] += state;
+        // ADC saturates AFTER the induced tail adds at the input: re-clamp to the
+        // hardware ceiling (1023 raw = 1023-PEDESTAL post-subtraction) — without this,
+        // tail-augmented pixels exceeded the physical maximum (caught by user zoom).
+        if (adu[k] > 1023.0 - CFG::PEDESTAL)
+        {
+          adu[k] = 1023.0 - CFG::PEDESTAL;
+        }
+        state += adu[k] * tail_frac;
+        prevtb = tb;
+      }
+    }
     for (size_t k = 0; k < adu.size(); ++k)
     {
       if (adu[k] >= thr_adu)
