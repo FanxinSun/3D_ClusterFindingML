@@ -23,6 +23,7 @@ void b42_metrics(const char *fn = "b42_tmp.root", const char *tag = "cfg")
   t->SetBranchAddress("zelem", &ze);
   t->SetBranchAddress("adc", &adc);
   TH1D hr("hr", "", 400, 0.5, 400.5), ha("ha", "", 1101, -0.5, 1100.5);
+  double rn[3] = {0, 0, 0}, radc[3] = {0, 0, 0};
   std::vector<std::pair<long long, int>> buf;
   buf.reserve(3000000);
   int curev = -1;
@@ -52,12 +53,19 @@ void b42_metrics(const char *fn = "b42_tmp.root", const char *tag = "cfg")
   {
     t->GetEntry(i);
     ha.Fill(adc);
+    int rg = lay < 23 ? 0 : (lay < 39 ? 1 : 2);
+    rn[rg] += 1;
+    radc[rg] += adc;
     if ((int) ev != curev) { flush(); curev = (int) ev; nev += 1; }
     long long key = ((long long) (ze > 0.5)) * 100000000LL + (long long) lay * 1000000LL + (long long) pb;
     buf.emplace_back(key, (int) tb);
   }
   flush();
   double rt = hr.Integral(), at = ha.Integral();
+  double rtot = rn[0] + rn[1] + rn[2];
+  printf("B43REGION %-14s shares R1 %.3f R2 %.3f R3 %.3f | pixm R1 %.1f R2 %.1f R3 %.1f\n",
+         tag, rn[0] / rtot, rn[1] / rtot, rn[2] / rtot,
+         radc[0] / rn[0], radc[1] / rn[1], radc[2] / rn[2]);
   printf("B42METRIC %-14s kept/fr %7.0f | pixmean %6.2f | sub10 %.2e | sh/hi %.3f | run mean %.3f P5 %.2e P10 %.2e P20 %.2e P30 %.2e\n",
          tag, at / nev, ha.GetMean(),
          ha.Integral(ha.FindBin(1), ha.FindBin(10)) / at,

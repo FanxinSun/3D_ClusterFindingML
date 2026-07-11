@@ -78,3 +78,24 @@ af02196059c8184e9ab765b5e4e7e79aaf8f2357ec2175e127ba6fd1ca08518b  1.8M  hepmc_pa
 6973d88bd9a6fd69635027b0c39da2c484696bee38a61f39625de7bb10a25954  358M  island91_frames_production_v33.root
 4621c2386914e815ec48c329917e1dc0ef055fb957575c707c2e8e5be33ddeda  176M  island_frames_v33.root
 42feaa3788c43542891d9bff4581e95977cd135046f0f8f9fae3f835217f2559  173M  island_frames_v32.root
+
+# ---------------------------------------------------------------------------
+# v3.4 (B4.3, 2026-07-12): READOUT-ONLY re-production off the frozen v3.2 frames
+# (no frames_*_v34 file). REAL region-dependent deterministic ZS from CDB payload
+# TpcADUThresholds10R1_20R23 (run 79507 per-region cliffs confirmed: R1 keeps
+# adc>=11, R2/R3 adc>=21) — B3's stochastic band/retention was an effective
+# imitation of R1(thr10) stacked on R23(thr20) and is OFF in regional mode.
+# Config: gaincal 0.93 (R2-anchored) x region gains gR1 1.24 / gR3 1.06 (CAEN
+# stand-in = B4.4), p2 7e-5 standalone trace, B4.2 disturbance retained with
+# emission floor = region threshold and p_trig 0.26.
+# tpc_readout(...,0.93,20.0,1,1,4711,DM,11.0,0.39,0.55,7e-5,0.021,7.0,
+#             36.0,70.0,11.0,940.0,2,0.26,10.0,1.24,1.06) via v34_production.sh.
+# Full-stats acceptance: pixel region shares -0.8/-3.4/+5.6% (v3.3: -28/+12/+21),
+# per-region pixmeans -3.5/+0.9/-1.2%, global pixmean 98.1 vs 99.2; island zsize
+# P13/P20/P30 x1.05/1.03/1.03, <zsize> -1.6%. DECLARED (v3.5 agenda): <phisize>
+# +4.9% + island-level R1 share -15% (transverse/CLOUD recalib, stage A), flash
+# window x1.21 (R1 flash weight refit under thr-11, composer), sh/hi +19% (R1
+# spectral shape, CAEN B4.4), kept/fr +5%.
+d290d04f5a89ead6847aa57f7913b54a3011323e7813c04160c02b7c2dcf7a22  586M  digi_frames_production_v34.root
+3879a6da2ed3bd00802c0c58d11cf2f6b4c0eb650ac5c6d7d1fb85ecbd0cd57b  361M  island91_frames_production_v34.root
+c42996fd89c5ea1ccfaef1ecaa6a00a62b2a822bb1171da3d6a1b7e564c3448d  177M  island_frames_v34.root

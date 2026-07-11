@@ -13,8 +13,8 @@
 #include "canon.h"
 
 void residuals_evidence(const char *realisl = "island_real.root",
-                        const char *simisl = "island_frames_v33.root",
-                        const char *tag = "SIM v3.3 (B4.2)")
+                        const char *simisl = "island_frames_v34.root",
+                        const char *tag = "SIM v3.4 (B4.3)")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);

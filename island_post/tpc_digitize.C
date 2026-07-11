@@ -367,7 +367,8 @@ void tpc_readout(const char *rawin, const char *out,
                  int ret_pre = 0, int ret_post = 0, int seed = 4711,
                  const char *deadmap = "", double thr2_adu = -1.0, double p_keep = 1.0, double sigma_pad = 0.0, double p2 = 0.0,
                  double tail_frac = 0.0, double tail_tau = 4.0,
-                 double tail2_frac = 0.0, double tail2_tau = 60.0, double tail2_floor = 8.0, double tail2_q0 = 0.0, int tail2_emitonly = 0, double tail2_ptrig = 1.0)
+                 double tail2_frac = 0.0, double tail2_tau = 60.0, double tail2_floor = 8.0, double tail2_q0 = 0.0, int tail2_emitonly = 0, double tail2_ptrig = 1.0,
+                 double thr_r1 = -1.0, double gain_r1 = -1.0, double gain_r3 = -1.0)
 {
   loadGeo();
   if (!geo_ok)
@@ -463,6 +464,21 @@ void tpc_readout(const char *rawin, const char *out,
     }
     // electronics for this pad column
     adu.assign(j - i, 0.);
+    // B4.3: REAL region-dependent deterministic ZS (CDB payload TpcADUThresholds10R1_20R23;
+    // confirmed by run 79507 per-region cliffs: R1 keeps adc>=11, R2/R3 keep adc>=21).
+    // thr_r1 >= 0 enables it: thr_adu is then the R2/R3 payload value (20) and the whole
+    // band/retention machinery (thr2/p_keep/ret_pre/ret_post) is DISABLED — the global
+    // "band 11-19 + step at 20" of B3 was purely R1(thr10) stacked on R23(thr20).
+    // p2 becomes a STANDALONE sub-threshold trace leak (real level ~1e-4).
+    const int colL = (int) ((v[i].col >> 32U) & 0xFF);
+    const bool regZS = (thr_r1 >= 0);
+    const double thr_eff = regZS ? ((colL < 23 ? thr_r1 : thr_adu) + 1.0) : thr_adu;
+    // B4.3 region gain factors (phenomenological; coarse stand-in for the CAEN
+    // per-module corrections = B4.4): the real per-region pixel means demand
+    // R1 ~1.2x, R3 ~1.06x relative to the R2-anchored global gaincal.
+    double greg = 1.0;
+    if (gain_r1 > 0 && colL < 23) greg = gain_r1;
+    if (gain_r3 > 0 && colL >= 39) greg = gain_r3;
     double gpad = 1.0;
     if (sigma_pad > 0)
     {
@@ -476,7 +492,7 @@ void tpc_readout(const char *rawin, const char *out,
     }
     for (size_t k = i; k < j; ++k)
     {
-      double a = v[k].q * gpad * gaincal * CFG::MV_PER_E * CFG::ADU_PER_MV + CFG::PEDESTAL + rng.Gaus(0., CFG::NOISE_ADU);
+      double a = v[k].q * gpad * greg * gaincal * CFG::MV_PER_E * CFG::ADU_PER_MV + CFG::PEDESTAL + rng.Gaus(0., CFG::NOISE_ADU);
       if (a > 1023)
       {
         a = 1023;  // 10-bit saturation BEFORE pedestal subtraction
@@ -518,7 +534,7 @@ void tpc_readout(const char *rawin, const char *out,
       // emission floor: real late tails sit JUST above T1 (measured run 79507 long-run
       // profile: 22-44 ADU plateau); emitting below T1 inflates medium runs through the
       // retention band (scan round 1), so the physical floor is ~T1.
-      const double EMIT_FLOOR = tail2_floor;
+      const double EMIT_FLOOR = regZS ? thr_eff : tail2_floor;  // chains die at the region threshold
       // SLOW COMPONENT (B4.2, scan round 4+): FIXED-DURATION LINEAR ramp, per ALICE's
       // measured GEM slow ion component ("nearly linear — ions uniformly produced in the
       // induction gap", arXiv:2304.03881): each source pixel with a > tail2_q0 launches
@@ -660,9 +676,13 @@ void tpc_readout(const char *rawin, const char *out,
     keep.assign(col.size(), 0);
     for (size_t k = 0; k < col.size(); ++k)
     {
-      if (col[k].a >= thr_adu)
+      if (col[k].a >= thr_eff)
       {
         keep[k] = 1;
+        if (regZS)
+        {
+          continue;  // deterministic region ZS: no neighbour retention, no band
+        }
         for (int d = 1; d <= ret_pre; ++d)
         {
           if (k >= (size_t) d && col[k].tb - col[k - d].tb == d)
@@ -691,6 +711,10 @@ void tpc_readout(const char *rawin, const char *out,
             }
           }
         }
+      }
+      else if (regZS && col[k].a >= 1 && p2 > 0 && rng.Uniform() < p2)
+      {
+        keep[k] = 1;  // regional mode: standalone sub-threshold trace leak
       }
     }
     {

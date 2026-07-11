@@ -10,8 +10,8 @@
 // no saturation-triggered slow disturbance) kept as the reference curve.
 #include "canon.h"
 
-void zs_shapes(const char *v33 = "digi_frames_production_v33.root",
-               const char *vref = "digi_frames_production_v32.root")
+void zs_shapes(const char *vcur = "digi_frames_production_v34.root",
+               const char *vref = "digi_frames_production_v33.root")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
@@ -23,7 +23,7 @@ void zs_shapes(const char *v33 = "digi_frames_production_v33.root",
   if (!ra || !hr) return;
 
   // SIM: full-spectrum integer-bin fills (identical bin width 1 -> shape-comparable).
-  TFile *f1 = TFile::Open(v33);
+  TFile *f1 = TFile::Open(vcur);
   TTree *t1 = (TTree *) f1->Get("ntp_hit");
   TH1D *h1 = new TH1D("h_v33", "", ra->GetNbinsX(), ra->GetXaxis()->GetXmin(), ra->GetXaxis()->GetXmax());
   t1->Draw("adc>>h_v33", "", "goff");
@@ -77,9 +77,9 @@ void zs_shapes(const char *v33 = "digi_frames_production_v33.root",
   L.SetBorderSize(0);
   L.SetFillStyle(0);
   L.AddEntry(hr, "REAL", "l");
-  L.AddEntry(h1, "SIM v3.3 (B4.2 final)", "l");
-  L.AddEntry(h2, "SIM v3.2 (B4.1, reference)", "l");
+  L.AddEntry(h1, "SIM v3.4 (B4.3: real region ZS)", "l");
+  L.AddEntry(h2, "SIM v3.3 (B4.2, reference)", "l");
   L.Draw();
   c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/zs_shapes.png");
-  printf("saved zs_shapes.png (v3.3 B4.2 vs v3.2 vs real)\n");
+  printf("saved zs_shapes.png (v3.4 vs v3.3 vs real)\n");
 }

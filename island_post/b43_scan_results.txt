@@ -1,0 +1,40 @@
+B43REGION R0_baseline_v33 shares R1 0.261 R2 0.392 R3 0.347 | pixm R1 88.2 R2 93.0 R3 91.3
+B42METRIC R0_baseline_v33 kept/fr  249077 | pixmean  91.15 | sub10 1.96e-04 | sh/hi 0.203 | run mean 2.983 P5 8.42e-02 P10 1.89e-02 P20 8.70e-03 P30 5.04e-03
+B43REGION R1_regZS_g0.87 shares R1 0.335 R2 0.354 R3 0.312 | pixm R1 72.6 R2 102.1 R3 100.3
+B42METRIC R1_regZS_g0.87 kept/fr  246754 | pixmean  91.66 | sub10 1.61e-03 | sh/hi 0.257 | run mean 2.823 P5 7.62e-02 P10 1.92e-02 P20 7.75e-03 P30 4.58e-03
+B43REGION R2_regZS_g0.92 shares R1 0.334 R2 0.354 R3 0.312 | pixm R1 74.4 R2 104.3 R3 102.4
+B42METRIC R2_regZS_g0.92 kept/fr  254997 | pixmean  93.75 | sub10 1.57e-03 | sh/hi 0.257 | run mean 2.875 P5 7.96e-02 P10 2.01e-02 P20 8.23e-03 P30 4.92e-03
+B43REGION R3_regZS_g0.97 shares R1 0.333 R2 0.354 R3 0.313 | pixm R1 76.1 R2 106.7 R3 104.6
+B42METRIC R3_regZS_g0.97 kept/fr  262510 | pixmean  95.86 | sub10 1.53e-03 | sh/hi 0.258 | run mean 2.922 P5 8.27e-02 P10 2.10e-02 P20 8.61e-03 P30 5.14e-03
+B43REGION R4_regZS_g1.02 shares R1 0.333 R2 0.354 R3 0.313 | pixm R1 77.8 R2 108.9 R3 106.7
+B42METRIC R4_regZS_g1.02 kept/fr  269962 | pixmean  97.87 | sub10 1.48e-03 | sh/hi 0.259 | run mean 2.970 P5 8.59e-02 P10 2.18e-02 P20 8.99e-03 P30 5.46e-03
+B43REGION R5_gR1_1.12_gR3_1.03 shares R1 0.346 R2 0.344 R3 0.310 | pixm R1 78.3 R2 104.7 R3 103.9
+B42METRIC R5_gR1_1.12_gR3_1.03 kept/fr  264109 | pixmean  95.33 | sub10 2.12e-04 | sh/hi 0.264 | run mean 2.951 P5 8.44e-02 P10 2.17e-02 P20 9.13e-03 P30 5.57e-03
+B43REGION R5_gR1_1.18_gR3_1.03 shares R1 0.352 R2 0.341 R3 0.307 | pixm R1 80.0 R2 104.8 R3 103.9
+B42METRIC R5_gR1_1.18_gR3_1.03 kept/fr  266580 | pixmean  95.81 | sub10 2.07e-04 | sh/hi 0.269 | run mean 2.970 P5 8.60e-02 P10 2.22e-02 P20 9.24e-03 P30 5.70e-03
+B43REGION R5_gR1_1.24_gR3_1.03 shares R1 0.359 R2 0.338 R3 0.304 | pixm R1 81.6 R2 104.8 R3 104.0
+B42METRIC R5_gR1_1.24_gR3_1.03 kept/fr  269171 | pixmean  96.24 | sub10 2.05e-04 | sh/hi 0.274 | run mean 2.991 P5 8.76e-02 P10 2.27e-02 P20 9.42e-03 P30 5.84e-03
+B43REGION R5_gR1_1.12_gR3_1.06 shares R1 0.344 R2 0.343 R3 0.313 | pixm R1 78.3 R2 104.7 R3 105.1
+B42METRIC R5_gR1_1.12_gR3_1.06 kept/fr  265459 | pixmean  95.76 | sub10 2.03e-04 | sh/hi 0.263 | run mean 2.959 P5 8.46e-02 P10 2.18e-02 P20 9.20e-03 P30 5.59e-03
+B43REGION R5_gR1_1.18_gR3_1.06 shares R1 0.350 R2 0.339 R3 0.310 | pixm R1 80.0 R2 104.7 R3 105.1
+B42METRIC R5_gR1_1.18_gR3_1.06 kept/fr  267974 | pixmean  96.21 | sub10 2.10e-04 | sh/hi 0.268 | run mean 2.978 P5 8.63e-02 P10 2.23e-02 P20 9.35e-03 P30 5.73e-03
+B43REGION R5_gR1_1.24_gR3_1.06 shares R1 0.356 R2 0.336 R3 0.307 | pixm R1 81.7 R2 104.7 R3 105.1
+B42METRIC R5_gR1_1.24_gR3_1.06 kept/fr  270605 | pixmean  96.63 | sub10 2.11e-04 | sh/hi 0.272 | run mean 2.999 P5 8.80e-02 P10 2.29e-02 P20 9.51e-03 P30 5.85e-03
+B43REGION R6_pt0.30_sp0.55 shares R1 0.356 R2 0.337 R3 0.307 | pixm R1 82.3 R2 105.4 R3 105.9
+B42METRIC R6_pt0.30_sp0.55 kept/fr  267703 | pixmean  97.34 | sub10 2.04e-04 | sh/hi 0.274 | run mean 2.969 P5 8.74e-02 P10 2.22e-02 P20 8.65e-03 P30 5.29e-03
+B43ISLAND R6_pt0.30_sp0.55 isl/fr 24684 | <zsize> 4.22 | P13 3.02e-02 P20 1.97e-02 P30 1.34e-02 | <phisize> 3.57
+B43REGION R6_pt0.26_sp0.55 shares R1 0.356 R2 0.337 R3 0.307 | pixm R1 82.7 R2 105.8 R3 106.4
+B42METRIC R6_pt0.26_sp0.55 kept/fr  265942 | pixmean  97.77 | sub10 2.10e-04 | sh/hi 0.275 | run mean 2.951 P5 8.70e-02 P10 2.19e-02 P20 8.11e-03 P30 4.94e-03
+B43ISLAND R6_pt0.26_sp0.55 isl/fr 24659 | <zsize> 4.18 | P13 2.92e-02 P20 1.86e-02 P30 1.26e-02 | <phisize> 3.57
+B43REGION R6_pt0.30_sp0.50 shares R1 0.355 R2 0.337 R3 0.308 | pixm R1 82.1 R2 104.7 R3 105.0
+B42METRIC R6_pt0.30_sp0.50 kept/fr  270003 | pixmean  96.78 | sub10 2.03e-04 | sh/hi 0.272 | run mean 2.968 P5 8.67e-02 P10 2.18e-02 P20 8.58e-03 P30 5.24e-03
+B43ISLAND R6_pt0.30_sp0.50 isl/fr 24549 | <zsize> 4.21 | P13 2.96e-02 P20 1.97e-02 P30 1.34e-02 | <phisize> 3.62
+B43REGION R6_pt0.26_sp0.50 shares R1 0.355 R2 0.338 R3 0.308 | pixm R1 82.5 R2 105.1 R3 105.6
+B42METRIC R6_pt0.26_sp0.50 kept/fr  268108 | pixmean  97.24 | sub10 2.05e-04 | sh/hi 0.273 | run mean 2.949 P5 8.64e-02 P10 2.15e-02 P20 7.97e-03 P30 4.84e-03
+B43ISLAND R6_pt0.26_sp0.50 isl/fr 24521 | <zsize> 4.17 | P13 2.87e-02 P20 1.83e-02 P30 1.24e-02 | <phisize> 3.62
+B43REGION R6_pt0.30_sp0.45 shares R1 0.354 R2 0.338 R3 0.309 | pixm R1 81.9 R2 104.0 R3 104.4
+B42METRIC R6_pt0.30_sp0.45 kept/fr  271845 | pixmean  96.32 | sub10 1.95e-04 | sh/hi 0.270 | run mean 2.966 P5 8.62e-02 P10 2.16e-02 P20 8.41e-03 P30 5.11e-03
+B43ISLAND R6_pt0.30_sp0.45 isl/fr 24432 | <zsize> 4.20 | P13 2.92e-02 P20 1.92e-02 P30 1.31e-02 | <phisize> 3.67
+B43REGION R6_pt0.26_sp0.45 shares R1 0.353 R2 0.338 R3 0.309 | pixm R1 82.4 R2 104.4 R3 104.9
+B42METRIC R6_pt0.26_sp0.45 kept/fr  269965 | pixmean  96.78 | sub10 2.09e-04 | sh/hi 0.271 | run mean 2.947 P5 8.57e-02 P10 2.11e-02 P20 7.86e-03 P30 4.75e-03
+B43ISLAND R6_pt0.26_sp0.45 isl/fr 24408 | <zsize> 4.15 | P13 2.81e-02 P20 1.80e-02 P30 1.21e-02 | <phisize> 3.67
