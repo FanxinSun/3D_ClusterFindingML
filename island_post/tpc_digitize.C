@@ -366,7 +366,8 @@ void tpc_readout(const char *rawin, const char *out,
                  double gaincal = 1.0, double thr_adu = 15.0,
                  int ret_pre = 0, int ret_post = 0, int seed = 4711,
                  const char *deadmap = "", double thr2_adu = -1.0, double p_keep = 1.0, double sigma_pad = 0.0, double p2 = 0.0,
-                 double tail_frac = 0.0, double tail_tau = 4.0)
+                 double tail_frac = 0.0, double tail_tau = 4.0,
+                 double tail2_frac = 0.0, double tail2_tau = 60.0, double tail2_floor = 8.0, double tail2_q0 = 0.0, int tail2_emitonly = 0, double tail2_ptrig = 1.0)
 {
   loadGeo();
   if (!geo_ok)
@@ -462,11 +463,15 @@ void tpc_readout(const char *rawin, const char *out,
     }
     // electronics for this pad column
     adu.assign(j - i, 0.);
-    keep.assign(j - i, 0);
     double gpad = 1.0;
     if (sigma_pad > 0)
     {
-      TRandom3 gr((UInt_t) (v[i].col & 0xFFFFFFFFFFULL));  // static per (layer,side,pad)
+      // NB seed hash: (UInt_t) truncation makes the gain static per (side,pad) shared
+      // across layers (documented quirk, frozen for v3.2 reproducibility), and seed 0
+      // (side 0, pad 0) would be UUID-seeded = NONDETERMINISTIC in TRandom3 - remap it.
+      UInt_t gseed = (UInt_t) (v[i].col & 0xFFFFFFFFFFULL);
+      if (gseed == 0) gseed = 0x9E3779B9;
+      TRandom3 gr(gseed);
       gpad = std::exp(gr.Gaus(0., sigma_pad) - 0.5 * sigma_pad * sigma_pad);
     }
     for (size_t k = i; k < j; ++k)
@@ -484,43 +489,189 @@ void tpc_readout(const char *rawin, const char *out,
     const double t2 = (thr2_adu >= 0) ? thr2_adu : thr_adu;  // two-tier ZS: neighbours kept if >= thr2
     // B4: SAMPA/ion tail — big pulses induce a decaying tail that re-crosses threshold,
     // elongating high-charge clusters in TIME (real zsize grows with adc; sim did not).
-    if (tail_frac > 0)
+    // B4.2 adds a SLOW second exponential (ion tail proper): recursive one-pole
+    // accumulator per component, the same architecture ALICE's GEM-TPC online ion-tail
+    // filter corrects for (arXiv:2304.03881: exponential tail, ~0.7% of peak but ~9% of
+    // signal integral; recursive Q_corr weighted by k2=e^-slope). The stock sPHENIX sim
+    // truncates the shaper at 400 ns (PHG4TpcPadPlaneReadout, 8 clocks) so it has NO
+    // long-time response at all — this block is the detached-stage stand-in, amplitudes
+    // tuned to run 79507's per-pad run-length tail (P(run>=20), P(run>=30)).
+    // The tail rides on EVERY clock sample, not just tbins where transported charge
+    // exists — so with the slow component on, synthetic samples are EMITTED into empty
+    // tbins while the state is still retainable (>= EMIT_FLOOR, just below T2=11).
+    // Synthetic samples get baseline noise, carry the source pixel's track id (the tail
+    // belongs to its source cluster for truth purposes), respect the ADC ceiling and the
+    // 971-tbin frame, and do NOT feed the state back (tail-of-tail is second order; this
+    // also guarantees stability for any tail2_frac). With tail2_frac=0 this reduces
+    // bit-for-bit to the B4.1 behavior.
+    const double CEIL_ADU = 1023.0 - CFG::PEDESTAL;
+    struct Px
     {
-      double state = 0.;
+      int tb;
+      double a;
+      float trk;
+    };
+    std::vector<Px> col;
+    col.reserve(adu.size() + 64);
+    if (tail_frac > 0 || tail2_frac > 0)
+    {
+      // emission floor: real late tails sit JUST above T1 (measured run 79507 long-run
+      // profile: 22-44 ADU plateau); emitting below T1 inflates medium runs through the
+      // retention band (scan round 1), so the physical floor is ~T1.
+      const double EMIT_FLOOR = tail2_floor;
+      // SLOW COMPONENT (B4.2, scan round 4+): FIXED-DURATION LINEAR ramp, per ALICE's
+      // measured GEM slow ion component ("nearly linear — ions uniformly produced in the
+      // induction gap", arXiv:2304.03881): each source pixel with a > tail2_q0 launches
+      // a tail of amplitude tail2_frac*(a-q0) that ramps linearly to zero over tail2_tau
+      // (reinterpreted: DURATION in tbins). Fixed duration decouples trigger RATE from
+      // run LENGTH — an exponential accumulator provably cannot fit both (rounds 1-3:
+      // P10/P20 x2 overshoot at any setting reaching P30).
+      const double T2LEN = tail2_tau;
+      double s1 = 0.;
+      struct Src
+      {
+        int tb;
+        double amp, T;
+      };
+      std::vector<Src> src;  // active slow sources
+      auto slow_at = [&](int t) {
+        double s = 0.;
+        size_t w = 0;
+        for (size_t m = 0; m < src.size(); ++m)
+        {
+          double dt = t - src[m].tb;
+          if (dt > src[m].T)
+          {
+            continue;  // expired source: compact away
+          }
+          src[w++] = src[m];
+          if (dt > 0)
+          {
+            s += src[m].amp * (1.0 - dt / src[m].T);
+          }
+        }
+        src.resize(w);
+        return s;
+      };
       int prevtb = -1000000;
+      float lasttrk = -1.f;
       for (size_t k = 0; k < adu.size(); ++k)
       {
         int tb = v[i + k].tb;
         if (prevtb > -1000000)
         {
-          state *= std::exp(-(tb - prevtb) / tail_tau);
+          int at = prevtb;  // time the fast state is currently valid at
+          for (int gt = prevtb + 1; gt < tb && tail2_frac > 0; ++gt)
+          {
+            s1 *= std::exp(-1.0 / tail_tau);
+            at = gt;
+            double val = s1 + slow_at(gt);
+            if (val < EMIT_FLOOR || gt > 970)
+            {
+              break;  // slow part only decreases inside a gap -> safe to stop
+            }
+            double a = std::round(val + rng.Gaus(0., CFG::NOISE_ADU));
+            if (a > CEIL_ADU)
+            {
+              a = CEIL_ADU;
+            }
+            if (a >= 1)
+            {
+              col.push_back({gt, a, lasttrk});
+            }
+          }
+          if (at < tb)
+          {
+            s1 *= std::exp(-(double) (tb - at) / tail_tau);
+          }
         }
-        adu[k] += state;
+        // emit-only mode: the slow tail materializes ONLY as synthetic samples in
+        // empty tbins (run-out chains) and never boosts real charged samples — scans
+        // 1-4 showed any additive slow tail GLUES the dense sub-threshold raw
+        // occupancy around medium clusters into 10-20 tbin runs real data lacks.
+        double a = adu[k] + s1 + (tail2_emitonly ? 0. : slow_at(tb));
         // ADC saturates AFTER the induced tail adds at the input: re-clamp to the
         // hardware ceiling (1023 raw = 1023-PEDESTAL post-subtraction) — without this,
         // tail-augmented pixels exceeded the physical maximum (caught by user zoom).
-        if (adu[k] > 1023.0 - CFG::PEDESTAL)
+        if (a > CEIL_ADU)
         {
-          adu[k] = 1023.0 - CFG::PEDESTAL;
+          a = CEIL_ADU;
         }
-        state += adu[k] * tail_frac;
+        s1 += a * tail_frac;
+        if (tail2_frac > 0)
+        {
+          if (tail2_emitonly == 2)
+          {
+            // mode 2: BINARY saturation-triggered disturbance — fixed amplitude
+            // (tail2_frac, in ADU), retriggerable (one active disturbance per column).
+            // Real run-length data: additions over baseline are ~equal at >=10/20/30,
+            // i.e. tails either don't fire or run 20+ tbins — amplitude-proportional
+            // models can't do that with a steeply falling charge spectrum (rounds 1-5).
+            if (a >= tail2_q0 && (tail2_ptrig >= 1.0 || rng.Uniform() < tail2_ptrig))
+            {
+              // per-trigger dispersion (mean-preserving lognormal amp, gaussian
+              // duration): fixed amp/duration produced a BIMODAL island zsize tail
+              // (characteristic chain length ~ T*(1-T1/A)) where real is smooth.
+              src.clear();
+              double amp = tail2_frac * std::exp(rng.Gaus(0., 0.35) - 0.5 * 0.35 * 0.35);
+              double dur = std::max(10., tail2_tau * (1.0 + rng.Gaus(0., 0.30)));
+              src.push_back({tb, amp, dur});
+            }
+          }
+          else if (a > tail2_q0)
+          {
+            src.push_back({tb, (a - tail2_q0) * tail2_frac, T2LEN});
+          }
+        }
+        col.push_back({tb, a, v[i + k].trk});
+        lasttrk = v[i + k].trk;
         prevtb = tb;
       }
+      // tail run-out beyond the column's last charged sample
+      if (tail2_frac > 0 && prevtb > -1000000)
+      {
+        for (int gt = prevtb + 1; gt <= 970; ++gt)
+        {
+          s1 *= std::exp(-1.0 / tail_tau);
+          double val = s1 + slow_at(gt);
+          if (val < EMIT_FLOOR)
+          {
+            break;
+          }
+          double a = std::round(val + rng.Gaus(0., CFG::NOISE_ADU));
+          if (a > CEIL_ADU)
+          {
+            a = CEIL_ADU;
+          }
+          if (a >= 1)
+          {
+            col.push_back({gt, a, lasttrk});
+          }
+        }
+      }
     }
-    for (size_t k = 0; k < adu.size(); ++k)
+    else
     {
-      if (adu[k] >= thr_adu)
+      for (size_t k = 0; k < adu.size(); ++k)
+      {
+        col.push_back({v[i + k].tb, adu[k], v[i + k].trk});
+      }
+    }
+    keep.assign(col.size(), 0);
+    for (size_t k = 0; k < col.size(); ++k)
+    {
+      if (col[k].a >= thr_adu)
       {
         keep[k] = 1;
         for (int d = 1; d <= ret_pre; ++d)
         {
-          if (k >= (size_t) d && v[i + k].tb - v[i + k - d].tb == d)
+          if (k >= (size_t) d && col[k].tb - col[k - d].tb == d)
           {
-            if (adu[k - d] >= t2 && (p_keep >= 1.0 || rng.Uniform() < p_keep))
+            if (col[k - d].a >= t2 && (p_keep >= 1.0 || rng.Uniform() < p_keep))
             {
               keep[k - d] = 1;
             }
-            else if (adu[k - d] >= 1 && p2 > 0 && rng.Uniform() < p2)
+            else if (col[k - d].a >= 1 && p2 > 0 && rng.Uniform() < p2)
             {
               keep[k - d] = 1;  // sub-floor retention: real ZS leaks a flat trace (B3)
             }
@@ -528,13 +679,13 @@ void tpc_readout(const char *rawin, const char *out,
         }
         for (int d = 1; d <= ret_post; ++d)
         {
-          if (k + d < adu.size() && v[i + k + d].tb - v[i + k].tb == d)
+          if (k + d < col.size() && col[k + d].tb - col[k].tb == d)
           {
-            if (adu[k + d] >= t2 && (p_keep >= 1.0 || rng.Uniform() < p_keep))
+            if (col[k + d].a >= t2 && (p_keep >= 1.0 || rng.Uniform() < p_keep))
             {
               keep[k + d] = 1;
             }
-            else if (adu[k + d] >= 1 && p2 > 0 && rng.Uniform() < p2)
+            else if (col[k + d].a >= 1 && p2 > 0 && rng.Uniform() < p2)
             {
               keep[k + d] = 1;  // sub-floor retention: real ZS leaks a flat trace (B3)
             }
@@ -542,31 +693,35 @@ void tpc_readout(const char *rawin, const char *out,
         }
       }
     }
-    for (size_t k = 0; k < adu.size(); ++k)
     {
-      if (!keep[k] || adu[k] <= 0)
-      {
-        continue;
-      }
-      const Row &w = v[i + k];
-      int LL = (int) ((w.col >> 32U) & 0xFF);
-      int ss = (int) ((w.col >> 24U) & 0x1);
-      int pp = (int) (w.col & 0xFFFFFF);
+      int LL = (int) ((v[i].col >> 32U) & 0xFF);
+      int ss = (int) ((v[i].col >> 24U) & 0x1);
+      int pp = (int) (v[i].col & 0xFFFFFF);
+      float evf = (float) (v[i].col >> 40U);
+      bool masked = false;
       if (!dead.empty())
       {
         uint32_t dkey = ((uint32_t) LL << 20U) | ((uint32_t) ss << 16U) | (uint32_t) pp;
-        if (dead.count(dkey))
+        masked = dead.count(dkey) > 0;
+      }
+      double phi = GEO[LL].phi0 + GEO[LL].slope * pp;
+      for (size_t k = 0; k < col.size(); ++k)
+      {
+        if (!keep[k] || col[k].a <= 0)
+        {
+          continue;
+        }
+        if (masked)
         {
           nmasked++;
           continue;
         }
+        double zapp = (ss == 1 ? 1 : -1) * (CFG::HALFZ - col[k].tb * CFG::CLOCK * CFG::VDRIFT);
+        float row[10] = {evf, (float) LL, (float) pp, (float) col[k].tb, (float) col[k].tb,
+                         (float) col[k].a, (float) ss, (float) phi, (float) zapp, col[k].trk};
+        o->Fill(row);
+        nkept++;
       }
-      double phi = GEO[LL].phi0 + GEO[LL].slope * pp;
-      double zapp = (ss == 1 ? 1 : -1) * (CFG::HALFZ - w.tb * CFG::CLOCK * CFG::VDRIFT);
-      float row[10] = {(float) (w.col >> 40U), (float) LL, (float) pp, (float) w.tb, (float) w.tb,
-                       (float) adu[k], (float) ss, (float) phi, (float) zapp, w.trk};
-      o->Fill(row);
-      nkept++;
     }
     i = j;
   }

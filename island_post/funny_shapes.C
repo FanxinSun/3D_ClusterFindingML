@@ -23,11 +23,11 @@
 
 void funny_shapes(const char *realpix =
                       "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",
-                  const char *simpix = "digi_frames_production_v32.root",
+                  const char *simpix = "digi_frames_production_v33.root",
                   int realevent = 74, int simlayer = 15, int simframe = -1, int reallayer = -1,
                   double philo = 0.0, double phihi = 1.0, int tlo = 600, int thi = 800,
                   const char *out = "/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/funny_shapes.png",
-                  const char *tag = "pAu v2")
+                  const char *tag = "pAu v3.3 (B4.2)")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);

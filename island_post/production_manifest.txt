@@ -57,3 +57,24 @@ af02196059c8184e9ab765b5e4e7e79aaf8f2357ec2175e127ba6fd1ca08518b  1.8M  hepmc_pa
 537369ac354a57bc522d8b1f8f9a13c84828ef45f68fe27af366f10ac4f4c0fc  7.4M  hepmc_auau/p3_chunk_a.dat
 162f33855988b705bc643bf9f08a00fde9687870e68911031a98913c1202bbe1  8.7M  hepmc_auau/p3_chunk_b.dat
 467bf83a79e68166eb5b517033255f4010a3e4a545dcf9882e769a51fc79465a   11M  hepmc_auau/p3_chunk_c.dat
+
+# ---------------------------------------------------------------------------
+# v3.3 (B4.2, 2026-07-11): READOUT-ONLY re-production — REUSES
+# frames_pau_production_v32.root verbatim (no new composer run; same collisions,
+# flash, rates, seeds), so there is NO frames_*_v33 file. Stage B adds the B4.2
+# saturation-triggered baseline disturbance on top of frozen B4.1:
+#   trigger adc>=940, p_trig=0.33, retriggerable (one per pad); LINEAR ramp,
+#   amplitude 36 ADU (lognormal sd 0.35, mean-preserving), duration 70 tbins
+#   (gaussian sd 0.30); emit-only synthetic samples, emission floor 11.
+#   tpc_readout(...,0.021,7.0,36.0,70.0,11.0,940.0,2,0.33) via v33_production.sh.
+# Also since v3.2: per-pad gain seed 0 remapped (side0/pad0 columns were
+# UUID-random = NONdeterministic; all other gains unchanged). Full-stats
+# acceptance: island P(zsize>=13/20/30) x0.89/x1.005/x0.97 of real, <zsize>
+# -5.4% (v3.2: -16%); pixel run-tail P(>=10/20/30) +9%/-1%/-20%; declared
+# trades: pixmean 91.5 (v3.2: 95.2, real ~99), sh/hi 0.203 (real 0.233),
+# sub10 1.92e-4 (real 2.27e-4).
+# island_frames_v3x.root = compact islandize of the digi (figure inputs).
+59c1871ae22e9cb521c561ba16eef815ccbec413292987cdb23f750ef5a6c461  554M  digi_frames_production_v33.root
+6973d88bd9a6fd69635027b0c39da2c484696bee38a61f39625de7bb10a25954  358M  island91_frames_production_v33.root
+4621c2386914e815ec48c329917e1dc0ef055fb957575c707c2e8e5be33ddeda  176M  island_frames_v33.root
+42feaa3788c43542891d9bff4581e95977cd135046f0f8f9fae3f835217f2559  173M  island_frames_v32.root
