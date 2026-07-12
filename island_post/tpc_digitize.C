@@ -63,6 +63,9 @@ struct Lay
 };
 Lay GEO[55];
 bool geo_ok = false;
+// v3.5: transverse charge-cloud sigma, settable per tpc_transport call (CLOUD
+// recalibration under the corrected regional ZS); defaults to the frozen CFG value.
+double CLOUD_EFF = CFG::CLOUD;
 
 void loadGeo()
 {
@@ -162,8 +165,8 @@ void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &shar
   const double radius = g.radius;
   const double step = g.slope;
   const double rphi = phi * radius;
-  int blo = (int) std::floor((phi - (CFG::N_SIGMA * CFG::CLOUD / radius) - step - g.phi0) / step);
-  int bhi = (int) std::floor((phi + (CFG::N_SIGMA * CFG::CLOUD / radius) + step - g.phi0) / step);
+  int blo = (int) std::floor((phi - (CFG::N_SIGMA * CLOUD_EFF / radius) - step - g.phi0) / step);
+  int bhi = (int) std::floor((phi + (CFG::N_SIGMA * CLOUD_EFF / radius) + step - g.phi0) / step);
   int npads = bhi - blo;
   if (npads < 0 || npads > 9)
   {
@@ -190,7 +193,7 @@ void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &shar
     {
       x += 2 * M_PI * radius;
     }
-    const double s = CFG::CLOUD;
+    const double s = CLOUD_EFF;
     double ov = (pitch - x) * (std::erf(x / (M_SQRT2 * s)) - std::erf((x - pitch) / (M_SQRT2 * s))) / (pitch * 2) +
                 (pitch + x) * (std::erf((x + pitch) / (M_SQRT2 * s)) - std::erf(x / (M_SQRT2 * s))) / (pitch * 2) +
                 (gaus(x - pitch, s) - gaus(x, s)) * s * s / pitch +
@@ -206,8 +209,9 @@ void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &shar
 using namespace TDG;
 
 // ---------------- STAGE A: transport ----------------
-void tpc_transport(const char *in, const char *rawout, int NEV = 2)
+void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud = -1.0)
 {
+  CLOUD_EFF = (cloud > 0) ? cloud : CFG::CLOUD;
   loadGeo();
   if (!geo_ok)
   {
@@ -368,7 +372,7 @@ void tpc_readout(const char *rawin, const char *out,
                  const char *deadmap = "", double thr2_adu = -1.0, double p_keep = 1.0, double sigma_pad = 0.0, double p2 = 0.0,
                  double tail_frac = 0.0, double tail_tau = 4.0,
                  double tail2_frac = 0.0, double tail2_tau = 60.0, double tail2_floor = 8.0, double tail2_q0 = 0.0, int tail2_emitonly = 0, double tail2_ptrig = 1.0,
-                 double thr_r1 = -1.0, double gain_r1 = -1.0, double gain_r3 = -1.0)
+                 double thr_r1 = -1.0, double gain_r1 = -1.0, double gain_r3 = -1.0, double sigma_pad_r1 = -1.0, double sigma_ped = 0.0, double mini_scale = 0.0)
 {
   loadGeo();
   if (!geo_ok)
@@ -479,8 +483,21 @@ void tpc_readout(const char *rawin, const char *out,
     double greg = 1.0;
     if (gain_r1 > 0 && colL < 23) greg = gain_r1;
     if (gain_r3 > 0 && colL >= 39) greg = gain_r3;
+    const double spad_eff = (colL < 23 && sigma_pad_r1 > 0) ? sigma_pad_r1 : sigma_pad;
+    // per-pad static pedestal spread (2026-07-12): real saturated maxadc is a BUMP
+    // (931-963, sigma ~5: saturated adc = 1023 - ped_pad) where sim had a delta at
+    // 949. The offset cancels in subtracted values everywhere EXCEPT at the clamp,
+    // so ONLY the saturation ceiling spreads. Same static hash family as the gain.
+    double dped = 0.0;
+    if (sigma_ped > 0)
+    {
+      UInt_t pseed = ((UInt_t) (v[i].col & 0xFFFFFFFFFFULL)) ^ 0x5DEECE66U;
+      if (pseed == 0) pseed = 0xBADC0FFEU;  // TRandom3(0) is UUID-random
+      TRandom3 pr(pseed);
+      dped = pr.Gaus(0., sigma_ped);
+    }
     double gpad = 1.0;
-    if (sigma_pad > 0)
+    if (spad_eff > 0)
     {
       // NB seed hash: (UInt_t) truncation makes the gain static per (side,pad) shared
       // across layers (documented quirk, frozen for v3.2 reproducibility), and seed 0
@@ -488,17 +505,17 @@ void tpc_readout(const char *rawin, const char *out,
       UInt_t gseed = (UInt_t) (v[i].col & 0xFFFFFFFFFFULL);
       if (gseed == 0) gseed = 0x9E3779B9;
       TRandom3 gr(gseed);
-      gpad = std::exp(gr.Gaus(0., sigma_pad) - 0.5 * sigma_pad * sigma_pad);
+      gpad = std::exp(gr.Gaus(0., spad_eff) - 0.5 * spad_eff * spad_eff);
     }
     for (size_t k = i; k < j; ++k)
     {
-      double a = v[k].q * gpad * greg * gaincal * CFG::MV_PER_E * CFG::ADU_PER_MV + CFG::PEDESTAL + rng.Gaus(0., CFG::NOISE_ADU);
+      double a = v[k].q * gpad * greg * gaincal * CFG::MV_PER_E * CFG::ADU_PER_MV + (CFG::PEDESTAL + dped) + rng.Gaus(0., CFG::NOISE_ADU);
       if (a > 1023)
       {
         a = 1023;  // 10-bit saturation BEFORE pedestal subtraction
       }
       // real ADC is an integer ADU count; quantize like the hardware, then subtract pedestal
-      adu[k - i] = std::round(a - CFG::PEDESTAL);
+      adu[k - i] = std::round(a - (CFG::PEDESTAL + dped));
     }
     // ZS + SAMPA-DSP retention: keep above-threshold samples plus ret_pre/ret_post
     // CONSECUTIVE-tbin neighbours of any above-threshold sample
@@ -520,7 +537,7 @@ void tpc_readout(const char *rawin, const char *out,
     // 971-tbin frame, and do NOT feed the state back (tail-of-tail is second order; this
     // also guarantees stability for any tail2_frac). With tail2_frac=0 this reduces
     // bit-for-bit to the B4.1 behavior.
-    const double CEIL_ADU = 1023.0 - CFG::PEDESTAL;
+    const double CEIL_ADU = 1023.0 - (CFG::PEDESTAL + dped);  // per-pad ceiling (sigma_ped)
     struct Px
     {
       int tb;
@@ -712,9 +729,23 @@ void tpc_readout(const char *rawin, const char *out,
           }
         }
       }
-      else if (regZS && col[k].a >= 1 && p2 > 0 && rng.Uniform() < p2)
+      else if (regZS && col[k].a >= 1 && p2 > 0)
       {
-        keep[k] = 1;  // regional mode: standalone sub-threshold trace leak
+        // SHAPED sub-threshold trace (2026-07-12): keep-probability per ADU count,
+        // fitted as (real per-region trace)/(no-ZS raw spectrum) so the KEPT trace
+        // reproduces run 79507 in SHAPE, not just rate (flat p2 inherited the steep
+        // raw falloff: x2.5 hot at adc 1, x3 cold at 9-10). p2 = SCALE (nominal 1.0).
+        static const double P2R1[11] = {0, 1.01e-05, 1.98e-05, 2.82e-05, 4.30e-05, 4.98e-05, 8.07e-05, 8.12e-05, 1.28e-04, 1.33e-04, 1.29e-04};
+        static const double P2R2[21] = {0, 1.56e-05, 1.94e-05, 5.07e-05, 7.89e-05, 1.22e-04, 1.54e-04, 1.97e-04, 2.16e-04, 2.90e-04, 2.38e-04, 2.79e-04, 3.39e-04, 3.19e-04, 3.63e-04, 3.73e-04, 3.42e-04, 3.86e-04, 5.73e-04, 4.39e-04, 4.35e-04};
+        static const double P2R3[21] = {0, 5.08e-05, 5.89e-05, 1.13e-04, 1.84e-04, 2.44e-04, 2.65e-04, 3.43e-04, 3.67e-04, 2.97e-04, 4.06e-04, 3.13e-04, 3.63e-04, 2.81e-04, 3.59e-04, 4.26e-04, 4.03e-04, 3.02e-04, 2.59e-04, 2.88e-04, 3.64e-04};
+        int ai = (int) std::lround(col[k].a);
+        double pk = 0;
+        if (colL < 23 && ai >= 1 && ai <= 10) pk = P2R1[ai];
+        else if (colL >= 23 && ai >= 1 && ai <= 20) pk = (colL < 39 ? P2R2[ai] : P2R3[ai]);
+        if (pk > 0 && rng.Uniform() < pk * p2)
+        {
+          keep[k] = 1;
+        }
       }
     }
     {
@@ -748,6 +779,70 @@ void tpc_readout(const char *rawin, const char *out,
       }
     }
     i = j;
+  }
+  // mini-cluster background injection (2026-07-12): real low-adc (<80) 2px and
+  // 3-4px clusters fill the gap between the sub-threshold trace spike and the main
+  // population; deficits per frame 2px {178,55,101}, 3-4px {141,20,22}. Injected at
+  // the OUTPUT stage (post-gain: exact adu spectra, yield ~1 — a composer-level
+  // attempt died to the per-pad lognormal gain knocking near-threshold pixels under
+  // the cut). Pixel adu ~ thr+1+Exp(7) (real R1 2px sums peak 24-36). trk sentinel
+  // -7 stays unmatched in the truth sidecar -> islandize91 labels cls=2.
+  if (mini_scale > 0)
+  {
+    static const double MTHR[3] = {11., 21., 21.};
+    static const int NPADS_R[3] = {1128, 1536, 2304};
+    static const double MR2[3] = {209., 65., 119.};   // deficits x1.17 merge-loss comp (pilot 6)
+    static const double MR34[3] = {166., 30., 32.};  // R2/R3: 3px-only (4px spills adc<80)
+    static const double MTAU34[3] = {5.0, 2.5, 2.5};  // 3-4px pixel Exp tail: sums must stay
+                                                      // inside adc<80 (R2/R3: 3x(21+Exp(7))>80
+                                                      // killed the class entirely, pilot 6)
+    int evlo = (int) (v.empty() ? 0 : (v.front().col >> 40U));
+    int evhi = (int) (v.empty() ? 0 : (v.back().col >> 40U));
+    long nmini = 0;
+    for (int ev = evlo; ev <= evhi; ++ev)
+    {
+      for (int rg = 0; rg < 3; ++rg)
+      {
+        for (int cls2 = 0; cls2 < 2; ++cls2)
+        {
+          int n = rng.Poisson((cls2 ? MR34[rg] : MR2[rg]) * mini_scale);
+          for (int im = 0; im < n; ++im)
+          {
+            int lay = 7 + rg * 16 + (int) rng.Integer(16);
+            int side = (int) rng.Integer(2);
+            int pad = (int) rng.Integer(NPADS_R[rg] - 1);
+            int tb0 = (int) rng.Integer(969);
+            int npx = cls2 ? (rg == 0 ? 3 + (int) rng.Integer(2) : 3) : 2;
+            bool horiz = rng.Uniform() < 0.5;
+            if (!dead.empty())
+            {
+              uint32_t dk1 = ((uint32_t) lay << 20U) | ((uint32_t) side << 16U) | (uint32_t) pad;
+              uint32_t dk2 = ((uint32_t) lay << 20U) | ((uint32_t) side << 16U) | (uint32_t) (pad + 1);
+              if (dead.count(dk1) || dead.count(dk2))
+              {
+                continue;
+              }
+            }
+            double phi = GEO[lay].phi0 + GEO[lay].slope * pad;
+            for (int p = 0; p < npx; ++p)
+            {
+              int dp = (npx <= 2) ? (horiz ? p : 0) : (p & 1);
+              int dt = (npx <= 2) ? (horiz ? 0 : p) : (p >> 1);
+              double a = MTHR[rg] + 1.0 + rng.Exp(npx <= 2 ? 7.0 : MTAU34[rg]);
+              float row[10] = {(float) ev, (float) lay, (float) (pad + dp), (float) (tb0 + dt), (float) (tb0 + dt),
+                               (float) std::round(a), (float) side,
+                               (float) (phi + GEO[lay].slope * dp),
+                               (float) ((side == 1 ? 1 : -1) * (CFG::HALFZ - (tb0 + dt) * CFG::CLOCK * CFG::VDRIFT)),
+                               -7.f};
+              o->Fill(row);
+              nkept++;
+              nmini++;
+            }
+          }
+        }
+      }
+    }
+    printf("tpc_readout: mini background: %ld pixels injected\n", nmini);
   }
   printf("tpc_readout: %s -> %s : %ld pixels kept, %ld dead-masked (gaincal=%.3f thr=%.1f ret=%d/%d p=%.2f)\n",
          rawin, out, nkept, nmasked, gaincal, thr_adu, ret_pre, ret_post, p_keep);

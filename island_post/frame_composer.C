@@ -56,7 +56,7 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
                     int ev0 = 0, const char *evals = "",
                     const char *flashlib = "", double flash_prob = 0., double flash_scale = 1.,
                     const char *flash_spec = "", double flash_jitter_tb = 0., double flash_pixdisp = 0., double flash_stripedisp = 0., double flash_blur = 0.,
-                    const char *rate_spec = "")
+                    const char *rate_spec = "", double iso_scale = 0.0)
 {
   const int NTB = 971;       // real frame: 971 tbins x 53 ns
   const double CLK = 0.053;  // us per tbin
@@ -242,6 +242,7 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
   merge.reserve(1 << 22);
   std::unordered_map<uint64_t, int32_t> remap;  // (src<<32 | trk) -> newid
   std::vector<std::pair<uint64_t, int32_t> > remap_list;
+  int32_t isoid = 0;  // isolated-background truth ids (src 0xFE)
   double totpx = 0, totcoll = 0;
   for (int fr = 0; fr < nframes; ++fr)
   {
@@ -379,6 +380,73 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
           c.qbest = p.q;
           c.best = nid;
         }
+      }
+    }
+    // ---- isolated-hit background injection (v3.5): real frames carry ~2.5k/frame
+    // SINGLE-PIXEL islands (83% diffuse over ~93k pads, 17% on ~100 hot pads; adc just
+    // above the region threshold, ~exponential falloff) that the G4 event content lacks
+    // (low-energy background + hot channels). Injected at the composer so the truth
+    // sidecar labels them: src 0xFE ids stay unmatched -> pt<0 -> cls=2, like the flash.
+    // Rates/spectra measured on run 79507 island singles (2026-07-12):
+    //   R1 789/fr thr 11 tau 4.5 | R2 588/fr thr 21 tau 6.5 | R3 1143/fr thr 21 tau 7.0
+    // adu -> raw q via the NOMINAL v3.4 response chain (0.93 * greg * MV/e * ADU/mV);
+    // readout's per-pad gain spread and noise add the natural variation on top.
+    if (iso_scale > 0)
+    {
+      static const double IRATE[3] = {974., 460., 1491.};  // injected rates: measured real
+      // singles (789/588/1143) x pilot-2 yield correction (some injected hits merge
+      // into clusters and stop being singles: effective yield 0.81/1.11/0.77)
+      static const double ITHR[3] = {11., 21., 21.};
+      static const double ITAU[3] = {4.5, 6.5, 7.0};
+      static const double IGREG[3] = {1.24, 1.0, 1.06};
+      static const int NPADS[3] = {1128, 1536, 2304};
+      const double Q_PER_ADU = 1.0 / (0.93 * 7.68e-3 * (1024. / 2200.));
+      static std::vector<std::array<int, 3>> hotpads;  // (layer, side, pad), hash-static
+      if (hotpads.empty())
+      {
+        TRandom3 hr(20260712);
+        for (int i = 0; i < 100; ++i)
+        {
+          int rg = (int) (hr.Uniform() * 3);
+          hotpads.push_back({7 + rg * 16 + (int) hr.Integer(16), (int) hr.Integer(2), (int) hr.Integer(NPADS[rg])});
+        }
+      }
+      auto inject = [&](int lay, int side, int pad, int rg) {
+        double adu = ITHR[rg] + rng.Exp(ITAU[rg]);
+        double q = adu * Q_PER_ADU / IGREG[rg];
+        int tb = (int) rng.Integer(NTB);
+        int32_t nid = 0;
+        if (TRUTH)
+        {
+          uint64_t rk = (0xFEULL << 32U) | (uint32_t) isoid++;
+          auto it = remap.emplace(rk, nextid++).first;
+          remap_list.push_back({rk, it->second});
+          nid = it->second;
+        }
+        uint64_t key = ((uint64_t) lay << 40U) | ((uint64_t) side << 32U) |
+                       ((uint64_t) (uint16_t) pad << 16U) | (uint64_t) tb;
+        Contrib &c = merge[key];
+        c.q += q;
+        if (q > c.qbest)
+        {
+          c.qbest = q;
+          c.best = nid;
+        }
+      };
+      for (int rg = 0; rg < 3; ++rg)
+      {
+        int nd = rng.Poisson(0.83 * IRATE[rg] * iso_scale);
+        for (int i = 0; i < nd; ++i)
+        {
+          inject(7 + rg * 16 + (int) rng.Integer(16), (int) rng.Integer(2), (int) rng.Integer(NPADS[rg]), rg);
+        }
+      }
+      int nh = rng.Poisson(0.17 * (IRATE[0] + IRATE[1] + IRATE[2]) * iso_scale);
+      for (int i = 0; i < nh; ++i)
+      {
+        auto &hp = hotpads[rng.Integer(100)];
+        int rg = (hp[0] - 7) / 16;
+        inject(hp[0], hp[1], hp[2], rg);
       }
     }
     for (const auto &kv : merge)

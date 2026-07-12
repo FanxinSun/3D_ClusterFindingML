@@ -28,7 +28,7 @@ void cmp_pau(){
   const char* RC="layer>=7&&layer<=54&&adc>0";
   const char* SC="layer>=7&&layer<=54&&adc>0";
   // ---- hits: THREE-WAY — real vs detached frames (CURRENT production v3.3) vs container ----
-  TFile*fb=TFile::Open("digi_frames_production_v34.root"); TTree*bh=(TTree*)fb->Get("ntp_hit");
+  TFile*fb=TFile::Open("digi_frames_production_v35.root"); TTree*bh=(TTree*)fb->Get("ntp_hit");
   auto d3=[&](TVirtualPad*p,TH1D*a,TH1D*b,TH1D*g,const char*ti,bool logy){
     p->cd(); for(TH1D*x:{a,b,g}) if(x->Integral()>0)x->Scale(1./x->Integral());
     a->SetLineColor(kBlue+1); b->SetLineColor(kMagenta+1);
@@ -42,7 +42,7 @@ void cmp_pau(){
     a->Draw("HIST"); b->Draw("HIST SAME"); g->Draw("HIST SAME");
     TLegend*L=new TLegend(0.35,0.70,0.89,0.89); L->SetBorderSize(0); L->SetFillStyle(0);
     L->AddEntry(a,"REAL","l");
-    L->AddEntry(b,"SIM detached pipeline (v3.4 B4.3)","l");
+    L->AddEntry(b,"SIM detached pipeline (v3.5revC)","l");
     L->AddEntry(g,"stock ana.331 (reference)","l"); L->Draw(); };
   TCanvas c1("c1","",1500,500); c1.Divide(3,1);
   d3(c1.cd(1),H(rh,"adc","a1",220,-0.5,1099.5,RC),H(bh,"adc","m1",220,-0.5,1099.5,""),
@@ -53,7 +53,7 @@ void cmp_pau(){
      H(sh,"layer","b3",48,6.5,54.5,SC),"layer profile (shape);TPC layer;norm",false);
   c1.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/cmp_pau_hit.png");
   // ---- clusters: three-way (REAL production | detached islandize91 v2 | stock ghost) ----
-  TFile*fb2=TFile::Open("island91_frames_production_v34.root"); TTree*bc=(TTree*)fb2->Get("ntp_cluster");
+  TFile*fb2=TFile::Open("island91_frames_production_v35.root"); TTree*bc=(TTree*)fb2->Get("ntp_cluster");
   TCanvas c2("c2","",1500,900); c2.Divide(3,2);
   const char* RCC="layer>=7&&layer<=54";
   d3(c2.cd(1),H(rc,"adc","d1",150,0,6000,RCC),H(bc,"adc","f1",150,0,6000,""),H(sc,"adc","e1",150,0,6000,""),

@@ -27,7 +27,7 @@ void b42_metrics(const char *fn = "b42_tmp.root", const char *tag = "cfg")
   std::vector<std::pair<long long, int>> buf;
   buf.reserve(3000000);
   int curev = -1;
-  double nev = 0;
+  int evmin = 1 << 30, evmax = -(1 << 30);
   auto flush = [&]() {
     if (buf.empty()) return;
     std::sort(buf.begin(), buf.end());
@@ -56,12 +56,15 @@ void b42_metrics(const char *fn = "b42_tmp.root", const char *tag = "cfg")
     int rg = lay < 23 ? 0 : (lay < 39 ? 1 : 2);
     rn[rg] += 1;
     radc[rg] += adc;
-    if ((int) ev != curev) { flush(); curev = (int) ev; nev += 1; }
+    if ((int) ev != curev) { flush(); curev = (int) ev; }
+    if ((int) ev < evmin) evmin = (int) ev;
+    if ((int) ev > evmax) evmax = (int) ev;
     long long key = ((long long) (ze > 0.5)) * 100000000LL + (long long) lay * 1000000LL + (long long) pb;
     buf.emplace_back(key, (int) tb);
   }
   flush();
   double rt = hr.Integral(), at = ha.Integral();
+  double nev = evmax - evmin + 1;  // appended blocks (minis) make transition-counting wrong
   double rtot = rn[0] + rn[1] + rn[2];
   printf("B43REGION %-14s shares R1 %.3f R2 %.3f R3 %.3f | pixm R1 %.1f R2 %.1f R3 %.1f\n",
          tag, rn[0] / rtot, rn[1] / rtot, rn[2] / rtot,

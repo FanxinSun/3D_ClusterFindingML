@@ -1,0 +1,18 @@
+B43REGION B46_g1.24_sp-1 shares R1 0.360 R2 0.332 R3 0.308 | pixm R1 82.0 R2 105.0 R3 105.8
+B42METRIC B46_g1.24_sp-1 kept/fr  277222 | pixmean  96.94 | sub10 3.79e-04 | sh/hi 0.279 | run mean 2.913 P5 8.53e-02 P10 2.11e-02 P20 8.04e-03 P30 4.79e-03
+B43REGION B46_g1.24_sp0.75 shares R1 0.355 R2 0.335 R3 0.310 | pixm R1 83.0 R2 105.0 R3 105.9
+B42METRIC B46_g1.24_sp0.75 kept/fr  274758 | pixmean  97.46 | sub10 3.75e-04 | sh/hi 0.285 | run mean 2.915 P5 8.58e-02 P10 2.21e-02 P20 8.27e-03 P30 4.99e-03
+B43REGION B46_g1.24_sp0.95 shares R1 0.347 R2 0.339 R3 0.314 | pixm R1 84.3 R2 105.0 R3 105.9
+B42METRIC B46_g1.24_sp0.95 kept/fr  271390 | pixmean  98.08 | sub10 3.71e-04 | sh/hi 0.289 | run mean 2.922 P5 8.61e-02 P10 2.33e-02 P20 8.60e-03 P30 5.26e-03
+B43REGION B46_g1.18_sp0.75 shares R1 0.349 R2 0.338 R3 0.313 | pixm R1 81.5 R2 105.0 R3 105.9
+B42METRIC B46_g1.18_sp0.75 kept/fr  271934 | pixmean  97.09 | sub10 3.80e-04 | sh/hi 0.280 | run mean 2.895 P5 8.42e-02 P10 2.15e-02 P20 8.06e-03 P30 4.81e-03
+B43REGION B46_g1.18_sp0.95 shares R1 0.340 R2 0.342 R3 0.317 | pixm R1 82.9 R2 104.9 R3 105.8
+B42METRIC B46_g1.18_sp0.95 kept/fr  268774 | pixmean  97.72 | sub10 3.84e-04 | sh/hi 0.284 | run mean 2.904 P5 8.46e-02 P10 2.27e-02 P20 8.45e-03 P30 5.14e-03
+B43REGION B46_g1.12_sp0.95 shares R1 0.334 R2 0.346 R3 0.321 | pixm R1 81.4 R2 105.0 R3 105.8
+B42METRIC B46_g1.12_sp0.95 kept/fr  265836 | pixmean  97.42 | sub10 3.95e-04 | sh/hi 0.279 | run mean 2.883 P5 8.31e-02 P10 2.20e-02 P20 8.23e-03 P30 4.93e-03
+B43REGION B46_g1.24_sp0.40 shares R1 0.364 R2 0.330 R3 0.306 | pixm R1 81.3 R2 104.9 R3 105.9
+B42METRIC B46_g1.24_sp0.40 kept/fr  278580 | pixmean  96.63 | sub10 3.80e-04 | sh/hi 0.275 | run mean 2.912 P5 8.49e-02 P10 2.06e-02 P20 7.91e-03 P30 4.74e-03
+B43REGION B46_g1.24_sp0.30 shares R1 0.365 R2 0.329 R3 0.305 | pixm R1 80.9 R2 105.0 R3 105.8
+B42METRIC B46_g1.24_sp0.30 kept/fr  279216 | pixmean  96.47 | sub10 3.78e-04 | sh/hi 0.273 | run mean 2.911 P5 8.47e-02 P10 2.04e-02 P20 7.85e-03 P30 4.69e-03
+B43REGION B46_g1.30_sp0.40 shares R1 0.369 R2 0.327 R3 0.304 | pixm R1 83.0 R2 105.0 R3 105.8
+B42METRIC B46_g1.30_sp0.40 kept/fr  281072 | pixmean  97.12 | sub10 3.78e-04 | sh/hi 0.279 | run mean 2.929 P5 8.65e-02 P10 2.11e-02 P20 8.05e-03 P30 4.84e-03

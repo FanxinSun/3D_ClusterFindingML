@@ -5,7 +5,7 @@
 // "Funny" cluster gallery: pad x tbin ADC maps of asymmetric clusters,
 //   selection: size in [12,80] && |asym| >= 0.25, max 2 per event (variety),
 //   top 2 rows REAL (canonical cuts: layer 7-54 && adc>0),
-//   bottom 2 rows SIM = composed pAu frames v2 (B3 readout, 390 kHz).
+//   bottom 2 rows SIM = composed v3.5revC (B3 readout, 390 kHz).
 // Panels show the island bounding box +-1 pad/tbin (neighbourhood display).
 
 #include <TCanvas.h>
@@ -129,8 +129,8 @@ using namespace FS;
 void cluster_gallery(const char *realpix =
                       "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",
                   const char *realisl = "island_real.root",
-                  const char *simpix = "digi_frames_production_v32.root",
-                  const char *simisl = "island_frames_v32.root")
+                  const char *simpix = "digi_frames_production_v35.root",
+                  const char *simisl = "island_frames_v35.root")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
@@ -159,8 +159,8 @@ void cluster_gallery(const char *realpix =
     c.cd(NSHOW + i + 1);
     sh[i]->SetTitle(";pad;tbin");
     sh[i]->Draw("COLZ");
-    tx.DrawLatex(0.14, 0.86, Form("SIM pAu v2  L%d  n=%.0f  asym=%.2f", ssel[i].layer, ssel[i].size, ssel[i].asym));
+    tx.DrawLatex(0.14, 0.86, Form("SIM pAu v3.5revC  L%d  n=%.0f  asym=%.2f", ssel[i].layer, ssel[i].size, ssel[i].asym));
   }
   c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/cluster_gallery.png");
-  printf("cluster_gallery.png regenerated (real vs pAu frames v2)\n");
+  printf("cluster_gallery.png regenerated (real vs v3.5revC)\n");
 }

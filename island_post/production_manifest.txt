@@ -99,3 +99,51 @@ af02196059c8184e9ab765b5e4e7e79aaf8f2357ec2175e127ba6fd1ca08518b  1.8M  hepmc_pa
 d290d04f5a89ead6847aa57f7913b54a3011323e7813c04160c02b7c2dcf7a22  586M  digi_frames_production_v34.root
 3879a6da2ed3bd00802c0c58d11cf2f6b4c0eb650ac5c6d7d1fb85ecbd0cd57b  361M  island91_frames_production_v34.root
 c42996fd89c5ea1ccfaef1ecaa6a00a62b2a822bb1171da3d6a1b7e564c3448d  177M  island_frames_v34.root
+
+# ---------------------------------------------------------------------------
+# v3.5 (composition pass, 2026-07-12): FRESH composition (new frames file — iso
+# draws shift the composer rng, so frames differ event-by-event from v3.2-v3.4;
+# same seeds 2026091i, same ensemble). On top of B4.3 readout (p_trig 0.29):
+#   - CLOUD stays 0.12: the phi +4.9% was COMPOSITION, not width — real carries
+#     10.5% single-pixel islands diluting its mean (sim multi-phi 3.67 already
+#     matched real 3.68). CLOUD 0.106 tried and REVERTED (fragmented merges).
+#   - NEW isolated-hit background injection in frame_composer (iso_scale=1):
+#     real singles 789/588/1143 per frame, adc ~ thr+Exp(4.5/6.5/7.0), 83%
+#     diffuse + 17% on 100 hash-static hot pads; src 0xFE -> cls=2 labels.
+#     Injected 974/460/1491 (effective-yield corrected).
+#   - Flash region weights 0.36/0.87/0.43 (flash-only giant-yield inversion;
+#     precision limited by real-side giant Poisson ~1 giant/100 frames).
+# Acceptance (250 fr): island zsize P13/P20/P30 x1.01/1.02/1.02, <phisize> 3.43
+# (+0.9%), singles 762/665/1059 (tgt 789/589/1144), 1px frac 0.091 (real 0.105),
+# flash excess x0.72/0.80/0.64 of real (consistent within giant statistics),
+# pixel shares -0.8/-4.3/+6.6%, global pixmean 97.1 (-2.1%).
+# DECLARED: islands/frame +14.8% (multi-px content excess +17%, R3/R2 family —
+# no longer masked by missing singles), R1 island share 0.307 vs 0.359 (real R1
+# fragments into more small MULTI-px islands too), multi-z -6%, sh/hi +19%.
+# NEXT: laser_assess precision flash refit; R1 multi-fragmentation; content.
+e688daa5251274ab28bbea7c798db8aa57c40c49506f9a5113145cd48ce6cb40  568M  digi_frames_production_v35.root
+e6a241f06321c866b1d5aae33362761f4ce3bb7888302882c62bdca4ef747181  389M  island91_frames_production_v35.root
+8b56423575f256725ab6b2ca6fb91ff7f239dd164e104d539a7cb9941225aa30  182M  island_frames_v35.root
+f4a0ded1b0e5d2e6f25b66998d8515029f23af5dceaa3387ec5a4292ba8fe656  4.3G  frames_pau_production_v35.root
+
+# v3.5 REVISION B (2026-07-12, near-threshold fix — user defect report): readout-only
+# rerun on the SAME frames_pau_production_v35 (checksum unchanged). digi/island91/
+# island_frames_v35 checksums above updated in place. Changes: SHAPED sub-threshold
+# trace (per-ADU keep tables per region, fitted real/raw and iterated once at the
+# working point; kept/target 0.97-1.10 bin-wise; p2 arg = table scale 1.0). Band
+# lever exhausted (sigma_pad_R1 0.30-0.95 x gR1: sh/hi floor 0.273 vs real 0.233)
+# -> R1 near-threshold spectral shape stays DECLARED (external gain map).
+
+# v3.5 REVISION C (2026-07-12, near-threshold defect report part 2): readout-only
+# rerun on unchanged frames_v35. Adds: per-pad pedestal spread sigma_ped=5 (real
+# saturation BUMP 948.8/5.8 vs sim delta; only the ceiling spreads — offsets cancel
+# in subtracted values), readout-stage mini-cluster background (low-adc 2px
+# {209,65,119}/fr, 3-4px {166,30,32}/fr R2/R3 3px-only, pixel adu thr+1+Exp(7 or
+# {5,2.5,2.5}), trk=-7 -> cls=2; a composer-level attempt died to the per-pad
+# lognormal gain and was moved post-gain). Acceptance vs real (v3.4): islands/fr
+# 27,937 +16.9% (25,096 +5.0%) — multi-px content excess now fully exposed;
+# <phisize> 3.40 EXACT (3.57); 1px frac 0.089 (0.038) vs real 0.105; low-adc 2px/fr
+# 1119 (779) vs 1130; 3-4px/fr 302 (136) vs 312; zsize P13/20/30 x0.97 (x1.03-1.05);
+# <zsize> 3.98 (4.20) vs 4.27 = composition dilution; pixel saturation bump
+# 948.1/5.4. NOTE: digi rows are event-blocked main-then-minis per batch (event
+# ordering non-monotonic; islanders key by event — unaffected).

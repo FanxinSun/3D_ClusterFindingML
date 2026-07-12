@@ -1,13 +1,15 @@
-// p3_cmp.C — v1-production (240 kHz) comparison record, ANCHOR-CONSISTENT:
+// p3_cmp.C — production comparison, ANCHOR-CONSISTENT (follows the CURRENT
+// production since the 2026-07-13 full-suite replot; was the v1/240kHz record —
+// that version lives in git history at 81cd06d):
 // real pixel curves from ref_real.root (layer 7-54 && adc>0); islands from island91_real.
 void p3_cmp(){
   gROOT->SetBatch(1); gStyle->SetOptStat(0);
   TFile*fref=TFile::Open("ref_real.root");
   TH1D*RZ=(TH1D*)((TH1D*)fref->Get("r_adcz"))->Clone("RZ"); RZ->SetDirectory(nullptr);
   TH1D*RT=(TH1D*)((TH1D*)fref->Get("r_tbin"))->Clone("RT"); RT->SetDirectory(nullptr);
-  TFile*fd=TFile::Open("digi_frames_production.root"); TTree*h=(TTree*)fd->Get("ntp_hit");
+  TFile*fd=TFile::Open("digi_frames_production_v35.root"); TTree*h=(TTree*)fd->Get("ntp_hit");
   TFile*fri=TFile::Open("island91_real.root"); TTree*ri=(TTree*)fri->Get("ntp_cluster");
-  TFile*fsi=TFile::Open("island91_frames_production.root"); TTree*si=(TTree*)fsi->Get("ntp_cluster");
+  TFile*fsi=TFile::Open("island91_frames_production_v35.root"); TTree*si=(TTree*)fsi->Get("ntp_cluster");
   auto d2=[&](TVirtualPad*p,TH1D*a,TH1D*b,const char*ti,bool logy){
     p->cd(); if(a->Integral()>0)a->Scale(1./a->Integral()); if(b->Integral()>0)b->Scale(1./b->Integral());
     a->SetLineColor(kBlue+1);a->SetLineWidth(2); b->SetLineColor(kMagenta+1);b->SetLineWidth(2);
@@ -16,7 +18,7 @@ void p3_cmp(){
     if(logy){gPad->SetLogy();a->SetMinimum(1e-7);} else a->SetMinimum(0);
     a->Draw("HIST"); b->Draw("HIST SAME");
     TLegend*L=new TLegend(0.45,0.75,0.89,0.89); L->SetBorderSize(0); L->SetFillStyle(0);
-    L->AddEntry(a,"REAL","l"); L->AddEntry(b,"SIM pAu frames v1 (240 kHz)","l"); L->Draw(); };
+    L->AddEntry(a,"REAL","l"); L->AddEntry(b,"SIM v3.5revC (275 kHz)","l"); L->Draw(); };
   auto H=[&](TTree*x,const char*v,const char*hn,int nb,double lo,double hi){
     TH1D*hh=new TH1D(hn,"",nb,lo,hi); x->Draw(Form("%s>>%s",v,hn),"","goff"); return hh; };
   TCanvas c("c","",1600,900); c.Divide(3,2);

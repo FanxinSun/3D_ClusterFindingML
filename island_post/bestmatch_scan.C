@@ -20,9 +20,11 @@
 #include <map>
 #include <vector>
 
-void bestmatch_scan(const char *simisl91 = "island91_frames_production_v34.root",
+void bestmatch_scan(const char *simisl91 = "island91_frames_production_v35.root",
                     const char *realisl91 = "island91_real.root",
-                    int realevent = 74, int reallayer = 15)
+                    int realevent = 74, int reallayer = 15,
+                    const char *simdigi = "digi_frames_production_v35.root",
+                    const char *realdigi = "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root")
 {
   auto feats = [&](TTree *t, int ev, int lay, double *out) -> bool {
     const char *W = Form("event==%d&&layer==%d&&phi>=0&&phi<1&&tbin>=600&&tbin<=800", ev, lay);
@@ -87,12 +89,161 @@ void bestmatch_scan(const char *simisl91 = "island91_frames_production_v34.root"
     best.push_back({sc, kv.first});
   }
   std::sort(best.begin(), best.end());
-  printf("top matches (score | frame layer | n <size> <mx> prot fr10):\n");
+  // ---- CRITERIAL feature 6 (user 2026-07-13): count of tu-shaped ~7px clusters ----
+  // (asym_showcase pixel test: top tbin row exactly ONE non-corner pixel ON a >=3-wide
+  // base; cluster size 6-8). Windows re-islandized from their own pixels (4-connected
+  // components) so the test is branch-semantics independent. Applied to the
+  // statistical top-30, score += ((n_sim - n_real)/1)^2, then re-ranked.
+  auto tucount = [](std::vector<std::array<int, 3>> &px) {  // (pad, tbin, adc)
+    if (px.empty()) return 0;
+    int n = (int) px.size();
+    std::vector<int> comp(n, -1);
+    int nc = 0;
+    for (int i = 0; i < n; ++i)
+    {
+      if (comp[i] >= 0) continue;
+      std::vector<int> stack = {i};
+      comp[i] = nc;
+      while (!stack.empty())
+      {
+        int j = stack.back();
+        stack.pop_back();
+        for (int k = 0; k < n; ++k)
+        {
+          if (comp[k] >= 0) continue;
+          if (std::abs(px[j][0] - px[k][0]) + std::abs(px[j][1] - px[k][1]) == 1)
+          {
+            comp[k] = nc;
+            stack.push_back(k);
+          }
+        }
+      }
+      nc++;
+    }
+    int ntu = 0;
+    for (int c = 0; c < nc; ++c)
+    {
+      std::vector<std::array<int, 3>> cp;
+      for (int i = 0; i < n; ++i)
+        if (comp[i] == c) cp.push_back(px[i]);
+      if (cp.size() < 6 || cp.size() > 8) continue;
+      int tmax = -1 << 30;
+      for (auto &p : cp) tmax = std::max(tmax, p[1]);
+      int ntop = 0, xtop = -1 << 30, plo = 1 << 30, phi2 = -1 << 30, nbelow = 0;
+      bool onbase = false;
+      for (auto &p : cp)
+      {
+        plo = std::min(plo, p[0]);
+        phi2 = std::max(phi2, p[0]);
+      }
+      for (auto &p : cp)
+      {
+        if (p[1] == tmax) { ntop++; xtop = p[0]; }
+        if (p[1] == tmax - 1) nbelow++;
+      }
+      for (auto &p : cp)
+        if (p[1] == tmax - 1 && p[0] == xtop) onbase = true;
+      if (ntop == 1 && nbelow >= 3 && onbase && xtop != plo && xtop != phi2) ntu++;
+    }
+    return ntu;
+  };
+  auto winpix = [&](const char *fn, bool isReal, std::map<int, std::vector<std::array<int, 3>>> &out,
+                    const std::map<int, char> &want) {
+    TFile *fd = TFile::Open(fn);
+    TTree *t = (TTree *) fd->Get("ntp_hit");
+    float ev, lay, pb, tb, adc, ph;
+    t->SetBranchStatus("*", 0);
+    for (auto bn : {"event", "layer", "phibin", "adc", "phi"}) t->SetBranchStatus(bn, 1);
+    t->SetBranchStatus(isReal ? "tbin" : "zbin", 1);
+    t->SetBranchAddress("event", &ev);
+    t->SetBranchAddress("layer", &lay);
+    t->SetBranchAddress("phibin", &pb);
+    t->SetBranchAddress(isReal ? "tbin" : "zbin", &tb);
+    t->SetBranchAddress("adc", &adc);
+    t->SetBranchAddress("phi", &ph);
+    for (Long64_t i = 0; i < t->GetEntries(); ++i)
+    {
+      t->GetEntry(i);
+      if (adc <= 0 || ph < 0 || ph >= 1 || tb < 600 || tb > 800) continue;
+      int key = ((int) ev) * 100 + (int) lay;
+      if (!want.count(key)) continue;
+      out[key].push_back({(int) pb, (int) tb, (int) adc});
+    }
+    fd->Close();
+  };
+  std::map<int, char> wantR{{realevent * 100 + reallayer, 1}};
+  std::map<int, std::vector<std::array<int, 3>>> pxR;
+  winpix(realdigi, true, pxR, wantR);
+  int tuR = tucount(pxR[realevent * 100 + reallayer]);
+  printf("REAL tu-count (6-8px, window): %d   [CRITERIAL feature 6]\n", tuR);
+  std::map<int, char> wantS;
+  for (size_t i = 0; i < 30 && i < best.size(); ++i) wantS[best[i].second] = 1;
+  std::map<int, std::vector<std::array<int, 3>>> pxS;
+  winpix(simdigi, false, pxS, wantS);
+  std::vector<std::pair<double, std::pair<int, int>>> rescored;  // (score, (id, ntu))
+  for (size_t i = 0; i < 30 && i < best.size(); ++i)
+  {
+    int ntu = tucount(pxS[best[i].second]);
+    double sc = best[i].first + std::pow((double) (ntu - tuR) / 1.0, 2);
+    rescored.push_back({sc, {best[i].second, ntu}});
+  }
+  std::sort(rescored.begin(), rescored.end());
+  best.clear();
+  for (auto &r : rescored) best.push_back({r.first, r.second.first});
+  std::map<int, int> tumap;
+  for (auto &r : rescored) tumap[r.second.first] = r.second.second;
+  // ---- layout score: NON-CRITERIAL (user 2026-07-12) — visual-similarity aid only.
+  // The five statistical features above remain the pipeline criteria; this extra
+  // term quantifies spatial LAYOUT of the window (what the eye keys on): mean
+  // nearest-neighbour centroid distance (window-normalised phi/1.0, tbin/200) and
+  // clumpiness (std/mean of island counts over a 4x4 grid). Ad-hoc 15% pulls.
+  auto layout = [&](TTree *t, int ev, int lay, double &nnd, double &clump) {
+    const char *W = Form("event==%d&&layer==%d&&phi>=0&&phi<1&&tbin>=600&&tbin<=800", ev, lay);
+    Long64_t n = t->Draw("phi:tbin", W, "goff");
+    if (n < 3) { nnd = -1; clump = -1; return; }
+    double *px = t->GetV1(), *pt = t->GetV2();
+    double sum = 0;
+    double grid[16] = {0};
+    for (Long64_t i = 0; i < n; ++i)
+    {
+      double dmin = 1e9;
+      for (Long64_t j = 0; j < n; ++j)
+      {
+        if (i == j) continue;
+        double dx = px[i] - px[j], dt = (pt[i] - pt[j]) / 200.;
+        double d = sqrt(dx * dx + dt * dt);
+        if (d < dmin) dmin = d;
+      }
+      sum += dmin;
+      int gx = std::min(3, (int) (px[i] * 4)), gt = std::min(3, (int) ((pt[i] - 600) / 50));
+      grid[gx * 4 + gt] += 1;
+    }
+    nnd = sum / n;
+    double m = n / 16., v = 0;
+    for (double g : grid) v += (g - m) * (g - m);
+    clump = sqrt(v / 16.) / m;
+  };
+  double Rn, Rc;
+  layout(r, realevent, reallayer, Rn, Rc);
+  printf("REAL layout: nnd %.3f clump %.2f   [NON-CRITERIAL aid]\n", Rn, Rc);
+  printf("top matches (score | frame layer | n <size> <mx> prot fr10 | layout):\n");
+  double bestlay = 1e9;
+  int bestlayid = -1;
   for (size_t i = 0; i < 5 && i < best.size(); ++i)
   {
     double F[5];
     feats(s, best[i].second / 100, best[i].second % 100, F);
-    printf("  %.2f | f%d L%d | %.0f %.2f %.0f %.2f %.2f\n",
-           best[i].first, best[i].second / 100, best[i].second % 100, F[0], F[1], F[2], F[3], F[4]);
+    double Sn, Sc;
+    layout(s, best[i].second / 100, best[i].second % 100, Sn, Sc);
+    double lsc = std::pow((Sn - Rn) / (0.15 * Rn), 2) + std::pow((Sc - Rc) / (0.15 * Rc), 2);
+    if (lsc < bestlay) { bestlay = lsc; bestlayid = best[i].second; }
+    printf("  %.2f | f%d L%d | %.0f %.2f %.0f %.2f %.2f | tu %d (real %d) | layout %.2f (nnd %.3f clump %.2f)\n",
+           best[i].first, best[i].second / 100, best[i].second % 100, F[0], F[1], F[2], F[3], F[4],
+           tumap[best[i].second], tuR, lsc, Sn, Sc);
+  }
+  if (bestlayid >= 0)
+  {
+    printf("layout-best of top-5 (NON-CRITERIAL): f%d L%d (layout %.2f)\n",
+           bestlayid / 100, bestlayid % 100, bestlay);
   }
 }
