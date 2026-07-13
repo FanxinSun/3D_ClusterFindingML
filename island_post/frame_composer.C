@@ -56,7 +56,9 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
                     int ev0 = 0, const char *evals = "",
                     const char *flashlib = "", double flash_prob = 0., double flash_scale = 1.,
                     const char *flash_spec = "", double flash_jitter_tb = 0., double flash_pixdisp = 0., double flash_stripedisp = 0., double flash_blur = 0.,
-                    const char *rate_spec = "", double iso_scale = 0.0)
+                    const char *rate_spec = "", double iso_scale = 0.0,
+                    const char *mbdmap = "", double trig_n = 0.0, double rate_tau = 0.0,
+                    const char *env_spec = "")
 {
   const int NTB = 971;       // real frame: 971 tbins x 53 ns
   const double CLK = 0.053;  // us per tbin
@@ -108,6 +110,84 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
   {
     printf("frame_composer: empty library\n");
     return;
+  }
+  // ---- v3.6 frame time-structure ----
+  // (i) triggered collision(s): the real frame STARTS at the trigger; its collision
+  //     fills tbins [0,249] (the arrivals step at ~250 = its full-drift edge; excess
+  //     x1.12 ~ MBD multiplicity bias). trig_n fired-weighted collisions injected at
+  //     t_c = 0 per frame, drawn from MBD-FIRED library events only (mbdmap =
+  //     "weights.txt|hepmc0,hepmc1,..." aligned with the libs order).
+  // (ii) within-frame rate decay: triggers fire on rate upfluctuations; the
+  //     conditional rate decays over the frame (measured slope -5.7e-4/tbin, tau ~93us,
+  //     aperiodic - fill-pattern periodicity rejected). Collision times sampled with a
+  //     symmetric envelope w(t) = exp(-|t|/rate_tau) (rate_tau in TBINS; 0 = uniform).
+  std::vector<char> fired(lib.size(), 1);
+  int nfired = (int) lib.size();
+  if (mbdmap && mbdmap[0] && trig_n > 0)
+  {
+    TString mm(mbdmap);
+    auto *mt = mm.Tokenize("|");
+    if (mt->GetEntries() == 2)
+    {
+      std::map<std::string, std::map<int, int>> ff;  // hepmc -> idx -> fired
+      FILE *fw = fopen(mt->At(0)->GetName(), "r");
+      if (fw)
+      {
+        char fn[128];
+        int idx, n_, s_, fi;
+        char line[256];
+        while (fgets(line, 256, fw))
+        {
+          if (line[0] == '#') continue;
+          if (sscanf(line, "%127s %d %d %d %d", fn, &idx, &n_, &s_, &fi) == 5) ff[fn][idx] = fi;
+        }
+        fclose(fw);
+      }
+      auto *ht = TString(mt->At(1)->GetName()).Tokenize(",");
+      // rebuild per-lib-collision fired flags via (libsrc, local index)
+      std::vector<int> local(lib.size(), 0);
+      std::map<int, int> counter;
+      for (size_t ci = 0; ci < lib.size(); ++ci) local[ci] = counter[libsrc[ci]]++;
+      nfired = 0;
+      for (size_t ci = 0; ci < lib.size(); ++ci)
+      {
+        int srci = libsrc[ci];
+        char f1 = 1;
+        if (srci < ht->GetEntries())
+        {
+          auto itf = ff.find(ht->At(srci)->GetName());
+          if (itf != ff.end())
+          {
+            auto ite = itf->second.find(local[ci]);
+            if (ite != itf->second.end()) f1 = (char) ite->second;
+          }
+        }
+        fired[ci] = f1;
+        if (f1) nfired++;
+      }
+      printf("frame_composer: mbd map -> %d/%zu library collisions fired\n", nfired, lib.size());
+    }
+  }
+
+  // empirical envelope nodes
+  double envt[16], envw[16], envmax = 0;
+  int envn = 0;
+  if (env_spec && env_spec[0])
+  {
+    TString es(env_spec);
+    auto *et = es.Tokenize(",");
+    for (int i = 0; i < et->GetEntries() && envn < 16; ++i)
+    {
+      double tt, ww;
+      if (sscanf(et->At(i)->GetName(), "%lf:%lf", &tt, &ww) == 2)
+      {
+        envt[envn] = tt;
+        envw[envn] = ww;
+        if (ww > envmax) envmax = ww;
+        envn++;
+      }
+    }
+    printf("frame_composer: rate envelope: %d nodes, max %.3f\n", envn, envmax);
   }
 
   // ---- optional calibration-flash injection (e.g. CM laser): merged at fixed t0=0
@@ -345,12 +425,50 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         }
       }
     }
-    for (int ic = 0; ic < nc; ++ic)
+    int ntrig = (trig_n > 0) ? rng.Poisson(trig_n) : 0;
+    for (int ic = 0; ic < nc + ntrig; ++ic)
     {
-      size_t ci = rng.Integer(lib.size());
+      bool is_trig = (ic >= nc);
+      size_t ci;
+      if (is_trig)
+      {
+        do { ci = rng.Integer(lib.size()); } while (!fired[ci]);
+      }
+      else
+      {
+        ci = rng.Integer(lib.size());
+      }
       const auto &coll = lib[ci];
       int src = libsrc[ci];
-      double t0 = -PRE + rng.Uniform() * SPAN;
+      double t0;
+      if (is_trig)
+      {
+        t0 = 0.0;  // the trigger collision: charge spans tbins [0, 249]
+      }
+      else if (envn > 0)
+      {
+        // EMPIRICAL piecewise-linear rate envelope (v3.6 rev: the exp form was too
+        // peaked early / too flat late — windows W1/W2/W3 read +5/-8/+6%). Nodes
+        // (t_us, w) from env_spec; t<0 (pre-window) uses w(0). Rejection sampling.
+        auto wof = [&](double t) {
+          if (t <= envt[0]) return envw[0];
+          for (int k = 1; k < envn; ++k)
+            if (t <= envt[k])
+              return envw[k - 1] + (envw[k] - envw[k - 1]) * (t - envt[k - 1]) / (envt[k] - envt[k - 1]);
+          return envw[envn - 1];
+        };
+        do { t0 = -PRE + rng.Uniform() * SPAN; } while (rng.Uniform() * envmax > wof(t0));
+      }
+      else if (rate_tau > 0)
+      {
+        // rejection-sample the symmetric decay envelope w(t)=exp(-|t|/tau)
+        const double tau_us = rate_tau * CLK;
+        do { t0 = -PRE + rng.Uniform() * SPAN; } while (rng.Uniform() > std::exp(-std::fabs(t0) / tau_us));
+      }
+      else
+      {
+        t0 = -PRE + rng.Uniform() * SPAN;
+      }
       int dtb = (int) std::lround(t0 / CLK);
       for (const Pix &p : coll)
       {

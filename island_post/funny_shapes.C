@@ -6,7 +6,7 @@
 // reproduces the asymmetric cluster shapes seen in real data.
 //
 //   LEFT : REAL event 74, layer 15 (canonical cuts layer==15 && adc>0)
-//   RIGHT: SIM v3.5revC (exam6 library through P0-P3), layer 15 — the frame
+//   RIGHT: SIM v3.6 (exam6 library through P0-P3), layer 15 — the frame
 //          whose hit count inside the window is closest to the real event's
 //          (matched-activity choice, printed).
 // Identical axes, binning (pad-pitch-scale phi bins x 1-tbin bins), palette and
@@ -23,11 +23,11 @@
 
 void funny_shapes(const char *realpix =
                       "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",
-                  const char *simpix = "digi_frames_production_v35.root",
+                  const char *simpix = "digi_frames_production_v36.root",
                   int realevent = 74, int simlayer = 15, int simframe = -1, int reallayer = -1,
                   double philo = 0.0, double phihi = 1.0, int tlo = 600, int thi = 800,
                   const char *out = "/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/funny_shapes.png",
-                  const char *tag = "pAu v3.5revC")
+                  const char *tag = "pAu v3.6")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
@@ -105,5 +105,5 @@ void funny_shapes(const char *realpix =
     pr.second->Draw("COLZ");
   }
   c.SaveAs(out);
-  printf("funny_shapes.png: original-purpose view regenerated (real evt %d vs pAu v3.5revC frame %d)\n", realevent, bestfr);
+  printf("funny_shapes.png: original-purpose view regenerated (real evt %d vs pAu v3.6 frame %d)\n", realevent, bestfr);
 }

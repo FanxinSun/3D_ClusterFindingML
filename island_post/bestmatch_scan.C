@@ -20,10 +20,10 @@
 #include <map>
 #include <vector>
 
-void bestmatch_scan(const char *simisl91 = "island91_frames_production_v35.root",
+void bestmatch_scan(const char *simisl91 = "island91_frames_production_v36.root",
                     const char *realisl91 = "island91_real.root",
                     int realevent = 74, int reallayer = 15,
-                    const char *simdigi = "digi_frames_production_v35.root",
+                    const char *simdigi = "digi_frames_production_v36.root",
                     const char *realdigi = "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root")
 {
   auto feats = [&](TTree *t, int ev, int lay, double *out) -> bool {

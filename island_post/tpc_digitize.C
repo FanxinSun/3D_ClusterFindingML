@@ -157,7 +157,7 @@ bool inGap(double phi, int reg)
   return (m < half_gap || m > SEC - half_gap);
 }
 
-void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &share)
+void zigzag(int L, double phi, double sig, std::vector<int> &pads, std::vector<double> &share)
 {
   pads.clear();
   share.clear();
@@ -165,8 +165,8 @@ void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &shar
   const double radius = g.radius;
   const double step = g.slope;
   const double rphi = phi * radius;
-  int blo = (int) std::floor((phi - (CFG::N_SIGMA * CLOUD_EFF / radius) - step - g.phi0) / step);
-  int bhi = (int) std::floor((phi + (CFG::N_SIGMA * CLOUD_EFF / radius) + step - g.phi0) / step);
+  int blo = (int) std::floor((phi - (CFG::N_SIGMA * sig / radius) - step - g.phi0) / step);
+  int bhi = (int) std::floor((phi + (CFG::N_SIGMA * sig / radius) + step - g.phi0) / step);
   int npads = bhi - blo;
   if (npads < 0 || npads > 9)
   {
@@ -193,7 +193,7 @@ void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &shar
     {
       x += 2 * M_PI * radius;
     }
-    const double s = CLOUD_EFF;
+    const double s = sig;
     double ov = (pitch - x) * (std::erf(x / (M_SQRT2 * s)) - std::erf((x - pitch) / (M_SQRT2 * s))) / (pitch * 2) +
                 (pitch + x) * (std::erf((x + pitch) / (M_SQRT2 * s)) - std::erf(x / (M_SQRT2 * s))) / (pitch * 2) +
                 (gaus(x - pitch, s) - gaus(x, s)) * s * s / pitch +
@@ -209,7 +209,7 @@ void zigzag(int L, double phi, std::vector<int> &pads, std::vector<double> &shar
 using namespace TDG;
 
 // ---------------- STAGE A: transport ----------------
-void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud = -1.0)
+void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud = -1.0, double cloud_k = 0.0)
 {
   CLOUD_EFF = (cloud > 0) ? cloud : CFG::CLOUD;
   loadGeo();
@@ -320,7 +320,8 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
         continue;
       }
       double q = rng.Exp(CFG::GAIN);
-      zigzag(L, phi, pads, pshare);
+      double sprf = (cloud_k > 0) ? std::sqrt(CLOUD_EFF * CLOUD_EFF + cloud_k * cloud_k * Ld) : CLOUD_EFF;
+      zigzag(L, phi, sprf, pads, pshare);
       if (pads.empty())
       {
         continue;
@@ -735,9 +736,9 @@ void tpc_readout(const char *rawin, const char *out,
         // fitted as (real per-region trace)/(no-ZS raw spectrum) so the KEPT trace
         // reproduces run 79507 in SHAPE, not just rate (flat p2 inherited the steep
         // raw falloff: x2.5 hot at adc 1, x3 cold at 9-10). p2 = SCALE (nominal 1.0).
-        static const double P2R1[11] = {0, 1.01e-05, 1.98e-05, 2.82e-05, 4.30e-05, 4.98e-05, 8.07e-05, 8.12e-05, 1.28e-04, 1.33e-04, 1.29e-04};
-        static const double P2R2[21] = {0, 1.56e-05, 1.94e-05, 5.07e-05, 7.89e-05, 1.22e-04, 1.54e-04, 1.97e-04, 2.16e-04, 2.90e-04, 2.38e-04, 2.79e-04, 3.39e-04, 3.19e-04, 3.63e-04, 3.73e-04, 3.42e-04, 3.86e-04, 5.73e-04, 4.39e-04, 4.35e-04};
-        static const double P2R3[21] = {0, 5.08e-05, 5.89e-05, 1.13e-04, 1.84e-04, 2.44e-04, 2.65e-04, 3.43e-04, 3.67e-04, 2.97e-04, 4.06e-04, 3.13e-04, 3.63e-04, 2.81e-04, 3.59e-04, 4.26e-04, 4.03e-04, 3.02e-04, 2.59e-04, 2.88e-04, 3.64e-04};
+        static const double P2R1[11] = {0, 1.50e-05, 2.66e-05, 3.69e-05, 4.17e-05, 7.73e-05, 1.13e-04, 1.06e-04, 1.38e-04, 1.93e-04, 1.56e-04};
+        static const double P2R2[21] = {0, 2.84e-05, 2.96e-05, 6.14e-05, 9.70e-05, 1.29e-04, 1.64e-04, 2.46e-04, 2.51e-04, 3.07e-04, 3.00e-04, 2.79e-04, 3.47e-04, 3.97e-04, 3.39e-04, 3.34e-04, 4.04e-04, 4.34e-04, 5.04e-04, 4.83e-04, 4.78e-04};
+        static const double P2R3[21] = {0, 7.79e-05, 9.63e-05, 1.66e-04, 2.15e-04, 2.84e-04, 2.64e-04, 3.11e-04, 3.55e-04, 4.06e-04, 4.13e-04, 3.40e-04, 4.30e-04, 3.66e-04, 3.75e-04, 3.38e-04, 4.62e-04, 3.24e-04, 3.04e-04, 3.31e-04, 4.70e-04};
         int ai = (int) std::lround(col[k].a);
         double pk = 0;
         if (colL < 23 && ai >= 1 && ai <= 10) pk = P2R1[ai];

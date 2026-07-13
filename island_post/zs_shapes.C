@@ -6,11 +6,11 @@
 // It is the figure that exposed the quantized-pedestal binning comb and drove the
 // A/B/B3 shoot-out; the ZS scheme itself (T1=20/T2=11/p=0.39/p2=5e-4) is frozen since B3.
 //
-// v33_b42 edition: REAL anchor vs the v3.3 (B4.2) production, with v3.5revC (B4.1,
+// v33_b42 edition: REAL anchor vs the v3.3 (B4.2) production, with v3.6 (B4.1,
 // no saturation-triggered slow disturbance) kept as the reference curve.
 #include "canon.h"
 
-void zs_shapes(const char *vcur = "digi_frames_production_v35.root",
+void zs_shapes(const char *vcur = "digi_frames_production_v36.root",
                const char *vref = "digi_frames_production_v34.root")
 {
   gROOT->SetBatch(1);
@@ -36,13 +36,13 @@ void zs_shapes(const char *vcur = "digi_frames_production_v35.root",
   auto frac = [](TH1D *h, double a, double b) {
     return h->Integral(h->FindBin(a), h->FindBin(b)) / h->Integral();
   };
-  printf("sub-10 (1-10) fraction   : real %.2e | v3.5 %.2e | v3.4 %.2e\n",
+  printf("sub-10 (1-10) fraction   : real %.2e | v3.6 %.2e | v3.4 %.2e\n",
          frac(ra, 1, 10), frac(h1, 1, 10), frac(h2, 1, 10));
-  printf("shoulder(10-19) fraction : real %.3f | v3.5 %.3f | v3.4 %.3f\n",
+  printf("shoulder(10-19) fraction : real %.3f | v3.6 %.3f | v3.4 %.3f\n",
          frac(ra, 10, 19), frac(h1, 10, 19), frac(h2, 10, 19));
-  printf("hi(20-40) fraction       : real %.3f | v3.5 %.3f | v3.4 %.3f\n",
+  printf("hi(20-40) fraction       : real %.3f | v3.6 %.3f | v3.4 %.3f\n",
          frac(ra, 20, 40), frac(h1, 20, 40), frac(h2, 20, 40));
-  printf("shoulder/hi ratio        : real %.3f | v3.5 %.3f | v3.4 %.3f\n",
+  printf("shoulder/hi ratio        : real %.3f | v3.6 %.3f | v3.4 %.3f\n",
          frac(ra, 10, 19) / frac(ra, 20, 40), frac(h1, 10, 19) / frac(h1, 20, 40),
          frac(h2, 10, 19) / frac(h2, 20, 40));
 
@@ -77,9 +77,9 @@ void zs_shapes(const char *vcur = "digi_frames_production_v35.root",
   L.SetBorderSize(0);
   L.SetFillStyle(0);
   L.AddEntry(hr, "REAL", "l");
-  L.AddEntry(h1, "SIM v3.5revC (composition pass)", "l");
+  L.AddEntry(h1, "SIM v3.6 (composition pass)", "l");
   L.AddEntry(h2, "SIM v3.4 (B4.3, reference)", "l");
   L.Draw();
   c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/zs_shapes.png");
-  printf("saved zs_shapes.png (v3.5 vs v3.4 vs real)\n");
+  printf("saved zs_shapes.png (v3.6 vs v3.4 vs real)\n");
 }
