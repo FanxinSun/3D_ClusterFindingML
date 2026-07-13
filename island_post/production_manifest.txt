@@ -147,3 +147,8 @@ f4a0ded1b0e5d2e6f25b66998d8515029f23af5dceaa3387ec5a4292ba8fe656  4.3G  frames_p
 # <zsize> 3.98 (4.20) vs 4.27 = composition dilution; pixel saturation bump
 # 948.1/5.4. NOTE: digi rows are event-blocked main-then-minis per batch (event
 # ordering non-monotonic; islanders key by event — unaffected).
+
+# ---------------------------------------------------------------------------
+# P4 (2026-07-14): production-clusterizer port outputs (prodclus.C, fw=0 config)
+af56ac656aff51f3e003c3ccccba19fc0a41a8e712592916043e7c96cca91a8b  prodclus_v35.root
+4a618f5ea7cd67afadae70eac64c2d02fdff2efc97428345f1c70971d314708e  prodclus_real_fw0.root
