@@ -1,7 +1,7 @@
 // asym_showcase.C — 凸-shaped PURE-SINGLE cluster gallery (user spec, 2026-07-11):
 //   * ntrks == 1 only (row-aligned truth), size 6-8 (typically 7)
-//   * pixel-level 凸 test: TOP tbin row has exactly ONE pixel, not at a bbox corner,
-//     and the row below is >= 3 pads wide (wide base, centered protrusion up)
+//   * pixel-level 凸 test v4: 4 ORIENTATIONS + UNIFORM brightness (max/med<=3) —
+//     one extreme-row pixel, non-corner, ON a >= 3-wide base (in rotated frame)
 // Outputs: asym_showcase.png (gallery, <=16) + per-specimen FULL-LAYER context views
 // with the specimen circled in red: showcase_ctx_<i>_f<ev>_L<lay>.png
 #include <TCanvas.h>
@@ -148,47 +148,59 @@ void asym_showcase(const char *isl91 = "island91_frames_production_v36.root",
     }
     TH2D *b = s.box;
     int nx = b->GetNbinsX(), ny = b->GetNbinsY();
-    // top occupied row
-    int top = -1;
-    for (int iy = ny; iy >= 1 && top < 0; --iy)
-    {
-      for (int ix = 1; ix <= nx; ++ix)
-      {
+    // 4-orientation tu test (user 2026-07-14): exact, 90-left/right, 180
+    // rotations all in scope. Extract occupied bins, apply the upright test
+    // in 4 coordinate transforms.
+    std::vector<std::array<int, 2>> cp;
+    std::vector<double> adcs;
+    for (int ix = 1; ix <= nx; ++ix)
+      for (int iy = 1; iy <= ny; ++iy)
         if (b->GetBinContent(ix, iy) > 0)
         {
-          top = iy;
-          break;
+          cp.push_back({ix, iy});
+          adcs.push_back(b->GetBinContent(ix, iy));
         }
-      }
-    }
-    if (top < 2)
+    // definition v4: brightness uniformity (max/median <= 3), hot cores read
+    // as overlaps to the eye
+    std::sort(adcs.begin(), adcs.end());
+    if (adcs.empty() || adcs[adcs.size() / 2] <= 0 ||
+        adcs.back() / adcs[adcs.size() / 2] > 3.0)
     {
       continue;
     }
-    int ntop = 0, xtop = -1, nbelow = 0;
-    for (int ix = 1; ix <= nx; ++ix)
+    auto passes = [](const std::vector<std::array<int, 2>> &q) {
+      int tmax = -1 << 30;
+      for (auto &p : q) tmax = std::max(tmax, p[1]);
+      int ntop = 0, xtop = -1 << 30, plo = 1 << 30, phi2 = -1 << 30, nbelow = 0;
+      bool onbase = false;
+      for (auto &p : q)
+      {
+        plo = std::min(plo, p[0]);
+        phi2 = std::max(phi2, p[0]);
+        if (p[1] == tmax) { ntop++; xtop = p[0]; }
+        if (p[1] == tmax - 1) nbelow++;
+      }
+      for (auto &p : q)
+        if (p[1] == tmax - 1 && p[0] == xtop) onbase = true;
+      return ntop == 1 && nbelow >= 3 && onbase && xtop != plo && xtop != phi2;
+    };
+    bool istu = false;
+    for (int o = 0; o < 4 && !istu; ++o)
     {
-      if (b->GetBinContent(ix, top) > 0)
+      std::vector<std::array<int, 2>> q;
+      q.reserve(cp.size());
+      for (auto &p : cp)
       {
-        ntop++;
-        xtop = ix;
+        if (o == 0) q.push_back({p[0], p[1]});
+        else if (o == 1) q.push_back({p[0], -p[1]});
+        else if (o == 2) q.push_back({p[1], p[0]});
+        else q.push_back({p[1], -p[0]});
       }
-      if (b->GetBinContent(ix, top - 1) > 0)
-      {
-        nbelow++;
-      }
+      istu = passes(q);
     }
-    if (ntop != 1 || nbelow < 3)
+    if (!istu)
     {
       continue;
-    }
-    if (b->GetBinContent(xtop, top - 1) <= 0)
-    {
-      continue;  // protrusion must sit ON the base
-    }
-    if (xtop == 1 || xtop == nx)
-    {
-      continue;  // centered-ish, not a corner staircase
     }
     s.keep = true;
     kept++;

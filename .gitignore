@@ -74,3 +74,12 @@ hepmc_pau/pau_chunk_*.dat
 # laser_try host-side binaries (rebuild: laser_try/build.sh)
 laser_try/cm_gen
 laser_try/dl_gen
+# P5 workspace: container images, sandboxes, extracted EL9 runtime, data outputs
+P5/alma9.sif
+P5/alma9_sb/
+P5/el9libs/
+P5/el9bin/
+P5/*.root
+P5/*.log
+P5/P5.txt
+P5/gdml_load_test

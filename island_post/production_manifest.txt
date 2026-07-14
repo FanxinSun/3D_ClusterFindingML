@@ -152,3 +152,11 @@ f4a0ded1b0e5d2e6f25b66998d8515029f23af5dceaa3387ec5a4292ba8fe656  4.3G  frames_p
 # P4 (2026-07-14): production-clusterizer port outputs (prodclus.C, fw=0 config)
 af56ac656aff51f3e003c3ccccba19fc0a41a8e712592916043e7c96cca91a8b  prodclus_v35.root
 4a618f5ea7cd67afadae70eac64c2d02fdff2efc97428345f1c70971d314708e  prodclus_real_fw0.root
+--- v3.6 revF (SEALED 2026-07-14) ---
+transport: zk libs (sigma_prf = sqrt(0.05^2+0.00953^2*Ld)): raw_lib_pau_zk + pauL{a,b,c,d}_zk
+composer: RSPEC 173:1,295:1,306:1,311:1,311:1,312:1,313:1,314:1,317:1,319:1 | trig_n 0.41 (MBD map)
+          env 5.80:1.3542,...,47.96:0.8312 | flash 0.44 | iso 1.0 | seeds 2026091[0-4]
+readout:  g 0.86 thr 20/R1 10 | p2 tables REFIT x scale 0.80 | B4.2 mode2 0.29 | sigma_ped 5 | minis 1.0
+files: frames/digi/island91/island_frames _pau_production_v36 / _v36 | prodclus_v36.root (truth)
+622e409c95fe7ed14879d3bb810b1b9d  prodclus_v36.root
+8253b6f838b3cc14601221ec5c618f6e  island_frames_v36.root

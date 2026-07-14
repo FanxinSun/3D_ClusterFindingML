@@ -33,6 +33,10 @@ cp -f /home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/funny_shapes.pn
       /home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/funny_shapes_v36.png
 
 echo "=== [E] bestmatch scan (criterial, v36) ==="
-root -l -b -q -e 'gROOT->ProcessLine(".L bestmatch_scan.C+"); bestmatch_scan();' 2>&1 | grep -E "BEST|best|score" | tail -8
+# Full output kept (the match rows carry the criterial winner's f/L).
+# After the scan: render the TOP row winner manually with
+#   funny_shapes(real, digi, 74, <L>, <f>, 15, 0,1,600,800,
+#     ".../funny_shapes_v36_bestmatch.png", "v36 BEST-MATCH")
+root -l -b -q -e 'gROOT->ProcessLine(".L bestmatch_scan.C+"); bestmatch_scan();' 2>&1 | grep -vE "^Processing|^Info" | tail -14
 
 echo "=== V3.6revE POSTPROD COMPLETE ==="

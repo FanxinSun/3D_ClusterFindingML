@@ -127,23 +127,65 @@ void bestmatch_scan(const char *simisl91 = "island91_frames_production_v36.root"
       for (int i = 0; i < n; ++i)
         if (comp[i] == c) cp.push_back(px[i]);
       if (cp.size() < 6 || cp.size() > 8) continue;
-      int tmax = -1 << 30;
-      for (auto &p : cp) tmax = std::max(tmax, p[1]);
-      int ntop = 0, xtop = -1 << 30, plo = 1 << 30, phi2 = -1 << 30, nbelow = 0;
-      bool onbase = false;
-      for (auto &p : cp)
+      // 4-orientation tu test (user 2026-07-14: exact, 90-left/right, 180
+      // rotations all in scope). Same upright test applied in 4 transforms.
+      auto passes = [](const std::vector<std::array<int, 2>> &q) {
+        int tmax = -1 << 30;
+        for (auto &p : q) tmax = std::max(tmax, p[1]);
+        int ntop = 0, xtop = -1 << 30, plo = 1 << 30, phi2 = -1 << 30, nbelow = 0;
+        bool onbase = false;
+        for (auto &p : q)
+        {
+          plo = std::min(plo, p[0]);
+          phi2 = std::max(phi2, p[0]);
+          if (p[1] == tmax) { ntop++; xtop = p[0]; }
+          if (p[1] == tmax - 1) nbelow++;
+        }
+        for (auto &p : q)
+          if (p[1] == tmax - 1 && p[0] == xtop) onbase = true;
+        return ntop == 1 && nbelow >= 3 && onbase && xtop != plo && xtop != phi2;
+      };
+      bool istu = false;
+      for (int o = 0; o < 4 && !istu; ++o)
       {
-        plo = std::min(plo, p[0]);
-        phi2 = std::max(phi2, p[0]);
+        std::vector<std::array<int, 2>> q;
+        q.reserve(cp.size());
+        for (auto &p : cp)
+        {
+          if (o == 0) q.push_back({p[0], p[1]});         // up
+          else if (o == 1) q.push_back({p[0], -p[1]});   // 180
+          else if (o == 2) q.push_back({p[1], p[0]});    // 90 right (+pad)
+          else q.push_back({p[1], -p[0]});               // 90 left (-pad)
+        }
+        istu = passes(q);
       }
-      for (auto &p : cp)
+      if (!istu) continue;
+      // definition v3 (user 2026-07-14): the tank must be DISTINCT - no foreign
+      // window pixel within Chebyshev distance 1 of any component pixel
+      // (diagonal attachments split by 4-connectivity were counting as tu).
+      bool isolated = true;
+      for (int i = 0; i < n && isolated; ++i)
       {
-        if (p[1] == tmax) { ntop++; xtop = p[0]; }
-        if (p[1] == tmax - 1) nbelow++;
+        if (comp[i] == c) continue;
+        for (auto &p : cp)
+          if (std::abs(px[i][0] - p[0]) <= 1 && std::abs(px[i][1] - p[1]) <= 1)
+          {
+            isolated = false;
+            break;
+          }
       }
-      for (auto &p : cp)
-        if (p[1] == tmax - 1 && p[0] == xtop) onbase = true;
-      if (ntop == 1 && nbelow >= 3 && onbase && xtop != plo && xtop != phi2) ntu++;
+      if (!isolated) continue;
+      // definition v4 (user 2026-07-14): BRIGHTNESS UNIFORMITY - a hot core
+      // pixel (max/median > 3) reads as two overlapped clusters to the eye,
+      // not one clean tank.
+      {
+        std::vector<int> adcs;
+        for (auto &p : cp) adcs.push_back(p[2]);
+        std::sort(adcs.begin(), adcs.end());
+        double med = adcs[adcs.size() / 2];
+        if (med <= 0 || adcs.back() / med > 3.0) continue;
+      }
+      ntu++;
     }
     return ntu;
   };
@@ -177,17 +219,38 @@ void bestmatch_scan(const char *simisl91 = "island91_frames_production_v36.root"
   int tuR = tucount(pxR[realevent * 100 + reallayer]);
   printf("REAL tu-count (6-8px, window): %d   [CRITERIAL feature 6]\n", tuR);
   std::map<int, char> wantS;
-  for (size_t i = 0; i < 30 && i < best.size(); ++i) wantS[best[i].second] = 1;
+  const int WATCH = 12 * 100 + 15;  // f12 L15: user-judged visually better (2026-07-14)
+  wantS[WATCH] = 1;
+  for (size_t i = 0; i < 60 && i < best.size(); ++i) wantS[best[i].second] = 1;
   std::map<int, std::vector<std::array<int, 3>>> pxS;
   winpix(simdigi, false, pxS, wantS);
   std::vector<std::pair<double, std::pair<int, int>>> rescored;  // (score, (id, ntu))
-  for (size_t i = 0; i < 30 && i < best.size(); ++i)
+  bool watchInPool = false;
+  for (size_t i = 0; i < 60 && i < best.size(); ++i)
   {
+    if (best[i].second == WATCH) watchInPool = true;
     int ntu = tucount(pxS[best[i].second]);
     double sc = best[i].first + std::pow((double) (ntu - tuR) / 1.0, 2);
     rescored.push_back({sc, {best[i].second, ntu}});
   }
+  // user-watch window: force-score even if outside the statistical pool
+  if (!watchInPool)
+  {
+    for (size_t i = 0; i < best.size(); ++i)
+      if (best[i].second == WATCH)
+      {
+        int ntu = tucount(pxS[WATCH]);
+        printf("WATCH f12 L15: stat rank %zu, stat score %.2f, tu %d (real %d)\n",
+               i + 1, best[i].first, ntu, tuR);
+        rescored.push_back({best[i].first + std::pow((double) (ntu - tuR), 2), {WATCH, ntu}});
+        break;
+      }
+  }
   std::sort(rescored.begin(), rescored.end());
+  for (size_t i = 0; i < rescored.size(); ++i)
+    if (rescored[i].second.first == WATCH)
+      printf("WATCH f12 L15 final rank: %zu/%zu (score %.2f, tu %d)\n",
+             i + 1, rescored.size(), rescored[i].first, rescored[i].second.second);
   best.clear();
   for (auto &r : rescored) best.push_back({r.first, r.second.first});
   std::map<int, int> tumap;

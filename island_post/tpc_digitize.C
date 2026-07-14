@@ -283,6 +283,20 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
       curev = ev;
     }
     int L = (int) glayer;
+    if (L < 7 || L > 54)
+    {
+      // P5 dumper writes glayer=99 (PHG4Hit carries no offline layer);
+      // derive from hit radius via the geometry table (nearest ring, 0.7 cm gate)
+      double rr = std::sqrt((double) gx * gx + (double) gy * gy);
+      double dbest = 0.7;
+      int Lb = -1;
+      for (int q = 7; q <= 54; ++q)
+      {
+        double d = std::fabs(rr - GEO[q].radius);
+        if (d < dbest) { dbest = d; Lb = q; }
+      }
+      L = Lb;
+    }
     if (L < 7 || L > 54 || gedep <= 0)
     {
       continue;
