@@ -83,3 +83,14 @@ P5/*.root
 P5/*.log
 P5/P5.txt
 P5/gdml_load_test
+P5/angantyr/pythia8317/
+P5/angantyr/install/
+P5/angantyr/pythia.tgz
+P5/angantyr/*.dat
+P5/angantyr/gen_pau
+P5/*.png
+P5/field_probe_sa
+P5/geo_audit_sa
+P5/region_audit_sa
+P5/standalone_tpc
+P5/*.txt

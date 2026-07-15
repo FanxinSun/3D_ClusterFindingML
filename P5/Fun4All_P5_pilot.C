@@ -28,6 +28,11 @@
 
 #include <Trkr_Diagnostics.C>
 #include <G4_User.C>
+#include <Geant4/G4LogicalVolumeStore.hh>
+#include <Geant4/G4RegionStore.hh>
+#include <Geant4/G4ProductionCuts.hh>
+#include <Geant4/G4VSolid.hh>
+#include <Geant4/G4Material.hh>
 #include <QA.C>
 
 #include <ffamodules/FlagHandler.h>
@@ -233,7 +238,8 @@ int Fun4All_P5_pilot(
   if (Input::HEPMC)
   {
     //! Nominal collision geometry is selected by Input::BEAM_CONFIGURATION
-    Input::ApplysPHENIXBeamParameter(INPUTMANAGER::HepMCInputManager);
+    // P5 GATE: beam-param vertex smearing OFF for exact same-vertex comparison
+    // Input::ApplysPHENIXBeamParameter(INPUTMANAGER::HepMCInputManager);
 
     // optional overriding beam parameters
     //INPUTMANAGER::HepMCInputManager->set_vertex_distribution_width(100e-4, 100e-4, 8, 0);  //optional collision smear in space, time
@@ -736,12 +742,36 @@ int Fun4All_P5_pilot(
 
   se->skip(skip);
   se->run(nEvents);
-  // P5 standalone-G4 plan: export the as-built geometry to GDML once.
+  // P5 GDML export hook REMOVED (one-time export done 2026-07-14;
+  // rerunning it aborts on existing file and corrupts the DST close).
+  // P5 geometry audit (env-gated, 2026-07-15): walk the CONSTRUCTED store.
+  if (getenv("P5_GEO_AUDIT"))
   {
-    PHG4Reco *g4x = (PHG4Reco *) se->getSubsysReco("PHG4RECO");
-    if (g4x) { g4x->Dump_GDML("sphenix_p5.gdml"); std::cout << "P5GDML dumped sphenix_p5.gdml" << std::endl; }
-    else std::cout << "P5GDML PHG4RECO not found" << std::endl;
+    for (auto *lv : *G4LogicalVolumeStore::GetInstance())
+    {
+      std::string n = lv->GetName();
+      auto sp = n.find("0x");
+      if (sp != std::string::npos) n = n.substr(0, sp);
+      double cv = -1;
+      try { cv = lv->GetSolid()->GetCubicVolume() / CLHEP::cm3; } catch (...) {}
+      printf("GEOAUD %s | %s | %.6g\n", n.c_str(),
+             lv->GetMaterial() ? lv->GetMaterial()->GetName().c_str() : "none", cv);
+    }
+    printf("GEOAUD-END %zu volumes\n", G4LogicalVolumeStore::GetInstance()->size());
+    for (auto *rg : *G4RegionStore::GetInstance())
+    {
+      G4ProductionCuts *pc = rg->GetProductionCuts();
+      if (pc)
+        printf("REGAUD %s : gamma %.3f e- %.3f e+ %.3f p %.3f mm (%zu rootLV)\n",
+               rg->GetName().c_str(), pc->GetProductionCut(0) / CLHEP::mm,
+               pc->GetProductionCut(1) / CLHEP::mm, pc->GetProductionCut(2) / CLHEP::mm,
+               pc->GetProductionCut(3) / CLHEP::mm, rg->GetNumberOfRootVolumes());
+      else
+        printf("REGAUD %s : NO CUTS OBJECT (%zu rootLV)\n", rg->GetName().c_str(),
+               rg->GetNumberOfRootVolumes());
+    }
   }
+
   //  se->PrintTimer();
 
   //-----
