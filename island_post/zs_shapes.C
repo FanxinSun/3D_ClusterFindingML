@@ -10,7 +10,7 @@
 // no saturation-triggered slow disturbance) kept as the reference curve.
 #include "canon.h"
 
-void zs_shapes(const char *vcur = "digi_frames_production_v36.root",
+void zs_shapes(const char *vcur = "digi_frames_production_v40b.root",
                const char *vref = "digi_frames_production_v34.root")
 {
   gROOT->SetBatch(1);
@@ -77,7 +77,7 @@ void zs_shapes(const char *vcur = "digi_frames_production_v36.root",
   L.SetBorderSize(0);
   L.SetFillStyle(0);
   L.AddEntry(hr, "REAL", "l");
-  L.AddEntry(h1, "SIM v3.6 (composition pass)", "l");
+  L.AddEntry(h1, "SIM v4.0 (composition pass)", "l");
   L.AddEntry(h2, "SIM v3.4 (B4.3, reference)", "l");
   L.Draw();
   c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/zs_shapes.png");

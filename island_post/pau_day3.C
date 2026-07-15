@@ -1,7 +1,7 @@
 void pau_day3(){
   gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.055);
   TFile*fr=TFile::Open("island91_real.root"); TTree*r=(TTree*)fr->Get("ntp_cluster");
-  TFile*fs=TFile::Open("island91_frames_production_v36.root");  TTree*s=(TTree*)fs->Get("ntp_cluster");
+  TFile*fs=TFile::Open("island91_frames_production_v40b.root");  TTree*s=(TTree*)fs->Get("ntp_cluster");
   TTree*t=(TTree*)fs->Get("ntp_truth"); s->AddFriend(t,"t");
   auto d2=[&](TH1*a,TH1*b,const char*xt,const char*ti,bool logy,bool perEv){
     if(perEv){ a->Scale(1./100.); b->Scale(1./250.); }
@@ -13,7 +13,7 @@ void pau_day3(){
     a->SetTitle(ti); a->GetYaxis()->SetTitleOffset(1.4); a->GetXaxis()->SetTitle(xt); a->GetYaxis()->SetTitle(perEv?"per event":"norm.");
     a->Draw("HIST"); b->Draw("HIST SAME");
     TLegend*L=new TLegend(0.38,0.14,0.89,0.27);L->SetBorderSize(0);L->SetFillStyle(0);
-    L->AddEntry(a,"REAL island91","l"); L->AddEntry(b,"SIM v3.6","l"); L->Draw(); };
+    L->AddEntry(a,"REAL island91","l"); L->AddEntry(b,"SIM v4.0","l"); L->Draw(); };
   auto H=[&](TTree*x,const char*v,const char*hn,int nb,double lo,double hi,const char*cut=""){
     TH1D*h=new TH1D(hn,"",nb,lo,hi); x->Draw(Form("%s>>%s",v,hn),cut,"goff"); return h; };
 

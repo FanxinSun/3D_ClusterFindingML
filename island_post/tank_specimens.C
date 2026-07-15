@@ -117,7 +117,7 @@ void tank_specimens()
 {
   gROOT->SetBatch(1); gStyle->SetOptStat(0);
   const char *REAL = "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root";
-  const char *SIM = "digi_frames_production_v36.root";
+  const char *SIM = "digi_frames_production_v40b.root";
   std::vector<Cand> cands; std::vector<std::string> labs;
   collect(REAL, true, 74, 15, "REAL e74 L15", cands, labs);
   collect(SIM, false, 12, 15, "SIM f12 L15", cands, labs);

@@ -2,9 +2,9 @@ void pau_final(){
   gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.055);
   const char* RF="/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root";
   TFile*fr=TFile::Open(RF); TTree*rh=(TTree*)fr->Get("ntp_hit");
-  TFile*fs=TFile::Open("digi_frames_production_v36.root"); TTree*sh=(TTree*)fs->Get("ntp_hit");
+  TFile*fs=TFile::Open("digi_frames_production_v40b.root"); TTree*sh=(TTree*)fs->Get("ntp_hit");
   TFile*fri=TFile::Open("island91_real.root"); TTree*ri=(TTree*)fri->Get("ntp_cluster");
-  TFile*fsi=TFile::Open("island91_frames_production_v36.root"); TTree*si=(TTree*)fsi->Get("ntp_cluster");
+  TFile*fsi=TFile::Open("island91_frames_production_v40b.root"); TTree*si=(TTree*)fsi->Get("ntp_cluster");
   TTree*st=(TTree*)fsi->Get("ntp_truth");
   auto d2=[&](TVirtualPad*p,TH1D*a,TH1D*b,const char*ti,bool logy){
     p->cd(); if(a->Integral()>0)a->Scale(1./a->Integral()); if(b->Integral()>0)b->Scale(1./b->Integral());
@@ -14,7 +14,7 @@ void pau_final(){
     if(logy){gPad->SetLogy();a->SetMinimum(1e-7);} else a->SetMinimum(0);
     a->Draw("HIST"); b->Draw("HIST SAME");
     TLegend*L=new TLegend(0.42,0.75,0.89,0.89); L->SetBorderSize(0); L->SetFillStyle(0);
-    L->AddEntry(a,"REAL","l"); L->AddEntry(b,"SIM v3.6","l"); L->Draw(); };
+    L->AddEntry(a,"REAL","l"); L->AddEntry(b,"SIM v4.0","l"); L->Draw(); };
   auto H=[&](TTree*x,const char*v,const char*hn,int nb,double lo,double hi,const char*cut=""){
     TH1D*hh=new TH1D(hn,"",nb,lo,hi); x->Draw(Form("%s>>%s",v,hn),cut,"goff"); return hh; };
 
@@ -79,7 +79,7 @@ void pau_final(){
   i6->SetMaximum(std::max(i6->GetMaximum(),j6->GetMaximum())*3);
   i6->Draw("HIST"); j6->Draw("HIST SAME");
   TLegend L6(0.42,0.75,0.89,0.89); L6.SetBorderSize(0); L6.SetFillStyle(0);
-  L6.AddEntry(i6,"REAL","l"); L6.AddEntry(j6,"SIM v3.6","l"); L6.Draw();
+  L6.AddEntry(i6,"REAL","l"); L6.AddEntry(j6,"SIM v4.0","l"); L6.Draw();
   c2.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/pau_islands.png");
 
   // ---- residual table ----

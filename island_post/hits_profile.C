@@ -69,7 +69,7 @@ void hits_profile_pau(){
   gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.05);
   HP r=profile("/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",false,"real");
   HP s4=profile("digi_frames_production_v34.root",true,"v34");
-  HP s=profile("digi_frames_production_v36.root",true,"v36");
+  HP s=profile("digi_frames_production_v40b.root",true,"v36");
   auto d2=[&](TH1*a,TH1*g,TH1*b,const char*xt,const char*ti,bool logy,bool scaleEv){
     if(scaleEv){a->Scale(1./r.nev); g->Scale(1./s4.nev); b->Scale(1./s.nev);}
     else {for(TH1*x:{a,g,b}) if(x->Integral()>0)x->Scale(1./x->Integral());}
@@ -82,7 +82,7 @@ void hits_profile_pau(){
     a->Draw("HIST"); g->Draw("HIST SAME"); b->Draw("HIST SAME");
     TLegend*L=new TLegend(0.42,0.70,0.89,0.89);L->SetBorderSize(0);L->SetFillStyle(0);
     L->AddEntry(a,"REAL ntp_hit","l"); L->AddEntry(g,"SIM v3.4 (B4.3)","l");
-    L->AddEntry(b,"SIM v3.6","l"); L->Draw(); };
+    L->AddEntry(b,"SIM v4.0","l"); L->Draw(); };
   TCanvas c("c","",1500,950); c.Divide(3,2);
   c.cd(1); d2((TH1*)r.run->Clone(),(TH1*)s4.run->Clone(),(TH1*)s.run->Clone(),"consecutive tbins per pad","time-column run length",true,false);
   c.cd(2); d2(r.run,s4.run,s.run,"consecutive tbins per pad","run length (linear zoom)",false,false); r.run->GetXaxis()->SetRangeUser(0.5,10.5);

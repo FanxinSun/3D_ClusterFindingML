@@ -160,3 +160,12 @@ readout:  g 0.86 thr 20/R1 10 | p2 tables REFIT x scale 0.80 | B4.2 mode2 0.29 |
 files: frames/digi/island91/island_frames _pau_production_v36 / _v36 | prodclus_v36.root (truth)
 622e409c95fe7ed14879d3bb810b1b9d  prodclus_v36.root
 8253b6f838b3cc14601221ec5c618f6e  island_frames_v36.root
+--- v4.0 (v40b, SWAP+THIN run-through FINAL, 2026-07-16) ---
+generator: Pythia8.317/Angantyr pAu200 MB local (P5/angantyr, seeds 20260716-29)
+G4: standalone_tpc (local 11.4.2, GDML, CEMC eff-fill rho8.0), 2000 events
+thin: alpha=3 k0=7988, 711 accepted, fired-mean 8021 (target 8200, rate-free)
+libs: raw_lib_v40_0..9 + eval_v40_* + v40_mbd.txt (in-generator MBD proxy)
+calib: sigma(0.040,0.0070) g1.03 iso0.27 p2-tables-refit x0.70 | RSPEC 828-mean
+       (measured-content ~846 kHz-equiv) | trig_n 1.0 PHYSICAL | v3.6 env nodes
+e9f5d034e326ee7aefe69e06caa62363  prodclus_v40b.root
+0e24d12dd27f7f189cffd01747eb36ef  island_frames_v40b.root

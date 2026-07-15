@@ -29,8 +29,8 @@ struct Cand
 }  // namespace AS2
 using namespace AS2;
 
-void asym_showcase(const char *isl91 = "island91_frames_production_v36.root",
-                   const char *pix = "digi_frames_production_v36.root")
+void asym_showcase(const char *isl91 = "island91_frames_production_v40b.root",
+                   const char *pix = "digi_frames_production_v40b.root")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);

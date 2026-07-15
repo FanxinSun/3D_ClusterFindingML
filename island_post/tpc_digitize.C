@@ -750,9 +750,9 @@ void tpc_readout(const char *rawin, const char *out,
         // fitted as (real per-region trace)/(no-ZS raw spectrum) so the KEPT trace
         // reproduces run 79507 in SHAPE, not just rate (flat p2 inherited the steep
         // raw falloff: x2.5 hot at adc 1, x3 cold at 9-10). p2 = SCALE (nominal 1.0).
-        static const double P2R1[11] = {0, 1.50e-05, 2.66e-05, 3.69e-05, 4.17e-05, 7.73e-05, 1.13e-04, 1.06e-04, 1.38e-04, 1.93e-04, 1.56e-04};
-        static const double P2R2[21] = {0, 2.84e-05, 2.96e-05, 6.14e-05, 9.70e-05, 1.29e-04, 1.64e-04, 2.46e-04, 2.51e-04, 3.07e-04, 3.00e-04, 2.79e-04, 3.47e-04, 3.97e-04, 3.39e-04, 3.34e-04, 4.04e-04, 4.34e-04, 5.04e-04, 4.83e-04, 4.78e-04};
-        static const double P2R3[21] = {0, 7.79e-05, 9.63e-05, 1.66e-04, 2.15e-04, 2.84e-04, 2.64e-04, 3.11e-04, 3.55e-04, 4.06e-04, 4.13e-04, 3.40e-04, 4.30e-04, 3.66e-04, 3.75e-04, 3.38e-04, 4.62e-04, 3.24e-04, 3.04e-04, 3.31e-04, 4.70e-04};
+        static const double P2R1[11] = {0, 2.68e-05, 3.00e-05, 4.83e-05, 4.90e-05, 8.66e-05, 9.99e-05, 1.28e-04, 1.93e-04, 1.69e-04, 1.94e-04};
+        static const double P2R2[21] = {0, 3.24e-05, 3.90e-05, 6.49e-05, 1.12e-04, 1.56e-04, 2.14e-04, 2.55e-04, 3.67e-04, 3.59e-04, 3.31e-04, 3.23e-04, 4.49e-04, 3.98e-04, 5.14e-04, 3.80e-04, 5.55e-04, 5.33e-04, 7.04e-04, 6.71e-04, 4.89e-04};
+        static const double P2R3[21] = {0, 9.91e-05, 1.03e-04, 2.05e-04, 2.56e-04, 3.59e-04, 4.05e-04, 3.94e-04, 5.16e-04, 3.91e-04, 4.73e-04, 4.39e-04, 5.17e-04, 4.12e-04, 3.41e-04, 4.63e-04, 5.35e-04, 5.15e-04, 5.13e-04, 5.30e-04, 4.00e-04};
         int ai = (int) std::lround(col[k].a);
         double pk = 0;
         if (colL < 23 && ai >= 1 && ai <= 10) pk = P2R1[ai];

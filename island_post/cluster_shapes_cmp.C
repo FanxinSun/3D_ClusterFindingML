@@ -3,7 +3,7 @@
 // Two canvases at the SEALED v3.6revF state:
 //   [1] cluster_props_cmp.png  — PRODUCTION SEMANTICS (ported TpcClusterizer,
 //       fixed_window=0): real ntp_cluster vs port x real pixels [gate] vs
-//       port x SIM v3.6 — the apples-to-apples the collaboration reads.
+//       port x SIM v4.0 — the apples-to-apples the collaboration reads.
 //   [2] cluster_shapes_cmp.png — ISLAND SEMANTICS (8-connected, true pixel
 //       lists): scalar props + SHAPE MOMENTS (asym, rho) + phisize x zsize
 //       joint maps, real vs sim. Conventions from canon.h.
@@ -49,7 +49,7 @@ void d2(TVirtualPad *p, TH1D *a, TH1D *b, const char *ti, bool logy,
   L->SetBorderSize(0); L->SetFillStyle(0);
   L->AddEntry(a, "REAL", "l");
   if (g) L->AddEntry(g, "port #times real pixels [gate]", "l");
-  L->AddEntry(b, "SIM v3.6", "l");
+  L->AddEntry(b, "SIM v4.0", "l");
   L->Draw();
 }
 }  // namespace CSC
@@ -64,7 +64,7 @@ void cluster_shapes_cmp()
   TFile *fr = TFile::Open(REALNT);
   TTree *rc = (TTree *) fr->Get("ntp_cluster");
   TFile *fg = TFile::Open("prodclus_real_fw0.root"); TTree *gc = (TTree *) fg->Get("ntp_clus");
-  TFile *fs = TFile::Open("prodclus_v36.root");      TTree *sc = (TTree *) fs->Get("ntp_clus");
+  TFile *fs = TFile::Open("prodclus_v40b.root");      TTree *sc = (TTree *) fs->Get("ntp_clus");
   const char *RC = "layer>=7&&layer<=54";
   TCanvas c1("c1", "", 1500, 950); c1.Divide(3, 2);
   d2(c1.cd(1), mk(rc, "zsize", "p1", 30, 0.5, 30.5, RC), mk(sc, "zsize", "p1s", 30, 0.5, 30.5, ""),
@@ -85,7 +85,7 @@ void cluster_shapes_cmp()
 
   // ---------- [2] island semantics: shapes ----------
   TFile *fi = TFile::Open("island_real.root");      TTree *ir = (TTree *) fi->Get("island");
-  TFile *fj = TFile::Open("island_frames_v36.root"); TTree *is = (TTree *) fj->Get("island");
+  TFile *fj = TFile::Open("island_frames_v40b.root"); TTree *is = (TTree *) fj->Get("island");
   TCanvas c2("c2", "", 1500, 1250); c2.Divide(3, 3);
   d2(c2.cd(1), mk(ir, "size", "s1", 60, 0.5, 60.5, ""), mk(is, "size", "s1s", 60, 0.5, 60.5, ""),
      "island size (TRUE pixel count);pixels;norm", true);
@@ -105,7 +105,7 @@ void cluster_shapes_cmp()
   ir->Draw("zsize:phisize>>j1", "", "goff");
   j1->Scale(1. / j1->Integral()); j1->SetStats(0); gPad->SetLogz(); j1->SetMinimum(1e-6); j1->Draw("COLZ");
   c2.cd(8);
-  TH2D *j2 = new TH2D("j2", "SIM v3.6: #phi-size #times z-size;pads;tbins", 10, 0.5, 10.5, 20, 0.5, 20.5);
+  TH2D *j2 = new TH2D("j2", "SIM v4.0: #phi-size #times z-size;pads;tbins", 10, 0.5, 10.5, 20, 0.5, 20.5);
   is->Draw("zsize:phisize>>j2", "", "goff");
   j2->Scale(1. / j2->Integral()); j2->SetStats(0); gPad->SetLogz(); j2->SetMinimum(1e-6); j2->Draw("COLZ");
   c2.cd(9);

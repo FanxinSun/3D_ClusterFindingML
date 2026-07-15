@@ -28,7 +28,7 @@ void cmp_pau(){
   const char* RC="layer>=7&&layer<=54&&adc>0";
   const char* SC="layer>=7&&layer<=54&&adc>0";
   // ---- hits: THREE-WAY — real vs detached frames (CURRENT production v3.3) vs container ----
-  TFile*fb=TFile::Open("digi_frames_production_v36.root"); TTree*bh=(TTree*)fb->Get("ntp_hit");
+  TFile*fb=TFile::Open("digi_frames_production_v40b.root"); TTree*bh=(TTree*)fb->Get("ntp_hit");
   auto d3=[&](TVirtualPad*p,TH1D*a,TH1D*b,TH1D*g,const char*ti,bool logy,const char*slab="SIM detached pipeline (v3.6)"){
     p->cd(); for(TH1D*x:{a,b,g}) if(x->Integral()>0)x->Scale(1./x->Integral());
     a->SetLineColor(kBlue+1); b->SetLineColor(kMagenta+1);
@@ -54,13 +54,13 @@ void cmp_pau(){
   c1.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/cmp_pau_hit.png");
   // ---- clusters: three-way (REAL production | detached islandize91 v2 | stock ghost) ----
   // P4: sim clusters now come from the PORTED production clusterizer on sim digi
-  // (prodclus_v36.root) — same algorithm as the real ntp_cluster curve, so the
+  // (prodclus_v40b.root) — same algorithm as the real ntp_cluster curve, so the
   // cluster canvas is apples-to-apples (the old island91 source mixed algorithms;
   // named residual (a) resolved here).
-  TFile*fb2=TFile::Open("prodclus_v36.root"); TTree*bc=(TTree*)fb2->Get("ntp_clus");
+  TFile*fb2=TFile::Open("prodclus_v40b.root"); TTree*bc=(TTree*)fb2->Get("ntp_clus");
   TCanvas c2("c2","",1500,900); c2.Divide(3,2);
   const char* RCC="layer>=7&&layer<=54";
-  const char* PL="SIM v3.6 #times ported prod. clusterizer";
+  const char* PL="SIM v4.0 #times ported prod. clusterizer";
   d3(c2.cd(1),H(rc,"adc","d1",150,0,6000,RCC),H(bc,"adc","f1",150,0,6000,""),H(sc,"adc","e1",150,0,6000,""),
      "cluster ADC;adc;norm",true,PL);
   d3(c2.cd(2),H(rc,"size","d2",60,0.5,60.5,RCC),H(bc,"phisize*zsize","f2",60,0.5,60.5,""),H(sc,"phisize*zsize","e2",60,0.5,60.5,""),

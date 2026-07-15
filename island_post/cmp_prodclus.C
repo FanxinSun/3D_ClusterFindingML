@@ -2,14 +2,14 @@
 // Three curves per panel:
 //   REAL ntp_cluster  (the production data itself)
 //   port x REAL pixels (the GATE: same algorithm, same pixels -> must overlay real)
-//   port x SIM v3.6 (the first apples-to-apples sim comparison)
+//   port x SIM v4.0 (the first apples-to-apples sim comparison)
 void cmp_prodclus()
 {
   gROOT->SetBatch(1); gStyle->SetOptStat(0);
   TFile*fr=TFile::Open("/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root");
   TTree*rc=(TTree*)fr->Get("ntp_cluster");
   TFile*fg=TFile::Open("prodclus_real_fw0.root"); TTree*gc=(TTree*)fg->Get("ntp_clus");
-  TFile*fs=TFile::Open("prodclus_v36.root");      TTree*sc=(TTree*)fs->Get("ntp_clus");
+  TFile*fs=TFile::Open("prodclus_v40b.root");      TTree*sc=(TTree*)fs->Get("ntp_clus");
   const char* RC="layer>=7&&layer<=54";
   auto mk=[&](TTree*t,const char*v,const char*hn,int nb,double lo,double hi,const char*cut){
     TH1D*h=new TH1D(hn,"",nb,lo,hi); t->Draw(Form("%s>>%s",v,hn),cut,"goff");
@@ -28,7 +28,7 @@ void cmp_prodclus()
     TLegend*L=new TLegend(0.35,0.68,0.89,0.89); L->SetBorderSize(0); L->SetFillStyle(0);
     L->AddEntry(a,"REAL ntp_cluster","l");
     L->AddEntry(g,"port #times real pixels  [gate]","l");
-    L->AddEntry(b,"port #times SIM v3.6","l"); L->Draw(); };
+    L->AddEntry(b,"port #times SIM v4.0","l"); L->Draw(); };
   TCanvas c("c","",1500,950); c.Divide(2,2);
   d3(c.cd(1), mk(rc,"zsize","a1",45,0.5,45.5,RC), mk(gc,"zsize","g1",45,0.5,45.5,""),
      mk(sc,"zsize","b1",45,0.5,45.5,""), "cluster z-size (production semantics);tbins;norm", true);

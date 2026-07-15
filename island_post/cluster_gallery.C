@@ -129,8 +129,8 @@ using namespace FS;
 void cluster_gallery(const char *realpix =
                       "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",
                   const char *realisl = "island_real.root",
-                  const char *simpix = "digi_frames_production_v36.root",
-                  const char *simisl = "island_frames_v36.root")
+                  const char *simpix = "digi_frames_production_v40b.root",
+                  const char *simisl = "island_frames_v40b.root")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);

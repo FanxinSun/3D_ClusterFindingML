@@ -6,7 +6,7 @@
 // reproduces the asymmetric cluster shapes seen in real data.
 //
 //   LEFT : REAL event 74, layer 15 (canonical cuts layer==15 && adc>0)
-//   RIGHT: SIM v3.6 (exam6 library through P0-P3), layer 15 — the frame
+//   RIGHT: SIM v4.0 (exam6 library through P0-P3), layer 15 — the frame
 //          whose hit count inside the window is closest to the real event's
 //          (matched-activity choice, printed).
 // Identical axes, binning (pad-pitch-scale phi bins x 1-tbin bins), palette and
@@ -23,7 +23,7 @@
 
 void funny_shapes(const char *realpix =
                       "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",
-                  const char *simpix = "digi_frames_production_v36.root",
+                  const char *simpix = "digi_frames_production_v40b.root",
                   int realevent = 74, int simlayer = 15, int simframe = -1, int reallayer = -1,
                   double philo = 0.0, double phihi = 1.0, int tlo = 600, int thi = 800,
                   const char *out = "/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/funny_shapes.png",
