@@ -169,3 +169,19 @@ calib: sigma(0.040,0.0070) g1.03 iso0.27 p2-tables-refit x0.70 | RSPEC 828-mean
        (measured-content ~846 kHz-equiv) | trig_n 1.0 PHYSICAL | v3.6 env nodes
 e9f5d034e326ee7aefe69e06caa62363  prodclus_v40b.root
 0e24d12dd27f7f189cffd01747eb36ef  island_frames_v40b.root
+55e89bf20c2477df607afcbb39ed1556  digi_frames_production_v40b.root
+8340d99c7aa24eb79ba018aaa499d4da  island91_frames_production_v40b.root
+bb696a776f3c25f74c587c702a694bf9  hit69_frames_production_v40b.root
+# hit69 (2026-07-20, hits69.C): digi ntp_hit re-exported in the REAL ntuplizer's
+#   69-branch ntp_hit layout (branch-order-identical; conventions measured on the
+#   real file: ecell=adc, zbin=NaN, z=app+105.5*(zelem==0), phielem 12 sectors,
+#   seed=666, run/seg/job/cellID=0; e=0 no per-pixel truth energy; DAQ/tracking
+#   context zeroed; nhittpcall/nclusall/nclustpc/pos/neg filled from sim).
+#   808 duplicate (pad,tbin) pixels adc-merged (67,315,606 rows), event-sorted
+#   contiguous (real is contiguous). Verified: event43 = 271,654 hits = CSV;
+#   nclustpc(43) = 25,523 = CSV; canon z-corr round-trips to digi z exactly.
+# SUPERVISOR HANDOFF SET = hit69 + island91 + csv_sim/sim_event43_* (digi stays
+#   internal: 10-branch, unsorted, carries gtrackID truth).
+# DECLARED (v4.1): transport R1 radii sit 0.118->0.036 cm BELOW real's per-layer
+#   r (L7..L22, linear taper; R2/R3 agree <=0.02): harmonize transport GEO +
+#   island91/hit69/CSV derived x,y,r to the real r table in one coordinated pass.

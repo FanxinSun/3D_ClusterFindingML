@@ -43,12 +43,16 @@ void panel(TVirtualPad *p, TH1D *hr, TH1D *hs, double s, const char *ti, bool lo
 }  // namespace RFP
 using namespace RFP;
 
-void residual_fingerprint(double s = 0.6974)
+// simz: sim apparent-z expression — "z" for digi (stores apparent z directly);
+// "z-105.5*(zelem==0)" for hit69 exports (real storage convention, same corr as real).
+void residual_fingerprint(double s = 0.6974,
+                          const char *simfile = "digi_frames_production_v40b.root",
+                          const char *simz = "z", const char *suffix = "")
 {
   gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.055);
   TFile *fr = TFile::Open("/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root");
   TTree *tr = (TTree *) fr->Get("ntp_hit");
-  TFile *fs = TFile::Open("digi_frames_production_v40b.root");
+  TFile *fs = TFile::Open(simfile);
   TTree *ts = (TTree *) fs->Get("ntp_hit");
   const double NR = 100., NS = 250.;  // frames
 
@@ -78,7 +82,7 @@ void residual_fingerprint(double s = 0.6974)
         "azimuth;#phi;hits/frame", false);
   // 5. apparent z
   panel(c.cd(5), mk(tr, "z-105.5*(zelem==0)", "r5", 88, -110, 110, CANON::TPC_CUT, NR),
-        mk(ts, "z", "s5", 88, -110, 110, "", NS), s,
+        mk(ts, simz, "s5", 88, -110, 110, "", NS), s,
         "apparent z;z [cm];hits/frame", false);
   // 6. residual fraction per region (the scalar fingerprint)
   c.cd(6);
@@ -99,6 +103,6 @@ void residual_fingerprint(double s = 0.6974)
   fr6->SetStats(0); fr6->SetFillColorAlpha(kGreen - 8, 0.5); fr6->SetLineColor(kGreen + 2);
   fr6->SetMinimum(0); fr6->SetMaximum(0.5);
   fr6->Draw("HIST");
-  c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/residual_fingerprint.png");
-  printf("saved residual_fingerprint.png\n");
+  c.SaveAs(Form("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/residual_fingerprint%s.png", suffix));
+  printf("saved residual_fingerprint%s.png\n", suffix);
 }

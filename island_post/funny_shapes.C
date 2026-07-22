@@ -74,7 +74,8 @@ void funny_shapes(const char *realpix =
     for (int f = 0; f < 20; ++f)
     {
       TH1D hs("hs", "", 1, 0, 1);
-      sh->Draw("0.5>>hs", Form("event==%d&&layer==%d&&phi>=%f&&phi<%f&&zbin>=%d&&zbin<%d",
+      // sim time axis: tbin (digi zbin==tbin exactly; hit69 exports have zbin=NaN)
+      sh->Draw("0.5>>hs", Form("event==%d&&layer==%d&&phi>=%f&&phi<%f&&tbin>=%d&&tbin<%d",
                                f, simlayer, philo, phihi, tlo, thi), "goff");
       double d = std::fabs(hs.GetBinContent(1) - realcount);
       if (d < bestd)
@@ -85,10 +86,10 @@ void funny_shapes(const char *realpix =
     }
   }
   printf("funny_shapes: real window hits %.0f; matched sim frame %d (delta %.0f)\n", realcount, bestfr, bestd);
-  TH2D *hs2 = new TH2D("hs2", Form("SIM %s (frame %d) layer %d: zoomed #phi-tbin view;#phi [rad];tbin", tag, bestfr, simlayer),
+  TH2D *hs2 = new TH2D("hs2", Form("SIM %s (event %d) layer %d: zoomed #phi-tbin view;#phi [rad];tbin", tag, bestfr, simlayer),
                        NPHI, philo, phihi, thi - tlo, tlo, thi);
-  sh->Draw(Form("zbin:phi>>hs2"),
-           Form("adc*(event==%d&&layer==%d&&phi>=%f&&phi<%f&&zbin>=%d&&zbin<%d)",
+  sh->Draw(Form("tbin:phi>>hs2"),
+           Form("adc*(event==%d&&layer==%d&&phi>=%f&&phi<%f&&tbin>=%d&&tbin<%d)",
                 bestfr, simlayer, philo, phihi, tlo, thi),
            "goff");
 
@@ -105,5 +106,5 @@ void funny_shapes(const char *realpix =
     pr.second->Draw("COLZ");
   }
   c.SaveAs(out);
-  printf("funny_shapes.png: original-purpose view regenerated (real evt %d vs pAu v3.6 frame %d)\n", realevent, bestfr);
+  printf("funny_shapes: original-purpose view regenerated (real evt %d vs %s frame %d)\n", realevent, tag, bestfr);
 }

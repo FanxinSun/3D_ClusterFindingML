@@ -14,7 +14,7 @@
 
 void residuals_evidence(const char *realisl = "island_real.root",
                         const char *simisl = "island_frames_v40b.root",
-                        const char *tag = "SIM v4.0")
+                        const char *tag = "SIM v4.0", const char *suffix = "")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
@@ -82,7 +82,7 @@ void residuals_evidence(const char *realisl = "island_real.root",
   L2->AddEntry(q2, Form("%s (per frame, %d): flat #times%.2f", tag, (int) nS, ratio), "l");
   L2->Draw();
 
-  c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/residuals_evidence.png");
+  c.SaveAs(Form("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/residuals_evidence%s.png", suffix));
   printf("islands/frame: real %.0f | sim %.0f (x%.2f); <phisize> real %.2f | sim %.2f (%+.1f%%)\n",
          q1->Integral(), q2->Integral(), ratio, m1, m2, 100. * (m2 - m1) / m1);
 }

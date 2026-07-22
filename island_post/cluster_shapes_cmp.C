@@ -55,7 +55,7 @@ void d2(TVirtualPad *p, TH1D *a, TH1D *b, const char *ti, bool logy,
 }  // namespace CSC
 using namespace CSC;
 
-void cluster_shapes_cmp()
+void cluster_shapes_cmp(const char *suffix = "")
 {
   gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.055);
   const char *REALNT = "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root";
@@ -80,8 +80,8 @@ void cluster_shapes_cmp()
      mk(gc, "phisize*zsize", "p5g", 60, 0.5, 120.5, ""));
   d2(c1.cd(6), mk(rc, "adc/(phisize*zsize)", "p6", 80, 0, 400, RC), mk(sc, "adc/(phisize*zsize)", "p6s", 80, 0, 400, ""),
      "charge density adc/area;ADU per cell;norm", true, mk(gc, "adc/(phisize*zsize)", "p6g", 80, 0, 400, ""));
-  c1.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/cluster_props_cmp.png");
-  printf("saved cluster_props_cmp.png\n");
+  c1.SaveAs(Form("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/cluster_props_cmp%s.png", suffix));
+  printf("saved cluster_props_cmp%s.png\n", suffix);
 
   // ---------- [2] island semantics: shapes ----------
   TFile *fi = TFile::Open("island_real.root");      TTree *ir = (TTree *) fi->Get("island");
@@ -93,10 +93,12 @@ void cluster_shapes_cmp()
      "island #phi-size;pads;norm", true);
   d2(c2.cd(3), mk(ir, "zsize", "s3", 30, 0.5, 30.5, ""), mk(is, "zsize", "s3s", 30, 0.5, 30.5, ""),
      "island z-size;tbins;norm", true);
-  d2(c2.cd(4), mk(ir, "asym", "s4", 50, 0, 1, ""), mk(is, "asym", "s4s", 50, 0, 1, ""),
-     "SHAPE: charge asymmetry;asym;norm", false);
-  d2(c2.cd(5), mk(ir, "rho", "s5", 50, 0, 5, ""), mk(is, "rho", "s5s", 50, 0, 5, ""),
-     "SHAPE: rms radius #rho;#rho [cells];norm", false);
+  d2(c2.cd(4), mk(ir, "asym", "s4", 50, -1, 1, ""), mk(is, "asym", "s4s", 50, -1, 1, ""),
+     "SHAPE: charge asymmetry (signed, along t);asym;norm", false);
+  // NOTE: islandize `rho` IS the bbox fill (duplicate of pad 6) - replaced
+  // with charge concentration, the observable behind the nbright/hot-core family.
+  d2(c2.cd(5), mk(ir, "maxadc/adc", "s5", 50, 0, 1, ""), mk(is, "maxadc/adc", "s5s", 50, 0, 1, ""),
+     "SHAPE: charge concentration maxadc/adc;fraction;norm", false);
   d2(c2.cd(6), mk(ir, "size/(phisize*zsize)", "s6", 40, 0, 1.01, ""), mk(is, "size/(phisize*zsize)", "s6s", 40, 0, 1.01, ""),
      "SHAPE: fill factor size/bbox;fill;norm", false);
   // joint phisize x zsize maps, column-normalized visual
@@ -112,15 +114,17 @@ void cluster_shapes_cmp()
   TH2D *j3 = (TH2D *) j2->Clone("j3"); j3->Divide(j1);
   j3->SetTitle("ratio SIM/REAL;pads;tbins");
   j3->SetStats(0); j3->SetMinimum(0.2); j3->SetMaximum(5); gPad->SetLogz(); j3->Draw("COLZ");
-  c2.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/cluster_shapes_cmp.png");
-  printf("saved cluster_shapes_cmp.png\n");
+  c2.SaveAs(Form("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/cluster_shapes_cmp%s.png", suffix));
+  printf("saved cluster_shapes_cmp%s.png\n", suffix);
 
   // headline numbers
   for (auto pr : {std::make_pair(ir, "REAL"), std::make_pair(is, "SIM ")})
   {
     TTree *t = pr.first;
-    TH1D ha("ha", "", 50, 0, 1), hr("hr", "", 50, 0, 5);
-    t->Draw("asym>>ha", "", "goff"); t->Draw("rho>>hr", "", "goff");
-    printf("SHAPES %s: <asym> %.3f | <rho> %.3f\n", pr.second, ha.GetMean(), hr.GetMean());
+    TH1D ha("ha", "", 50, -1, 1), hb("hb", "", 50, 0, 1), hc("hc", "", 50, 0, 1);
+    t->Draw("asym>>ha", "", "goff"); t->Draw("abs(asym)>>hb", "", "goff");
+    t->Draw("maxadc/adc>>hc", "", "goff");
+    printf("SHAPES %s: <asym signed> %+.3f | <|asym|> %.3f | <maxadc/adc> %.3f\n",
+           pr.second, ha.GetMean(), hb.GetMean(), hc.GetMean());
   }
 }

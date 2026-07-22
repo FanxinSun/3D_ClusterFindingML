@@ -23,7 +23,9 @@ inline const char *TPC_CUT = "layer>=7&&layer<=54&&adc>0";
 // observables (drops 1.9% of the time axis). LONG-TERM (queued): inject a transported
 // PHG4TpcCentralMembrane stripe flash in frame_composer -> labeled noise class cls=2.
 inline const char *TPC_CUT_NOLASER = "layer>=7&&layer<=54&&adc>0&&!(tbin>=322&&tbin<=340)";
-inline const char *SIM_NOLASER = "!(zbin>=322&&zbin<=340)";  // apply symmetrically to sim
+// (sim digi zbin==tbin exactly, all rows verified 2026-07-20; hit69 exports carry
+//  zbin=NaN per the real TPC convention -> cut on tbin, valid for every sim source)
+inline const char *SIM_NOLASER = "!(tbin>=322&&tbin<=340)";  // apply symmetrically to sim
 
 // Stock-ana.331 evaluator/port adc and maxadc are pedestal-UNSUBTRACTED; real production
 // (and the detached B3 readout) are subtracted. Bridge stock curves with these expressions.

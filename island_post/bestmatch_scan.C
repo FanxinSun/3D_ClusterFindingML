@@ -15,6 +15,7 @@
 #include <TH1D.h>
 #include <TTree.h>
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdio>
 #include <map>
@@ -189,18 +190,19 @@ void bestmatch_scan(const char *simisl91 = "island91_frames_production_v40b.root
     }
     return ntu;
   };
-  auto winpix = [&](const char *fn, bool isReal, std::map<int, std::vector<std::array<int, 3>>> &out,
+  // time axis "tbin" for BOTH sides (sim digi zbin==tbin exactly; hit69 zbin=NaN)
+  auto winpix = [&](const char *fn, std::map<int, std::vector<std::array<int, 3>>> &out,
                     const std::map<int, char> &want) {
     TFile *fd = TFile::Open(fn);
     TTree *t = (TTree *) fd->Get("ntp_hit");
     float ev, lay, pb, tb, adc, ph;
     t->SetBranchStatus("*", 0);
     for (auto bn : {"event", "layer", "phibin", "adc", "phi"}) t->SetBranchStatus(bn, 1);
-    t->SetBranchStatus(isReal ? "tbin" : "zbin", 1);
+    t->SetBranchStatus("tbin", 1);
     t->SetBranchAddress("event", &ev);
     t->SetBranchAddress("layer", &lay);
     t->SetBranchAddress("phibin", &pb);
-    t->SetBranchAddress(isReal ? "tbin" : "zbin", &tb);
+    t->SetBranchAddress("tbin", &tb);
     t->SetBranchAddress("adc", &adc);
     t->SetBranchAddress("phi", &ph);
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
@@ -215,7 +217,7 @@ void bestmatch_scan(const char *simisl91 = "island91_frames_production_v40b.root
   };
   std::map<int, char> wantR{{realevent * 100 + reallayer, 1}};
   std::map<int, std::vector<std::array<int, 3>>> pxR;
-  winpix(realdigi, true, pxR, wantR);
+  winpix(realdigi, pxR, wantR);
   int tuR = tucount(pxR[realevent * 100 + reallayer]);
   printf("REAL tu-count (6-8px, window): %d   [CRITERIAL feature 6]\n", tuR);
   std::map<int, char> wantS;
@@ -223,7 +225,7 @@ void bestmatch_scan(const char *simisl91 = "island91_frames_production_v40b.root
   wantS[WATCH] = 1;
   for (size_t i = 0; i < 60 && i < best.size(); ++i) wantS[best[i].second] = 1;
   std::map<int, std::vector<std::array<int, 3>>> pxS;
-  winpix(simdigi, false, pxS, wantS);
+  winpix(simdigi, pxS, wantS);
   std::vector<std::pair<double, std::pair<int, int>>> rescored;  // (score, (id, ntu))
   bool watchInPool = false;
   for (size_t i = 0; i < 60 && i < best.size(); ++i)
