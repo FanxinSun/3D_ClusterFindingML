@@ -24,8 +24,18 @@ void residuals_evidence(const char *realisl = "island_real.root",
   TTree *tr = (TTree *) fi->Get("island");
   TFile *fd = TFile::Open(simisl);
   TTree *td = (TTree *) fd->Get("island");
-  const double nR = tr->GetMaximum("event") - tr->GetMinimum("event") + 1;
-  const double nS = td->GetMaximum("event") - td->GetMinimum("event") + 1;
+  // distinct-event counts (range arithmetic breaks on non-contiguous subsets
+  // such as the complete-62 real reference)
+  auto nev = [](TTree *t) {
+    float ev; t->SetBranchStatus("*", 0);
+    t->SetBranchStatus("event", 1); t->SetBranchAddress("event", &ev);
+    std::set<int> s;
+    for (Long64_t i = 0; i < t->GetEntries(); ++i) { t->GetEntry(i); s.insert((int) ev); }
+    t->SetBranchStatus("*", 1);
+    return (double) s.size();
+  };
+  const double nR = nev(tr);
+  const double nS = nev(td);
 
   TCanvas c("c", "", 1300, 520);
   c.Divide(2, 1);

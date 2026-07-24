@@ -185,3 +185,31 @@ bb696a776f3c25f74c587c702a694bf9  hit69_frames_production_v40b.root
 # DECLARED (v4.1): transport R1 radii sit 0.118->0.036 cm BELOW real's per-layer
 #   r (L7..L22, linear taper; R2/R3 agree <=0.02): harmonize transport GEO +
 #   island91/hit69/CSV derived x,y,r to the real r table in one coordinated pass.
+--- v5.1 (pp species-correct, 2026-07-22/23) ---
+generator: Pythia8.317 native pp200 MB SoftQCD:inelastic, 10x2000 ev, eps_MBD
+  proxy 0.519 geometric; NO THIN. Full config in pp_pipeline.sh (envelope
+  ENV51, RSPEC99 = per-event rmbd/eps, electronics gain 1.005 p2 0.81
+  tail 0.016). NOTE: this production embeds iter-1 envelope (candidate);
+  final production recommended post-eps ruling.
+38f2ec96c405a2f5114afc1f5d92d715  hit69_frames_production_v51.root
+fa7f3863d71fc2caffc02fad9fdc777a  island91_frames_production_v51.root
+# hit69 v51: 69,913,078 rows (933 dupes merged, event-contiguous, sort native
+#   in hits69.C). CSV exemplar = sim event 6 (median occupancy, 278,958 px):
+#   csv_sim/sim_event6_{hits 278953, ntp_cluster 26675, ntp_clus_trk 10394}.
+#   Closure verified: tree event6 == CSV rows exactly. pAu-era sim_event43
+#   CSVs relocated to csv_sim/superseded_pau_v40b/ (wrong species).
+# SUPERVISOR HANDOFF SET (v51) = hit69 + island91 + sim_event6 CSVs.
+--- v5.2 FINAL (pp, 2026-07-24): fixed truth + fixed fired trigger + ENV52 +
+--- eps=0.588 (rspec99_v52) + v5.1 electronics. Full config: pp_pipeline.sh.
+737ea725e59f34b75dff4f7dae39f531  hit69_frames_production_v52.root
+50c1a1cd38ff9e4ca40010b7f83b9a9a  island91_frames_production_v52.root
+1404c813950aea7170b35d87269457ae  prodclus_v52.root
+# hit69 v52: 63,162,181 rows (832 dupes merged, event-contiguous). prodclus
+#   7,230,530 clusters 52/46/2 track/looper/noise (FIRST correct-label set;
+#   v5.0/v5.1/pAu-era labels conflated - see 2026-07-24 ledger). CSV exemplar
+#   = sim event 111 (median): sim_event111_{hits 249175, ntp_cluster 24389,
+#   ntp_clus_trk 14147}. Closure exact. Acceptance: windows +0.1/-0.8/+0.7%,
+#   step +0.13% (EXACT), bump +0.9%, CV -5.9% vs COMPLETE-62; open =
+#   generator content -22% + declared response set (size/sh-hi/run-shape).
+# SUPERVISOR HANDOFF (v52) = hit69 + island91 + sim_event111 CSVs (trk CSV
+#   shippable for the first time).

@@ -14,7 +14,11 @@
 #include <TMath.h>
 #include <fstream>
 
-void GenerateSimCSVs(int targetFrame = 43)  // default = median-occupancy sim event
+// targetFrame = the production's median-occupancy sim event (re-derived per
+// production: v40b pAu -> 43; v51 pp -> 6). File args select the production.
+void GenerateSimCSVs(int targetFrame = 6,
+                     const char *digifile = "digi_frames_production_v51.root",
+                     const char *islfile = "island91_frames_production_v51.root")
 {
   TString scriptPath = gSystem->DirName(gInterpreter->GetCurrentMacroName());
   if (scriptPath.IsNull()) scriptPath = ".";
@@ -22,7 +26,7 @@ void GenerateSimCSVs(int targetFrame = 43)  // default = median-occupancy sim ev
 
   // ---- hits ----
   {
-    TFile *f = TFile::Open(base + "digi_frames_production_v40b.root");
+    TFile *f = TFile::Open(base + digifile);
     TTree *t = (TTree *) f->Get("ntp_hit");
     Float_t event, layer, phi, tbin, adc, zelem, z;
     t->SetBranchStatus("*", 0);
@@ -79,7 +83,7 @@ void GenerateSimCSVs(int targetFrame = 43)  // default = median-occupancy sim ev
 
   // ---- clusters (all) + truth-track clusters ----
   {
-    TFile *f = TFile::Open(base + "island91_frames_production_v40b.root");
+    TFile *f = TFile::Open(base + islfile);
     TTree *c = (TTree *) f->Get("ntp_cluster");
     TTree *u = (TTree *) f->Get("ntp_truth");
     Float_t event, x, y, z, adc, zelem, layer, cls;

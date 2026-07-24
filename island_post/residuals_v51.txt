@@ -1,0 +1,30 @@
+# v5.1 residual summary (2026-07-22): dev% = sim/real - 1
+# group | label | dev_vs_ALL_real | dev_vs_COMPLETE_real
+# DUAL REFERENCE per user directive 2026-07-22: compare to BOTH all-100
+# (as recorded) and complete-62 (full windows) until the team rules on the
+# truncation. v5.1 = locked envelope (iter-1) + RSPEC99 + electronics
+# (gain 1.005, p2 0.81, tail 0.016). Notes: fired-mean row = v5.0-electronics
+# gate values (re-gate at v5.1 electronics pending); phisize binned-mean
+# conventions; complete refs from targets_v51.txt.
+time|window w1 (early)|-10.7|+5.9
+time|window w2 (mid)|-1.3|+2.6
+time|window w3 (late)|+11.8|-7.3
+time|trigger bump|-11.2|-1.5
+time|drift-edge step|-2.5|-2.1
+time|fired-mean (v5.0 gate)|+15.2|-11.8
+content|px/event mean|+8.9|-13.6
+content|px/event CV|-50.4|-5.9
+content|R1 px share|-7.9|-5.3
+content|R2 px share|+3.1|+1.2
+content|R3 px share|+8.2|+6.2
+content|low-adc(<30)/event|+14.2|-9.5
+islands|islands/event|+16.2|-7.4
+islands|island <size>|+0.7|-14.8
+islands|island <phi-size>|-1.5|-1.7
+shapes|<abs asym>|+3.8|+3.8
+shapes|<maxadc/adc>|+7.9|+8.2
+pixel|pixmean|+2.3|+0.7
+pixel|sub10 trace|+9.5|-2.9
+pixel|sh/hi band|+16.4|+17.9
+pixel|run mean|-2.3|-2.8
+pixel|run tail P10|+17.6|+16.2

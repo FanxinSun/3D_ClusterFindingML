@@ -68,6 +68,7 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
   // ---- load pixel library ----
   std::vector<std::vector<Pix> > lib;
   std::vector<int> libsrc;  // source-file index per collision
+  std::vector<int> libevt;  // EVENT VALUE within source file per collision
   TString s(libs);
   auto *tok = s.Tokenize(",");
   for (int i = 0; i < tok->GetEntries(); ++i)
@@ -99,6 +100,9 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         lib.push_back({});
         lib.back().reserve(500000);
         libsrc.push_back(i);
+        libevt.push_back(cur);  // EVENT VALUE in the source file (2026-07-24:
+        // zero-pixel events are absent from raw_lib, so POSITION counting
+        // misaligned both the truth lookup and the MBD fired-flag lookup)
       }
       lib.back().push_back({(uint8_t) layer, (uint8_t) side, (uint16_t) pad, (uint16_t) tb, q, (int32_t) trk});
     }
@@ -144,10 +148,8 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         fclose(fw);
       }
       auto *ht = TString(mt->At(1)->GetName()).Tokenize(",");
-      // rebuild per-lib-collision fired flags via (libsrc, local index)
-      std::vector<int> local(lib.size(), 0);
-      std::map<int, int> counter;
-      for (size_t ci = 0; ci < lib.size(); ++ci) local[ci] = counter[libsrc[ci]]++;
+      // per-lib-collision fired flags via (libsrc, event-in-file)
+      const std::vector<int> &local = libevt;
       nfired = 0;
       for (size_t ci = 0; ci < lib.size(); ++ci)
       {
@@ -240,7 +242,10 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
 
   // ---- v2: truth tables per source eval ----
   const bool TRUTH = evals && evals[0];
-  std::vector<std::unordered_map<int, TRec> > ttab;
+  // keyed (event<<32 | gtrackID): gtrackID RESTARTS per generator event, so a
+  // trackID-only key conflated ~91% of tracks onto first-seen records
+  // (2026-07-24 fix; the ML thread measured cls labels only ~79% correct)
+  std::vector<std::unordered_map<uint64_t, TRec> > ttab;
   if (TRUTH)
   {
     TString es(evals);
@@ -255,12 +260,13 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         printf("frame_composer: no ntp_g4hit in %s\n", etok->At(i)->GetName());
         continue;
       }
-      float gid, gpx, gpy, gfl, gem, gpr;
+      float gev, gid, gpx, gpy, gfl, gem, gpr;
       g->SetBranchStatus("*", 0);
-      for (const char *b : {"gtrackID", "gpx", "gpy", "gflavor", "gembed", "gprimary"})
+      for (const char *b : {"event", "gtrackID", "gpx", "gpy", "gflavor", "gembed", "gprimary"})
       {
         g->SetBranchStatus(b, 1);
       }
+      g->SetBranchAddress("event", &gev);
       g->SetBranchAddress("gtrackID", &gid);
       g->SetBranchAddress("gpx", &gpx);
       g->SetBranchAddress("gpy", &gpy);
@@ -275,8 +281,8 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         {
           continue;
         }
-        int id = (int) gid;
-        if (ttab.back().count(id))
+        uint64_t key = ((uint64_t) (uint32_t) (int) gev << 32U) | (uint32_t) (int) gid;
+        if (ttab.back().count(key))
         {
           continue;
         }
@@ -285,7 +291,7 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         r.flavor = gfl;
         r.embed = gem;
         r.primary = gpr;
-        ttab.back()[id] = r;
+        ttab.back()[key] = r;
       }
       printf("frame_composer: truth table %d: %zu tracks (%s)\n", i, ttab.back().size(), etok->At(i)->GetName());
       f->Close();
@@ -320,15 +326,20 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
   }
   std::unordered_map<uint64_t, Contrib> merge;
   merge.reserve(1 << 22);
-  std::unordered_map<uint64_t, int32_t> remap;  // (src<<32 | trk) -> newid
-  std::vector<std::pair<uint64_t, int32_t> > remap_list;
+  // (drawIdx<<32 | trk) -> newid: keyed per DRAW so the same library collision
+  // drawn twice in a frame stays two physical collisions, and same-id tracks
+  // from different collisions never merge (2026-07-24 fix). Flash uses the
+  // reserved slot 0xFF; collision draws use ic+0x100. Truth is resolved at
+  // first encounter into truth_rows (newid, TRec) — no deferred key decode.
+  std::unordered_map<uint64_t, int32_t> remap;
+  std::vector<std::pair<int32_t, TRec> > truth_rows;
   int32_t isoid = 0;  // isolated-background truth ids (src 0xFE)
   double totpx = 0, totcoll = 0;
   for (int fr = 0; fr < nframes; ++fr)
   {
     merge.clear();
     remap.clear();
-    remap_list.clear();
+    truth_rows.clear();
     int32_t nextid = 1;
     double mu_f = mu;
     if (!rspec.empty())
@@ -353,12 +364,12 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         int32_t nid = 0;
         if (TRUTH && p.trk != -9999)
         {
-          uint64_t rk = (0xFFULL << 32U) | (uint32_t) p.trk;  // src=0xFF = flash
+          uint64_t rk = (0xFFULL << 32U) | (uint32_t) p.trk;  // draw slot 0xFF = flash
           auto it = remap.find(rk);
           if (it == remap.end())
           {
             it = remap.emplace(rk, nextid++).first;
-            remap_list.push_back({rk, it->second});
+            truth_rows.push_back({it->second, TRec()});  // flash: no truth table
           }
           nid = it->second;
         }
@@ -480,12 +491,19 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         int32_t nid = 0;
         if (TRUTH && p.trk != -9999)
         {
-          uint64_t rk = ((uint64_t) (uint32_t) src << 32U) | (uint32_t) p.trk;
+          uint64_t rk = ((uint64_t) (uint32_t) (ic + 0x100) << 32U) | (uint32_t) p.trk;
           auto it = remap.find(rk);
           if (it == remap.end())
           {
             it = remap.emplace(rk, nextid++).first;
-            remap_list.push_back({rk, it->second});
+            TRec r;
+            if (src < (int) ttab.size())
+            {
+              uint64_t tk = ((uint64_t) (uint32_t) libevt[ci] << 32U) | (uint32_t) p.trk;
+              auto tt = ttab[src].find(tk);
+              if (tt != ttab[src].end()) r = tt->second;
+            }
+            truth_rows.push_back({it->second, r});
           }
           nid = it->second;
         }
@@ -538,7 +556,7 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
         {
           uint64_t rk = (0xFEULL << 32U) | (uint32_t) isoid++;
           auto it = remap.emplace(rk, nextid++).first;
-          remap_list.push_back({rk, it->second});
+          truth_rows.push_back({it->second, TRec()});  // iso background: no truth
           nid = it->second;
         }
         uint64_t key = ((uint64_t) lay << 40U) | ((uint64_t) side << 32U) |
@@ -575,20 +593,10 @@ void frame_composer(const char *libs = "raw_lib_a.root,raw_lib_b.root",
     }
     if (TRUTH)
     {
-      for (const auto &rl : remap_list)
+      for (const auto &tr2 : truth_rows)
       {
-        int src = (int) (rl.first >> 32U);
-        int32_t trk = (int32_t) (uint32_t) (rl.first & 0xFFFFFFFFULL);
-        TRec r;
-        if (src < (int) ttab.size())
-        {
-          auto it = ttab[src].find(trk);
-          if (it != ttab[src].end())
-          {
-            r = it->second;
-          }
-        }
-        ot->Fill((float) (fr + ev0), (float) rl.second, r.pt, r.flavor, r.embed, r.primary);
+        ot->Fill((float) (fr + ev0), (float) tr2.first, tr2.second.pt,
+                 tr2.second.flavor, tr2.second.embed, tr2.second.primary);
       }
     }
     totpx += merge.size();

@@ -1,0 +1,12 @@
+# eps_MBD scan results (2026-07-24): dev% vs COMPLETE-62 targets per eps point.
+# Protocol: per-point envelope re-derivation (env_solve.py), CRN seeds
+# (flat 20260731, pilot 20260732), frozen v5.1 electronics, 100-frame pilots.
+# Class B = fit family; Class A = reported only (never fit).
+# eps      w1     w2     w3    bump   step    CV   |  px/ev  lowadc islands size
+0.45    -4.69  +1.66  +1.03  -8.94  -2.42  -9.21  | +3.04  +7.73  +9.43  -9.92
+0.50    -2.93  -1.72  +2.61  -5.37  -4.73 -13.39  | -9.12  -5.21  -2.59 -10.94
+0.519   -3.94  +2.83  -0.85  -8.42  -1.90  -5.02  | -12.95 -9.19  -7.01 -10.38
+0.55    -0.74  -2.51  +1.67  +3.23  -1.15 -12.55  | -14.24 -10.46 -7.62 -11.12
+0.60    +1.23  +2.31  -3.96  -1.64  +2.04  -2.93  | -20.04 -15.85 -14.68 -10.38
+0.65    +2.76  -1.69  -0.88  +1.59  -6.21  +3.77  | -31.52 -28.28 -25.53 -11.77
+# raw batteries in pp_logs/eps_scan2.log; targets in targets_v51.txt

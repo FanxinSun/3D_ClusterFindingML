@@ -16,6 +16,7 @@
 
 namespace RFP
 {
+const char *SIMTAG = "SIM v4.0";
 void panel(TVirtualPad *p, TH1D *hr, TH1D *hs, double s, const char *ti, bool logy)
 {
   p->cd();
@@ -36,7 +37,7 @@ void panel(TVirtualPad *p, TH1D *hr, TH1D *hs, double s, const char *ti, bool lo
   TLegend *L = new TLegend(0.45, 0.68, 0.89, 0.89);
   L->SetBorderSize(0); L->SetFillStyle(0);
   L->AddEntry(hr, "REAL (per frame)", "l");
-  L->AddEntry(hs, Form("SIM v4.0 #times %.2f (collision part)", s), "l");
+  L->AddEntry(hs, Form("%s #times %.2f (collision part)", SIMTAG, s), "l");
   L->AddEntry(res, "RESIDUAL (unexplained)", "f");
   L->Draw();
 }
@@ -45,16 +46,22 @@ using namespace RFP;
 
 // simz: sim apparent-z expression — "z" for digi (stores apparent z directly);
 // "z-105.5*(zelem==0)" for hit69 exports (real storage convention, same corr as real).
+// realfile/NR: default = as-recorded 100 events; pass real_complete62_hits.root
+// with NR=62 for the COMPLETE-window reference (dual-reference directive).
 void residual_fingerprint(double s = 0.6974,
                           const char *simfile = "digi_frames_production_v40b.root",
-                          const char *simz = "z", const char *suffix = "")
+                          const char *simz = "z", const char *suffix = "",
+                          const char *tag = "SIM v4.0",
+                          const char *realfile = "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",
+                          double NR = 100.)
 {
+  RFP::SIMTAG = tag;
   gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.055);
-  TFile *fr = TFile::Open("/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root");
+  TFile *fr = TFile::Open(realfile);
   TTree *tr = (TTree *) fr->Get("ntp_hit");
   TFile *fs = TFile::Open(simfile);
   TTree *ts = (TTree *) fs->Get("ntp_hit");
-  const double NR = 100., NS = 250.;  // frames
+  const double NS = 250.;  // sim frames
 
   auto mk = [&](TTree *t, const char *v, const char *hn, int nb, double lo, double hi,
                 const char *cut, double nfr) {
@@ -101,8 +108,9 @@ void residual_fingerprint(double s = 0.6974,
            labs[i], R, S, R - S, 100. * (R - S) / R);
   }
   fr6->SetStats(0); fr6->SetFillColorAlpha(kGreen - 8, 0.5); fr6->SetLineColor(kGreen + 2);
-  fr6->SetMinimum(0); fr6->SetMaximum(0.5);
+  fr6->SetMinimum(-0.5); fr6->SetMaximum(0.5);  // negative = sim above real
   fr6->Draw("HIST");
+  TLine *z6 = new TLine(0, 0, 5, 0); z6->SetLineColor(kBlack); z6->Draw();
   c.SaveAs(Form("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/residual_fingerprint%s.png", suffix));
   printf("saved residual_fingerprint%s.png\n", suffix);
 }

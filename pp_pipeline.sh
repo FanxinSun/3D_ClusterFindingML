@@ -36,7 +36,7 @@ IP=$ROOTDIR/island_post
 LOGS=$IP/pp_logs; mkdir -p "$LOGS"
 
 # ---------------- parameters ----------------
-VER=v50
+VER=v52
 NCHUNK=10                 # generator/G4/transport chunks
 GEN_PER=2000              # pp events per chunk (pp collision ~1/25 pAu content
                           #  -> 10x the v4.0 event count for comparable library charge)
@@ -46,18 +46,24 @@ NB=5; PER=50              # production: NB batches x PER events = total sim even
 COMP_SEED_BASE=2026093    # composer seed = ${COMP_SEED_BASE}${i}
 
 SIGMA0=0.040; KPRF=0.0070 # transport PRF sigma(Ld) — detector-side (v4.0 values)
-GAIN=1.03                 # [PP-TBD] gaincal — recheck at pixmean anchor
+GAIN=1.005                # v5.1 LOCKED 2026-07-22 (scan pass B2: pixmean +0.8%)
 ISO_SCALE=0.27            # [PP-TBD] iso singles scale — 0.27 was the Angantyr
                           #  content balance; re-derive at pp content
 TRIG_N=1.0                # physical trigger (no fired-mean surgery)
-RSPEC="600:1"             # [PP-TBD] PILOT flat rate. Derivation for production:
-                          #  per-event deciles of measured rmbd (196-362 kHz,
-                          #  mean ~330) / eps_MBD(pp) from the gate's fired
-                          #  fraction. v4.0's kHz-equivalents do NOT carry over
-                          #  (they were pAu-sized-event units).
-ENV="5.80:1.3542,11.10:1.2654,16.40:1.1901,21.70:0.9930,27.00:1.1215,32.30:1.0999,37.60:0.8274,42.90:0.7611,47.96:0.8312"
-                          # [PP-TBD] v3.6 empirical envelope nodes as starting
-                          #  shape; one re-derivation iteration post-acceptance
+RSPEC=$(grep -v '^#' "$IP/rspec99_v52.txt" 2>/dev/null)
+[ -n "$RSPEC" ] || { echo "rspec99_v52.txt missing/empty in $IP"; exit 1; }
+                          # PHYSICAL, zero fitted parameters (2026-07-22):
+                          #  all 99 measured per-event rmbd values / eps 0.519
+                          #  (proxy; replace file when team eps arrives).
+                          #  Window accounting judged by acceptance, not pre-fit.
+ENV="5.80:0.982,11.10:1.008,16.40:1.011,21.70:1.028,27.00:1.009,32.30:1.026,37.60:1.016,42.90:1.017,47.96:0.904"
+                          # v5.2 nodes (ENV52, 2026-07-24): references at the
+                          #  FIXED composer (correct fired flags — trigger now
+                          #  genuinely MBD-fired) + v5.1 electronics + eps 0.588.
+                          #  Trigger-subtracted ratio vs COMPLETE-62, unit-mean.
+                          #  Notably flatter than ENV51: the correct (bigger)
+                          #  trigger subtraction removes the early-window tilt.
+                          #  Anchor recalib: 280.3 px/unit -> 10,897.
 FLASH=raw_lib_cmflash_w.root                        # CM flash lib (species-free)
 SPEC="0.008:1,0.009:1,0.011:1,0.012:1,0.013:1,0.014:1,0.018:1,0.021:1,0.027:1,0.037:1,2.2:0.25"
 FM=$ROOTDIR/CDB_offline/FIELDMAP_GAP/65/a9/65a930ed6de9c0e049cd0f3ef226e6b4_sphenix3dbigmapxyz_gap_rebuild_v2.root
@@ -131,7 +137,7 @@ if run_stage gate; then
   for i in $(seq 0 $((NCHUNK-1))); do
     root -l -b -q -e "gROOT->ProcessLine(\".L tpc_digitize.C+\");
       tpc_transport(\"$P5/PP_g4hit_$i.root\",\"raw_lib_pp_$i.root\",$GEN_PER,$SIGMA0,$KPRF);
-      tpc_readout(\"raw_lib_pp_$i.root\",\"cens_pp_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.70,0.021,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,0.0);" \
+      tpc_readout(\"raw_lib_pp_$i.root\",\"cens_pp_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.81,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,0.0);" \
       > "$LOGS/pp_gate_$i.log" 2>&1
     echo "[gate] chunk $i transported+censused"
   done
@@ -188,7 +194,7 @@ if run_stage prod; then
     gROOT->ProcessLine(\".L frame_composer.C+\");
     frame_composer(\"$LIBS\",\"fPP_$i.root\",$PER,600.,${COMP_SEED_BASE}$i,$((i*PER)),\"$EVALS\",\"$FLASH\",0.44,1.0,\"$SPEC\",1.5,2.0,1.1,0.75,\"$RSPEC\",$ISO_SCALE,\"$MBD\",$TRIG_N,0.0,\"$ENV\");
     gROOT->ProcessLine(\".L tpc_digitize.C+\");
-    tpc_readout(\"fPP_$i.root\",\"dPP_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.70,0.021,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,1.0);" \
+    tpc_readout(\"fPP_$i.root\",\"dPP_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.81,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,1.0);" \
       2>&1 | tee "$LOGS/pp_prod_$i.log" | grep -E "frame_composer: $PER|rate envelope|tpc_readout: fPP"
     root -l -b -q "islandize91.C+(\"dPP_$i.root\",\"i91pp_$i.root\",1,\"\",\"fPP_$i.root\")" 2>&1 | grep "islandize91: dPP"
   done

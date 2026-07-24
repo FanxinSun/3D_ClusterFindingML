@@ -1,0 +1,27 @@
+# v5.2 residual summary (2026-07-24, rev E): dev% = sim/real - 1
+# group | label | dev_vs_ALL_real | dev_vs_COMPLETE_real (999 = n/a)
+# v5.2 = FINAL config: fixed truth + fixed fired trigger + ENV52 + eps=0.588
+# + v5.1 electronics. fired-mean: red = TRIG52 9669 vs pp-anchor 10897
+# (v5.2 calib 280.3); blue n/a (old-anchor convention retired).
+time|window w1 (early)|-15.6|+0.1
+time|window w2 (mid)|-4.6|-0.8
+time|window w3 (late)|+21.5|+0.7
+time|trigger bump|-9.0|+0.9
+time|drift-edge step|-0.2|+0.1
+time|fired-mean (trig-only)|999|-11.3
+content|px/event mean|-1.6|-22.0
+content|px/event CV|-50.4|-5.9
+content|R1 px share|-7.9|-5.3
+content|R2 px share|+2.8|+0.9
+content|R3 px share|+8.6|+6.6
+content|low-adc(<30)/event|+3.5|-18.0
+islands|islands/event|+4.9|-16.4
+islands|island <size>|+5.6|-10.7
+islands|island <phi-size>|-1.8|-1.5
+shapes|<abs asym>|+3.8|+3.8
+shapes|<maxadc/adc>|+8.2|+8.6
+pixel|pixmean|+2.4|+0.9
+pixel|sub10 trace|+8.5|-3.8
+pixel|sh/hi band|+17.2|+18.8
+pixel|run mean|-2.0|-2.6
+pixel|run tail P10|+20.0|+18.6

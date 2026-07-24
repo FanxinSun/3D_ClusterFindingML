@@ -1,0 +1,29 @@
+# v5.0 pp pilot residual summary (2026-07-22, rev C): dev% = sim/real - 1
+# group | label | dev_vs_ALL_real | dev_vs_COMPLETE_real (999 = n/a)
+# COMPLETE = 62/100 events whose recording endpoint (p99.9 tbin) > 950; the
+# other 38 are truncated at ~uniform tbin 94-838 (recording artifact, see
+# ledger 2026-07-22 endpoint census). rev C: ALL rows carry a MEASURED
+# COMPLETE-subset value. fired-mean: blue = old pAu-shape anchor 8200 (kept
+# for continuity); red = pp-calibrated anchor 10713 on complete-62 -> -11.8%.
+time|window w1 (early)|+0.8|+19.6
+time|window w2 (mid)|-1.2|+2.7
+time|window w3 (late)|+0.4|-16.8
+time|trigger bump|-3.5|+7.0
+time|drift-edge step|-3.0|-2.6
+time|fired-mean (gate, rate-free)|+15.2|-11.8
+content|px/event mean|+8.3|-14.1
+content|px/event CV|-50.9|-6.7
+content|R1 px share|-7.4|-4.8
+content|R2 px share|+2.8|+0.9
+content|R3 px share|+8.2|+6.2
+content|low-adc(<30)/event|+16.0|-8.1
+islands|islands/event|+9.1|-13.1
+islands|island <size>|+4.1|-12.0
+islands|island <phi-size>|-0.5|-2.6
+shapes|<abs asym>|+5.3|+5.3
+shapes|<maxadc/adc>|+7.5|+7.9
+pixel|pixmean|+1.3|-0.2
+pixel|sub10 trace|0.0|-11.3
+pixel|sh/hi band|+19.4|+21.0
+pixel|run mean|+2.3|+1.7
+pixel|run tail P10|+57.6|+55.7

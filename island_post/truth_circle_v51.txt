@@ -1,0 +1,11 @@
+truth_circle v51 — pT window [0.45,0.55] GeV, B=1.40 T, R_exp=119.1 cm
+sagitta: 3.69 cm over the gas (r 20-78, T1)  |  2.14 cm over pad rows (r 31.4-75.4, T2/T3)
+T1 truth steps   : 7344 window primaries, 3801 full R1->R3 crossers fitted
+                   median RMS 20 um  (p90 63 um), median R_fit 118.58 cm, R_fit/R_exp(pT) 0.9986
+T2 truth clusters: median RMS 15 um  (p90 42 um)
+T3 tagged reco   : 8380 id groups (gpt-window; ids are (file,trk)-conflated) -> 14287 arcs
+                   multi-arc groups 35.6% (cluster-weighted 60.8%) — composer truth-id conflation
+                   4968 full-span arcs fitted, median R_fit 107.0 cm (~inclusive-pT image);
+                   R-selected [101,137] cm (~0.5 GeV): 1210 arcs, median RMS 724 um (p90 1025 um)
+deviation/sagitta: T1 5.46e-04 (gas)  T2 6.90e-04  T3 3.38e-02 (pad rows)
+species of fitted T1 tracks: |pdg|=11:5  |pdg|=211:3310  |pdg|=321:309  |pdg|=2212:177  
