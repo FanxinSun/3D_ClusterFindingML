@@ -1,24 +1,31 @@
 // truth_circle.C — supervisor question (2026-07-24): take the truth cluster
 // coordinates of a ~500 MeV-pT track — how close is the trajectory to a circle?
-// Three tiers of "truth", B=1.4 T -> R = pT/(0.3B) ~ 119 cm at 0.5 GeV:
-//   T1 truth steps    : ntp_g4hit step midpoints (gx,gy) of primary tracks
-//                       with vertex pT in [0.45,0.55] (P5/PP_g4hit_*.root)
-//   T2 truth clusters : per-pad-row gedep-weighted centroids of the T1 steps
-//                       (row = nearest tpc_geom_table radius, 0.7 cm gate —
-//                        same assignment rule as tpc_transport)
-//   T3 tagged reco    : island91 v5.1 production ntp_cluster (x,y) with
-//                       row-aligned ntp_truth cls==0 && ntrks==1
-// T3 CAVEAT (found by this study): frame_composer keys truth ids by
-// (library FILE, raw per-collision trk) — frame_composer.C:70/101/442/484 —
-// and ttab by first-in-file id (:279), so one ntp_truth id bundles ~several
-// unrelated trajectories and carries a file-frozen representative gpt.
-// T3 therefore splits each id group into single-trajectory ARCS by phi
-// chaining and fits per arc; arcs with fitted R in [101,137] cm are the
-// ~0.5 GeV subset (the gpt window itself selects scrambled labels).
+// v5.2 EDITION (2026-07-25): two tiers, B=1.4 T -> R = pT/(0.3B) ~ 119 cm:
+//   truth hits   : ntp_g4hit step midpoints (gx,gy) of primary tracks with
+//                  vertex pT in [0.45,0.55] (P5/PP_g4hit_*.root)
+//   reco clusters: truth-matched reconstructed clusters from the island91
+//                  v5.2 production (ntp_cluster x,y; row-aligned ntp_truth
+//                  cls==0 && ntrks==1 in the pT window)
+// The intermediate per-pad-row truth-cluster tier of the v5.1 edition was
+// removed (user, 2026-07-25) — scaffolding only, nothing consumed it.
+// HISTORY: the v5.1 edition of this test DISCOVERED the composer truth-id
+// conflation ((file,trk) remap key + first-in-file gpt tables). That is
+// FIXED in frame_composer.C as of v5.2 (per-draw remap, (event,id) truth
+// tables). The phi-segment splitting below is retained as a VERIFICATION
+// diagnostic: with correct truth ids, id groups must be single-segment and
+// fitted radii must match the labeled gpt (v5.1: 36% multi-segment groups,
+// median R_fit 107 cm vs labeled-window expectation ~119).
+// FIELD NOTE (measured 2026-07-25): the sim is NOT uniform-field — G4 bends
+// tracks in the measured CDB gap_rebuild_v2 map (26,144,996 pts, 2 cm grid,
+// trilinear; standalone_tpc.cc:56-103). Map in the TPC volume: Bz 1.385 T at
+// the origin, 1.3913+-0.0035 for |z|<30, sagging to 1.348+-0.030 for
+// |z|>70; |B_T| up to 0.12 T in the corners. BFIELD=1.4 below is only the
+// NOMINAL yardstick for R_exp and the R-selection window (+-15%, insensitive
+// to the ~1% nominal-vs-map difference); the fit itself assumes no field.
 // Fit: algebraic (Kasa) init + 6 Gauss-Newton geometric iterations.
 // Quality: full R1->R3 crossers only (r<34 & r>72 cm; layers <=11 & >=50).
-// Showcase panels use the MOST-SAMPLED qualifying track/arc (stated criterion).
-// Output: ../sim_validation_plots/truth_circle_v51.png + truth_circle_v51.txt
+// Showcase panels use the most-sampled CLEAN track/segment (stated criterion).
+// Output: ../sim_validation_plots/truth_circle_v52.png + truth_circle_v52.txt
 #include <TFile.h>
 #include <TTree.h>
 #include <TH1D.h>
@@ -122,10 +129,10 @@ double wrapphi(double d)
 
 void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
                   const char *g4pat = "../P5/PP_g4hit_%d.root",
-                  const char *i91 = "island91_frames_production_v51.root")
+                  const char *i91 = "island91_frames_production_v52.root")
 {
   using namespace TCIRC;
-  const double BFIELD = 1.4;                                   // T (project currency)
+  const double BFIELD = 1.4;                                   // T (nominal yardstick)
   const double RCOEF = 100. / (0.299792458 * BFIELD);          // R[cm] = RCOEF * pT[GeV]
   const double RSEL_LO = 101, RSEL_HI = 137;                   // fitted-R window ~ pT 0.45-0.55
   double geoR[55]; int ngeo = 0;
@@ -144,37 +151,34 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
     printf("geom table: %d rows\n", ngeo);
   }
 
-  struct Trk { std::vector<double> x, y, r, w; float pt = 0; int flav = 0; };
-  std::vector<double> rms1, rms2, rms3, rms3sel, rfit1, rfit3, rrat1;
+  struct Trk { std::vector<double> x, y, r; float pt = 0; int flav = 0; };
+  std::vector<double> rms1, rms3, rms3sel, rfit1, rfit3, rrat1;
   TH1D *hres1 = new TH1D("hres1", ";signed residual to fitted circle [mm];points (unit area)", 121, -3.025, 3.025);
-  TH1D *hres2 = (TH1D *) hres1->Clone("hres2");
   TH1D *hres3 = (TH1D *) hres1->Clone("hres3");
   TH1D *hrms1 = new TH1D("hrms1", ";per-track residual RMS [mm];tracks (unit area)", 60, 0, 3.0);
-  TH1D *hrms2 = (TH1D *) hrms1->Clone("hrms2");
   TH1D *hrms3 = (TH1D *) hrms1->Clone("hrms3");
   std::map<int, int> flavcnt;
   long nwin1 = 0, nfull1 = 0;
-  Trk show1, show2;  // T1 showcase steps + its T2 centroids
-  Fit showF1, showF2;
+  Trk show1;
+  Fit showF1;
   std::vector<double> show3x, show3y, show3r;
   Fit showF3;
   double show1pt = 0;
 
-  // ---------- T1 + T2: truth steps from single pp collisions ----------
+  // ---------- truth hits: G4 steps from single pp collisions ----------
   for (int fi = 0; fi < ng4; ++fi)
   {
     TFile *f = TFile::Open(Form(g4pat, fi));
     if (!f || f->IsZombie()) { printf("missing %s\n", Form(g4pat, fi)); continue; }
     TTree *t = (TTree *) f->Get("ntp_g4hit");
-    float ev, gx, gy, gpx, gpy, gedep, tid, flav;
+    float ev, gx, gy, gpx, gpy, tid, flav;
     t->SetBranchStatus("*", 0);
-    for (auto b : {"event", "gx", "gy", "gpx", "gpy", "gedep", "gtrackID", "gflavor"}) t->SetBranchStatus(b, 1);
+    for (auto b : {"event", "gx", "gy", "gpx", "gpy", "gtrackID", "gflavor"}) t->SetBranchStatus(b, 1);
     t->SetBranchAddress("event", &ev);
     t->SetBranchAddress("gx", &gx);
     t->SetBranchAddress("gy", &gy);
     t->SetBranchAddress("gpx", &gpx);
     t->SetBranchAddress("gpy", &gpy);
-    t->SetBranchAddress("gedep", &gedep);
     t->SetBranchAddress("gtrackID", &tid);
     t->SetBranchAddress("gflavor", &flav);
     std::map<long, Trk> trks;
@@ -187,7 +191,7 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
       Trk &T = trks[(long) ev * 100000 + (long) tid];
       T.pt = pt; T.flav = (int) flav;
       T.x.push_back(gx); T.y.push_back(gy);
-      T.r.push_back(std::hypot(gx, gy)); T.w.push_back(gedep);
+      T.r.push_back(std::hypot(gx, gy));
     }
     for (auto &kv : trks)
     {
@@ -206,43 +210,16 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
       hrms1->Fill(F.rms * 10);
       for (size_t i = 0; i < T.x.size(); ++i)
         hres1->Fill((std::hypot(T.x[i] - F.a, T.y[i] - F.b) - F.R) * 10);
-      // T2: gedep-weighted per-pad-row centroids (transport's 0.7 cm gate)
-      double cx[55] = {0}, cy[55] = {0}, cw[55] = {0};
-      for (size_t i = 0; i < T.x.size(); ++i)
-      {
-        int Lb = -1; double dbest = 0.7;
-        for (int q = 7; q <= 54; ++q)
-        {
-          double d = std::fabs(T.r[i] - geoR[q]);
-          if (d < dbest) { dbest = d; Lb = q; }
-        }
-        if (Lb < 0 || T.w[i] <= 0) continue;
-        cx[Lb] += T.x[i] * T.w[i]; cy[Lb] += T.y[i] * T.w[i]; cw[Lb] += T.w[i];
-      }
-      Trk C;
-      for (int q = 7; q <= 54; ++q)
-        if (cw[q] > 0) { C.x.push_back(cx[q] / cw[q]); C.y.push_back(cy[q] / cw[q]); C.r.push_back(geoR[q]); }
-      if ((int) C.x.size() >= 12)
-      {
-        Fit F2 = fitCircle(C.x, C.y);
-        if (F2.ok)
-        {
-          rms2.push_back(F2.rms * 10);
-          hrms2->Fill(F2.rms * 10);
-          for (size_t i = 0; i < C.x.size(); ++i)
-            hres2->Fill((std::hypot(C.x[i] - F2.a, C.y[i] - F2.b) - F2.R) * 10);
-          // showcase: most-sampled CLEAN track (RMS<40 um, R within 2% of pT/(0.3B))
-          if (F.rms < 0.004 && std::fabs(F.R / (RCOEF * T.pt) - 1) < 0.02 &&
-              T.x.size() > show1.x.size()) { show1 = T; showF1 = F; show2 = C; showF2 = F2; show1pt = T.pt; }
-        }
-      }
+      // showcase: most-sampled CLEAN track (RMS<40 um, R within 2% of pT/(0.3B))
+      if (F.rms < 0.004 && std::fabs(F.R / (RCOEF * T.pt) - 1) < 0.02 &&
+          T.x.size() > show1.x.size()) { show1 = T; showF1 = F; show1pt = T.pt; }
     }
     f->Close();
-    printf("T1 file %d done: %ld window primaries so far, %ld full crossers\n", fi, nwin1, nfull1);
+    printf("truth-hit file %d done: %ld window primaries so far, %ld full crossers\n", fi, nwin1, nfull1);
   }
 
-  // ---------- T3: truth-tagged reco clusters, split into trajectory arcs ----------
-  long ngrp = 0, ngrp_multi = 0, narcs_tot = 0, nfit3 = 0, nfit3sel = 0;
+  // ---------- truth-matched reco clusters (v5.2, fixed truth association) ----------
+  long ngrp = 0, ngrp_multi = 0, nseg_tot = 0, nfit3 = 0, nfit3sel = 0;
   double wclus_tot = 0, wclus_multi = 0;
   {
     TFile *f = TFile::Open(i91);
@@ -263,12 +240,12 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
     u->SetBranchAddress("cls", &cls);
     u->SetBranchAddress("ntrks", &ntrks);
     struct CL { float lay, x, y, phi; };
-    std::map<long, std::vector<CL>> grp;   // (frame, conflated id) -> clusters
+    std::map<long, std::vector<CL>> grp;   // (event, truth track id) -> clusters
     for (Long64_t i = 0; i < c->GetEntries(); ++i)
     {
       u->GetEntry(i);
       if (cls != 0 || ntrks != 1) continue;
-      if (gpt < pt_lo || gpt > pt_hi) continue;   // NB selects the class REPRESENTATIVE's pt
+      if (gpt < pt_lo || gpt > pt_hi) continue;
       c->GetEntry(i);
       grp[(long) ev * 1000000 + (long) tid].push_back({lay, x, y, (float) std::atan2(y, x)});
     }
@@ -278,7 +255,8 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
       ngrp++;
       wclus_tot += v.size();
       std::sort(v.begin(), v.end(), [](const CL &a, const CL &b) { return a.lay < b.lay || (a.lay == b.lay && a.phi < b.phi); });
-      // phi-chaining: one chain per trajectory arc
+      // phi-segment splitting — VERIFICATION diagnostic: with the fixed truth
+      // association every id group should be one segment (one trajectory).
       struct Chain { std::vector<int> idx; double lL = 0, lP = 0, pL = 0, pP = 0; int np = 0; };
       std::vector<Chain> chains;
       for (int i = 0; i < (int) v.size(); ++i)
@@ -302,7 +280,7 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
       }
       int nsub = 0;
       for (auto &ch : chains) if (ch.np >= 4) nsub++;
-      narcs_tot += nsub;
+      nseg_tot += nsub;
       if (nsub >= 2) { ngrp_multi++; wclus_multi += v.size(); }
       for (auto &ch : chains)
       {
@@ -320,14 +298,14 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
         nfit3++;
         rms3.push_back(F.rms * 10);
         rfit3.push_back(F.R);
-        if (F.R > RSEL_LO && F.R < RSEL_HI)         // the ~0.5 GeV subset by curvature
+        if (F.R > RSEL_LO && F.R < RSEL_HI)
         {
           nfit3sel++;
           rms3sel.push_back(F.rms * 10);
           hrms3->Fill(F.rms * 10);
           for (size_t i = 0; i < X.size(); ++i)
             hres3->Fill((std::hypot(X[i] - F.a, Y[i] - F.b) - F.R) * 10);
-          // showcase arc: most clusters among clean fits (RMS < 0.9 mm)
+          // showcase: most clusters among clean fits (RMS < 0.9 mm)
           if (F.rms < 0.09 && X.size() > show3x.size())
           {
             show3x = X; show3y = Y; showF3 = F;
@@ -349,37 +327,37 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
     double da = std::asin(r_out / (2 * Rexp)) - std::asin(r_in / (2 * Rexp));
     return Rexp * (1. - std::cos(da));
   };
-  double sag = sagitta(20.0, 78.0);              // full gas volume (T1 steps)
+  double sag = sagitta(20.0, 78.0);              // full gas volume (truth hits)
   double sagrow = sagitta(geoR[7], geoR[54]);    // pad rows L7-L54 (clusters)
-  FILE *fo = fopen("truth_circle_v51.txt", "w");
+  FILE *fo = fopen("truth_circle_v52.txt", "w");
   auto P = [&](const char *fmt, ...) {
     va_list ap; va_start(ap, fmt); vprintf(fmt, ap); va_end(ap);
     va_start(ap, fmt); vfprintf(fo, fmt, ap); va_end(ap);
   };
-  P("truth_circle v51 — pT window [%.2f,%.2f] GeV, B=%.2f T, R_exp=%.1f cm\n", pt_lo, pt_hi, BFIELD, Rexp);
-  P("sagitta: %.2f cm over the gas (r 20-78, T1)  |  %.2f cm over pad rows (r %.1f-%.1f, T2/T3)\n",
+  P("truth_circle v52 — pT window [%.2f,%.2f] GeV, B=%.2f T (nominal), R_exp=%.1f cm\n",
+    pt_lo, pt_hi, BFIELD, Rexp);
+  P("sagitta: %.2f cm over the gas (r 20-78, truth hits)  |  %.2f cm over pad rows (r %.1f-%.1f, clusters)\n",
     sag, sagrow, geoR[7], geoR[54]);
-  P("T1 truth steps   : %ld window primaries, %ld full R1->R3 crossers fitted\n", nwin1, nfull1);
-  P("                   median RMS %.0f um  (p90 %.0f um), median R_fit %.2f cm, R_fit/R_exp(pT) %.4f\n",
+  P("truth hits   : %ld window primaries, %ld full R1->R3 crossers fitted\n", nwin1, nfull1);
+  P("               median RMS %.0f um  (p90 %.0f um), median R_fit %.2f cm, R_fit/R_exp(pT) %.4f\n",
     med(rms1) * 1000, pct(rms1, 0.90) * 1000, med(rfit1), med(rrat1));
-  P("T2 truth clusters: median RMS %.0f um  (p90 %.0f um)\n", med(rms2) * 1000, pct(rms2, 0.90) * 1000);
-  P("T3 tagged reco   : %ld id groups (gpt-window; ids are (file,trk)-conflated) -> %ld arcs\n", ngrp, narcs_tot);
-  P("                   multi-arc groups %.1f%% (cluster-weighted %.1f%%) — composer truth-id conflation\n",
-    100. * ngrp_multi / std::max(1L, ngrp), 100. * wclus_multi / std::max(1., wclus_tot));
-  P("                   %ld full-span arcs fitted, median R_fit %.1f cm (~inclusive-pT image);\n",
-    nfit3, med(rfit3));
-  P("                   R-selected [%.0f,%.0f] cm (~0.5 GeV): %ld arcs, median RMS %.0f um (p90 %.0f um)\n",
-    RSEL_LO, RSEL_HI, nfit3sel, med(rms3sel) * 1000, pct(rms3sel, 0.90) * 1000);
-  P("deviation/sagitta: T1 %.2e (gas)  T2 %.2e  T3 %.2e (pad rows)\n",
-    med(rms1) / 10 / sag, med(rms2) / 10 / sagrow, med(rms3sel) / 10 / sagrow);
-  P("species of fitted T1 tracks: ");
+  P("reco clusters: %ld truth-track groups -> %ld segments; multi-segment groups %.2f%% (cluster-weighted %.2f%%)\n",
+    ngrp, nseg_tot, 100. * ngrp_multi / std::max(1L, ngrp), 100. * wclus_multi / std::max(1., wclus_tot));
+  P("               [v5.1 was 35.6%% / 60.8%% — association-fix verification]\n");
+  P("               %ld full-span segments fitted, median R_fit %.1f cm (v5.1: 107.0), %.1f%% inside R window [%.0f,%.0f]\n",
+    nfit3, med(rfit3), nfit3 ? 100. * nfit3sel / nfit3 : 0., RSEL_LO, RSEL_HI);
+  P("               R-selected: %ld segments, median RMS %.0f um (p90 %.0f um)\n",
+    nfit3sel, med(rms3sel) * 1000, pct(rms3sel, 0.90) * 1000);
+  P("deviation/sagitta: truth hits %.2e (gas)   reco clusters %.2e (pad rows)\n",
+    med(rms1) / 10 / sag, med(rms3sel) / 10 / sagrow);
+  P("species of fitted truth-hit tracks: ");
   for (auto &kv : flavcnt) P("|pdg|=%d:%d  ", kv.first, kv.second);
   P("\n");
   fclose(fo);
 
   // ---------- figure ----------
   gStyle->SetOptStat(0);
-  TCanvas *cv = new TCanvas("cv", "truth circle v51", 1600, 1200);
+  TCanvas *cv = new TCanvas("cv", "truth circle v52", 1600, 1200);
   cv->Divide(2, 2);
 
   cv->cd(1);
@@ -393,29 +371,24 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
     double span = std::max(xhi - xlo, yhi - ylo) * 1.25;
     double cxm = 0.5 * (xlo + xhi), cym = 0.5 * (ylo + yhi);
     TH1 *fr = gPad->DrawFrame(cxm - span / 2, cym - span / 2, cxm + span / 2, cym + span / 2,
-                              Form("showcase truth track (most-sampled, pT=%.3f GeV)  R_{fit}=%.1f cm;x [cm];y [cm]", show1pt, showF1.R));
+                              Form("showcase truth track (most-sampled clean, pT=%.3f GeV)  R_{fit}=%.1f cm;x [cm];y [cm]", show1pt, showF1.R));
     fr->GetYaxis()->SetTitleOffset(1.3);
     TEllipse *el = new TEllipse(showF1.a, showF1.b, showF1.R, showF1.R);
     el->SetFillStyle(0); el->SetLineColor(kGray + 2); el->SetLineStyle(2); el->Draw();
     TGraph *g1 = new TGraph(show1.x.size(), show1.x.data(), show1.y.data());
     g1->SetMarkerStyle(20); g1->SetMarkerSize(0.35); g1->SetMarkerColor(kBlue + 1); g1->Draw("P same");
-    TGraph *g2 = new TGraph(show2.x.size(), show2.x.data(), show2.y.data());
-    g2->SetMarkerStyle(24); g2->SetMarkerSize(1.0); g2->SetMarkerColor(kRed + 1); g2->Draw("P same");
-    TLegend *lg = new TLegend(0.14, 0.72, 0.60, 0.88);
+    TLegend *lg = new TLegend(0.14, 0.76, 0.60, 0.88);
     lg->SetBorderSize(0);
-    lg->AddEntry(g1, Form("T1 G4 steps (RMS %.0f #mum)", showF1.rms * 1e4), "p");
-    lg->AddEntry(g2, Form("T2 truth clusters (RMS %.0f #mum)", showF2.rms * 1e4), "p");
+    lg->AddEntry(g1, Form("G4 truth hits (RMS %.0f #mum)", showF1.rms * 1e4), "p");
     lg->AddEntry(el, "fitted circle", "l");
     lg->Draw();
   }
 
   cv->cd(2);
   {
-    std::vector<double> rr1, dd1, rr2, dd2, rr3, dd3;
+    std::vector<double> rr1, dd1, rr3, dd3;
     for (size_t i = 0; i < show1.x.size(); ++i)
     { rr1.push_back(show1.r[i]); dd1.push_back((std::hypot(show1.x[i] - showF1.a, show1.y[i] - showF1.b) - showF1.R) * 10); }
-    for (size_t i = 0; i < show2.x.size(); ++i)
-    { rr2.push_back(show2.r[i]); dd2.push_back((std::hypot(show2.x[i] - showF2.a, show2.y[i] - showF2.b) - showF2.R) * 10); }
     for (size_t i = 0; i < show3x.size(); ++i)
     { rr3.push_back(show3r[i]); dd3.push_back((std::hypot(show3x[i] - showF3.a, show3y[i] - showF3.b) - showF3.R) * 10); }
     double dmax = 0.05;
@@ -426,63 +399,57 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
     fr->GetYaxis()->SetTitleOffset(1.3);
     TGraph *q1 = new TGraph(rr1.size(), rr1.data(), dd1.data());
     q1->SetMarkerStyle(20); q1->SetMarkerSize(0.4); q1->SetMarkerColor(kBlue + 1); q1->Draw("P same");
-    TGraph *q2 = new TGraph(rr2.size(), rr2.data(), dd2.data());
-    q2->SetMarkerStyle(24); q2->SetMarkerSize(1.0); q2->SetMarkerColor(kRed + 1); q2->Draw("P same");
     TGraph *q3 = new TGraph(rr3.size(), rr3.data(), dd3.data());
     q3->SetMarkerStyle(21); q3->SetMarkerSize(0.7); q3->SetMarkerColor(kGreen + 2); q3->Draw("P same");
-    TLegend *lg = new TLegend(0.14, 0.70, 0.74, 0.88);
+    TLegend *lg = new TLegend(0.14, 0.74, 0.76, 0.88);
     lg->SetBorderSize(0);
-    lg->AddEntry(q1, "T1 G4 steps", "p");
-    lg->AddEntry(q2, "T2 truth clusters", "p");
-    lg->AddEntry(q3, Form("T3 reco-cluster arc (independent track, R_{fit}=%.0f cm)", showF3.R), "p");
+    lg->AddEntry(q1, "G4 truth hits", "p");
+    lg->AddEntry(q3, Form("truth-matched reco clusters (independent track, R_{fit}=%.0f cm)", showF3.R), "p");
     lg->Draw();
   }
 
   cv->cd(3);
   {
     gPad->SetLogy();
-    for (TH1D *h : {hres1, hres2, hres3}) if (h->Integral() > 0) h->Scale(1. / h->Integral());
-    hres3->SetLineColor(kGreen + 2); hres1->SetLineColor(kBlue + 1); hres2->SetLineColor(kRed + 1);
-    hres3->SetLineWidth(2); hres1->SetLineWidth(2); hres2->SetLineWidth(2);
+    for (TH1D *h : {hres1, hres3}) if (h->Integral() > 0) h->Scale(1. / h->Integral());
+    hres3->SetLineColor(kGreen + 2); hres1->SetLineColor(kBlue + 1);
+    hres3->SetLineWidth(2); hres1->SetLineWidth(2);
     hres3->SetTitle("per-point residuals, all fitted tracks");
-    hres3->SetMaximum(1.5 * std::max({hres1->GetMaximum(), hres2->GetMaximum(), hres3->GetMaximum()}));
+    hres3->SetMaximum(1.5 * std::max(hres1->GetMaximum(), hres3->GetMaximum()));
     hres3->Draw("hist");
     hres1->Draw("hist same");
-    hres2->Draw("hist same");
-    TLegend *lg = new TLegend(0.56, 0.68, 0.89, 0.88);
+    TLegend *lg = new TLegend(0.54, 0.72, 0.89, 0.88);
     lg->SetBorderSize(0);
-    lg->AddEntry(hres1, Form("T1 steps, RMS %.0f #mum", hres1->GetRMS() * 1000), "l");
-    lg->AddEntry(hres2, Form("T2 truth clus, RMS %.0f #mum", hres2->GetRMS() * 1000), "l");
-    lg->AddEntry(hres3, Form("T3 reco arcs, RMS %.0f #mum", hres3->GetRMS() * 1000), "l");
+    lg->AddEntry(hres1, Form("truth hits, RMS %.0f #mum", hres1->GetRMS() * 1000), "l");
+    lg->AddEntry(hres3, Form("reco clusters, RMS %.0f #mum", hres3->GetRMS() * 1000), "l");
     lg->Draw();
   }
 
   cv->cd(4);
   {
     gPad->SetLogy();
-    for (TH1D *h : {hrms1, hrms2, hrms3}) if (h->Integral() > 0) h->Scale(1. / h->Integral());
-    hrms3->SetLineColor(kGreen + 2); hrms1->SetLineColor(kBlue + 1); hrms2->SetLineColor(kRed + 1);
-    hrms3->SetLineWidth(2); hrms1->SetLineWidth(2); hrms2->SetLineWidth(2);
+    for (TH1D *h : {hrms1, hrms3}) if (h->Integral() > 0) h->Scale(1. / h->Integral());
+    hrms3->SetLineColor(kGreen + 2); hrms1->SetLineColor(kBlue + 1);
+    hrms3->SetLineWidth(2); hrms1->SetLineWidth(2);
     hrms3->SetTitle("per-track circle-fit RMS");
-    hrms3->SetMaximum(3.0 * std::max({hrms1->GetMaximum(), hrms2->GetMaximum(), hrms3->GetMaximum()}));
+    hrms3->SetMaximum(3.0 * std::max(hrms1->GetMaximum(), hrms3->GetMaximum()));
     hrms3->SetMinimum(2e-4);
     hrms3->Draw("hist");
     hrms1->Draw("hist same");
-    hrms2->Draw("hist same");
-    TLatex tx; tx.SetNDC(); tx.SetTextSize(0.031);
+    TLatex tx; tx.SetTextSize(0.031); tx.SetNDC();
     tx.DrawLatex(0.30, 0.84, Form("R_{exp}(0.5 GeV) = %.1f cm; sagitta %.2f (gas) / %.2f (rows) cm", Rexp, sag, sagrow));
-    tx.DrawLatex(0.30, 0.79, Form("median RMS: T1 %.0f / T2 %.0f / T3 %.0f #mum",
-                                  med(rms1) * 1000, med(rms2) * 1000, med(rms3sel) * 1000));
-    tx.DrawLatex(0.30, 0.74, Form("T1 R_{fit}/R_{exp}(p_{T}) = %.4f;  T1 fits %ld, T3 arcs %ld", med(rrat1), nfull1, nfit3sel));
-    tx.DrawLatex(0.30, 0.69, Form("T3 groups: %.0f%% multi-arc (truth-id conflation)", 100. * ngrp_multi / std::max(1L, ngrp)));
-    TLegend *lg = new TLegend(0.30, 0.46, 0.70, 0.64);
+    tx.DrawLatex(0.30, 0.79, Form("median RMS: truth %.0f #mum, reco clusters %.0f #mum",
+                                  med(rms1) * 1000, med(rms3sel) * 1000));
+    tx.DrawLatex(0.30, 0.74, Form("truth R_{fit}/R_{exp}(p_{T}) = %.4f;  fits %ld / %ld", med(rrat1), nfull1, nfit3sel));
+    tx.DrawLatex(0.30, 0.69, Form("fix check: %.2f%% multi-segment groups (v5.1: 35.6%%)", 100. * ngrp_multi / std::max(1L, ngrp)));
+    tx.DrawLatex(0.30, 0.64, Form("fix check: median segment R_{fit} = %.1f cm (v5.1: 107.0)", med(rfit3)));
+    TLegend *lg = new TLegend(0.30, 0.44, 0.70, 0.58);
     lg->SetBorderSize(0);
-    lg->AddEntry(hrms1, "T1 G4 truth steps", "l");
-    lg->AddEntry(hrms2, "T2 truth clusters (per pad row)", "l");
-    lg->AddEntry(hrms3, "T3 reco-cluster arcs, R-selected", "l");
+    lg->AddEntry(hrms1, "G4 truth hits", "l");
+    lg->AddEntry(hrms3, "truth-matched reco clusters", "l");
     lg->Draw();
   }
 
-  cv->SaveAs("../sim_validation_plots/truth_circle_v51.png");
-  printf("wrote ../sim_validation_plots/truth_circle_v51.png + truth_circle_v51.txt\n");
+  cv->SaveAs("../sim_validation_plots/truth_circle_v52.png");
+  printf("wrote ../sim_validation_plots/truth_circle_v52.png + truth_circle_v52.txt\n");
 }

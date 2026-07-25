@@ -1,0 +1,14 @@
+mcs_split v52 — gas Ar75:CF4-20:iso-5, X0 = 112 m; split radius 49 cm
+pT [0.45,0.55] GeV: 3792 split tracks
+  tangent mismatch sigma(dpsi) = 1.06 mrad  (fit noise 0.07 -> MCS 1.06 mrad)
+  Highland full-crossing theta0 = 1.50 mrad (per-track median)
+  whole-track circle RMS (truth) = 20 um (median)
+  reco-cluster circle RMS        = 726 um (median, 6834 tracks)
+  MCS displacement / cluster RMS ~ 0.028
+pT [1.50,2.50] GeV: 386 split tracks
+  tangent mismatch sigma(dpsi) = 0.29 mrad  (fit noise 0.02 -> MCS 0.29 mrad)
+  Highland full-crossing theta0 = 0.41 mrad (per-track median)
+  whole-track circle RMS (truth) = 5 um (median)
+  reco-cluster circle RMS        = 468 um (median, 481 tracks)
+  MCS displacement / cluster RMS ~ 0.011
+scaling check: sigma ratio W1/W2 = 3.69 (Highland predicts 3.63)
