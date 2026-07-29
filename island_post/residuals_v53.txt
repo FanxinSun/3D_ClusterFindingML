@@ -1,0 +1,33 @@
+# v5.3b residual summary (2026-07-25, rev G): dev% = sim/real - 1
+# group | label | dev_vs_ALL_real | dev_vs_COMPLETE_real (999 = n/a)
+# v5.3b = ADOPTION CANDIDATE: v5.3 (pT0Ref 1.85, eps 0.588, fixed
+# truth/trigger, v5.1 electronics) + ENV53b arrivals bridge (E2 residual
+# iteration the original ENV53 skipped). Tilt FIXED: w2/w3/step/px now
+# +0.7/+0.9/-1.8/+0.2 (window residual sum 10.5% -> 6.3%). Lone survivor:
+# early region -4.7 (w1) / -4.8 (bump) = ONE residual seen by two meters;
+# persistent across 3 node realizations -> structural floor of the flat
+# pre-window envelope clamp. BLUE = truncation artifact (as-recorded ref).
+# fired-mean red = 11,391 vs tuned-library anchor 10,751 (library-level,
+# unchanged by envelope).
+time|window w1 (early)|-19.7|-4.7
+time|window w2 (mid)|-3.1|+0.7
+time|window w3 (late)|+21.8|+0.9
+time|trigger bump|-14.2|-4.8
+time|drift-edge step|-2.2|-1.8
+time|fired-mean (trig-only)|999|+6.0
+content|px/event mean|+26.4|+0.2
+content|px/event CV|-52.9|-10.5
+content|R1 px share|-8.4|-5.9
+content|R2 px share|+2.1|+0.3
+content|R3 px share|+10.1|+8.0
+content|low-adc(<30)/event|+31.6|+4.4
+islands|islands/event|+34.4|+7.1
+islands|island <size>|+5.7|-10.6
+islands|island <phi-size>|-1.8|-2.1
+shapes|<abs asym>|+3.4|+3.4
+shapes|<maxadc/adc>|+7.8|+8.2
+pixel|pixmean|+2.3|+0.8
+pixel|sub10 trace|+7.2|-5.0
+pixel|sh/hi band|+15.9|+17.5
+pixel|run mean|-1.8|-2.4
+pixel|run tail P10|+18.8|+17.4

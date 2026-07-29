@@ -25,7 +25,7 @@
 // Fit: algebraic (Kasa) init + 6 Gauss-Newton geometric iterations.
 // Quality: full R1->R3 crossers only (r<34 & r>72 cm; layers <=11 & >=50).
 // Showcase panels use the most-sampled CLEAN track/segment (stated criterion).
-// Output: ../sim_validation_plots/truth_circle_v52.png + truth_circle_v52.txt
+// Output: ../sim_validation_plots/truth_circle_<ver>.png + truth_circle_<ver>.txt
 #include <TFile.h>
 #include <TTree.h>
 #include <TH1D.h>
@@ -129,7 +129,8 @@ double wrapphi(double d)
 
 void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
                   const char *g4pat = "../P5/PP_g4hit_%d.root",
-                  const char *i91 = "island91_frames_production_v52.root")
+                  const char *i91 = "island91_frames_production_v53.root",
+                  const char *ver = "v53", const char *vtag = "v5.3")
 {
   using namespace TCIRC;
   const double BFIELD = 1.4;                                   // T (nominal yardstick)
@@ -329,13 +330,13 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
   };
   double sag = sagitta(20.0, 78.0);              // full gas volume (truth hits)
   double sagrow = sagitta(geoR[7], geoR[54]);    // pad rows L7-L54 (clusters)
-  FILE *fo = fopen("truth_circle_v52.txt", "w");
+  FILE *fo = fopen(Form("truth_circle_%s.txt", ver), "w");
   auto P = [&](const char *fmt, ...) {
     va_list ap; va_start(ap, fmt); vprintf(fmt, ap); va_end(ap);
     va_start(ap, fmt); vfprintf(fo, fmt, ap); va_end(ap);
   };
-  P("truth_circle v52 — pT window [%.2f,%.2f] GeV, B=%.2f T (nominal), R_exp=%.1f cm\n",
-    pt_lo, pt_hi, BFIELD, Rexp);
+  P("truth_circle %s — pT window [%.2f,%.2f] GeV, B=%.2f T (nominal), R_exp=%.1f cm\n",
+    ver, pt_lo, pt_hi, BFIELD, Rexp);
   P("sagitta: %.2f cm over the gas (r 20-78, truth hits)  |  %.2f cm over pad rows (r %.1f-%.1f, clusters)\n",
     sag, sagrow, geoR[7], geoR[54]);
   P("truth hits   : %ld window primaries, %ld full R1->R3 crossers fitted\n", nwin1, nfull1);
@@ -357,7 +358,7 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
 
   // ---------- figure ----------
   gStyle->SetOptStat(0);
-  TCanvas *cv = new TCanvas("cv", "truth circle v52", 1600, 1200);
+  TCanvas *cv = new TCanvas("cv", Form("truth circle %s", ver), 1600, 1200);
   cv->Divide(2, 2);
 
   cv->cd(1);
@@ -450,6 +451,6 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
     lg->Draw();
   }
 
-  cv->SaveAs("../sim_validation_plots/truth_circle_v52.png");
-  printf("wrote ../sim_validation_plots/truth_circle_v52.png + truth_circle_v52.txt\n");
+  cv->SaveAs(Form("../sim_validation_plots/truth_circle_%s.png", ver));
+  printf("wrote ../sim_validation_plots/truth_circle_%s.png + truth_circle_%s.txt\n", ver, ver);
 }

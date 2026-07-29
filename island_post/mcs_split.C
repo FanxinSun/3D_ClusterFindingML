@@ -12,7 +12,7 @@
 //   (Ar75:CF4-20:iso-5) -> X0 = 24.0 g/cm2 = 112 m. theta0 evaluated per
 //   track with its 3D path length (pion beta assumed; sample is 87% pi).
 // Companion: truth_circle.C (trajectory circularity + cluster residuals).
-// Output: ../sim_validation_plots/mcs_split_v52.png + mcs_split_v52.txt
+// Output: ../sim_validation_plots/mcs_split_<ver>.png + mcs_split_<ver>.txt
 #include <TFile.h>
 #include <TTree.h>
 #include <TH1D.h>
@@ -128,7 +128,8 @@ bool tangentAtR(const Fit &F, double r0, double hx, double hy,
 }  // namespace MCSD
 
 void mcs_split(int ng4 = 3, const char *g4pat = "../P5/PP_g4hit_%d.root",
-               const char *i91 = "island91_frames_production_v52.root")
+               const char *i91 = "island91_frames_production_v53.root",
+               const char *ver = "v53", const char *vtag = "v5.3")
 {
   using namespace MCSD;
   const double PTW[2][2] = {{0.45, 0.55}, {1.5, 2.5}};
@@ -268,7 +269,7 @@ void mcs_split(int ng4 = 3, const char *g4pat = "../P5/PP_g4hit_%d.root",
   }
 
   // ---------- summary ----------
-  FILE *fo = fopen("mcs_split_v52.txt", "w");
+  FILE *fo = fopen(Form("mcs_split_%s.txt", ver), "w");
   auto P = [&](const char *fmt, ...) {
     va_list ap; va_start(ap, fmt); vprintf(fmt, ap); va_end(ap);
     va_start(ap, fmt); vfprintf(fo, fmt, ap); va_end(ap);
@@ -279,7 +280,7 @@ void mcs_split(int ng4 = 3, const char *g4pat = "../P5/PP_g4hit_%d.root",
     sig[w] = hd[w]->GetRMS();
     fn[w] = med(fitnoise[w]);
   }
-  P("mcs_split v52 — gas Ar75:CF4-20:iso-5, X0 = 112 m; split radius %.0f cm\n", R0);
+  P("mcs_split %s — gas Ar75:CF4-20:iso-5, X0 = 112 m; split radius %.0f cm\n", ver, R0);
   for (int w = 0; w < 2; ++w)
   {
     double core = std::sqrt(std::max(0., sig[w] * sig[w] - fn[w] * fn[w]));
@@ -298,7 +299,7 @@ void mcs_split(int ng4 = 3, const char *g4pat = "../P5/PP_g4hit_%d.root",
 
   // ---------- figure ----------
   gStyle->SetOptStat(0);
-  TCanvas *cv = new TCanvas("cv", "mcs split v52", 1500, 620);
+  TCanvas *cv = new TCanvas("cv", Form("mcs split %s", ver), 1500, 620);
   cv->Divide(2, 1);
   cv->cd(1);
   {
@@ -320,7 +321,7 @@ void mcs_split(int ng4 = 3, const char *g4pat = "../P5/PP_g4hit_%d.root",
   cv->cd(2);
   {
     TLatex tx; tx.SetNDC(); tx.SetTextSize(0.045);
-    tx.DrawLatex(0.06, 0.90, "in-gas MCS vs cluster resolution (v5.2 sim, measured)");
+    tx.DrawLatex(0.06, 0.90, Form("in-gas MCS vs cluster resolution (%s sim, measured)", vtag));
     tx.SetTextSize(0.038);
     double core0 = std::sqrt(std::max(0., sig[0] * sig[0] - fn[0] * fn[0]));
     double core1 = std::sqrt(std::max(0., sig[1] * sig[1] - fn[1] * fn[1]));
@@ -340,6 +341,6 @@ void mcs_split(int ng4 = 3, const char *g4pat = "../P5/PP_g4hit_%d.root",
     tx.DrawLatex(0.06, 0.21, "     comparable to the measurement term only below ~0.5-1 GeV");
     tx.DrawLatex(0.06, 0.10, "gas: Ar75:CF4-20:iso-5 (from sphenix_p5.gdml), X_{0} = 112 m");
   }
-  cv->SaveAs("../sim_validation_plots/mcs_split_v52.png");
-  printf("wrote ../sim_validation_plots/mcs_split_v52.png + mcs_split_v52.txt\n");
+  cv->SaveAs(Form("../sim_validation_plots/mcs_split_%s.png", ver));
+  printf("wrote ../sim_validation_plots/mcs_split_%s.png + mcs_split_%s.txt\n", ver, ver);
 }

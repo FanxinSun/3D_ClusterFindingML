@@ -213,3 +213,37 @@ fa7f3863d71fc2caffc02fad9fdc777a  island91_frames_production_v51.root
 #   generator content -22% + declared response set (size/sh-hi/run-shape).
 # SUPERVISOR HANDOFF (v52) = hit69 + island91 + sim_event111 CSVs (trk CSV
 #   shippable for the first time).
+--- v5.3 FINAL (pp TUNED, 2026-07-25): pT0Ref 1.85 (one-knob soft-production
+--- calibration to fired anchor + window closure; all shape holdouts
+--- unchanged) + ENV53 + eps=0.588 + fixed truth/trigger + v5.1 electronics.
+b17f0ca44674293853a6f97adfb99620  hit69_frames_production_v53.root
+9fde172e6f5c75fc78440e588494455a  island91_frames_production_v53.root
+c76c45fe28a53c797f324cb1dace0071  prodclus_v53.root
+# hit69 v53: 82,015,523 rows (1,047 dupes merged). prodclus 9,390,271
+#   clusters 53/45/2. CSV exemplar = sim event 162 (median):
+#   sim_event162_{hits 320520, ntp_cluster 32604, ntp_clus_trk 17615}.
+#   Closure exact. Acceptance: px/ev +1.3% (CONTENT CLOSED, was -22%),
+#   windows -3.5/-2.6/+4.4%, bump +1.3%, step +2.5% (fired-side trade),
+#   holdouts (pixmean/sub10/sh-hi/runs/shapes) unchanged from v5.2.
+# SUPERVISOR HANDOFF (v53) = hit69 + island91 + sim_event162 CSVs.
+# ADOPTION CANDIDATE. v5.2 libs regenerable: seeds 20260722+i, no tune arg;
+#   v5.3 libs: seeds 20260810+i, gen_pp 4th arg 1.85.
+--- v5.3b FINAL (pp TUNED + ENV53b arrivals bridge, 2026-07-25): same tune
+--- (pT0Ref 1.85), eps 0.588, v5.1 electronics, seeds as v5.3; envelope
+--- nodes = ENV53b (E2 residual iteration the original ENV53 skipped).
+--- SUPERSEDES the v5.3/ENV53 block above - those md5s are void.
+a4569928d4f18836bf774cc297bb353e  hit69_frames_production_v53.root
+7b9fdd8682c7cbd47905a1cb2ab832e0  island91_frames_production_v53.root
+ca770164a34352c7de78a8dcf5d85378  prodclus_v53.root
+# hit69 v53b: 81,099,376 rows (967 dupes merged). prodclus 9,277,476
+#   clusters 53/45/2 (track 4,949,283 / looper 4,151,670 / noise 176,523);
+#   island91 merged 8,032,145. CSV exemplar = sim event 124 (median
+#   occupancy 325,969 px): sim_event124_{hits 325962, ntp_cluster 31746,
+#   ntp_clus_trk 18739}; the event-162 set (ENV53 production) moved to
+#   csv_sim/superseded_v53_env53/.
+# Acceptance vs complete-62: windows -4.7/+0.7/+0.9 (tilt fixed; w1 =
+#   envelope structural floor), step -1.8, px/ev +0.2, holdouts unchanged.
+# Window-edge note: real DAQ live to tbin ~961, sim window to 970 (0.96%
+#   of px); fingerprint arrival panel ends at 960.5; convention footnote
+#   in PIPELINE.md.
+# SUPERVISOR HANDOFF (v53b) = hit69 + island91 + sim_event124 CSVs.

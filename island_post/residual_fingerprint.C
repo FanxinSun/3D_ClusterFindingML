@@ -71,9 +71,13 @@ void residual_fingerprint(double s = 0.6974,
     return h;
   };
   TCanvas c("c", "", 1500, 1250); c.Divide(2, 3);
-  // 1. arrivals (envelope shape), flash window excluded via canon cut
-  panel(c.cd(1), mk(tr, "tbin", "r1", 97, 0.5, 970.5, CANON::TPC_CUT_NOLASER, NR),
-        mk(ts, "tbin", "s1", 97, 0.5, 970.5, CANON::SIM_NOLASER, NS), s,
+  // 1. arrivals (envelope shape), flash window excluded via canon cut.
+  // Axis ends at 960.5: real recording is live only to tbin ~961 (0.04% of
+  // real hits above 960) while the sim window runs to 970 (0.96% of px) —
+  // beyond 960 the panel would compare a live sim bin against a dead real
+  // bin and report the window-length difference as "unexplained" residual.
+  panel(c.cd(1), mk(tr, "tbin", "r1", 96, 0.5, 960.5, CANON::TPC_CUT_NOLASER, NR),
+        mk(ts, "tbin", "s1", 96, 0.5, 960.5, CANON::SIM_NOLASER, NS), s,
         "arrival time;tbin;hits/frame", false);
   // 2. layer profile (radial structure)
   panel(c.cd(2), mk(tr, "layer", "r2", 48, 6.5, 54.5, CANON::TPC_CUT, NR),

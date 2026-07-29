@@ -36,11 +36,14 @@ IP=$ROOTDIR/island_post
 LOGS=$IP/pp_logs; mkdir -p "$LOGS"
 
 # ---------------- parameters ----------------
-VER=v52
+VER=v53
 NCHUNK=10                 # generator/G4/transport chunks
 GEN_PER=2000              # pp events per chunk (pp collision ~1/25 pAu content
                           #  -> 10x the v4.0 event count for comparable library charge)
-GEN_SEED_BASE=20260722    # chunk i uses GEN_SEED_BASE+i
+GEN_SEED_BASE=20260810    # chunk i uses GEN_SEED_BASE+i (v5.3 fresh seeds)
+GEN_TUNE=1.85             # v5.3 soft-production tune: pT0Ref (Monash 2.28
+                          #  default). Chosen 2026-07-25: 4-point census scan,
+                          #  uniform closure -1.3% / fired anchor +2.9%.
 G4_PAR=5                  # parallel G4 jobs per wave (fieldmap ~300 MB resident each)
 NB=5; PER=50              # production: NB batches x PER events = total sim events
 COMP_SEED_BASE=2026093    # composer seed = ${COMP_SEED_BASE}${i}
@@ -56,7 +59,7 @@ RSPEC=$(grep -v '^#' "$IP/rspec99_v52.txt" 2>/dev/null)
                           #  all 99 measured per-event rmbd values / eps 0.519
                           #  (proxy; replace file when team eps arrives).
                           #  Window accounting judged by acceptance, not pre-fit.
-ENV="5.80:0.982,11.10:1.008,16.40:1.011,21.70:1.028,27.00:1.009,32.30:1.026,37.60:1.016,42.90:1.017,47.96:0.904"
+ENV="5.80:0.938,11.10:1.001,16.40:0.956,21.70:1.067,27.00:1.056,32.30:1.055,37.60:0.953,42.90:1.035,47.96:0.939"
                           # v5.2 nodes (ENV52, 2026-07-24): references at the
                           #  FIXED composer (correct fired flags — trigger now
                           #  genuinely MBD-fired) + v5.1 electronics + eps 0.588.
@@ -68,7 +71,8 @@ FLASH=raw_lib_cmflash_w.root                        # CM flash lib (species-free
 SPEC="0.008:1,0.009:1,0.011:1,0.012:1,0.013:1,0.014:1,0.018:1,0.021:1,0.027:1,0.037:1,2.2:0.25"
 FM=$ROOTDIR/CDB_offline/FIELDMAP_GAP/65/a9/65a930ed6de9c0e049cd0f3ef226e6b4_sphenix3dbigmapxyz_gap_rebuild_v2.root
 DM=$ROOTDIR/CDB_offline/TPC_DEADCHANNELMAP/ff/c3/ffc3f6498934c5a8ba31065292c6ebcc_TPCDeadMap_79471.root
-ANCHOR=8200               # rate-free real fired-collision kept-px anchor
+ANCHOR=10897              # rate-free fired anchor (complete-62 excess 38.87
+                          #  x pp trig-only calib 280.3, v5.1 electronics)
 
 LIBS=""; EVALS=""; MBDDATS=""
 for i in $(seq 0 $((NCHUNK-1))); do
@@ -90,7 +94,7 @@ if run_stage gen; then
     echo "gen_pp compiled"
   fi
   for i in $(seq 0 $((NCHUNK-1))); do
-    ./gen_pp $GEN_PER pp_run_$i.dat $((GEN_SEED_BASE+i)) \
+    ./gen_pp $GEN_PER pp_run_$i.dat $((GEN_SEED_BASE+i)) $GEN_TUNE \
         > "$LOGS/gen_pp_$i.log" 2> fired_pp_$i.txt &
   done
   wait

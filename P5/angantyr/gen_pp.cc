@@ -18,6 +18,11 @@ int main(int argc, char **argv)
   py.readString("Beams:eCM = 200.");
   py.readString("Beams:frameType = 1");
   py.readString("SoftQCD:inelastic = on");
+  if (argc > 4)  // v5.3 soft-production tune knob (omitted = Monash default,
+  {              // preserving byte-level reproducibility of earlier productions)
+    py.readString(("MultipartonInteractions:pT0Ref = " + std::string(argv[4])).c_str());
+    fprintf(stderr, "TUNE pT0Ref %s\n", argv[4]);
+  }
   py.readString("Random:setSeed = on");
   py.readString(("Random:seed = " + std::to_string(seed)).c_str());
   py.readString("Print:quiet = on");
