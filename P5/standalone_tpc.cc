@@ -6,7 +6,9 @@
 // Conventions matched to the reference chain (P5_g4hit_eval.root):
 //   - hit = one G4 step in the tpc_gas volume with edep > 0
 //   - gx,gy,gz = step midpoint [cm]; gt = pre-step global time [ns]
-//   - gpl = step length [cm]; gpx,gpy,gpz = pre-step momentum [GeV]
+//   - gpl = step length [cm]; gpx,gpy,gpz = TRACK VERTEX momentum [GeV]
+//     (constant per track, repeated on every hit row — old-eval/container
+//     semantics; see the SD class note below. NOT the hit-local momentum.)
 //   - gedep [GeV]; gtrackID: primary > 0, secondary < 0 (sign convention
 //     consumed by tpc_transport / islandize91 labeling)
 //   - glayer written as 99: layer derived downstream from radius (transport

@@ -25,6 +25,7 @@
 
 #include <TFile.h>
 #include <TNtuple.h>
+#include <TRandom3.h>
 #include <TTree.h>
 #include <cmath>
 #include <cstdint>
@@ -111,11 +112,142 @@ enum
 }  // namespace I91
 using namespace I91;
 
-void islandize91(const char *pixels, const char *out, int isSim, const char *truthsrc = "", const char *sidecar = "")
+void islandize91(const char *pixels, const char *out, int isSim, const char *truthsrc = "", const char *sidecar = "",
+                 const char *rowdr = "", const char *rphifield = "")
 {
   if (!loadGeo())
   {
     return;
+  }
+
+  // --- v5.4 knob B: phenomenological drift-structured r-phi deflection
+  // field, delta_rphi(z_app, r) = A(z_app) * (1 + GRS*(r-49)) [cm], applied
+  // to the EXPORTED cluster centroid phi only (positions-only overlay; the
+  // real field's residual position content vs the distortion-payload
+  // verdict, see distortion_remodel_request.md RESPONSE). A(z) is
+  // piecewise-linear over apparent-z nodes (clamped at the end nodes).
+  // Arg format: "z1:A1,z2:A2,...|GRS"  (z in cm, A in cm at r=49).
+  // Empty (default) = off = byte-identical.
+  std::vector<double> FZN, FZA;
+  double FGRS = 0., FSMOD = 0., FSREG = 0., FSSEC = 0., FSPHI = 0., FSCM = 0.;
+  // FSCM = per-SIDE extra harmonic amplitude [cm] (independent hashed
+  // phases per side): sets the side-to-side discontinuity at the central
+  // membrane. cmcheck 2026-08-06: real med|J| 0.480 cm (fit floor 0.304),
+  // v5.4b's fully per-side phases gave 0.985 (2.5x real) -> main FSPHI
+  // phases are now SIDE-SHARED (CM-continuous) and FSCM carries the
+  // real-sized residual discontinuity.
+  // FSSEC = per-(sector,side) ALL-LAYER rphi offset amplitude [cm]: for a
+  // near-radial track this is a rigid tangential translation -> moves d0
+  // one-for-one at ~zero circle-RMS cost (probe finding P1/P3/P4) — the
+  // isotropic d0-broadening mode. Fixed hashed pattern like the others.
+  // FSPHI = smooth azimuthal-harmonic translation field [cm, unit-RMS
+  // pattern]: cos(2phi+psi2)+cos(3phi+psi3), fixed hashed phases, per side.
+  // Probe P6 showed sector STEPS lose boundary tracks through the rms gate
+  // (real shows no such loss); smooth k=2,3 harmonics translate without
+  // bending (k=1 excluded: real d0diag cosine fit is null at 0.8 mm).
+  if (rphifield && rphifield[0])
+  {
+    TString fs(rphifield);
+    auto *two = fs.Tokenize("|");
+    if (two->GetEntries() > 1) FGRS = atof(two->At(1)->GetName());
+    // granular alignment-residual modes (probe finding 2026-08-05: smooth
+    // tangential fields are absorbed by the circle refit to <1 um; only
+    // cluster-to-cluster structure survives): FSMOD = per-(layer,sector,side)
+    // rphi offset amplitude [cm]; FSREG = per-(region,sector,side) amplitude
+    // [cm]. Patterns are FIXED unit-Gaussian hashes (deterministic, event-
+    // independent — an alignment-residual field, not per-event noise).
+    if (two->GetEntries() > 2) FSMOD = atof(two->At(2)->GetName());
+    if (two->GetEntries() > 3) FSREG = atof(two->At(3)->GetName());
+    if (two->GetEntries() > 4) FSSEC = atof(two->At(4)->GetName());
+    if (two->GetEntries() > 5) FSPHI = atof(two->At(5)->GetName());
+    if (two->GetEntries() > 6) FSCM = atof(two->At(6)->GetName());
+    auto *nod = TString(two->At(0)->GetName()).Tokenize(",");
+    for (int i = 0; i < nod->GetEntries(); ++i)
+    {
+      double zz, aa;
+      if (sscanf(nod->At(i)->GetName(), "%lf:%lf", &zz, &aa) == 2)
+      {
+        FZN.push_back(zz);
+        FZA.push_back(aa);
+      }
+    }
+    printf("islandize91: rphi field %zu nodes [%g..%g cm], GRS %.4f /cm, SMOD %.4f cm, SREG %.4f cm, SSEC %.4f cm, SPHI %.4f cm, SCM %.4f cm\n",
+           FZN.size(), FZN.empty() ? 0 : FZN.front(), FZN.empty() ? 0 : FZN.back(), FGRS, FSMOD, FSREG, FSSEC, FSPHI, FSCM);
+  }
+  double UMOD[55][12][2], UREG[3][12][2], USEC[12][2], PPHI[2], PCM[2][2];
+  {
+    TRandom3 hg(9000000U);
+    PPHI[0] = hg.Uniform(0., 2 * M_PI);  // psi2 (side-shared: CM-continuous)
+    PPHI[1] = hg.Uniform(0., 2 * M_PI);  // psi3
+  }
+  for (int sd2 = 0; sd2 < 2; ++sd2)
+  {
+    TRandom3 hg(9500000U + sd2);
+    PCM[0][sd2] = hg.Uniform(0., 2 * M_PI);  // per-side chi2
+    PCM[1][sd2] = hg.Uniform(0., 2 * M_PI);  // per-side chi3
+  }
+  for (int sct = 0; sct < 12; ++sct)
+    for (int sd2 = 0; sd2 < 2; ++sd2)
+    {
+      TRandom3 hg(4000000U + sct * 100U + sd2);
+      USEC[sct][sd2] = hg.Gaus(0., 1.);
+    }
+  for (int L = 0; L < 55; ++L)
+    for (int sct = 0; sct < 12; ++sct)
+      for (int sd2 = 0; sd2 < 2; ++sd2)
+      {
+        TRandom3 hg(1000000U + L * 10000U + sct * 100U + sd2);
+        UMOD[L][sct][sd2] = hg.Gaus(0., 1.);
+      }
+  for (int rg = 0; rg < 3; ++rg)
+    for (int sct = 0; sct < 12; ++sct)
+      for (int sd2 = 0; sd2 < 2; ++sd2)
+      {
+        TRandom3 hg(7000000U + rg * 10000U + sct * 100U + sd2);
+        UREG[rg][sct][sd2] = hg.Gaus(0., 1.);
+      }
+  auto fieldA = [&](double z) -> double {
+    if (FZN.empty()) return 0.;
+    if (z <= FZN.front()) return FZA.front();
+    if (z >= FZN.back()) return FZA.back();
+    for (size_t i = 1; i < FZN.size(); ++i)
+      if (z < FZN[i])
+      {
+        double f = (z - FZN[i - 1]) / (FZN[i] - FZN[i - 1]);
+        return FZA[i - 1] + f * (FZA[i] - FZA[i - 1]);
+      }
+    return FZA.back();
+  };
+
+  // --- v5.4 knob A: per-layer radius offsets for the EXPORTED cluster
+  // geometry (real reco row radii vs GDML nominal; real_row_radii_v54.txt,
+  // measured from run-79507 row-locked cluster radii). Positions only —
+  // pads/tbins/clustering untouched, so pixel-level anchors are invariant
+  // by construction. Empty arg (default) = all zero = byte-identical.
+  double DROW[55] = {0};
+  if (rowdr && rowdr[0])
+  {
+    FILE *fdr = fopen(rowdr, "r");
+    if (!fdr)
+    {
+      printf("ERROR: rowdr table %s missing\n", rowdr);
+      return;
+    }
+    char line[256];
+    int nL = 0;
+    while (fgets(line, 256, fdr))
+    {
+      int L;
+      double dr;
+      if (line[0] == '#') continue;
+      if (sscanf(line, "%d %lf", &L, &dr) >= 2 && L >= 0 && L <= 54)
+      {
+        DROW[L] = dr;
+        nL++;
+      }
+    }
+    fclose(fdr);
+    printf("islandize91: row-radius offsets from %s (%d layers, L7 %+.3f mm)\n", rowdr, nL, 10. * DROW[7]);
   }
 
   // --- truth-track table (sim only): trackID -> (pT, flavor, embed, primary)
@@ -372,7 +504,21 @@ void islandize91(const char *pixels, const char *out, int isSim, const char *tru
       vp = std::max(0., vp / W - cp * cp);
       vt = std::max(0., vt / W - ct * ct);
       const Lay &geo = GEO[L];
-      double r = geo.radius;
+      double r = geo.radius + DROW[L];
+      if (!FZN.empty() || FSMOD > 0 || FSREG > 0 || FSSEC > 0 || FSPHI > 0)
+      {
+        double phw = cphi < 0 ? cphi + 2 * M_PI : cphi;
+        int sct = std::min(11, std::max(0, (int) (phw / (M_PI / 6.))));
+        int sd2 = cz >= 0 ? 1 : 0;
+        int rg = L < 23 ? 0 : (L < 39 ? 1 : 2);
+        double d = FSMOD * UMOD[L][sct][sd2] + FSREG * UREG[rg][sct][sd2] + FSSEC * USEC[sct][sd2];
+        if (FSPHI > 0)
+          d += FSPHI * (std::cos(2 * phw + PPHI[0]) + std::cos(3 * phw + PPHI[1]));
+        if (FSCM > 0)
+          d += FSCM * (std::cos(2 * phw + PCM[0][sd2]) + std::cos(3 * phw + PCM[1][sd2]));
+        if (!FZN.empty()) d += fieldA(cz) * (1. + FGRS * (r - 49.));
+        cphi += d / r;
+      }
       double x = r * std::cos(cphi), y = r * std::sin(cphi);
       double theta = std::atan2(r, (double) cz);
       double eta = -std::log(std::tan(0.5 * theta));

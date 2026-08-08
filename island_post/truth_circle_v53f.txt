@@ -1,0 +1,10 @@
+truth_circle v53f — pT window [0.45,0.55] GeV, B=1.40 T (nominal), R_exp=119.1 cm
+sagitta: 3.69 cm over the gas (r 20-78, truth hits)  |  2.14 cm over pad rows (r 31.4-75.4, clusters)
+truth hits   : 32303 window primaries, 16626 full R1->R3 crossers fitted
+               median RMS 20 um  (p90 64 um), median R_fit 118.62 cm, R_fit/R_exp(pT) 0.9990
+reco clusters: 17836 truth-track groups -> 17298 segments; multi-segment groups 1.86% (cluster-weighted 2.82%)
+               [v5.1 was 35.6% / 60.8% — association-fix verification]
+               8531 full-span segments fitted, median R_fit 117.7 cm (v5.1: 107.0), 95.0% inside R window [101,137]
+               R-selected: 8107 segments, median RMS 721 um (p90 1023 um)
+deviation/sagitta: truth hits 5.42e-04 (gas)   reco clusters 3.37e-02 (pad rows)
+species of fitted truth-hit tracks: |pdg|=11:28  |pdg|=13:3  |pdg|=211:14609  |pdg|=321:1266  |pdg|=2212:720  

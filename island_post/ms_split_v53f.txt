@@ -1,0 +1,16 @@
+ms_split v53f — multiple scattering (MS), gas Ar75:CF4-20:iso-5, X0 = 112 m; border r0 = 35 cm; 10 g4 chunks
+pT [0.45,0.55] GeV: 16555 split tracks
+  sigma(dpsi) raw RMS          = 1.365 ± 0.008 mrad   (fit noise 0.08)
+  3sigma-clipped core sigma    = 1.173 mrad   (2.5% of tracks in clipped tail)
+  Highland theta0, full crossing (ORDER scale, not a fit target) = 1.508 mrad
+  whole-track circle RMS (truth) = 20 um (median)
+  reco-cluster circle RMS        = 727 um (median, 8696 tracks)
+  MS displacement / cluster RMS ~ 0.027
+pT [1.50,2.50] GeV: 2275 split tracks
+  sigma(dpsi) raw RMS          = 0.367 ± 0.005 mrad   (fit noise 0.02)
+  3sigma-clipped core sigma    = 0.299 mrad   (2.8% of tracks in clipped tail)
+  Highland theta0, full crossing (ORDER scale, not a fit target) = 0.416 mrad
+  whole-track circle RMS (truth) = 5 um (median)
+  reco-cluster circle RMS        = 476 um (median, 860 tracks)
+  MS displacement / cluster RMS ~ 0.010
+1/p scaling check W1/W2: raw 3.72, core 3.92 (Highland 3.63)

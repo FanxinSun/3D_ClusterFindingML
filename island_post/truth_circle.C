@@ -23,7 +23,9 @@
 // NOMINAL yardstick for R_exp and the R-selection window (+-15%, insensitive
 // to the ~1% nominal-vs-map difference); the fit itself assumes no field.
 // Fit: algebraic (Kasa) init + 6 Gauss-Newton geometric iterations.
-// Quality: full R1->R3 crossers only (r<34 & r>72 cm; layers <=11 & >=50).
+// Quality: full R1->R3 crossers only (r<35 & r>72 cm; layers <=11 & >=50).
+// Inner fiducial border 34 -> 35 cm (user, 2026-07-31) — aligned with the
+// adopted multiple-scattering (MS) split border in ms_split.C.
 // Showcase panels use the most-sampled CLEAN track/segment (stated criterion).
 // Output: ../sim_validation_plots/truth_circle_<ver>.png + truth_circle_<ver>.txt
 #include <TFile.h>
@@ -200,7 +202,7 @@ void truth_circle(double pt_lo = 0.45, double pt_hi = 0.55, int ng4 = 3,
       nwin1++;
       double rmin = 1e9, rmax = 0;
       for (double r : T.r) { rmin = std::min(rmin, r); rmax = std::max(rmax, r); }
-      if ((int) T.x.size() < 25 || rmin > 34 || rmax < 72) continue;   // full crossers only
+      if ((int) T.x.size() < 25 || rmin > 35 || rmax < 72) continue;   // full crossers only
       Fit F = fitCircle(T.x, T.y);
       if (!F.ok) continue;
       nfull1++;

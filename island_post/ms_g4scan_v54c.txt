@@ -1,0 +1,5 @@
+ms_g4scan v54c — exhaustive circle search on sim TRUTH hits (per collision)
+collisions 1818 | truth findable 14.057/coll | finder found 34.251/coll
+composition of found: recovered-findable 13.436/coll (recall 0.96) | extra arc of same particle 0.42 | real particle below bar 0.02 | mixed-parent 0.17
+single-parent purity median 0.85 | fit RMS<=0.05 cm fraction 0.94
+found R_fit median 90 cm; found/collision median 26

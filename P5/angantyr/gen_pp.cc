@@ -6,12 +6,21 @@
 // the arm counts, unlike the old 2-column fired_*.txt of the Angantyr era).
 #include "Pythia8/Pythia.h"
 #include <cstdio>
+#include <random>
 using namespace Pythia8;
 int main(int argc, char **argv)
 {
   int nev = argc > 1 ? atoi(argv[1]) : 100;
   const char *out = argc > 2 ? argv[2] : "pp_run.dat";
   int seed = argc > 3 ? atoi(argv[3]) : 20260722;
+  // optional 5th arg (v5.4 probe): vertex z-spread sigma in MM (0 = all
+  // collisions at origin, byte-identical output to the pre-probe binary).
+  // Vertices draw from an INDEPENDENT RNG so the Pythia stream — and thus
+  // the particle content and FIRED flags — is unchanged at equal seed (CRN).
+  double vzsig = argc > 5 ? atof(argv[5]) : 0.;
+  std::mt19937 vrng((unsigned) seed ^ 0x5A5A5A5AU);
+  std::normal_distribution<double> vgaus(0., 1.);
+  if (vzsig > 0) fprintf(stderr, "VZSPREAD sigma %.1f mm\n", vzsig);
   Pythia py;
   py.readString("Beams:idA = 2212");
   py.readString("Beams:idB = 2212");
@@ -47,7 +56,8 @@ int main(int argc, char **argv)
         }
       }
     fprintf(f, "E %d -1 -1 -1 -1 0 0 1 0 0 0 0\nU GEV MM\n", done + 1);
-    fprintf(f, "V -1 0 0 0 0 0 0 %d 0\n", nfin);
+    double vz = vzsig > 0 ? vzsig * vgaus(vrng) : 0.;
+    fprintf(f, "V -1 0 0 0 %.6g 0 0 %d 0\n", vz, nfin);
     int bc = 1;
     for (int i = 0; i < py.event.size(); ++i)
     {

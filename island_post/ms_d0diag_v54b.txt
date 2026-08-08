@@ -1,0 +1,4 @@
+ms_d0diag v54b — signed d0 vs circle-center azimuth (offset-vs-distortion)
+real: N=3756  (x0, y0) = (+0.03, +0.08) cm  |offset| = 0.08 cm  raw RMS 2.99 -> cosine-subtracted 2.99 cm
+sim: N=58250  (x0, y0) = (-0.05, +0.08) cm  |offset| = 0.09 cm  raw RMS 3.01 -> cosine-subtracted 3.01 cm
+real: cosine explains 0% of the d0s variance (|d0s|<8 cm sample)

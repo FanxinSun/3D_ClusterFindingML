@@ -247,3 +247,29 @@ ca770164a34352c7de78a8dcf5d85378  prodclus_v53.root
 #   of px); fingerprint arrival panel ends at 960.5; convention footnote
 #   in PIPELINE.md.
 # SUPERVISOR HANDOFF (v53b) = hit69 + island91 + sim_event124 CSVs.
+--- v5.4b (2026-08-05): POSITION-GEOMETRY OVERLAY on the sealed v5.3b digi
+--- (pixels/clusters/labels IDENTICAL to v5.3b; only exported cluster
+--- positions move). knob A = real row radii (real_row_radii_v54.txt,
+--- measured from run 79507) + fitted r-phi field SMOD 0.0426 cm
+--- (per-layer/sector/side hashed scatter) + SPHI 2.5 cm (k=2,3 azimuthal
+--- harmonics, hashed phases). islandize91 args:
+---   rowdr = "real_row_radii_v54.txt", rphifield = "0:0|0|0.0426|0|0|2.5"
+a61dbfd129329eb17be8c2dfafb40495  island91_frames_production_v54b.root
+# v5.4a (knob A only) was an intermediate - file deleted, regenerable
+# with rphifield="". Probe files P1-P6/C1 deleted (arg strings in
+# PIPELINE.md). Position meters (other thread's acceptance): stiff
+# circle-RMS ratio 1.00, d0 RMS 3.01 vs 2.99, taper exact; declared:
+# med05 0.83, d0-median tbin profile open (tier-2).
+--- v5.4c (2026-08-06): field-model side-continuity revision — SUPERSEDES
+--- v5.4b (file deleted, regenerable: rphifield "0:0|0|0.0426|0|0|2.5").
+--- Same sealed v5.3b pixels; knob A + SMOD 0.0426 + SPHI 2.49
+--- (side-SHARED phases, CM-continuous) + SCM 0.26 (per-side harmonic =
+--- real-sized membrane discontinuity). islandize91 args:
+---   rowdr="real_row_radii_v54.txt", rphifield="0:0|0|0.0426|0|0|2.49|0.26"
+5972cbe30805897b460872c0fb05177b  island91_frames_production_v54c.root
+# Meters: CM-jump 0.536 vs real 0.480+-0.13 (was 0.985); crossers 1.3% =
+#   real; stiff RMS ratio 1.01; d0 RMS 3.05 vs 2.99; med|d0| 2.27 vs 2.20;
+#   half-arc dk 0.276 (real 0.402 - conservative); labels exact.
+# Open: med05 0.83 (exposed low-pT over-smear, response family);
+#   d0-median tbin profile (tier-2); circle-fit thread re-acceptance of
+#   v54c pending (their split-rate diagnostic should recover ~2x).

@@ -1,0 +1,17 @@
+ms_realcheck v54b — circularity audit of track groups (outlier cut 49.00 cm)
+real = ntp_clus_trk (event,seedID); sim = island91 v5.4b truth groups, same audit
+real: 6138 groups; 0 too short to judge; 6138 auditable
+  CLEAN 5652 (92.1%)   RESCUED 0 (0.0%)   FAKE-like 486 (7.9%)
+  cluster contamination removed: 0 / 221494 (0.00%)
+  per-track RMS median: before clean 831 um -> after 794 um; worst-residual median 2.2 mm
+  d0 median 2.64 cm; d0<2 cm: 34.0% (large d0 = genuine secondaries, not fakes)
+sim: 144448 groups; 21870 too short to judge; 122578 auditable
+  CLEAN 105160 (85.8%)   RESCUED 0 (0.0%)   FAKE-like 17418 (14.2%)
+  cluster contamination removed: 0 / 3666628 (0.00%)
+  per-track RMS median: before clean 916 um -> after 834 um; worst-residual median 2.3 mm
+  d0 median 2.54 cm; d0<2 cm: 41.2% (large d0 = genuine secondaries, not fakes)
+REDO on cleaned tracks (full-crosser gates, window by fitted R):
+  pT ~0.5 GeV: real N=680 median 688 um | sim N=11735 median 835 um | data/MC 0.82
+  pT 1.5-2.5 GeV: real N=54 median 626 um | sim N=874 median 627 um | data/MC 1.00
+caveats: transverse-only test (helix pitch unchecked); an accidental
+circular fake is not excluded; short groups are unjudged, not exonerated.

@@ -1,0 +1,18 @@
+ms_real v53f — MS split-arc machinery applied to REAL cluster-tracks vs sim (v5.3)
+real = ntp_clus_trk (event,seedID) tracks; sim = island91 truth-grouped tracks;
+selection by FITTED curvature both sides; cluster split border r0 = 49 cm
+(the truth-hit border 35 cm is unusable on clusters: pad rows begin at 31.4 cm).
+track groups: real 6138, sim 144448
+pT ~0.5 GeV (R_fit 101-137 cm):
+  real: N=  694  circle RMS median = 692 um   |  split N=  674  sigma(dpsi) = 25.70 ± 0.70 mrad (core 17.88)
+  sim : N=12568  circle RMS median = 733 um   |  split N=11408  sigma(dpsi) = 21.66 ± 0.14 mrad (core 17.94)
+  data/MC: circle RMS 0.94   sigma(dpsi) 1.19
+pT 1.5-2.5 GeV (R_fit 357-596 cm):
+  real: N=   55  circle RMS median = 626 um   |  split N=   54  sigma(dpsi) = 31.21 ± 3.00 mrad (core 16.78)
+  sim : N=  899  circle RMS median = 469 um   |  split N=  831  sigma(dpsi) = 23.51 ± 0.58 mrad (core 18.36)
+  data/MC: circle RMS 1.33   sigma(dpsi) 1.33
+reading: sigma(dpsi) at cluster level is pT-INDEPENDENT (resolution-driven,
+~10x the truth-level MS) in BOTH real and sim — the real data's own
+demonstration that in-gas MS is invisible under cluster resolution.
+Data/MC width ratios test the sim's cluster-resolution realism; the real
+side additionally carries alignment/distortion residuals the sim lacks.

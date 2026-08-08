@@ -1,0 +1,3 @@
+ms_pixscan v54c — exhaustive circle search on ALL real ntp_hit pixels
+complete events used: 25 | found/event median 293 (mean 315.7)
+in-time fraction 0.36 | per-track RMS med 805 um | R_fit med 87 cm

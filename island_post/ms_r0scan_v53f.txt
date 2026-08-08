@@ -1,0 +1,24 @@
+ms_r0scan v53f — split-radius robustness of the multiple-scattering (MS)
+tangent-mismatch measurement. Data only. ADOPTED border: r0 = 35 cm
+(user, 2026-07-31 — conservative worst point; this scan is its justification).
+Highland theta0, full crossing (ORDER scale): 1.509 mrad (pT 0.45-0.55) / 0.416 mrad (pT 1.5-2.5)
+pT [0.45,0.55] GeV:
+  r0=35: N=16555  sigma(dpsi) = 1.365 ± 0.008 mrad   (3sigma-clipped core 1.173)
+  r0=49: N=16595  sigma(dpsi) = 1.073 ± 0.006 mrad   (3sigma-clipped core 0.891)
+  r0=63: N=16587  sigma(dpsi) = 1.249 ± 0.007 mrad   (3sigma-clipped core 1.072)
+pT [1.50,2.50] GeV:
+  r0=35: N= 2275  sigma(dpsi) = 0.367 ± 0.005 mrad   (3sigma-clipped core 0.299)
+  r0=49: N= 2279  sigma(dpsi) = 0.307 ± 0.005 mrad   (3sigma-clipped core 0.231)
+  r0=63: N= 2279  sigma(dpsi) = 0.341 ± 0.005 mrad   (3sigma-clipped core 0.269)
+cross-window sigma ratios (Highland predicts 3.63): r0=35 3.72 | r0=49 3.50 | r0=63 3.66
+closure: (a) sigma is mrad-scale and << cluster resolution at EVERY split;
+(b) the 1/p scaling holds at every split (it is scattering at every
+boundary); (c) mid-split gives the smallest sigma (longest lever arms),
+edge splits are conservative — the adopted r0=35 is the worst point and
+still leaves MS at <4% of cluster resolution.
+NOTE: no absolute theta0 is extracted. An estimator-replica toy study
+(2026-07-31, retired from this output on user decision) showed the
+sigma->theta0 conversion factor is estimator-dependent at the tens-of-
+percent level, superseding the /sqrt2 heuristic once printed by
+ms_split() before the rename. Highland theta0 is an ORDER scale; the
+checks are the 1/p scaling and the split stability.

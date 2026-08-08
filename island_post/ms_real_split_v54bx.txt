@@ -1,0 +1,8 @@
+ms_real_split v54bx — REAL split-arc mismatch in the ms_split style; sim v5.4b in parens
+pT ~0.5 GeV: real N=674 sigma = 25.70 ± 0.70 (core 17.88)   [sim N=10720 sigma 27.42 (core 22.52)]
+  circle RMS median real 692 um (sim 838) -> data/MC 0.83
+pT 1.5-2.5 GeV: real N=54 sigma = 31.21 ± 3.00 (core 16.78)   [sim N=813 sigma 29.39 (core 22.59)]
+  circle RMS median real 626 um (sim 629) -> data/MC 1.00
+truth-level MS for scale: 1.07 / 0.31 mrad (ms_split v54bx) — invisible at cluster level
+d0 median real 2.51 cm, sim 2.27 cm
+worst real showcase: |dpsi| = 142.1 mrad (largest in the pT~0.5 window)
