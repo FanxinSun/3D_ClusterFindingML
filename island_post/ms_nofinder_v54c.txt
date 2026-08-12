@@ -1,0 +1,22 @@
+[nf_hits v54c] HIT level, NO finder; bar >=12 pts, span >=15 cm, R_fit >=45 cm, raw fit
+  sim ntp_g4hit truth-grouped: 1818 collisions -> 25322 tracks | RMS med 30.7 um | R med 100 cm
+  real ntp_hit tracker-grouped (road dxy<1.2 cm, |dtbin|<=6): 6138 seeds -> 4836 tracks (124 px/track mean) | RMS med 2358 um | R med 93 cm
+  gap = the detector: diffusion + pad/tbin quantization (no centroiding at pixel level)
+[nf_clusters v54c] CLUSTER level, NO finder; same bar, raw fit
+  real ntp_clus_trk (event,seedID): 4875 tracks | RMS med 780 um | R med 93 cm
+  sim island91 ntp_cluster (event,gtrackID>0): 98705 tracks | RMS med 893 um | R med 101 cm
+  data/MC RMS 0.87
+[nf_tracks v54c] TRACK level, NO finder; real only (sim has no tracker output)
+  ntp_clus_trk seeds: 6138 total, 4875 pass bar (79%) | RMS med 780 um | R med 93 cm | |d0| med 2.52 cm
+[nf_hits_pieces v54c] HIT level, SHORT-PIECE fits; same bar on whole track, same fitter per piece
+  pad rows from real ntp_hit: row7 r=31.50 cm .. row54 r=75.37 cm (monotonic yes); sim g4hits row-assigned by radius, row region only
+  piece = fixed L-layer window, >=4 pts on >=3 layers; per-track RMS = sqrt(sum chi2 / sum (n-3))
+  whole track: real med 2358 um (4836 trk) | sim med 20.9 um (22275 trk, 1784 coll; row region, cf 30.7 at r 20-78)
+  L=4: real med 1714 um (4828 trk, 7.7 pieces/trk, 14.3 pts/piece) | sim med 2.3 um (22275 trk, 9.0 pieces/trk, 7.0 pts/piece) | real/sim 113 -> 756
+  scan L->med um: real 4->1714 6->1906 8->1974 12->2109 16->2119 24->2240 48->2391 | sim 4->2.3 6->2.4 8->2.8 12->3.7 16->5.0 24->8.2 48->21.4
+[nf_clusters_pieces v54c] CLUSTER level, SHORT-PIECE fits; same bar, same fitter per piece
+  piece = fixed L-layer window, >=4 pts on >=3 layers; per-track RMS = sqrt(sum chi2 / sum (n-3))
+  whole track: real med 780 um (4875 trk) | sim med 893 um (98705 trk) | data/MC 0.87
+  L=4: real med 484 um (4875 trk, 7.3 pieces/trk, 4.0 pts/piece) | sim med 919 um (97782 trk, 4.6 pieces/trk, 4.4 pts/piece) | data/MC 0.53
+  scan L->med um: real 4->484 6->578 8->551 12->627 16->598 24->668 48->811 | sim 4->919 6->915 8->897 12->913 16->912 24->926 48->940
+  scan L->data/MC: 4->0.53 6->0.63 8->0.61 12->0.69 16->0.66 24->0.72 48->0.86

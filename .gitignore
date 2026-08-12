@@ -94,3 +94,13 @@ P5/geo_audit_sa
 P5/region_audit_sa
 P5/standalone_tpc
 P5/*.txt
+
+external_data/**/*.csv
+external_data/**/*.tex
+external_data/**/*.json
+external_data/**/*.bib
+external_data/**/*.cls
+external_data/**/*.bin
+external_data/**/*.bbl
+external_data/**/*.sty
+*logo*
