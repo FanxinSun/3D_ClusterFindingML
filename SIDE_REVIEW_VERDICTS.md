@@ -7,6 +7,79 @@ project's source rule), and the ruling. Newest first.
 
 ---
 
+## 2026-08-14 — Review: v5.5 (field-in-digitization) + the closed circle-fit loop
+
+**Scope.** The v5.5 campaign (`digi_field_request.md` follow-up: the v5.4c
+empirical field injected at transport, before pad/tbin binning), reviewed
+together with what became of the 2026-08-05 adjudication (v5.4c revision,
+external-data corrections of 2026-08-08, and the two v5.5 honesty
+corrections).
+
+### Independent verification (this review, 2026-08-14)
+
+| claim | my check | verdict |
+|---|---|---|
+| v5.5 artifact md5s (digi/island91/prodclus/hit69) | all four recomputed | **CONFIRMED** — match manifest |
+| Field hash bit-identity, transport ↔ islandize91 | seed constants, sector convention `phw/(π/6)`, harmonic arguments compared in code | **CONFIRMED** identical |
+| Injection point per request (post-diffusion, pre-gap/zigzag, Δφ=d/r, no rng draws consumed) | code read; off-path guard = chunk-0 no-field regen byte-exact (136,031,407 px + sumq) | **CONFIRMED** |
+| "Field enters exactly once" | export call passes `real_row_radii_v54.txt` + field `""`; L7 cluster mean r = 31.5002 (rowdr on) | **CONFIRMED** |
+| Stiff cluster meter on v5.5 | re-ran `ms_real_split`: real 626 µm vs sim 614 → data/MC 1.02 (manifest's 0.98 = same numbers as sim/real); d0 median 2.39 vs 2.51 | **CONFIRMED** (~1.0 within realization noise) |
+| Requester's differential predictions | LOCAL 0.90 → 0.90 exact; GLOBAL 1.57 → 1.53 (in-quadrature sim gain √(1537²−1497²) ≈ 348 µm ≈ the granular SMOD share — the smooth SPHI is absorbed by circle fits, per the campaign's own P1/P5 finding, so a small move is the *expected* signature); cluster battery reproduces v5.4c, CM jump 0.481 vs real 0.480±0.13 (better than v5.4c's 0.536) | **PASSED** as pre-registered |
+| Class balance | measured 56.7/39.9/3.4 on the shipped draw-2 file | nit: manifest line quotes the draw-1 values (56.6/39.7/3.7) — update wording, not content |
+
+### Ruling
+
+**v5.5 is sound and adoption-ready.** The implementation honors the request
+precisely (same field, one stage earlier, entering exactly once), the guards
+are the strong kind (byte-identity of the off path; sealed v5.3 libraries
+untouched as `raw_lib_pp55_*` is a new family), and the delivery battery
+reproduces the v5.4c cluster-level closures without an SMOD re-solve.
+Convention going forward, as the manifest states: pixel-level consumers use
+v5.5; v5.4c remains valid for cluster-level work on the sealed v5.3 pixels.
+
+### Commendations and cautions for the record
+
+1. **Two honesty corrections raise the era's epistemic standard.** The
+   measured composer realization σ (~±2–3 % per production) retroactively
+   attaches to *every* content closure since v5.0 — including numbers this
+   review previously verified as reported (the values stand; their implied
+   precision was never real). The pre-declared re-roll rule was amended
+   post-hoc (draw 2 at +2.86 % vs the 2.5 % band) — transparent and, in my
+   judgment, correct in outcome ("accept the closer of two pre-registered
+   draws, no further rolls" preserves the anti-shopping intent), but future
+   pre-registrations should state the tie-break rule upfront.
+2. **The content deficit's owner has been narrowed by exclusion.** The
+   2026-08-08 world-data confrontation (dNch/dη vs PHOBOS) plus the 16-point
+   no-go scan refuted the generator-multiplicity attribution; with ε_MBD now
+   externally closed (σ_MBD 25.6 mb ⇒ ε≈0.61, consistent with the scanned
+   0.588±0.033 — the scan-then-compare structure recommended by this review
+   on 07-24 played out as designed), the open owner is the **response /
+   conditions axis** — which converges with med05 0.83 (sim clouds wide at
+   low pT) and the pixel-level LOCAL 0.90. Three independent arrows now point
+   at one target: the charge-cloud response. That is the pipeline's principal
+   open front.
+3. **Do not chase the pixel-global 1.53 with field amplitude.** The
+   remaining real-side excess in that panel is association-tail-dominated
+   (tracker-road grouping) and the smooth field is absorbed by circle fits on
+   both sides; the meter's role is monitoring, not closure.
+4. Open items, ranked: response axis (above); d0-vs-tbin medians (tier-2,
+   unchanged); σ_z ≈ 50 cm beam spread vs the sharp step (reopened by
+   published data — connects to this review's earlier note that all sim
+   primaries originate at (0,0,0,0)); circle-thread re-acceptance
+   (split-rate) of v5.4c/v5.5; manifest class-balance line to draw-2 values.
+
+Review artifacts: `ms_real_split_v55rev.{txt,png}` (+showcase), review-tagged,
+originals untouched. Workflow diagram renewed for v5.5 (user request, 2026-08-14):
+`sim_validation_plots/pipeline_v55_workflow.{tex,pdf,svg}` — TikZ single source,
+every number traceable to `pp_pipeline.sh` (VER=v55), the v5.5 ledger entries, the
+manifest, or a side-review re-run; `pipeline_detachment.svg` is kept untouched as
+the detachment-era record. Nit found while sourcing it: `pp_pipeline.sh`'s comment
+on `RSPEC` says $\varepsilon$ 0.519, but the live `rspec99_v52.txt` header says
+0.588 (the scan band centre, which is what production used) — stale comment,
+worth a one-line fix.
+
+---
+
 ## 2026-08-05 — Adjudication: the circle-fit 1.33 discrepancy
 **Parties.** The ML/analysis thread ("circle-fitting agent", request in
 `island_post/distortion_remodel_request.md`) measured a ×1.33 real/sim excess

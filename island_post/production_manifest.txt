@@ -273,3 +273,28 @@ a61dbfd129329eb17be8c2dfafb40495  island91_frames_production_v54b.root
 # Open: med05 0.83 (exposed low-pT over-smear, response family);
 #   d0-median tbin profile (tier-2); circle-fit thread re-acceptance of
 #   v54c pending (their split-rate diagnostic should recover ~2x).
+--- v5.5 FINAL (field-in-digitization, 2026-08-14): the v5.4c empirical
+--- r-phi field injected at TRANSPORT (charge displaced before pad/tbin
+--- binning; digi_field_request.md). NEW PIXELS (v5.3b pixel seal is the
+--- era record; v5.4c remains the cluster-overlay artifact on v53 pixels).
+--- Libraries raw_lib_pp55_0-9 (field-on; sealed raw_lib_pp_* untouched);
+--- composer seeds 2026094x (draw 2 of 2, pre-declared re-roll — see
+--- PIPELINE.md realization-sigma entry); islandize91 export: rowdr ON,
+--- field OFF (field enters exactly once).
+28bad0919c6dffbde9b6d02fb75211bf  digi_frames_production_v55.root
+2c7634e739d538496919af0697e5d0d5  island91_frames_production_v55.root
+5f9a75894762601af625fdbfce59cabf  prodclus_v55.root
+9fc73d352120467ea03dd25b09f57afe  hit69_frames_production_v55.root
+# hit69 v55: 83,260,466 rows (1,074 merged). prodclus 9,515,005
+#   (53.7/44.6/1.6). Content px/ev 333,046 = +2.9% vs complete-62 target,
+#   QUOTED WITH the newly measured composer realization sigma ~+-2-3%
+#   (era-wide honesty correction: v5.3b's +0.2% carried the same sigma).
+# Cluster-level battery vs v5.4c: stiff RMS ratio 0.98 (614.5/626), d0
+#   RMS 3.07/2.99, med|d0| 2.31/2.20, CM jump 0.481 vs real 0.480+-0.13,
+#   crossers 1.3% = real, dk05 0.255 (conservative). No SMOD re-solve
+#   needed. med05 0.83 (response-owned, per request's prediction).
+# Labels NOT bit-exact vs v53 by design (charge crosses pad boundaries):
+#   class balance island91 56.6/39.7/3.7 vs 56.3/39.9/3.7 (v53);
+#   prodclus 53.7/44.6/1.6 vs 53.3/44.8/1.9.
+# PIXEL-LEVEL consumers: use v5.5. CLUSTER-level work: v5.4c remains
+#   valid; v5.5 supersedes it as the full-chain artifact.

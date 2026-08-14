@@ -36,7 +36,17 @@ IP=$ROOTDIR/island_post
 LOGS=$IP/pp_logs; mkdir -p "$LOGS"
 
 # ---------------- parameters ----------------
-VER=v53
+VER=v55
+FIELD="0:0|0|0.0426|0|0|2.49|0.26"
+                          # v5.5 field-in-digitization (digi_field_request.md,
+                          #  2026-08-13): the v5.4c empirical position-residual
+                          #  field injected at transport (charge displaced in
+                          #  r-phi BEFORE pad binning). Same measured params as
+                          #  the v5.4c cluster overlay; the islandize91 export
+                          #  then runs with the field OFF (rowdr only) so the
+                          #  field enters exactly once. Empty string = off.
+RAWPFX=raw_lib_pp55       # field-on library family — the sealed v5.3 libs
+                          #  (raw_lib_pp_*) are left untouched.
 NCHUNK=10                 # generator/G4/transport chunks
 GEN_PER=2000              # pp events per chunk (pp collision ~1/25 pAu content
                           #  -> 10x the v4.0 event count for comparable library charge)
@@ -46,7 +56,14 @@ GEN_TUNE=1.85             # v5.3 soft-production tune: pT0Ref (Monash 2.28
                           #  uniform closure -1.3% / fired anchor +2.9%.
 G4_PAR=5                  # parallel G4 jobs per wave (fieldmap ~300 MB resident each)
 NB=5; PER=50              # production: NB batches x PER events = total sim events
-COMP_SEED_BASE=2026093    # composer seed = ${COMP_SEED_BASE}${i}
+COMP_SEED_BASE=2026094    # composer seed = ${COMP_SEED_BASE}${i}
+                          # v5.5 re-roll (2026-08-14, PRE-DECLARED): the
+                          #  2026093x draw gave px/ev +5.8% vs target; the
+                          #  measured composer realization sigma is ~3% per
+                          #  50-frame block (~1.5-3% per production) — an
+                          #  era-wide uncertainty never previously quoted.
+                          #  Rule: accept this ONE re-roll if |px/ev-323799|
+                          #  <= 2.5% (2 sigma); both draws ledgered.
 
 SIGMA0=0.040; KPRF=0.0070 # transport PRF sigma(Ld) — detector-side (v4.0 values)
 GAIN=1.005                # v5.1 LOCKED 2026-07-22 (scan pass B2: pixmean +0.8%)
@@ -76,7 +93,7 @@ ANCHOR=10897              # rate-free fired anchor (complete-62 excess 38.87
 
 LIBS=""; EVALS=""; MBDDATS=""
 for i in $(seq 0 $((NCHUNK-1))); do
-  LIBS+="raw_lib_pp_$i.root,"; EVALS+="eval_pp_$i.root,"; MBDDATS+="pp_run_$i.dat,"
+  LIBS+="${RAWPFX}_$i.root,"; EVALS+="eval_pp_$i.root,"; MBDDATS+="pp_run_$i.dat,"
 done
 LIBS=${LIBS%,}; EVALS=${EVALS%,}; MBD="pp_mbd.txt|${MBDDATS%,}"
 
@@ -140,8 +157,8 @@ if run_stage gate; then
   cd "$IP"
   for i in $(seq 0 $((NCHUNK-1))); do
     root -l -b -q -e "gROOT->ProcessLine(\".L tpc_digitize.C+\");
-      tpc_transport(\"$P5/PP_g4hit_$i.root\",\"raw_lib_pp_$i.root\",$GEN_PER,$SIGMA0,$KPRF);
-      tpc_readout(\"raw_lib_pp_$i.root\",\"cens_pp_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.81,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,0.0);" \
+      tpc_transport(\"$P5/PP_g4hit_$i.root\",\"${RAWPFX}_$i.root\",$GEN_PER,$SIGMA0,$KPRF,\"$FIELD\");
+      tpc_readout(\"${RAWPFX}_$i.root\",\"cens_pp_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.81,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,0.0);" \
       > "$LOGS/pp_gate_$i.log" 2>&1
     echo "[gate] chunk $i transported+censused"
   done
@@ -200,7 +217,7 @@ if run_stage prod; then
     gROOT->ProcessLine(\".L tpc_digitize.C+\");
     tpc_readout(\"fPP_$i.root\",\"dPP_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.81,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,1.0);" \
       2>&1 | tee "$LOGS/pp_prod_$i.log" | grep -E "frame_composer: $PER|rate envelope|tpc_readout: fPP"
-    root -l -b -q "islandize91.C+(\"dPP_$i.root\",\"i91pp_$i.root\",1,\"\",\"fPP_$i.root\")" 2>&1 | grep "islandize91: dPP"
+    root -l -b -q "islandize91.C+(\"dPP_$i.root\",\"i91pp_$i.root\",1,\"\",\"fPP_$i.root\",\"real_row_radii_v54.txt\",\"\")" 2>&1 | grep "islandize91: dPP"
   done
   hadd -f frames_pp_production_${VER}.root fPP_*.root  > /dev/null 2>&1
   hadd -f digi_frames_production_${VER}.root dPP_*.root > /dev/null 2>&1

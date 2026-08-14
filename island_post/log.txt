@@ -1,7 +1,161 @@
- ▐▛███▜▌   Claude Code v2.1.227
+ ▐▛███▜▌   Claude Code v2.1.228
 ▝▜█████▛▘  Fable 5 · Claude Max
   ▘▘ ▝▝    ~/sPHENIX/3D_ClusterFindingML/island_post
 
+
+● Appending the three campaign entries:
+
+  Searched for 2 patterns, read 5 files, listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+  ⎿  Referenced file missed_tracks.C
+  ⎿  Referenced file distortion_remodel_request.md
+  ⎿  Read ../../../.claude/projects/-home-rog-sPHENIX-3D-ClusterFindingML/memory
+     /ml-thread-state.md (115 lines)
+  ⎿  Referenced file ../../../.claude/projects/-home-rog-sPHENIX-3D-ClusterFindi
+     ngML/memory/pipeline-version-state.md
+  ⎿  Referenced file ms_real.C
+
+● Background command "Run symmetric cluster-level scan in background" completed
+(exit code 0)
+
+● Background command "Run real pixel-level exhaustive scan in background"
+completed (exit code 0)
+
+● Update(ms_real.C)
+  ⎿  Added 2 lines, removed 2 lines
+      743        med(rmsv[0][w]) * 1000, med(rmsv[1][w]) * 1000,
+      744        med(rmsv[1][w]) > 0 ? med(rmsv[0][w]) / med(rmsv[1][w]) 
+           : 0);
+      745    }
+      746 -  P("truth-level MS for scale: %.2f / %.2f mrad (ms_split %s) 
+          -— invisible at cluster level\n",                              
+      747 -    MSTRUTH[0], MSTRUTH[1], ver);                             
+      746 +  P("truth-level MS for scale: %.2f / %.2f mrad (ms_r0scan v53
+          +f, r0=49 row; truth hits bit-identical since) — invisible at c
+          +luster level\n",                                              
+      747 +    MSTRUTH[0], MSTRUTH[1]);                                  
+      748    P("d0 median real %.2f cm, sim %.2f cm\n", med(d0v[0]), med(
+           d0v[1]));
+      749    P("worst real showcase: |dpsi| = %.1f mrad (largest in the p
+           T~0.5 window)\n", std::fabs(worstDp));
+      750    fclose(fo);
+
+  Searched for 1 pattern, read 3 files (ctrl+o to expand)
+
+● Background command "Regenerate both figures with fixes" completed (exit code
+0)
+● Update(ms_real.C)
+  ⎿  Added 13 lines, removed 2 lines
+      790      tx.SetTextSize(0.034);
+      791      tx.DrawLatex(0.06, 0.36, "#Rightarrow mismatch is resoluti
+           on-driven and p_{T}-independent: MS invisible");
+      792      tx.DrawLatex(0.06, 0.29, "     under cluster resolution in
+            the real data itself");
+      793 -    tx.DrawLatex(0.06, 0.21, "#Rightarrow data/MC: resolution 
+          -realistic at 0.5 GeV; +33% real excess at high p_{T}");       
+      794 -    tx.DrawLatex(0.06, 0.14, "     (alignment/distortion-like,
+          - not in the sim by design)");                                 
+      793 +    double rr05 = med(rmsv[1][0]) > 0 ? med(rmsv[0][0]) / med(
+          +rmsv[1][0]) : 0;                                              
+      794 +    double rr2 = med(rmsv[1][1]) > 0 ? med(rmsv[0][1]) / med(r
+          +msv[1][1]) : 0;                                               
+      795 +    if (rr2 > 1.15)                                           
+      796 +    {                                                         
+      797 +      tx.DrawLatex(0.06, 0.21, Form("#Rightarrow data/MC: %.2f
+          + at 0.5 GeV; +%.0f%% real excess at high p_{T}",              
+      798 +                                    rr05, 100 * (rr2 - 1)));  
+      799 +      tx.DrawLatex(0.06, 0.14, "     (alignment/distortion-lik
+          +e, not in the sim by design)");                               
+      800 +    }                                                         
+      801 +    else                                                      
+      802 +    {                                                         
+      803 +      tx.DrawLatex(0.06, 0.21, Form("#Rightarrow data/MC: %.2f
+          + at 0.5 GeV, %.2f stiff; high-p_{T} excess resolved", rr05, rr
+          +2));                                                          
+      804 +      tx.DrawLatex(0.06, 0.14, "     by the v5.4 field; sim lo
+          +w-p_{T} over-smear remains (response family)");               
+      805 +    }                                                         
+      806      tx.SetTextSize(0.030);
+      807      tx.DrawLatex(0.06, 0.05, "real tracks = ntp_clus_trk (even
+           t, seedID); windows by fitted curvature both sides");
+      808    }
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● Write(ms_conclusion_v54c.md)
+  ⎿  Wrote 129 lines to ms_conclusion_v54c.md
+      1 # Multiple scattering in the sPHENIX TPC — comprehensive conclusi
+      2 
+      3 2026-08-07. Closes the circle-fit / multiple-scattering (MS) ques
+        tion at every level of
+      5 (`island91_frames_production_v54c.root`, md5 5972cbe3…) and the c
+        anonical real file
+        p, 100 events,
+      7 62 complete by hit-level endpoint; 61 by the cluster-level flag u
+        sed in the symmetric scan).
+      9 ## Verdict
+     … +198 lines (ctrl+o to expand)
+
+● Updating the thread-state memory with the campaign results:
+
+  Ran 1 shell command, wrote 1 memory (ctrl+o to expand)
+
+● Campaign complete — all four items done on v5.4c, and the comprehensive MS
+  conclusion is written to island_post/ms_conclusion_v54c.md.
+
+  The verdict (item 4, one paragraph): MS needs no explicit treatment anywhere
+  in the chain, sim or data. Truth trajectory is a circle to 20 µm (5×10⁻⁴ of
+  sagitta); truth MS is 1.37 mrad at 0.5 GeV (1/p-scaling verified);
+  cluster-level tangent noise is 18–31 mrad and pT-flat on both sides —
+  resolution, ~20× above MS. The real data shows it directly: real σ(Δψ) does
+  not grow at low pT. The effect worth modeling is distortion (d0 ~2.5 cm,
+  membrane jump 0.48 cm), which is what v5.4 addresses.
+
+  Item 1 — ntp_clus_trk level (v54cx): σ(Δψ) real/sim 25.7/27.8 mrad at 0.5 GeV,
+  31.2/30.2 stiff; circle RMS 692/842 µm (0.82) and 626/635 µm (0.99 — the old
+  +33% real excess is confirmed gone on v5.4c); d0 2.51/2.37 cm. Figure QA
+  caught a real defect: the split figure's right panel still asserted the
+  v53f-era "+33% real excess" while its own table read 0.99 — the conclusion
+  lines are now computed from the measured ratios, and the truth-MS citation
+  ("1.07/0.31") is now correctly attributed to the r0scan r0=49 row rather than
+  a nonexistent v54cx ms_split run.
+
+  Item 2 — symmetric cluster level (new mt_cluscmp): the same exhaustive finder
+  grouped both full cluster trees, no tracker or truth involved. Real complete
+  events: 184 circles/ev; sim: 385/ev → rate 0.48 at only 0.88× the cluster 
+  occupancy — sim frames are ~2× more track-organized per cluster. That's a new
+  open finding on the content/organization axis (relay-worthy to the pipeline
+  session; I've kept it in my own files per the scope rule). RMS 658/815 µm
+  (0.81, same family as the known low-pT over-smear); in-time fraction 0.34 vs
+  0.33 — the time structure of found circles matches well.
+
+  Item 3 — pre-clustering (new mt_g4scan + mt_pixscan): On sim truth hits the
+  finder recovers 96% of the 14.06 findable circles/collision; the raw rate
+  (34/coll) is inflated by second arcs of already-found particles (42%) and
+  mixed chains (17%) — the caveat that applies to any raw dense-point rate.
+  Bridge closes: 333 findable/frame ÷ 14.06/collision = 23.7 collisions/frame.
+  On real raw pixels (25 complete events): 293 track-class circles/event 
+  straight from pixels, RMS 805 µm (pad centers — cluster 658 µm plus
+  quantization), in-time 0.36. One honest limitation stated in the doc: sim
+  pixel trees carry no v5.4 field (the overlay lives at island91 export), so the
+  sim pre-clustering anchor is the truth-hit scan.
+
+  Two process notes: an invocation slip on my side re-ran the default
+  missed_tracks() entry and regenerated missed_tracks_v53f.{txt,png} in place —
+  the output is number-identical to the era record (77.7/75.2/127.28/67.2), so
+  no harm, and it doubles as the regression proof that the hunt(cohband, 
+  cohslope) generalization preserves behavior. All new figures (ms_cluscmp_v54c,
+  ms_pixscan_v54c, regenerated ms_real_split_v54cx + showcase) are QA'd; no
+  stray processes left.
+
+  Open items on the ledgers: the 0.82 low-pT over-smear (response family,
+  pre-existing) and the new 0.48 organization rate — both belong to the
+  pipeline's lane if you choose to relay them.
+
+✻ Baked for 27m 12s
+
+❯ /export log.txt                                                               
+  ⎿  Conversation exported to:
+     /home/rog/sPHENIX/3D_ClusterFindingML/island_post/log.txt
 
 ❯ /model Fable                                                                  
   ⎿  Set model to Fable 5 and saved as your default for new sessions
@@ -11,891 +165,1673 @@
      deepest reasoning. May use excessive tokens resulting in long response
      times or overthinking. Use sparingly for the hardest tasks.
 
-❯ regarding [Image #1], my supervisor commented: This is not a problem on sim   
-  side. The real data have distortions due to E and B field misalignment ("ExB  
-  correction") and space charge distortions of the electron drift path that are 
-  not fully corrected yet. Therefore in particular a global fit to the          
-  on-track clusters will have much worse residuals in data vs simulation. It    
-  would be very interesting to see if this gets better when only fitting short  
-  (~4 layer) pieces of the track. I would think this would lead to better (but  
-  not perfect) agreement between data and simulations                           
-  ⎿  [Image #1]
+❯  some follow-up and reviews: 1. "Tier 2 d0 structure" <- what is Tier 2? 2.   
+  you said the real clusters are uncorrected and row-locked, while              
+    the CDB static map's cm-scale radial bulk is incompatible with run 79507 <- 
+  need further investigation? will our sim's fitting to this will               
+    cause a noise-fitting? 3. Positions don't know the track's momentum <-      
+  which is a similar issue I asked before about the whole track's               
+    momentum only has a scalar value: is that the root-cause? 4. what is a      
+  stiff tracks? 5. the med05 value was two errors canceling <- was that         
+    calculated by 733/692, but it should be calculated as sqrt(733^2+426^2)/692 
+  - the calculation method was wrong from the start? 6. " the sim's             
+    underlying low-pT cluster resolution is ~30% too wide (735 vs ~564 µm) — a  
+  response-family item (crossing-angle/diffusion/pad-response                   
+    smearing), pre-existing since long before this campaign, just invisible     
+  while the compensation held" <- is italready solved by v54c? if not,          
+    how to solve it? 7. " so closing med05 may require a small re-solve of the  
+  field amplitude — the pipeline agent's ledger already frames it               
+    that way." samely, has the pipeline agent closed this? 8. "side-shared      
+  harmonics make it continuous at the central membrane" <- is it an             
+    overfitting of v54c already? 9. ". Open items, unchanged and on the         
+  ledgers: the med05 0.82 low-pT over-smear (response family — the last         
+    cluster-level window not closed, and the one with the most tracks), and the 
+  d0-median drift-time profile (tier-2, needs an                                
+    orientation-coupled mechanism)." <- still need the pipeline agent to update 
+  from v54c? 10. Finally, the sim pixel trees carry no v5.4 field               
+    (the overlay lives at island91 export) <- do we need to rerun the           
+  simulation?                                                                   
 
-● The supervisor is proposing a concrete test — refit the same tracks in short
-  ~4-layer pieces and see how much of the real/sim gap is long-wavelength
-  distortion vs. intrinsic granularity. I'll read the current macro and its log,
-  then implement the segment-fit variant.
+● Several of these are state questions I should answer from the records rather
+  than memory — pulling the exact numbers first:
 
-  Read 3 files, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+  Listed 1 directory, recalled 1 memory (ctrl+o to expand)
 
-● Skill(dataviz)
-  ⎿  Successfully loaded skill
+● All ten, answered from the ledgers (numbers verified against
+  distortion_remodel_request.md, pipeline-version-state, real_row_radii_v54.txt,
+  and the d0/ms ledgers):
 
-● Update(ms_nofinder.C)
-  ⎿  Added 6 lines
-      10  //                 One canvas, linear RMS.
-      11  //   nf_tracks   : real ntp_clus_trk only (sim has no tracker o
-          utput — skip):
-      12  //                 event display with fitted circles + RMS/stat
-           panel.
-      13 +//   nf_hits_pieces / nf_clusters_pieces : supervisor test (202
-         +6-08-11) — real                                                
-      14 +//                 ExB + space-charge distortions are long-wave
-         +length, so a                                                   
-      15 +//                 whole-track fit integrates them while a shor
-         +t local fit                                                    
-      16 +//                 absorbs them into its own (a,b,R). Refit the
-         + SAME tracks in                                                
-      17 +//                 fixed windows of L consecutive layers (headl
-         +ine L=4, plus an                                               
-      18 +//                 L-scan); pooled unbiased RMS = sqrt(sum chi2
-         + / sum (n-3)).                                                 
-      19  // UNIFORM BAR everywhere (the only selection): >= 12 points, r
-          adial span
-      20  // >= 15 cm, 45 <= R_fit < 2e4 cm. RAW fit — no outlier cleanin
-          g, no pT
-      21  // windows. Fitter = Kasa + 6 Gauss-Newton, copied VERBATIM fro
-          m ms_real.C
+  1. "Tier 2" is our ledger shorthand, not standard HEP jargon — my coinage
+  during the d0 diagnostic, later adopted by the pipeline's ledger; I should
+  have flagged it. Tier 1 = the d0 structures the field model class reproduces
+  and that were sized to measurement (the ~3 cm d0 RMS, its cosine
+  isotropy/null, the membrane jump, stiff circle RMS). Tier 2 = the one residual
+  that class provably cannot produce: the d0-median vs drift-time profile
+  (+1.4/+1.8 cm shifts in specific tbin bins, from the d0 diagnostic). The
+  pipeline's probe ladder showed that any displacement field constant along
+  drift moves d0 without tbin structure — reproducing that profile needs a
+  drift-coupled mechanism (space charge evolving along drift, E×B, z-dependent
+  distortion). Hence "tier-2, open."
 
-● Update(ms_nofinder.C)
-  ⎿  Added 1 line
-      25  // around genuine seed clusters, so flash contamination is negl
-          igible, and
-      26  // the sim side (truth hits, no time axis) admits no symmetric 
-          cut.
-      27  // Outputs: ../sim_validation_plots/ms_nofinder_{hits,clusters,
-          tracks_real}_<ver>.png
-      28 +//          ../sim_validation_plots/ms_nofinder_{hits,clusters}
-         +_pieces_<ver>.png                                              
-      29  //          ms_nofinder_<ver>.txt (shared ledger, appended per 
-          entry)
-      30  #include <TFile.h>
-      31  #include <TTree.h>
+  2. The map question is closed by measurement; the noise-fitting worry is 
+  legitimate but guarded against. Row-lock (every layer's clusters at exactly
+  one radius — real_row_radii_v54.txt) proves no distortion correction was
+  applied to the real clusters. The measured per-layer radius offsets are
+  mm-scale (+1.2 mm at layer 7, shrinking outward) versus the CDB static map's
+  predicted +1.0–1.6 cm bulk — ten times smaller and differently shaped — and
+  the real d0-cosine is null, excluding bulk translation. So the map is neither
+  applied nor a usable mechanism model, which is why v5.4 was sized to run
+  79507's own meters. On noise-fitting: the model has ~4 amplitudes against 6+
+  independent summary observables (stiff RMS ratio, d0 RMS and median, cosine
+  null, CM jump 0.480±0.13, side-crosser fraction, split-rate), all matched
+  within measured errors, none fit per-event; and the independent half-arc
+  curvature meter shows sim 0.276 vs real 0.402 — the model undershoots real
+  structure, the opposite signature of overfitting. The residual concern is
+  provenance, not noise: v5.4c models this file as produced (uncorrected). If
+  the collaboration ever reprocesses run 79507 with corrections on, the overlay
+  must be re-sized (same meters, cheap). Whether "uncorrected" is intended for
+  this run era is a genuine team question — it sits next to the measured-σ_z
+  question already on the pipeline ledger.
 
-● Update(ms_nofinder.C)
-  ⎿  Added 2 lines, removed 2 lines
-      51  {
-      52  struct Fit { double a = 0, b = 0, R = 0, rms = 0; int n = 0; bo
-          ol ok = false; };
-      53  
-      54 -Fit fitCircle(const std::vector<double> &X, const std::vector<d
-         -ouble> &Y)                                                     
-      54 +Fit fitCircle(const std::vector<double> &X, const std::vector<d
-         +ouble> &Y, int nmin = 5)                                       
-      55  {
-      56    Fit F; F.n = (int) X.size();
-      57 -  if (F.n < 5) return F;                                       
-      57 +  if (F.n < std::max(nmin, 4)) return F;   // 3 params: 4 point
-         +s = 1 dof floor                                                
-      58    double Sx = 0, Sy = 0, Sxx = 0, Syy = 0, Sxy = 0, Sxz = 0, Sy
-          z = 0, Sz = 0;
-      59    for (size_t i = 0; i < X.size(); ++i)
-      60    {
+  3. Same underlying fact as your earlier question, but it's the exclusion 
+  argument, not the root cause. Your earlier point was bookkeeping: truth stores
+  one scalar pT while the trajectory is many positions. This statement is about
+  model expressiveness: a positions-only field displaces clusters by location,
+  blind to which track they belong to, so it adds essentially the same
+  quadrature smear to soft and stiff tracks and cannot manufacture a
+  momentum-dependent pattern. Since the post-v5.4c ratio is momentum-structured
+  (0.82 soft, 0.99 stiff), the residual cannot be the field — it must live in
+  cluster response, which is momentum-coupled through crossing angle and drift.
+  The root cause of med05 itself is the sim's soft-track cluster width (question
+  6).
 
-● Update(ms_nofinder.C)
-  ⎿  Added 34 lines, removed 1 line
-      121  
-      122  // the ONE selection of this file
-      123  struct Grp { std::vector<double> x, y, r; };
-      124 -bool fitBar(const Grp &G, Fit &F)                             
-      124 +struct GrpL { std::vector<double> x, y, r; std::vector<int> la
-          +y; };                                                         
-      125 +template <class GT>                                           
-      126 +bool fitBar(const GT &G, Fit &F)                              
-      127  {
-      128    if ((int) G.x.size() < 12) return false;
-      129    double rlo = 1e9, rhi = 0;
-     ...
-      133    return F.ok && F.R >= 45 && F.R < 2e4;
-      134  }
-      135  
-      136 +// short-piece machinery (supervisor test): fit fixed windows 
-          +of L consecutive                                              
-      137 +// layers independently with the SAME estimator, pool residual
-          +s per track.                                                  
-      138 +// sqrt(sum chi2 / sum (n-3)) is dof-unbiased: a 4-point piece
-          + has 1 dof, so                                                
-      139 +// raw sqrt(chi2/n) would read sigma/2 and deflate the sparse 
-          +(sim) side.                                                   
-      140 +struct Seg { double rms = 0; int npiece = 0; long npts = 0; };
-      141 +bool segFit(const GrpL &G, int L, Seg &S)                     
-      142 +{                                                             
-      143 +  std::map<int, std::vector<int>> win;              // (lay-7)
-          +/L -> point idx                                               
-      144 +  for (size_t i = 0; i < G.lay.size(); ++i) win[(G.lay[i] - 7)
-          + / L].push_back((int) i);                                     
-      145 +  double chi2 = 0;                                            
-      146 +  long dof = 0;                                               
-      147 +  for (auto &kv : win)                                        
-      148 +  {                                                           
-      149 +    if ((int) kv.second.size() < 4) continue;                 
-      150 +    std::set<int> rows;                                       
-      151 +    for (int i : kv.second) rows.insert(G.lay[i]);            
-      152 +    if ((int) rows.size() < 3) continue;            // need an
-          + arc, not a pad column                                        
-      153 +    std::vector<double> X, Y;                                 
-      154 +    for (int i : kv.second) { X.push_back(G.x[i]); Y.push_back
-          +(G.y[i]); }                                                   
-      155 +    Fit F = fitCircle(X, Y, 4);                               
-      156 +    if (!F.ok || !std::isfinite(F.rms)) continue;             
-      157 +    chi2 += F.rms * F.rms * F.n;                              
-      158 +    dof += F.n - 3;                                           
-      159 +    S.npiece++;                                               
-      160 +    S.npts += F.n;                                            
-      161 +  }                                                           
-      162 +  if (S.npiece < 1 || dof < 1) return false;                  
-      163 +  S.rms = std::sqrt(chi2 / dof);                              
-      164 +  return true;                                                
-      165 +}                                                             
-      166 +                                                              
-      167  FILE *openLedger(const char *ver)
-      168  {
-      169    return fopen(Form("ms_nofinder_%s.txt", ver), "a");
+  4. "Stiff" is conventional HEP jargon — a high-momentum, small-curvature track
+  ("hard to bend"; opposite "soft"). In our ledgers it means the pT 1.5–2.5 GeV
+  window. Stiff tracks are the distortion probes because at 2 GeV, R = 476 cm
+  and the sagitta over the pad-row chord is only ~5 mm, so mm-to-cm distortion
+  competes directly with the signal, while MS and intrinsic curvature both
+  shrink as 1/p.
 
-● Helpers are in. Now appending the two analysis functions at the end of the
-  file:
+  5. The arithmetic was right both times; the v5.3-era interpretation was wrong 
+  — and your quadrature formula is exactly the corrected accounting, confirmed 
+  numerically by v5.4c. The old 0.94 was real/sim = 692/733, a correct ratio of
+  what sim measured then — but sim was incomplete: missing the ~426 µm
+  distortion smear (too narrow) while carrying a too-wide base response (too
+  wide), two offsetting errors netting to false agreement. Your formula: √(733²
+  + 426²) = 848 µm predicted, vs 842 measured on v5.4c (the small difference is
+  the R-window reshuffle, noted in the pipeline ledger) → 692/848 = 0.82,
+  today's ratio. So the method wasn't wrong from the start — the mistake was
+  reading 0.94 as "response matches" without asking whether both sides contained
+  the same physics. The tell was the stiff window, where the cancellation
+  failed loudly (1.31): that number is what launched the whole distortion
+  campaign.
 
-● Update(ms_nofinder.C)
-  ⎿  Added 430 lines
-      567    cv->SaveAs(Form("../sim_validation_plots/ms_nofinder_tracks_
-           real_%s.png", ver));
-      568    printf("wrote ms_nofinder_tracks_real_%s.png\n", ver);
-      569  }
-      570 +                                                              
-      571 +// -----------------------------------------------------------
-          +----------------                                              
-      572 +// 4. HIT LEVEL, short pieces (supervisor, 2026-08-11): real E
-          +xB + space-charge                                             
-      573 +//    distortions are long-wavelength -> whole-track fits inte
-          +grate them, short                                             
-      574 +//    local fits absorb them. Same tracks, same bar, same fitt
-          +er; only the fit                                              
-      575 +//    scope changes. ntp_g4hit carries no usable layer index (
-          +glayer=99), so sim                                            
-      576 +//    hits are row-assigned by radius against the 48 pad-row r
-          +adii measured from                                            
-      577 +//    real ntp_hit (pads sit at the exact row radius). Sim hit
-          +s outside the row                                             
-      578 +//    region (r < ~30 cm) drop, so the whole-track sim median 
-          +here differs                                                  
-      579 +//    slightly from nf_hits (which used r 20-78).             
-      580 +void nf_hits_pieces(const char *g4pat = "../P5/PP_g4hit_%d.roo
-          +t", int nfiles = 1,                                           
-      581 +                    const char *realf = "../clusters_seeds_isl
-          +and_79507-0.root_ntuplizer.root",                             
-      582 +                    const char *ver = "v54c")                 
-      583 +{                                                             
-      584 +  using namespace MNF;                                        
-      585 +  const std::vector<int> Ls = {4, 6, 8, 12, 16, 24, 48};   // 
-          +48 = whole track                                              
-      586 +  const int NL = (int) Ls.size(), iL4 = 0;                    
-      587 +  // --- real: seed roads, identical to nf_hits --------------
-          +----------------                                              
-      588 +  struct SC { float x, y, tb; int seed; };                    
-      589 +  std::vector<SC> sc;                                         
-      590 +  std::unordered_map<int, std::vector<int>> bucket;   // ev*10
-          +0+layer -> sc idx                                             
-      591 +  std::map<std::pair<int, int>, int> seedIdx;                 
-      592 +  {                                                           
-      593 +    TFile *f = TFile::Open(realf);                            
-      594 +    TTree *t = (TTree *) f->Get("ntp_clus_trk");              
-      595 +    float ev, sid, lay, x, y, tb;                             
-      596 +    t->SetBranchStatus("*", 0);                               
-      597 +    for (auto b : {"event", "seedID", "layer", "x", "y", "tbin
-          +"}) t->SetBranchStatus(b, 1);                                 
-      598 +    t->SetBranchAddress("event", &ev);                        
-      599 +    t->SetBranchAddress("seedID", &sid);                      
-      600 +    t->SetBranchAddress("layer", &lay);                       
-      601 +    t->SetBranchAddress("x", &x);                             
-      602 +    t->SetBranchAddress("y", &y);                             
-      603 +    t->SetBranchAddress("tbin", &tb);                         
-      604 +    for (Long64_t i = 0; i < t->GetEntries(); ++i)            
-      605 +    {                                                         
-      606 +      t->GetEntry(i);                                         
-      607 +      if (lay < 7 || lay > 54) continue;                      
-      608 +      auto key = std::make_pair((int) ev, (int) sid);         
-      609 +      auto it = seedIdx.find(key);                            
-      610 +      if (it == seedIdx.end()) it = seedIdx.insert({key, (int)
-          + seedIdx.size()}).first;                                      
-      611 +      bucket[(int) ev * 100 + (int) lay].push_back((int) sc.si
-          +ze());                                                        
-      612 +      sc.push_back({x, y, tb, it->second});                   
-      613 +    }                                                         
-      614 +    f->Close();                                               
-      615 +  }                                                           
-      616 +  int nseed = (int) seedIdx.size();                           
-      617 +  std::vector<GrpL> px(nseed);                                
-      618 +  std::vector<std::set<int>> hid(nseed);                      
-      619 +  double rsum[48] = {0};                                      
-      620 +  long rcnt[48] = {0};                                        
-      621 +  {                                                           
-      622 +    TFile *f = TFile::Open(realf);                            
-      623 +    TTree *t = (TTree *) f->Get("ntp_hit");                   
-      624 +    float ev, lay, x, y, tb, adc, hitID;                      
-      625 +    t->SetBranchStatus("*", 0);                               
-      626 +    for (auto b : {"event", "layer", "x", "y", "tbin", "adc", 
-          +"hitID"}) t->SetBranchStatus(b, 1);                           
-      627 +    t->SetBranchAddress("event", &ev);                        
-      628 +    t->SetBranchAddress("layer", &lay);                       
-      629 +    t->SetBranchAddress("x", &x);                             
-      630 +    t->SetBranchAddress("y", &y);                             
-      631 +    t->SetBranchAddress("tbin", &tb);                         
-      632 +    t->SetBranchAddress("adc", &adc);                         
-      633 +    t->SetBranchAddress("hitID", &hitID);                     
-      634 +    for (Long64_t i = 0; i < t->GetEntries(); ++i)            
-      635 +    {                                                         
-      636 +      t->GetEntry(i);                                         
-      637 +      if (lay < 7 || lay > 54 || adc <= 0) continue;          
-      638 +      double r = std::hypot(x, y);                            
-      639 +      rsum[(int) lay - 7] += r;               // pad-row radiu
-          +s census (all hits)                                           
-      640 +      rcnt[(int) lay - 7]++;                                  
-      641 +      auto bit = bucket.find((int) ev * 100 + (int) lay);     
-      642 +      if (bit == bucket.end()) continue;                      
-      643 +      for (int j : bit->second)                               
-      644 +      {                                                       
-      645 +        const SC &c = sc[j];                                  
-      646 +        if (std::fabs(tb - c.tb) > 6) continue;               
-      647 +        double dx = x - c.x, dy = y - c.y;                    
-      648 +        if (dx * dx + dy * dy > 1.2 * 1.2) continue;          
-      649 +        if (!hid[c.seed].insert((int) hitID).second) break;   
-          +// already in this seed                                       
-      650 +        px[c.seed].x.push_back(x);                            
-      651 +        px[c.seed].y.push_back(y);                            
-      652 +        px[c.seed].r.push_back(r);                            
-      653 +        px[c.seed].lay.push_back((int) lay);                  
-      654 +        break;                                                
-          +// one seed per pixel                                         
-      655 +      }                                                       
-      656 +    }                                                         
-      657 +    f->Close();                                               
-      658 +  }                                                           
-      659 +  double radii[48], edge[47];                                 
-      660 +  bool mono = true;                                           
-      661 +  for (int i = 0; i < 48; ++i)                                
-      662 +  {                                                           
-      663 +    radii[i] = rcnt[i] ? rsum[i] / rcnt[i] : 0;               
-      664 +    if (!rcnt[i]) printf("WARNING nf_hits_pieces: row %d has n
-          +o real hits\n", 7 + i);                                       
-      665 +  }                                                           
-      666 +  for (int i = 0; i < 47; ++i)                                
-      667 +  {                                                           
-      668 +    edge[i] = 0.5 * (radii[i] + radii[i + 1]);                
-      669 +    if (radii[i + 1] <= radii[i]) mono = false;               
-      670 +  }                                                           
-      671 +  double rowlo = 1.5 * radii[0] - 0.5 * radii[1];    // half-p
-          +itch margins                                                  
-      672 +  double rowhi = 1.5 * radii[47] - 0.5 * radii[46];           
-      673 +  // --- real fits: whole track + pieces ---------------------
-          +----------------                                              
-      674 +  std::vector<double> rW;                                     
-      675 +  std::vector<std::vector<double>> rP(NL);                    
-      676 +  long rp4 = 0, rn4 = 0;                                      
-      677 +  for (int s = 0; s < nseed; ++s)                             
-      678 +  {                                                           
-      679 +    Fit F;                                                    
-      680 +    if (!fitBar(px[s], F)) continue;                          
-      681 +    rW.push_back(F.rms * 1e4);                                
-      682 +    for (int li = 0; li < NL; ++li)                           
-      683 +    {                                                         
-      684 +      Seg S;                                                  
-      685 +      if (!segFit(px[s], Ls[li], S)) continue;                
-      686 +      rP[li].push_back(S.rms * 1e4);                          
-      687 +      if (li == iL4) { rp4 += S.npiece; rn4 += S.npts; }      
-      688 +    }                                                         
-      689 +  }                                                           
-      690 +  // --- sim: row-assigned by radius, then identical treatment
-          + ---------------                                              
-      691 +  std::vector<double> sW;                                     
-      692 +  std::vector<std::vector<double>> sP(NL);                    
-      693 +  long sp4 = 0, sn4 = 0, scoll = 0;                           
-      694 +  for (int fi = 0; fi < nfiles; ++fi)                         
-      695 +  {                                                           
-      696 +    TFile *f = TFile::Open(Form(g4pat, fi));                  
-      697 +    if (!f || f->IsZombie()) continue;                        
-      698 +    TTree *t = (TTree *) f->Get("ntp_g4hit");                 
-      699 +    float ev, gx, gy, tid;                                    
-      700 +    t->SetBranchStatus("*", 0);                               
-      701 +    for (auto b : {"event", "gx", "gy", "gtrackID"}) t->SetBra
-          +nchStatus(b, 1);                                              
-      702 +    t->SetBranchAddress("event", &ev);                        
-      703 +    t->SetBranchAddress("gx", &gx);                           
-      704 +    t->SetBranchAddress("gy", &gy);                           
-      705 +    t->SetBranchAddress("gtrackID", &tid);                    
-      706 +    std::map<std::pair<int, int>, GrpL> g;                    
-      707 +    std::set<int> evs;                                        
-      708 +    for (Long64_t i = 0; i < t->GetEntries(); ++i)            
-      709 +    {                                                         
-      710 +      t->GetEntry(i);                                         
-      711 +      double r = std::hypot(gx, gy);                          
-      712 +      if (r < rowlo || r >= rowhi) continue;                  
-      713 +      int row = (int) (std::upper_bound(edge, edge + 47, r) - 
-          +edge);                                                        
-      714 +      GrpL &G = g[{(int) ev, (int) tid}];                     
-      715 +      G.x.push_back(gx);                                      
-      716 +      G.y.push_back(gy);                                      
-      717 +      G.r.push_back(r);                                       
-      718 +      G.lay.push_back(7 + row);                               
-      719 +      evs.insert((int) ev);                                   
-      720 +    }                                                         
-      721 +    f->Close();                                               
-      722 +    scoll += (long) evs.size();                               
-      723 +    for (auto &kv : g)                                        
-      724 +    {                                                         
-      725 +      Fit F;                                                  
-      726 +      if (!fitBar(kv.second, F)) continue;                    
-      727 +      sW.push_back(F.rms * 1e4);                              
-      728 +      for (int li = 0; li < NL; ++li)                         
-      729 +      {                                                       
-      730 +        Seg S;                                                
-      731 +        if (!segFit(kv.second, Ls[li], S)) continue;          
-      732 +        sP[li].push_back(S.rms * 1e4);                        
-      733 +        if (li == iL4) { sp4 += S.npiece; sn4 += S.npts; }    
-      734 +      }                                                       
-      735 +    }                                                         
-      736 +  }                                                           
-      737 +  std::vector<double> rMed(NL), sMed(NL);                     
-      738 +  for (int li = 0; li < NL; ++li) { rMed[li] = med(rP[li]); sM
-          +ed[li] = med(sP[li]); }                                       
-      739 +  // --- ledger ----------------------------------------------
-          +-----------------                                             
-      740 +  FILE *fo = openLedger(ver);                                 
-      741 +  auto P = [&](const char *fmt, ...) {                        
-      742 +    va_list ap; va_start(ap, fmt); vprintf(fmt, ap); va_end(ap
-          +);                                                            
-      743 +    va_start(ap, fmt); vfprintf(fo, fmt, ap); va_end(ap);     
-      744 +  };                                                          
-      745 +  P("[nf_hits_pieces %s] HIT level, SHORT-PIECE fits; same bar
-          + on whole track, same fitter per piece\n", ver);              
-      746 +  P("  pad rows from real ntp_hit: row7 r=%.2f cm .. row54 r=%
-          +.2f cm (monotonic %s); "                                      
-      747 +    "sim g4hits row-assigned by radius, row region only\n",   
-      748 +    radii[0], radii[47], mono ? "yes" : "NO");                
-      749 +  P("  piece = fixed L-layer window, >=4 pts on >=3 layers; pe
-          +r-track RMS = sqrt(sum chi2 / sum (n-3))\n");                 
-      750 +  P("  whole track: real med %.0f um (%ld trk) | sim med %.1f 
-          +um (%ld trk, %ld coll; row region, cf 30.7 at r 20-78)\n",    
-      751 +    med(rW), (long) rW.size(), med(sW), (long) sW.size(), scol
-          +l);                                                           
-      752 +  P("  L=4: real med %.0f um (%ld trk, %.1f pieces/trk, %.1f p
-          +ts/piece) | "                                                 
-      753 +    "sim med %.1f um (%ld trk, %.1f pieces/trk, %.1f pts/piece
-          +) | real/sim %.0f -> %.0f\n",                                 
-      754 +    rMed[iL4], (long) rP[iL4].size(),                         
-      755 +    rP[iL4].size() ? (double) rp4 / rP[iL4].size() : 0, rp4 ? 
-          +(double) rn4 / rp4 : 0,                                       
-      756 +    sMed[iL4], (long) sP[iL4].size(),                         
-      757 +    sP[iL4].size() ? (double) sp4 / sP[iL4].size() : 0, sp4 ? 
-          +(double) sn4 / sp4 : 0,                                       
-      758 +    med(sW) > 0 ? med(rW) / med(sW) : 0, sMed[iL4] > 0 ? rMed[
-          +iL4] / sMed[iL4] : 0);                                        
-      759 +  P("  scan L->med um: real");                                
-      760 +  for (int li = 0; li < NL; ++li) P(" %d->%.0f", Ls[li], rMed[
-          +li]);                                                         
-      761 +  P(" | sim");                                                
-      762 +  for (int li = 0; li < NL; ++li) P(" %d->%.1f", Ls[li], sMed[
-          +li]);                                                         
-      763 +  P("\n");                                                    
-      764 +  fclose(fo);                                                 
-      765 +  // --- canvas: L=4 distributions + median-vs-L scan --------
-          +----------------                                              
-      766 +  gStyle->SetOptStat(0);                                      
-      767 +  double e[53];                                               
-      768 +  for (int i = 0; i <= 52; ++i) e[i] = 3. * std::pow(10., 3.52
-          +3 * i / 52.);   // 3 um .. 10 mm                              
-      769 +  auto H = [&](const char *n) {                               
-      770 +    return new TH1D(n, ";per-track circle-fit RMS [#mum];track
-          +s (unit area)", 52, e);                                       
-      771 +  };                                                          
-      772 +  TH1D *hrW = H("nfp_rW"), *hrP = H("nfp_rP"), *hsW = H("nfp_s
-          +W"), *hsP = H("nfp_sP");                                      
-      773 +  for (double v : rW) hrW->Fill(std::min(v, 9990.));          
-      774 +  for (double v : rP[iL4]) hrP->Fill(std::min(v, 9990.));     
-      775 +  for (double v : sW) hsW->Fill(std::min(v, 9990.));          
-      776 +  for (double v : sP[iL4]) hsP->Fill(std::min(v, 9990.));     
-      777 +  for (auto h : {hrW, hrP, hsW, hsP}) if (h->Integral() > 0) h
-          +->Scale(1. / h->Integral());                                  
-      778 +  TCanvas *cv = new TCanvas("cvnfp", "nf hit pieces", 1500, 70
-          +0);                                                           
-      779 +  cv->Divide(2, 1);                                           
-      780 +  cv->cd(1);                                                  
-      781 +  gPad->SetLogx();                                            
-      782 +  hrW->SetLineColor(kGray + 1); hrW->SetLineWidth(2);         
-      783 +  hrP->SetLineColor(kBlack); hrP->SetLineWidth(3);            
-      784 +  hsW->SetLineColor(kBlue - 7); hsW->SetLineWidth(2); hsW->Set
-          +LineStyle(2);                                                 
-      785 +  hsP->SetLineColor(kBlue + 1); hsP->SetLineWidth(3); hsP->Set
-          +LineStyle(2);                                                 
-      786 +  hrP->SetTitle("hit level: whole-track vs 4-layer-piece circl
-          +e fits");                                                     
-      787 +  double ymax = 0;                                            
-      788 +  for (auto h : {hrW, hrP, hsW, hsP}) ymax = std::max(ymax, h-
-          +>GetMaximum());                                               
-      789 +  hrP->SetMaximum(1.45 * ymax);                               
-      790 +  hrP->Draw("hist");                                          
-      791 +  for (auto h : {hrW, hsW, hsP}) h->Draw("hist same");        
-      792 +  TLegend *lg = new TLegend(0.13, 0.62, 0.60, 0.88);          
-      793 +  lg->SetBorderSize(0);                                       
-      794 +  lg->AddEntry(hrP, Form("real, 4-layer pieces: med %.0f #mum"
-          +, rMed[iL4]), "l");                                           
-      795 +  lg->AddEntry(hrW, Form("real, whole track: med %.0f #mum", m
-          +ed(rW)), "l");                                                
-      796 +  lg->AddEntry(hsP, Form("sim, 4-layer pieces: med %.1f #mum",
-          + sMed[iL4]), "l");                                            
-      797 +  lg->AddEntry(hsW, Form("sim, whole track: med %.1f #mum", me
-          +d(sW)), "l");                                                 
-      798 +  lg->Draw();                                                 
-      799 +  TLatex tx; tx.SetNDC(); tx.SetTextSize(0.028);              
-      800 +  tx.DrawLatex(0.13, 0.57, Form("N tracks: real %ld, sim %ld",
-          + (long) rP[iL4].size(), (long) sP[iL4].size()));              
-      801 +  tx.DrawLatex(0.13, 0.52, "same fitter, same bar; piece RMS =
-          + #sqrt{#Sigma#chi^{2}/#Sigma(n#minus3)}");                    
-      802 +  tx.DrawLatex(0.13, 0.47, "local fits absorb long-wavelength 
-          +distortions (E#timesB, space charge)");                       
-      803 +  cv->cd(2);                                                  
-      804 +  gPad->SetLogy();                                            
-      805 +  TH1 *fr = gPad->DrawFrame(0, 1., 52, 1e4,                   
-      806 +                            "median RMS vs piece length;piece 
-          +length L [layers];median per-track circle-fit RMS [#mum]");   
-      807 +  fr->GetYaxis()->SetTitleOffset(1.35);                       
-      808 +  TGraph *gR = new TGraph(), *gS = new TGraph();              
-      809 +  for (int li = 0; li < NL; ++li)                             
-      810 +  {                                                           
-      811 +    gR->SetPoint(gR->GetN(), Ls[li], rMed[li]);               
-      812 +    gS->SetPoint(gS->GetN(), Ls[li], sMed[li]);               
-      813 +  }                                                           
-      814 +  gR->SetMarkerStyle(20); gR->SetMarkerSize(1.2); gR->SetLineW
-          +idth(2);                                                      
-      815 +  gS->SetMarkerStyle(25); gS->SetMarkerSize(1.2); gS->SetLineW
-          +idth(2);                                                      
-      816 +  gS->SetMarkerColor(kBlue + 1); gS->SetLineColor(kBlue + 1); 
-          +gS->SetLineStyle(2);                                          
-      817 +  gR->Draw("PL same");                                        
-      818 +  gS->Draw("PL same");                                        
-      819 +  TLegend *lg2 = new TLegend(0.14, 0.42, 0.55, 0.56);         
-      820 +  lg2->SetBorderSize(0);                                      
-      821 +  lg2->AddEntry(gR, "real (tracker-grouped hits)", "lp");     
-      822 +  lg2->AddEntry(gS, "sim (truth-grouped g4hits)", "lp");      
-      823 +  lg2->Draw();                                                
-      824 +  tx.SetTextSize(0.028);                                      
-      825 +  tx.DrawLatex(0.55, 0.17, "L = 48 = whole track");           
-      826 +  cv->SaveAs(Form("../sim_validation_plots/ms_nofinder_hits_pi
-          +eces_%s.png", ver));                                          
-      827 +  printf("wrote ms_nofinder_hits_pieces_%s.png\n", ver);      
-      828 +}                                                             
-      829 +                                                              
-      830 +// -----------------------------------------------------------
-          +----------------                                              
-      831 +// 5. CLUSTER LEVEL, short pieces: the level the supervisor's 
-          +sentence names                                                
-      832 +//    ("a global fit to the on-track clusters"). Same recipe a
-          +s nf_hits_pieces;                                             
-      833 +//    both sides carry a layer branch, so windows use it direc
-          +tly.                                                          
-      834 +void nf_clusters_pieces(const char *i91 = "island91_frames_pro
-          +duction_v54c.root",                                           
-      835 +                        const char *realf = "../clusters_seeds
-          +_island_79507-0.root_ntuplizer.root",                         
-      836 +                        const char *ver = "v54c")             
-      837 +{                                                             
-      838 +  using namespace MNF;                                        
-      839 +  const std::vector<int> Ls = {4, 6, 8, 12, 16, 24, 48};      
-      840 +  const int NL = (int) Ls.size(), iL4 = 0;                    
-      841 +  std::vector<double> W[2];                    // whole-track 
-          +RMS, mm: [0]=real [1]=sim                                     
-      842 +  std::vector<std::vector<double>> Pc[2];                     
-      843 +  Pc[0].resize(NL); Pc[1].resize(NL);                         
-      844 +  long p4[2] = {0, 0}, n4[2] = {0, 0};                        
-      845 +  auto process = [&](std::map<std::pair<int, int>, GrpL> &g, i
-          +nt side) {                                                    
-      846 +    for (auto &kv : g)                                        
-      847 +    {                                                         
-      848 +      Fit F;                                                  
-      849 +      if (!fitBar(kv.second, F)) continue;                    
-      850 +      W[side].push_back(F.rms * 10);                          
-      851 +      for (int li = 0; li < NL; ++li)                         
-      852 +      {                                                       
-      853 +        Seg S;                                                
-      854 +        if (!segFit(kv.second, Ls[li], S)) continue;          
-      855 +        Pc[side][li].push_back(S.rms * 10);                   
-      856 +        if (li == iL4) { p4[side] += S.npiece; n4[side] += S.n
-          +pts; }                                                        
-      857 +      }                                                       
-      858 +    }                                                         
-      859 +  };                                                          
-      860 +  {                                                           
-      861 +    TFile *f = TFile::Open(realf);                            
-      862 +    TTree *t = (TTree *) f->Get("ntp_clus_trk");              
-      863 +    float ev, sid, lay, x, y;                                 
-      864 +    t->SetBranchStatus("*", 0);                               
-      865 +    for (auto b : {"event", "seedID", "layer", "x", "y"}) t->S
-          +etBranchStatus(b, 1);                                         
-      866 +    t->SetBranchAddress("event", &ev);                        
-      867 +    t->SetBranchAddress("seedID", &sid);                      
-      868 +    t->SetBranchAddress("layer", &lay);                       
-      869 +    t->SetBranchAddress("x", &x);                             
-      870 +    t->SetBranchAddress("y", &y);                             
-      871 +    std::map<std::pair<int, int>, GrpL> g;                    
-      872 +    for (Long64_t i = 0; i < t->GetEntries(); ++i)            
-      873 +    {                                                         
-      874 +      t->GetEntry(i);                                         
-      875 +      if (lay < 7 || lay > 54) continue;                      
-      876 +      GrpL &G = g[{(int) ev, (int) sid}];                     
-      877 +      G.x.push_back(x); G.y.push_back(y); G.r.push_back(std::h
-          +ypot(x, y));                                                  
-      878 +      G.lay.push_back((int) lay);                             
-      879 +    }                                                         
-      880 +    f->Close();                                               
-      881 +    process(g, 0);                                            
-      882 +  }                                                           
-      883 +  {                                                           
-      884 +    TFile *f = TFile::Open(i91);                              
-      885 +    TTree *c = (TTree *) f->Get("ntp_cluster");               
-      886 +    TTree *u = (TTree *) f->Get("ntp_truth");                 
-      887 +    float ev, lay, x, y, tid;                                 
-      888 +    c->SetBranchStatus("*", 0);                               
-      889 +    for (auto b : {"event", "layer", "x", "y"}) c->SetBranchSt
-          +atus(b, 1);                                                   
-      890 +    c->SetBranchAddress("event", &ev);                        
-      891 +    c->SetBranchAddress("layer", &lay);                       
-      892 +    c->SetBranchAddress("x", &x);                             
-      893 +    c->SetBranchAddress("y", &y);                             
-      894 +    u->SetBranchStatus("*", 0);                               
-      895 +    u->SetBranchStatus("gtrackID", 1);                        
-      896 +    u->SetBranchAddress("gtrackID", &tid);                    
-      897 +    std::map<std::pair<int, int>, GrpL> g;                    
-      898 +    for (Long64_t i = 0; i < c->GetEntries(); ++i)            
-      899 +    {                                                         
-      900 +      c->GetEntry(i); u->GetEntry(i);                         
-      901 +      if (lay < 7 || lay > 54 || tid <= 0) continue;          
-      902 +      GrpL &G = g[{(int) ev, (int) tid}];                     
-      903 +      G.x.push_back(x); G.y.push_back(y); G.r.push_back(std::h
-          +ypot(x, y));                                                  
-      904 +      G.lay.push_back((int) lay);                             
-      905 +    }                                                         
-      906 +    f->Close();                                               
-      907 +    process(g, 1);                                            
-      908 +  }                                                           
-      909 +  std::vector<double> rMed(NL), sMed(NL);                     
-      910 +  for (int li = 0; li < NL; ++li) { rMed[li] = med(Pc[0][li]) 
-          +* 1000; sMed[li] = med(Pc[1][li]) * 1000; }                   
-      911 +  double wMed[2] = {med(W[0]) * 1000, med(W[1]) * 1000};      
-      912 +  FILE *fo = openLedger(ver);                                 
-      913 +  auto P = [&](const char *fmt, ...) {                        
-      914 +    va_list ap; va_start(ap, fmt); vprintf(fmt, ap); va_end(ap
-          +);                                                            
-      915 +    va_start(ap, fmt); vfprintf(fo, fmt, ap); va_end(ap);     
-      916 +  };                                                          
-      917 +  P("[nf_clusters_pieces %s] CLUSTER level, SHORT-PIECE fits; 
-          +same bar, same fitter per piece\n", ver);                     
-      918 +  P("  piece = fixed L-layer window, >=4 pts on >=3 layers; pe
-          +r-track RMS = sqrt(sum chi2 / sum (n-3))\n");                 
-      919 +  P("  whole track: real med %.0f um (%ld trk) | sim med %.0f 
-          +um (%ld trk) | data/MC %.2f\n",                               
-      920 +    wMed[0], (long) W[0].size(), wMed[1], (long) W[1].size(), 
-      921 +    wMed[1] > 0 ? wMed[0] / wMed[1] : 0);                     
-      922 +  P("  L=4: real med %.0f um (%ld trk, %.1f pieces/trk, %.1f p
-          +ts/piece) | "                                                 
-      923 +    "sim med %.0f um (%ld trk, %.1f pieces/trk, %.1f pts/piece
-          +) | data/MC %.2f\n",                                          
-      924 +    rMed[iL4], (long) Pc[0][iL4].size(),                      
-      925 +    Pc[0][iL4].size() ? (double) p4[0] / Pc[0][iL4].size() : 0
-          +, p4[0] ? (double) n4[0] / p4[0] : 0,                         
-      926 +    sMed[iL4], (long) Pc[1][iL4].size(),                      
-      927 +    Pc[1][iL4].size() ? (double) p4[1] / Pc[1][iL4].size() : 0
-          +, p4[1] ? (double) n4[1] / p4[1] : 0,                         
-      928 +    sMed[iL4] > 0 ? rMed[iL4] / sMed[iL4] : 0);               
-      929 +  P("  scan L->med um: real");                                
-      930 +  for (int li = 0; li < NL; ++li) P(" %d->%.0f", Ls[li], rMed[
-          +li]);                                                         
-      931 +  P(" | sim");                                                
-      932 +  for (int li = 0; li < NL; ++li) P(" %d->%.0f", Ls[li], sMed[
-          +li]);                                                         
-      933 +  P("\n  scan L->data/MC:");                                  
-      934 +  for (int li = 0; li < NL; ++li) P(" %d->%.2f", Ls[li], sMed[
-          +li] > 0 ? rMed[li] / sMed[li] : 0);                           
-      935 +  P("\n");                                                    
-      936 +  fclose(fo);                                                 
-      937 +  gStyle->SetOptStat(0);                                      
-      938 +  auto H = [&](const char *n) {                               
-      939 +    return new TH1D(n, ";per-track circle-fit RMS [mm];tracks 
-          +(unit area)", 50, 0, 2.5);                                    
-      940 +  };                                                          
-      941 +  TH1D *hrW = H("nfcp_rW"), *hrP = H("nfcp_rP"), *hsW = H("nfc
-          +p_sW"), *hsP = H("nfcp_sP");                                  
-      942 +  for (double v : W[0]) hrW->Fill(std::min(v, 2.49));         
-      943 +  for (double v : Pc[0][iL4]) hrP->Fill(std::min(v, 2.49));   
-      944 +  for (double v : W[1]) hsW->Fill(std::min(v, 2.49));         
-      945 +  for (double v : Pc[1][iL4]) hsP->Fill(std::min(v, 2.49));   
-      946 +  for (auto h : {hrW, hrP, hsW, hsP}) if (h->Integral() > 0) h
-          +->Scale(1. / h->Integral());                                  
-      947 +  TCanvas *cv = new TCanvas("cvnfcp", "nf cluster pieces", 150
-          +0, 700);                                                      
-      948 +  cv->Divide(2, 1);                                           
-      949 +  cv->cd(1);                                                  
-      950 +  hrW->SetLineColor(kGray + 1); hrW->SetLineWidth(2);         
-      951 +  hrP->SetLineColor(kBlack); hrP->SetLineWidth(3);            
-      952 +  hsW->SetLineColor(kBlue - 7); hsW->SetLineWidth(2); hsW->Set
-          +LineStyle(2);                                                 
-      953 +  hsP->SetLineColor(kBlue + 1); hsP->SetLineWidth(3); hsP->Set
-          +LineStyle(2);                                                 
-      954 +  hrP->SetTitle("cluster level: whole-track vs 4-layer-piece c
-          +ircle fits");                                                 
-      955 +  double ymax = 0;                                            
-      956 +  for (auto h : {hrW, hrP, hsW, hsP}) ymax = std::max(ymax, h-
-          +>GetMaximum());                                               
-      957 +  hrP->SetMaximum(1.45 * ymax);                               
-      958 +  hrP->Draw("hist");                                          
-      959 +  for (auto h : {hrW, hsW, hsP}) h->Draw("hist same");        
-      960 +  TLegend *lg = new TLegend(0.40, 0.62, 0.89, 0.88);          
-      961 +  lg->SetBorderSize(0);                                       
-      962 +  lg->AddEntry(hrP, Form("real, 4-layer pieces: med %.0f #mum"
-          +, rMed[iL4]), "l");                                           
-      963 +  lg->AddEntry(hrW, Form("real, whole track: med %.0f #mum", w
-          +Med[0]), "l");                                                
-      964 +  lg->AddEntry(hsP, Form("sim, 4-layer pieces: med %.0f #mum",
-          + sMed[iL4]), "l");                                            
-      965 +  lg->AddEntry(hsW, Form("sim, whole track: med %.0f #mum", wM
-          +ed[1]), "l");                                                 
-      966 +  lg->Draw();                                                 
-      967 +  TLatex tx; tx.SetNDC(); tx.SetTextSize(0.028);              
-      968 +  tx.DrawLatex(0.40, 0.57, Form("N tracks: real %ld, sim %ld",
-          + (long) Pc[0][iL4].size(), (long) Pc[1][iL4].size()));        
-      969 +  tx.DrawLatex(0.40, 0.52, "same fitter, same bar; piece RMS =
-          + #sqrt{#Sigma#chi^{2}/#Sigma(n#minus3)}");                    
-      970 +  tx.DrawLatex(0.40, 0.47, Form("data/MC: whole %.2f #rightarr
-          +ow 4-layer pieces %.2f",                                      
-      971 +                                wMed[1] > 0 ? wMed[0] / wMed[1
-          +] : 0,                                                        
-      972 +                                sMed[iL4] > 0 ? rMed[iL4] / sM
-          +ed[iL4] : 0));                                                
-      973 +  cv->cd(2);                                                  
-      974 +  double gmax = 0;                                            
-      975 +  for (int li = 0; li < NL; ++li) gmax = std::max(gmax, std::m
-          +ax(rMed[li], sMed[li]));                                      
-      976 +  TH1 *fr = gPad->DrawFrame(0, 0, 52, 1.25 * gmax,            
-      977 +                            "median RMS vs piece length;piece 
-          +length L [layers];median per-track circle-fit RMS [#mum]");   
-      978 +  fr->GetYaxis()->SetTitleOffset(1.35);                       
-      979 +  TGraph *gR = new TGraph(), *gS = new TGraph();              
-      980 +  for (int li = 0; li < NL; ++li)                             
-      981 +  {                                                           
-      982 +    gR->SetPoint(gR->GetN(), Ls[li], rMed[li]);               
-      983 +    gS->SetPoint(gS->GetN(), Ls[li], sMed[li]);               
-      984 +  }                                                           
-      985 +  gR->SetMarkerStyle(20); gR->SetMarkerSize(1.2); gR->SetLineW
-          +idth(2);                                                      
-      986 +  gS->SetMarkerStyle(25); gS->SetMarkerSize(1.2); gS->SetLineW
-          +idth(2);                                                      
-      987 +  gS->SetMarkerColor(kBlue + 1); gS->SetLineColor(kBlue + 1); 
-          +gS->SetLineStyle(2);                                          
-      988 +  gR->Draw("PL same");                                        
-      989 +  gS->Draw("PL same");                                        
-      990 +  TLegend *lg2 = new TLegend(0.50, 0.20, 0.88, 0.34);         
-      991 +  lg2->SetBorderSize(0);                                      
-      992 +  lg2->AddEntry(gR, "real (tracker-grouped)", "lp");          
-      993 +  lg2->AddEntry(gS, "sim (truth-grouped)", "lp");             
-      994 +  lg2->Draw();                                                
-      995 +  tx.SetTextSize(0.028);                                      
-      996 +  tx.DrawLatex(0.50, 0.15, "L = 48 = whole track");           
-      997 +  cv->SaveAs(Form("../sim_validation_plots/ms_nofinder_cluster
-          +s_pieces_%s.png", ver));                                      
-      998 +  printf("wrote ms_nofinder_clusters_pieces_%s.png\n", ver);  
-      999 +}                                                             
+  6. Not solved by v5.4c — deliberately. v5.4c touches only positions (that
+  constraint is what kept labels bit-exact); it added the missing distortion
+  term and thereby exposed the base mismatch (0.94 → 0.82). Solving it is
+  digitization/clustering-response work on the pipeline side. Our numbers
+  localize it usefully: the stiff-window base widths already agree (sim 476 µm
+  measured directly at v5.3; real inferred √(626² − ~420²) ≈ 460–480), while the
+  soft-window bases disagree by 30% (sim 733–735 vs real ~564). An excess that
+  appears only for soft tracks points at the
+  crossing-angle/track-inclination-dependent width term (soft tracks cross pads
+  at larger angles), not the angle-independent floor (diffusion/pad-response
+  width, which stiff tracks sample and which matches). Caveat: the inferred
+  bases inherit the ~415–426 µm smear estimate's uncertainty; the mechanism hunt
+  belongs to the pipeline session.
 
-  Ran 1 shell command (ctrl+o to expand)
+  7. No — not closed. The latest pipeline record (v5.4c, 2026-08-06) seals the
+  field axis and explicitly carries "open items unchanged: med05, tbin-median
+  profile." The "re-solve the field amplitude" line is the recorded plan-shape
+  for when a response fix lands — narrowing the base changes total stiff RMS, so
+  SMOD must be re-sized against the stiff meter; the two knobs are
+  quadrature-coupled. No response work has landed. It's gated on your
+  relay/direction.
 
-● Compiles clean. Running both piece analyses in one ROOT session (sequential,
-  so ledger appends stay ordered):
-  Read 2 files, ran 1 shell command (ctrl+o to expand)
+  8. Side-sharing is the opposite of overfitting — it removed free parameters.
+  v5.4b let each side's harmonics float independently, and the emergent membrane
+  jump came out 2.5× the real one (that was one of my two surfacings). v5.4c
+  constrains the harmonics to one shared set — continuous across the membrane,
+  the physical expectation since the membrane is the only genuine discontinuity
+  surface — and then adds the discontinuity explicitly as a single per-side term
+  sized to the direct measurement (real med|J| 0.480±0.13 → sim 0.536,
+  in-band). Fewer parameters, each anchored to a measurement, and the curvature
+  meter still conservative: an under-fit, physically-shaped model.
+
+  9. Yes — both remain pipeline-side beyond v5.4c, and this campaign added a 
+  third. (a) med05/response (needs a digitization-level change, question 6); (b)
+  the tier-2 d0-vs-drift-time profile (needs a drift-coupled mechanism class);
+  (c) new from the symmetric scan: rate 0.48 — sim frames carry 2.1× the
+  track-class circles at 0.88× the cluster occupancy, an
+  organization/content-axis observation. v5.4c closed exactly one axis:
+  cluster-position realism. All three are written up in ms_conclusion_v54c.md;
+  relaying them is your call.
+
+  10. No — and for the one use-case that would care, a rerun of GEANT still 
+  isn't the right tool. The overlay is post-hoc by design (the pipeline's
+  recorded decision: position-level work uses a cluster-position warp, not
+  re-simulation), which is what bought bit-exact labels; truth hits should be
+  field-free, since truth is the actual trajectory and the field models
+  reconstruction-side displacement. The only consumer wanting field-realistic
+  sim pixels is future pixel-level ML training — and there a coordinate warp is
+  impossible in principle: pixels live on the pad/tbin grid, and real
+  distortions act on the drifting charge before pad quantization, shifting
+  charge-sharing between neighboring pads. The faithful version injects the
+  displacement inside the digitization stage and re-digitizes (GEANT libraries
+  unchanged — the cheap half of a rerun; labels then need re-verification).
+  That's a decision to make only if/when pixel-level sim training starts and
+  sub-pad realism matters (scale: 426 µm scatter ≈ half a pad; the 4.8 mm
+  membrane jump ≈ 1–2 pads). For the current cluster-level plan — and for this
+  campaign, which deliberately anchors sim pre-clustering on truth hits and
+  bridges through the cluster chain — v5.4c is complete.
+
+✻ Churned for 5m 50s
+
+❯ /rename sim-ML-applications 
+  ⎿  Session renamed to: sim-ML-applications
+
+❯ /model Fable                                                                  
+  ⎿  Set model to Fable 5 and saved as your default for new sessions
+
+❯ /effort max                                                                   
+  ⎿  Set effort level to max (this session only): Maximum capability with
+     deepest reasoning. May use excessive tokens resulting in long response
+     times or overthinking. Use sparingly for the hardest tasks.
+
+❯ REVIEW MS and CIRCLE FITTING: not satisfied by your last analysis. The        
+  fitting method is ok though, but the comparison is not enough. Break          
+  with/without Exhaustive-Finder: For NO exhaustive finder,                     
+  1. sim: ntp_g4hit vs real: ntp_hit, fit both, then compare them on the same   
+  canvas;                                                                       
+  2. sim: ntp_cluster vs real: ntp_cluster, fit both then compare draw on the   
+  same canvas;                                                                  
+  3. sim: no tracks, skip; real: ntp_clus_trk, fit and show real data only on a 
+  canvas. Do the above first                                                    
+● Understood — the missing piece is the like-for-like comparison without my
+  finder: each level fitted under its own native grouping (sim = truth, real =
+  tracker), one canvas per level. Probing the branch lists and conventions
+  first, then building the three canvases:
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Write(ms_nofinder.C)
+  ⎿  Wrote 511 lines to ms_nofinder.C
+       1 // ms_nofinder.C — the NO-exhaustive-finder branch of the MS / c
+       2 // comparison (user, 2026-08-10): each level fitted under its NA
+       3 // sim vs real on the SAME canvas.
+          collision)
+         r: pixels
+       6 //                 road-matched to ntp_clus_trk seed clusters, s
+       7 //                 dxy < 1.2 cm, |dtbin| <= 6). One canvas, log-
+       8 //   nf_clusters : sim island91 ntp_cluster (grouped by row-alig
+       9 //                 gtrackID) vs real ntp_clus_trk clusters (grou
+      10 //                 One canvas, linear RMS.
+     … +605 lines (ctrl+o to expand)
+
+● Compile and run all three (fresh ledger first):
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
 
 ● Update(ms_nofinder.C)
   ⎿  Added 6 lines, removed 6 lines
-      764    fclose(fo);
-      765    // --- canvas: L=4 distributions + median-vs-L scan --------
-           ----------------
-      766    gStyle->SetOptStat(0);
-      767 -  double e[53];                                               
-      768 -  for (int i = 0; i <= 52; ++i) e[i] = 3. * std::pow(10., 3.52
-          -3 * i / 52.);   // 3 um .. 10 mm                              
-      767 +  double e[53];   // 0.5 um .. 10 mm: sim piece floor (med ~2 
-          +um) must stay on-axis                                         
-      768 +  for (int i = 0; i <= 52; ++i) e[i] = 0.5 * std::pow(10., 4.3
-          +01 * i / 52.);                                                
-      769    auto H = [&](const char *n) {
-      770      return new TH1D(n, ";per-track circle-fit RMS [#mum];track
-           s (unit area)", 52, e);
-      771    };
-      772    TH1D *hrW = H("nfp_rW"), *hrP = H("nfp_rP"), *hsW = H("nfp_s
-           W"), *hsP = H("nfp_sP");
-      773 -  for (double v : rW) hrW->Fill(std::min(v, 9990.));          
-      774 -  for (double v : rP[iL4]) hrP->Fill(std::min(v, 9990.));     
-      775 -  for (double v : sW) hsW->Fill(std::min(v, 9990.));          
-      776 -  for (double v : sP[iL4]) hsP->Fill(std::min(v, 9990.));     
-      773 +  for (double v : rW) hrW->Fill(std::min(std::max(v, 0.51), 99
-          +90.));                                                        
-      774 +  for (double v : rP[iL4]) hrP->Fill(std::min(std::max(v, 0.51
-          +), 9990.));                                                   
-      775 +  for (double v : sW) hsW->Fill(std::min(std::max(v, 0.51), 99
-          +90.));                                                        
-      776 +  for (double v : sP[iL4]) hsP->Fill(std::min(std::max(v, 0.51
-          +), 9990.));                                                   
-      777    for (auto h : {hrW, hrP, hsW, hsP}) if (h->Integral() > 0) h
-           ->Scale(1. / h->Integral());
-      778    TCanvas *cv = new TCanvas("cvnfp", "nf hit pieces", 1500, 70
-           0);
-      779    cv->Divide(2, 1);
+      267    P("  gap = the detector: diffusion + pad/tbin quantization (
+           no centroiding at pixel level)\n");
+      268    fclose(fo);
+      269    gStyle->SetOptStat(0);
+      270 -  double e[46];                                               
+      271 -  for (int i = 0; i <= 45; ++i) e[i] = 3. * std::pow(10., 3. *
+          - i / 45.);                                                    
+      272 -  TH1D *hs = new TH1D("nfh_s", ";per-track circle-fit RMS [#mu
+          -m];tracks (unit area)", 45, e);                               
+      273 -  TH1D *hr = new TH1D("nfh_r", ";per-track circle-fit RMS [#mu
+          -m];tracks (unit area)", 45, e);                               
+      274 -  for (double v : srms) hs->Fill(std::min(v, 2999.));         
+      275 -  for (double v : rrms) hr->Fill(std::min(v, 2999.));         
+      270 +  double e[53];                                               
+      271 +  for (int i = 0; i <= 52; ++i) e[i] = 3. * std::pow(10., 3.52
+          +3 * i / 52.);   // 3 um .. 10 mm                              
+      272 +  TH1D *hs = new TH1D("nfh_s", ";per-track circle-fit RMS [#mu
+          +m];tracks (unit area)", 52, e);                               
+      273 +  TH1D *hr = new TH1D("nfh_r", ";per-track circle-fit RMS [#mu
+          +m];tracks (unit area)", 52, e);                               
+      274 +  for (double v : srms) hs->Fill(std::min(v, 9990.));         
+      275 +  for (double v : rrms) hr->Fill(std::min(v, 9990.));         
+      276    for (auto h : {hs, hr}) if (h->Integral() > 0) h->Scale(1. /
+            h->Integral());
+      277    TCanvas *cv = new TCanvas("cvnfh", "nf hits", 1100, 660);
+      278    cv->SetLogx();
 
 ● Update(ms_nofinder.C)
-  ⎿  Added 8 lines, removed 5 lines
-      935    P("\n");
-      936    fclose(fo);
-      937    gStyle->SetOptStat(0);
-      938 +  double e[53];   // log-x 30 um .. 10 mm: piece fits have a h
-          +eavy tail; no cap spike                                       
-      939 +  for (int i = 0; i <= 52; ++i) e[i] = 30. * std::pow(10., 2.5
-          +23 * i / 52.);                                                
-      940    auto H = [&](const char *n) {
-      939 -    return new TH1D(n, ";per-track circle-fit RMS [mm];tracks 
-          -(unit area)", 50, 0, 2.5);                                    
-      941 +    return new TH1D(n, ";per-track circle-fit RMS [#mum];track
-          +s (unit area)", 52, e);                                       
-      942    };
-      943    TH1D *hrW = H("nfcp_rW"), *hrP = H("nfcp_rP"), *hsW = H("nfc
-           p_sW"), *hsP = H("nfcp_sP");
-      942 -  for (double v : W[0]) hrW->Fill(std::min(v, 2.49));         
-      943 -  for (double v : Pc[0][iL4]) hrP->Fill(std::min(v, 2.49));   
-      944 -  for (double v : W[1]) hsW->Fill(std::min(v, 2.49));         
-      945 -  for (double v : Pc[1][iL4]) hsP->Fill(std::min(v, 2.49));   
-      944 +  for (double v : W[0]) hrW->Fill(std::min(std::max(v * 1000.,
-          + 30.5), 9990.));                                              
-      945 +  for (double v : Pc[0][iL4]) hrP->Fill(std::min(std::max(v * 
-          +1000., 30.5), 9990.));                                        
-      946 +  for (double v : W[1]) hsW->Fill(std::min(std::max(v * 1000.,
-          + 30.5), 9990.));                                              
-      947 +  for (double v : Pc[1][iL4]) hsP->Fill(std::min(std::max(v * 
-          +1000., 30.5), 9990.));                                        
-      948    for (auto h : {hrW, hrP, hsW, hsP}) if (h->Integral() > 0) h
-           ->Scale(1. / h->Integral());
-      949    TCanvas *cv = new TCanvas("cvnfcp", "nf cluster pieces", 150
-           0, 700);
-      950    cv->Divide(2, 1);
-      951    cv->cd(1);
-      952 +  gPad->SetLogx();                                            
-      953    hrW->SetLineColor(kGray + 1); hrW->SetLineWidth(2);
-      954    hrP->SetLineColor(kBlack); hrP->SetLineWidth(3);
-      955    hsW->SetLineColor(kBlue - 7); hsW->SetLineWidth(2); hsW->Set
-           LineStyle(2);
+  ⎿  Added 20 lines, removed 2 lines
+      477        gt->Draw("P same");
+      478        if (pass && kv.second.x.size() >= 20)
+      479        {
+      480 -        TEllipse *el = new TEllipse(F.a, F.b, F.R);           
+      480 +        // arc over the measured span only (full circles spiro
+          +graph the pad)                                                
+      481 +        double sc = 0, ss = 0;                                
+      482 +        for (size_t i = 0; i < kv.second.x.size(); ++i)       
+      483 +        {                                                     
+      484 +          double th = std::atan2(kv.second.y[i] - F.b, kv.seco
+          +nd.x[i] - F.a);                                               
+      485 +          sc += std::cos(th); ss += std::sin(th);             
+      486 +        }                                                     
+      487 +        double th0 = std::atan2(ss, sc), lo = 0, hi = 0;      
+      488 +        for (size_t i = 0; i < kv.second.x.size(); ++i)       
+      489 +        {                                                     
+      490 +          double d = std::atan2(kv.second.y[i] - F.b, kv.secon
+          +d.x[i] - F.a) - th0;                                          
+      491 +          while (d > M_PI) d -= 2 * M_PI;                     
+      492 +          while (d < -M_PI) d += 2 * M_PI;                    
+      493 +          lo = std::min(lo, d); hi = std::max(hi, d);         
+      494 +        }                                                     
+      495 +        double r2d = 180. / M_PI;                             
+      496 +        TEllipse *el = new TEllipse(F.a, F.b, F.R, F.R,       
+      497 +                                    (th0 + lo) * r2d - 4, (th0
+          + + hi) * r2d + 4);                                            
+      498          el->SetFillStyle(0);
+      482 -        el->SetLineColorAlpha(cols[k % 5], 0.35);             
+      499 +        el->SetNoEdges();                                     
+      500 +        el->SetLineColorAlpha(cols[k % 5], 0.55);             
+      501          el->SetLineWidth(1);
+      502          el->Draw("same");
+      503        }
 
-● Update(ms_nofinder.C)
-  ⎿  Added 4 lines, removed 4 lines
-      960    hrP->SetMaximum(1.45 * ymax);
-      961    hrP->Draw("hist");
-      962    for (auto h : {hrW, hsW, hsP}) h->Draw("hist same");
-      963 -  TLegend *lg = new TLegend(0.40, 0.62, 0.89, 0.88);          
-      963 +  TLegend *lg = new TLegend(0.13, 0.62, 0.60, 0.88);          
-      964    lg->SetBorderSize(0);
-      965    lg->AddEntry(hrP, Form("real, 4-layer pieces: med %.0f #mum"
-           , rMed[iL4]), "l");
-      966    lg->AddEntry(hrW, Form("real, whole track: med %.0f #mum", w
-           Med[0]), "l");
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● All three no-finder canvases are done, QA'd, and on the ledger
+  (ms_nofinder_v54c.txt). The uniform treatment across all three: identical
+  fitter (verbatim ms_real.C Kasa + Gauss–Newton), identical bar (≥12 points,
+  radial span ≥15 cm, R_fit ≥ 45 cm), raw fits — no outlier cleaning, no pT
+  windows, no finder anywhere.
+
+  1. Hit level — ms_nofinder_hits_v54c.png (sim ntp_g4hit truth-grouped, per
+  collision; real ntp_hit pixels grouped by the tracker — pixels road-matched to
+  each seed's clusters, same layer, dxy < 1.2 cm, |Δtbin| ≤ 6; log-x axis
+  because the two sit a factor ~77 apart):
+  - sim: 25,322 tracks from 1818 collisions, RMS median 30.7 µm (all-pT
+  population; the 0.5 GeV window subset is the known 20 µm)
+  - real: 4836 tracks (124 px/track), RMS median 2358 µm, R median 93 cm — this
+  is the raw charge-cloud width, since every in-road pixel is kept with no
+  centroiding
+  - Reading: the gap between these two curves is the detector — diffusion plus
+  pad/tbin quantization. The trajectory itself contributes ~30 µm of it.
+
+  2. Cluster level — ms_nofinder_clusters_v54c.png (sim island91 v5.4c
+  ntp_cluster grouped by row-aligned truth gtrackID; real ntp_clus_trk grouped
+  by seedID):
+  - real: 4875 tracks, RMS median 780 µm; sim: 98,705 tracks, 893 µm → data/MC
+  0.87
+  - Raw-fit medians sit above the campaign's cleaned/windowed values (692/842)
+  as expected, and the ratio lands in the same family (0.82–0.87): sim still
+  slightly over-smeared, dominated by the soft-track population. The sim/real
+  track-count asymmetry is by construction — truth grouping sees every particle
+  in 250 frames; the tracker sees in-time seedable ones.
+
+  3. Track level, real only — ms_nofinder_tracks_real_v54c.png (sim skipped as
+  you specified — local sim reco produces no tracks):
+  - 6138 seeds, 79% pass the bar raw (consistent with the earlier cleaning
+  audit: 86.1% clean + 12.3% rescued-by-cleaning; the raw bar catches roughly
+  the clean fraction), RMS median 780 µm, R median 93 cm, |d0| median 2.52 cm
+  (matches the established 2.51)
+  - Left panel: event 7 with each tracker track's fitted circle drawn as an arc
+  over its measured span; gray crosses are below-bar seeds.
+
+  The one-line ladder these three canvases now state without any finder:
+  trajectory 31 µm → raw charge around real tracks 2.4 mm → centroided clusters
+  0.78–0.89 mm (real/sim 0.87). Clustering buys back a factor ~3 of the detector
+  spread; MS (~1 mrad scale) is invisible at every stage.
+
+  One offer on item 1: your pairing (g4hit vs hit) compares
+  trajectory-before-detector against charge-after-detector. The sealed v5.3 digi
+  tree carries sim pixels with per-pixel truth IDs, so a third curve — sim
+  pixels truth-grouped, the direct charge-vs-charge partner to real ntp_hit —
+  can be added to the same canvas if you want it. Ready for the with-finder half
+  of the break whenever you say.
+
+✻ Sautéed for 11m 10s
+
+❯ /model Fable                                                                  
+  ⎿  Set model to Fable 5 and saved as your default for new sessions
+
+❯ /effort max                                                                   
+  ⎿  Set effort level to max (this session only): Maximum capability with
+     deepest reasoning. May use excessive tokens resulting in long response
+     times or overthinking. Use sparingly for the hardest tasks.
+
+❯ sorry it was my fault: without knowning tracks, which means without doing     
+  Exhaustive Finding, how did you fit on ntp_g4hit(sim)/ntp_hit(data) level?    
+  and how did you fit on the cluster level of sim and data?                     
+
+● No fault anywhere — the request was well-posed. The key is that circle fitting
+  needs groups of points, and every group I used came from labels that already
+  exist in the files; nothing was searched. "Without the exhaustive finder"
+  means: use the answer keys that sim and the real production already wrote.
+
+  Hit level (item 1):
+  - Sim ntp_g4hit: every truth-hit row carries gtrackID — Geant4's own label
+  saying which simulated particle made that energy deposit. A "track" = all rows
+  in one collision sharing a gtrackID. That's bookkeeping, not finding: the
+  simulation ships the answer key.
+  - Real ntp_hit: pixels carry no track label, so I borrowed the only track
+  knowledge the real file contains — the production tracker's tracks in
+  ntp_clus_trk. For each seed I took its clusters and attached the raw pixels
+  sitting in a small road around each cluster: same layer, within 1.2 cm in
+  (x,y), within ±6 tbins. The circle is then fit to those raw pixels instead of
+  the centroids. So the tracker (sPHENIX's classical seeding, already run in the
+  official production) did the track-finding; my part is only a local,
+  geometric pixel-to-cluster attachment — no search over track hypotheses. The
+  road (12 mm) is wide compared to the resulting 2.4 mm RMS, so it doesn't
+  sculpt the circle; it just says which charge belongs to the known track.
+
+  Cluster level (item 2):
+  - Sim ntp_cluster (island91): each cluster has a row-aligned ntp_truth record
+  with gtrackID — the composer's truth matching of cluster charge to parent
+  particle. A track = all clusters in a frame sharing a gtrackID. Answer key
+  again.
+  - Real side: ntp_clus_trk is the grouping — each row is a cluster tagged with
+  a seedID, and rows sharing (event, seedID) are the clusters the production
+  tracker assigned to one track. I fit each such group. (Item 3 is these same
+  groups, presented real-only.)
+
+  So "who found the tracks" in the no-finder branch:
+
+  ┌──────────┬──────────────────────┬───────────────────────────────────────┐
+  │  level   │     sim grouping     │             real grouping             │
+  ├──────────┼──────────────────────┼───────────────────────────────────────┤
+  │ hits     │ Geant4 truth         │ production tracker (seeds), pixels    │
+  │          │ (gtrackID)           │ road-attached                         │
+  ├──────────┼──────────────────────┼───────────────────────────────────────┤
+  │ clusters │ composer truth       │ production tracker (seedID)           │
+  │          │ (gtrackID)           │                                       │
+  ├──────────┼──────────────────────┼───────────────────────────────────────┤
+  │ tracks   │ none exists —        │ production tracker (seedID)           │
+  │          │ skipped              │                                       │
+  └──────────┴──────────────────────┴───────────────────────────────────────┘
+
+  The contrast with the exhaustive finder is now clean: the no-finder branch
+  measures how circular the tracks we already know are (fit quality and
+  resolution, sim truth vs real tracker), and it can only ever see
+  labeled/tracked charge. The full real ntp_cluster tree (2.8M clusters, mostly
+  never assigned to any seed) and the raw pixel sea have no labels at all —
+  grouping those requires searching for tracks, which is exactly what the
+  exhaustive-finder branch does, and why the two branches answer different
+  questions: resolution versus completeness.
+
+✻ Brewed for 1m 59s
+
+❯ Although we've not done Exhaustive Finder, if done with it, you'll fit by     
+  grouping with new track/seed labels got from EF?                              
+
+● Yes — exactly. In the with-finder branch the EF itself produces the track
+  labels: each found track is a set of point indices (its inliers), and the
+  circle fit runs on each of those sets. The grouping is the EF's output,
+  nothing else's.
+
+  Two properties make that branch useful, and they're both about where the
+  labels come from:
+
+  1. Symmetry. The same EF, same parameters, same acceptance bar runs on both
+  sides' full point sets — real ntp_cluster and sim island91 clusters with no
+  truth and no tracker consulted (that was mt_cluscmp: real 184 vs sim 385
+  circles/event, RMS 658 vs 815 µm). Any grouping bias is then identical on both
+  sides, which the no-finder branch can't offer (truth grouping on sim vs
+  tracker grouping on real are different groupers).
+  2. Reach. The EF can group charge that has no pre-existing label at all — the
+  ~80% of real clusters never assigned to any seed, and the raw pixel sea
+  (mt_pixscan: 293 tracks/event straight from pixels). That's the completeness
+  measurement the labeled branch is blind to.
+
+  The pre-existing labels don't disappear in the EF branch — they change role:
+  from grouper to grader. On sim, truth is used after the fact to score the EF
+  (efficiency 78%, purity 75% at cluster level; recall 0.96 with the
+  second-arc/mixed-chain decomposition at truth-hit level), and those
+  calibration numbers must accompany every EF rate, because EF labels are
+  imperfect — a found "track" can be a ghost or a second arc of an already-found
+  particle. So:
+
+  - no finder → groups = existing answer keys (truth / tracker); fits measure
+  resolution of known tracks;
+  - with EF → groups = the EF's own found tracks; fits + counts measure
+  completeness and organization, with truth demoted to grading the EF itself.
+
+✻ Cogitated for 26s
+
+※ recap: Reviewing MS and circle fitting sim vs data on v5.4c: the no-finder branch is done, with three QA'd canvases fitting truth- and tracker-grouped tracks at hit, cluster, and track level. Next: run the exhaustive-finder branch when you confirm. (disable recaps in /config)
+
+❯ I changed the loop over sim to all 10 files. Then add the multi-scattering    
+  delta phi check (on hit level only first), just the same thing as mcs_split.C 
+  do                                                                            
+● Reading the split-arc machinery to port it faithfully (ms_split's truth-side
+  method + ms_real's splitClus adaptation):
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Now appending the nf_ms_hits entry itself:
+
+  Read 1 file (ctrl+o to expand)
+
+● Compiles. Running all four entries fresh (the ledger is rebuilt in one pass —
+  nf_hits now at the 10-file default you set):
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full run is in the background (~10–12 minutes: two passes over the
+  27.5M-pixel tree plus 10 g4 chunks twice). When it lands I'll verify the r0=35
+  reproduction against the ms_split_v53f record (1.365 ± 0.008 / 0.367 ± 0.005
+  mrad — the acceptance test for "same thing as ms_split.C"), check the new
+  r0=49 numbers against the r0scan rows (1.073 / 0.307), QA the new canvas, and
+  report the first-ever real pixel-level σ(Δψ) beside them.
+
+✻ Sautéed for 6m 19s
+
+● Background command "Run all four no-finder entries with fresh ledger"
+completed (exit code 0)
+
+  Read 2 files (ctrl+o to expand)
+
+● Both canvases pass QA. Updating the thread-state memory with the new branch
+  state, then the summary:
+
+  Wrote 1 memory (ctrl+o to expand)
+
+● Done — nf_ms_hits is in ms_nofinder.C, run on all 10 g4 chunks, and the port
+  is verified: the r0=35 sim reproduction matches the ms_split_v53f record to 
+  every printed digit — σ(Δψ) = 1.365 ± 0.008 / 0.367 ± 0.005 mrad with the
+  identical track counts (N = 16555 / 2275), and the r0=49 rows likewise land
+  exactly on the r0scan record (1.073 ± 0.006 / 0.307 ± 0.005). Same method,
+  same files, same numbers.
+
+  The new measurement — real Δψ at hit level (tracker-grouped raw pixels, split
+  at r0 = 49 since pad rows start at 31.4 cm, windows by fitted curvature, no
+  kink veto):
+
+  ┌──────────────────────┬─────┬─────────────────┬────────┬───────────────┐
+  │        window        │  N  │    σ(Δψ) raw    │  3σ    │  fit-noise    │
+  │                      │     │                 │  core  │     est.      │
+  ├──────────────────────┼─────┼─────────────────┼────────┼───────────────┤
+  │ pT~0.5 (R_fit        │ 661 │ 88.9 ± 2.4 mrad │ 55.7   │ 26.4          │
+  │ 101–137)             │     │                 │        │               │
+  ├──────────────────────┼─────┼─────────────────┼────────┼───────────────┤
+  │ stiff (R_fit         │ 57  │ 119.9 ± 11.2    │ 90.7   │ 33.8          │
+  │ 357–595)             │     │ mrad            │        │               │
+  └──────────────────────┴─────┴─────────────────┴────────┴───────────────┘
+
+  Three readings, all in the ledger (ms_nofinder_v54c.txt) and on the canvas
+  (ms_nofinder_mshits_v54c.png, real ±100 mrad | sim ±8 mrad with a 12× zoom
+  note):
+
+  - No 1/p rise in real data at the rawest level: real ratio 0.74 versus sim
+  truth 3.50 (Highland 3.63). The mismatch is resolution noise, not scattering —
+  MS (1.07 mrad at this border) is buried by a factor ~80 under raw-pixel
+  resolution, versus ~25 under cluster resolution. This closes the professor's
+  question at every level of real data too.
+  - Internal consistency: pixel-level σ / cluster-level σ ≈ 88.9/25.7 ≈ 3.5,
+  tracking the per-point RMS ratio 2358/780 ≈ 3.0 — exactly how
+  resolution-driven noise must scale.
+  - Honest caveat: raw σ sits ~3× above the Gluckstern fit-noise estimate (core
+  ~2×) — the un-vetoed, un-cleaned tails (association contamination, delta rays,
+  kinks) inflate the raw number; the pT-flatness conclusion doesn't depend on
+  it.
+
+  Also refreshed with your 10-file change: nf_hits sim side is now 253,600 truth
+  tracks over 18,124 collisions, median 30.2 µm (was 30.7 at 1 file — stable),
+  canvas regenerated smooth. The clusters/tracks entries re-ran unchanged, so
+  the single ledger is clean and complete.
+
+  One structural note: the real stiff window has only 57 tracks (σ error ±11
+  mrad, jagged histogram with ~23% in the display edge bins — annotated on the
+  canvas). That's the full statistics of the tracker's stiff full-crossers in
+  100 events; it can't grow without more real data. The with-finder half of your
+  break is still pending on your word.
+
+✻ Cooked for 1m 29s
+
+※ recap: Comparing MS and circle fits sim vs real, split by with/without exhaustive finder: the no-finder branch is done, including the hit-level split-arc check reproducing ms_split exactly and showing real pixel-level mismatch is resolution, not MS. Next: assemble the with-finder half. (disable recaps in /config)
+
+❯ why for real it's pT-flat but for sim it's not                                
+
+● Because "pT-flat vs 1/p" is the fingerprint of what dominates the mismatch,
+  and the two panels measure at different noise floors — not because real and
+  sim physics differ.
+
+  Sim panel = truth hits, essentially noise-free. The fit noise there is
+  0.07–0.08 mrad, so the only thing left that can make the two half-tangents
+  disagree is genuine trajectory physics: multiple scattering. MS goes as 1/p
+  (Highland θ0 ∝ 1/βp), so the truth-level σ inherits it — 1.073 → 0.307 mrad,
+  ratio 3.50 vs Highland's 3.63.
+
+  Real panel = raw pixels, 2.4 mm point spread. The mismatch there is fit noise
+  from point resolution, and that noise is momentum-blind: σ(Δψ) ≈
+  point-RMS/L·√(192/(n+4)) per half — resolution, lever arm, point count, none
+  of them depend on p. MS is still present in the real data, at the same ~1.07
+  mrad — but it adds in quadrature: √(88.9² + 1.07²) = 88.906 mrad. It shifts
+  the total by 0.006 mrad, four orders below the statistical error. Flat noise +
+  invisible 1/p term = flat curve.
+
+  The proof that this is a level property, not a sim-vs-real property, is
+  already in our own records: run the same split on sim at detector level
+  (clusters, ms_real_split) and sim goes flat too — 27.8 vs 30.2 mrad, right
+  beside real's 25.7 vs 31.2. And symmetrically, real at truth level would show
+  the 1/p rise — but nature doesn't hand out truth hits; that's exactly what the
+  sim exists to provide. So the fair statement of your figure is: left panel
+  shows what the detector does to the measurement, right panel shows what the
+  trajectory does underneath it, and the sim reproduces both behaviors at the
+  matching level.
+
+  On the slight inversion (real stiff 119.9 is actually worse than 88.9, ratio
+  0.74 — also seen at cluster level, 25.7/31.2): two second-order resolution
+  effects, both momentum-coupled through geometry rather than scattering. First,
+  a stiff half-arc has almost no sagitta to grip — at 2 GeV the inner-half
+  sagitta is ~0.8 mm, below the 2.4 mm pixel noise, so each half-fit's curvature
+  is unresolved and its tangent at the border wobbles more; at 0.5 GeV the half
+  sagitta (~3.3 mm) pokes above the noise and stabilizes the tangent. Second,
+  the stiff selection window (R_fit 357–595 cm) is a huge target for mismeasured
+  or kinked fits at pixel resolution, and with only N=57 the un-vetoed tails
+  inflate the raw σ (23% of them sit in the display's edge bins; the core, 90.7,
+  is the more honest stiff number). The same inversion appearing in sim at
+  cluster level (30.2 vs 27.8) confirms it's an estimator-plus-resolution
+  property, reproduced by the sim — not a data anomaly.
+
+✻ Cogitated for 1m 3s
+
+❯ Now for hit level, change from the current global fit, to only short sagitta  
+  fit (4 adjacent layers). Suggested algo is: since TPC layer range is [7, 54], 
+  thus the layer_group could be 45 possibilities; for sim, change the Grp &G =  
+  g[{(int) ev, (int) tid}] to g[{ev, tid, (int) layer_group}]; for sim, change  
+  to key = std::make_pair((int) ev, (int) sid, (int) layer_group), but the      
+  bucket and ev*100+layer as sc idx don't need change. <- You can double check  
+  this algo is correct or not                                                   
+
+● Let me check their algorithm carefully against the actual data structures
+  before implementing — first the geometry table (the sim side will need it):
+
+  Listed 1 directory (ctrl+o to expand)
+
+● Table's in island_post — R1 pitch is 0.571 cm, so 4 adjacent R1 rows span only
+  1.7 cm; that matters below. Algorithm check verdict before I build it:
+
+  1. Correct: real-side keying by (ev, sid, layer_group) with bucket/association
+  untouched — the road-match is per-layer already, so subdividing at
+  accumulation is right. 45 sliding windows ([7..10] … [51..54]) is the right
+  count.
+  2. Incomplete — multi-window push: with sliding windows a pixel of layer L
+  belongs to up to 4 windows (starts L−3…L). A single key per pixel would put
+  each window's pixels all from one layer. Each point must be pushed into every
+  window containing its layer. (Also make_pair can't hold 3 values — needs a
+  tuple/composite key.)
+  3. Sim side as stated can't run: ntp_g4hit has no layer branch (truth hits are
+  continuous trajectory points — that's why earlier work used pseudo-layers).
+  The row must be derived from r via tpc_geom_table.txt (nearest pad-row radius,
+  points outside the row span dropped). Works for real too since pixel r is its
+  row radius.
+  4. Gates must change per-window: the global bar (span ≥15 cm, R_fit ≥45) would
+  reject every 4-row window (span 1.7–3.3 cm), and curvature is invisible over
+  such a chord (sagitta ≈ 100 µm at 0.5 GeV under 2.4 mm pixel noise) so any
+  R-gate is meaningless. Replacement: track must pass the global bar first (same
+  sample as nf_hits, keeps garbage out), then per-window ≥3 distinct rows and
+  the fitter's n ≥ 5.
+  5. Sim density wall to expect: G4 steps at ~1 cm give only ~3–6 truth points
+  per window (R1: often 2–3) — many sim windows are unfittable and the fittable
+  ones have 2–3 degrees of freedom. The truth trajectory is locally an exact
+  arc, so sim local RMS will sit at the µm floor; that's the honest expected
+  outcome and will be stated, not hidden.
+
+  Building nf_sag_hits (keeping the global nf_hits as the record beside it):
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Canvas passes QA — two clean, well-separated populations. Done: nf_sag_hits in
+  ms_nofinder.C, ledger block appended, figure at ms_nofinder_saghits_v54c.png.
+
+  Your algorithm, verified with three corrections applied (detailed in the
+  entry's header comment): (1) sliding windows overlap, so each point is pushed
+  into every window containing its row — up to 4, not one key per point; (2)
+  ntp_g4hit has no layer branch, so the row comes from nearest pad-row radius
+  via tpc_geom_table.txt (works identically for real pixels, whose r is a row
+  radius); (3) the global bar can't gate windows (4 rows span 1.7–3.3 cm and
+  curvature is invisible there — sagitta ~100 µm at 0.5 GeV under 2.4 mm noise),
+  so the sample is tracks passing the global nf_hits bar, then per-window ≥3
+  distinct rows and n ≥ 5. The bucket/association stayed untouched, as you said.
+
+  Results (45 sliding windows, same tracks as the global fit):
+
+  ┌──────────┬─────────┬─────────────┬─────────┬───────────┬───────────────┐
+  │          │         │  windows    │ local   │ n/window  │  global RMS   │
+  │          │ tracks  │  fittable   │ RMS med │    med    │     (for      │
+  │          │         │             │         │           │   contrast)   │
+  ├──────────┼─────────┼─────────────┼─────────┼───────────┼───────────────┤
+  │ real     │ 4836    │ 134,742     │ 1205 µm │ 12        │ 2358 µm       │
+  │ pixels   │         │ (70%)       │         │           │               │
+  ├──────────┼─────────┼─────────────┼─────────┼───────────┼───────────────┤
+  │ sim      │         │ 6,859,611   │         │           │               │
+  │ truth    │ 253,600 │ (71%)       │ 1.02 µm │ 6         │ 30.2 µm       │
+  │ hits     │         │             │         │           │               │
+  └──────────┴─────────┴─────────────┴─────────┴───────────┴───────────────┘
+
+  Three readings:
+
+  - Sim: MS is confirmed to live at long range. Locally the truth trajectory is
+  an exact arc at the µm floor — the global 30 µm was accumulated trajectory
+  scatter over the full crossing, and shrinking the window to 4 rows removes it
+  (30.2 → 1.0 µm). This is the same physics the split-arc test showed, now
+  stated as local-vs-global fit quality.
+  - Real: the local fit isolates the charge cloud. 1205 µm per window versus
+  2358 µm global means the global fit carries an additional long-range component
+  of roughly √(2358² − 1205²) ≈ 2.0 mm in quadrature — track-end tails, delta
+  rays, association contamination, and shape/distortion mismatch across the full
+  arc. (With the dof correction — local ×0.87, global ×0.99 — the pair is 1385
+  vs 2382, still a factor 1.7.)
+  - The clean detector-gap number: local-to-local, real/sim = 1205/1.02 ≈ 1200×
+  — a pure point-scatter statement, now fully decoupled from curvature and MS,
+  both of which are invisible inside a window.
+
+  The predicted G4 density wall showed up exactly as expected: sim windows carry
+  a median of 6 points (1-cm stepping), R1 windows (1.7 cm span) mostly fail n
+  ≥ 5, and the 71% fittable fraction is carried by the wider R2/R3 windows —
+  noted on the ledger with the dof-suppression factors.
+
+  The same short-sagitta construction at cluster level is the one that would
+  isolate cluster position resolution from distortion — i.e., attack the
+  med05/response axis directly — say the word and it runs on the same machinery.
+✻ Churned for 5m 37s
+
+※ recap: Comparing circle-fit quality sim vs real without the exhaustive finder: the 4-row short-sagitta hit-level fit is done (real 1205 µm vs sim truth 1.02 µm, figure QA'd). Next: run the same short-sagitta at cluster level on your word. (disable recaps in /config)
+
+❯ analysis: why the sagitta fit makes the difference between real and sim       
+  larger (worse)? From my supervisor's prediction it would make them have       
+  better agreement                                                              
+
+● Because the short window removed the one contribution the two curves shared —
+  long-range trajectory physics — and kept the one contribution they don't share
+  at all: detector point scatter, which the sim side of this particular canvas
+  doesn't have, since it's truth hits. The ratio blowing up is the arithmetic
+  consequence of that pairing, not a physics surprise.
+
+  Decompose each side's global RMS into "local point scatter" ⊕ "long-range
+  shape" (what a 4-row fit keeps vs removes):
+
+  ┌──────────┬─────────┬──────────────┬─────────────────────┬─────────────┐
+  │          │ global  │ local (kept) │     long-range      │ localizing  │
+  │          │   RMS   │              │      (removed)      │    does     │
+  ├──────────┼─────────┼──────────────┼─────────────────────┼─────────────┤
+  │ sim      │         │              │ ~30 µm (accumulated │             │
+  │ truth    │ 30.2 µm │ ~1 µm        │  MS)                │ ÷30         │
+  │ hits     │         │              │                     │             │
+  ├──────────┼─────────┼──────────────┼─────────────────────┼─────────────┤
+  │ real     │         │ 1205 µm      │ ~2.0 mm             │             │
+  │ pixels   │ 2358 µm │ (charge      │ (distortion, tails, │ ÷2          │
+  │          │         │ cloud)       │  deltas)            │             │
+  └──────────┴─────────┴──────────────┴─────────────────────┴─────────────┘
+
+  A truth trajectory has essentially zero point noise — its entire global RMS is
+  long-range physics (MS accumulating over the 44 cm arc; within a 3 cm window,
+  the fit absorbs offset, angle, and curvature, and the µm-level leftover is
+  all that survives). Real pixels are the opposite: half their global RMS is the
+  per-point charge-cloud width (diffusion + pad sampling), which is strictly
+  local and survives any window. So the local fit deletes ~97% of the sim number
+  but only ~50% of the real number: 78× becomes 1200×. In signal-processing
+  terms, the short-sagitta fit is a filter that rejects long-wavelength shape
+  and passes short-wavelength scatter — and these two datasets have their
+  content at opposite ends of that spectrum.
+
+  Your supervisor's prediction is correct — for the comparison it implicitly
+  assumes: both sides measured at the same level, i.e., both carrying detector 
+  response. The standard argument for short-sagitta fits is exactly that they
+  are distortion- and MS-immune: at matched level, the long-range terms are
+  where real and sim disagree most (real distortions vs the modeled field,
+  alignment, accumulated shape), while the local point resolution is the tuned,
+  best-matched part. Localizing removes the disagreeing terms and compares the
+  matched ones → agreement improves. That logic fails here only because the
+  hit-level canvas — by your own deliberate item-1 design — pairs
+  trajectory-before-detector against charge-after-detector. That pairing is the
+  right one for stating "the gap is the detector," and the local fit sharpens
+  precisely that gap.
+
+  The matched-level version of your supervisor's test exists in our data: the
+  sealed v5.3 digi tree carries sim pixels with per-pixel truth IDs. Running the
+  same nf_sag_hits machinery with sim digi pixels (truth-grouped, no road
+  needed) instead of truth hits would put ~mm-scale charge clouds on both sides;
+  if the transport/PRF response is right, local RMS data/MC should land near 1
+  — and wherever it doesn't is a pure response statement, cleanly separated from
+  distortions. The same construction at cluster level attacks the med05 axis
+  the same way. Both run on the existing machinery — say the word.
+
+✻ Worked for 1m 15s
+
+❯ huh? does that mean v54 is a bad direction of sim optimization?               
+
+● No — the opposite, and the cleanest proof is in the canvas itself: the 
+  comparison that "got worse" contains no v5.4 at all. Its sim side is truth
+  hits, which are bit-identical since v5.3 by construction — the field overlay
+  never touches them. The 1200× is a property of pairing trajectory-points
+  against charge-clouds, not a grade of any sim version.
+
+  Three facts keep v5.4 the right direction:
+
+  1. v5.4 fixed measured disagreements at the level where data is actually 
+  consumed. Real tracks carried more long-range and granular position structure
+  than sim — stiff circle-RMS data/MC 1.31–1.33, the 2.5 cm d0 scale, the 0.48
+  cm membrane jump. Every consumer that fits more than 4 rows — the tracker,
+  every global circle fit, any model that sees whole tracks — feels those terms.
+  After v5.4c: stiff 0.99, d0 matched, membrane jump real-sized, and the
+  curvature-noise meter shows the field is still conservative (sim 0.276 vs real
+  0.402). Those are genuine agreement gains on the observables that drove the
+  request.
+  2. The short-sagitta lesson is separability, not irrelevance. "Local fits
+  remove long-range terms" doesn't mean long-range terms don't matter — it means
+  the field axis and the response axis are independently measurable. That's
+  good news, and it's consistent with how the pipeline already decomposed the
+  problem: field axis closed (v5.4c), response axis open (med05: sim base ~735
+  vs real ~564 µm at low pT). The local fit is the meter for the second axis —
+  v5.4 deliberately never touched that knob (positions-only, labels bit-exact
+  was the acceptance condition).
+  3. The sequencing was right, not accidental. The field amplitude was sized on
+  stiff tracks, where the response bases already agree (~476 vs ~470 µm) — so
+  the field solve is uncontaminated by the response mismatch. Had the pipeline
+  tuned response first at low pT, it would have tuned against the 0.94 number
+  that we now know was two errors canceling, and locked the wrong width in.
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ or can v54c adds the feature " digi tree carries sim pixels with per-pixel    
+  truth IDs"?                                                                   
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● It doesn't need adding — v5.4c already has it, on its input side. v5.4c is by
+  construction a positions-only re-export of the sealed v5.3 digi, and that digi
+  tree is sitting in island_post: digi_frames_production_v53.root, 81.1M pixels
+  with branches event layer phibin zbin tbin adc zelem phi z gtrackID —
+  per-pixel truth IDs included. (No x,y stored, but that's trivial: x =
+  r(layer)·cos φ, y = r(layer)·sin φ from the geometry table.) So the matched
+  pixel-level comparison — sim digi pixels truth-grouped vs real pixels
+  tracker-grouped, both carrying charge clouds — can run today with zero new
+  production.
+
+  What v5.4c cannot add, and why I keep separating it: field-realistic pixels 
+  via overlay. Pixels are grid objects (integer phibin/tbin). In reality the
+  distortion field displaces the drifting charge before pad binning, so it shows
+  up as changed charge-sharing between neighboring pads — an overlay would
+  either push pixels off-grid (no longer pixels) or shift them by whole pads
+  (wrong physics; the field scale is ~0.4–5 mm, sub-pad to ~1 pad). The faithful
+  version injects the displacement inside the transport/digitization stage and
+  re-digitizes — G4 libraries unchanged, so it's the cheap half of a rerun, but
+  it's a pipeline-lane production decision, worth taking only if pixel-level ML
+  training ends up needing field realism.
+
+  And for the test your supervisor's prediction points at, the missing field in
+  the digi pixels is nearly irrelevant anyway: the short-sagitta fit rejects the
+  smooth field components by construction, so field-free sim pixels are a fair
+  local-fit partner. The one declared caveat: real pixels carry granular
+  per-layer alignment scatter (~400 µm coherent shifts) that field-free sim
+  pixels won't — on a 1205 µm local RMS that's a ~5% quadrature effect, visible
+  but small. The prediction to check: local pixel-level RMS, real vs sim digi, 
+  should land near 1 if the transport/PRF response is right — and any deviation
+  is then a pure response statement, the same axis as med05, measured
+  distortion-free.
+
+  Say the word and I'll add the digi-pixel side to nf_hits and nf_sag_hits
+  (truth-grouped by per-pixel gtrackID, same fitter, same bars) and run the
+  matched comparison.
+
+✻ Churned for 1m 21s
+
+❯ do it on v54c I'll see what could happen                                      
+
+● Building the matched-level entry now — sim digi pixels (per-pixel truth
+  grouping) vs real pixels, global and 4-row local fits on one canvas:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Running in the background (~6–8 min: the real association pass plus an 81M-row
+  digi scan). When it lands I'll QA the canvas and report the two ratios —
+  global (where the missing pixel-level field and association tails should show
+  on the real side) and local (the distortion-free response test your
+  supervisor's prediction targets, expected near 1 if the transport/PRF width is
+  right).
+
+✻ Baked for 2m 8s
+
+● Background command "Run matched pixel-level comparison" completed (exit code
+0)
+
+  Read 1 file, wrote 1 memory (ctrl+o to expand)
+
+● Done — nf_digipix ran on the v5.4c production state (sim pixels = the sealed
+  v5.3 digi that v5.4c is exported from, truth-grouped by per-pixel gtrackID;
+  24,521 sim tracks from 60 frames vs 4836 real). Ledger appended, canvas at
+  ms_nofinder_digipix_v54c.png. What happened is exactly what your supervisor 
+  predicted — once the comparison is matched-level:
+
+  ┌───────────────────────────┬─────────┬─────────────────┬─────────┐
+  │            fit            │  real   │ sim digi pixels │ data/MC │
+  ├───────────────────────────┼─────────┼─────────────────┼─────────┤
+  │ global whole-track        │ 2358 µm │ 1497 µm         │ 1.57    │
+  ├───────────────────────────┼─────────┼─────────────────┼─────────┤
+  │ local 4-row short-sagitta │ 1205 µm │ 1337 µm         │ 0.90    │
+  └───────────────────────────┴─────────┴─────────────────┴─────────┘
+
+  Three readings:
+
+  1. The prediction is confirmed. The short-sagitta fit collapses the
+  disagreement from 1.57 to 0.90. When both sides carry charge clouds, the
+  long-range terms are where they differ, and the local fit removes them — the
+  earlier "local made it worse" was purely an artifact of pairing truth
+  trajectories against detector charge, and it's gone here.
+
+  2. The global 1.57 decomposes into a real-only long-range excess. In
+  quadrature: real carries √(2358² − 1205²) ≈ 2.0 mm of long-range content, sim
+  only ≈ 0.67 mm. The ~1.9 mm real-only excess is the distortion field plus the
+  road-association tails (real grouping attaches neighboring charge at 124
+  px/track; sim truth grouping keeps only the particle's own 265 px/track) — so
+  this number bounds the field's pixel-level share but shouldn't be read as all
+  field.
+
+  3. The local 0.90 is the distortion-free response meter — and it says the 
+  response is close. Raw, sim clouds are ~10% wider than real. Two small
+  opposing corrections bracket it: the dof factor (real ~12 points/window vs sim
+  ~22 → corrected ratio ≈ 0.97) and the real-only granular alignment scatter
+  (~400 µm surviving locally → response-only ≈ 0.93). Net: pixel-level response 
+  agrees within ~10%, sim slightly over-smeared — the same direction as the
+  cluster-level med05 (0.82 at 0.5 GeV), but milder, meaning part of the
+  cluster-level over-smear accumulates later in the chain (centroiding/cluster
+  formation), not in the raw charge deposition.
+
+  And this closes your v5.4-direction question with measurement rather than
+  argument: the two axes are now separately metered — the field axis lives in
+  the global−local gap (real-only, what v5.4 models at cluster level), the
+  response axis in the local ratio (0.90, close but not perfect, the med05
+  family). v5.4 fixed the axis that was broken by 1.3–1.6×; the remaining axis
+  is a ~10% cloud-width item in digitization. Both numbers are now on the ledger
+  for the pipeline session whenever you choose to relay.
+
+✻ Sautéed for 1m 36s
+
+※ recap: Comparing circle fits sim vs real without the finder: the matched pixel-level test confirmed your supervisor's prediction, local data/MC 0.90 vs global 1.57, validating v5.4. Next: run cluster-level short-sagitta to isolate the med05 response mismatch.
+
+❯ great job. Now point out in ms_nofinder.C which part is for the previous      
+  hit-level fit (with line numbers), which part is for the with-digi-pix fit,   
+  for both real and sim                                                         
+
+  Searched for 2 patterns (ctrl+o to expand)
+
+● Here's the map of ms_nofinder.C (current line numbers, post all edits):
+
+  Shared machinery — used by both entries
+
+  lines: ms_nofinder.C:52–106
+  what: MNF::fitCircle — the one fitter (Kasa + 6 Gauss–Newton, verbatim from
+  ms_real.C)
+  ────────────────────────────────────────
+  lines: ms_nofinder.C:122–125
+  what: MNF::fitBar — the uniform global bar (≥12 pts, span ≥15 cm, 45 ≤ R_fit <
+
+  2e4)
+  ────────────────────────────────────────
+  lines: ms_nofinder.C:170–237
+  what: MNF::realPixGroups — the real-side grouping both hit-level entries 
+  share:
+  pass 1 at 177–202 reads ntp_clus_trk seed clusters into per-(event,layer)
+  buckets; pass 2 at 204–236 streams ntp_hit and road-matches pixels to seeds
+  (same layer, dxy < 1.2 cm, |Δtbin| ≤ 6, hitID-deduped)
+
+  Previous hit-level fit — nf_hits, ms_nofinder.C:249–346
+
+  ┌─────────┬──────┬─────────────────────────────────────────────────────────┐
+  │  lines  │ side │                    source & grouping                    │
+  ├─────────┼──────┼─────────────────────────────────────────────────────────┤
+  │         │      │ ntp_g4hit truth hits (trajectory points), 10-file loop  │
+  │ 254–290 │ sim  │ opens at 259, grouped by (event, gtrackID), global      │
+  │         │      │ fitBar fit per group                                    │
+  ├─────────┼──────┼─────────────────────────────────────────────────────────┤
+  │ 291–303 │ real │ calls realPixGroups (291–293), then global fitBar fit   │
+  │         │      │ per seed's pixel group (296–303)                        │
+  ├─────────┼──────┼─────────────────────────────────────────────────────────┤
+  │ 305–346 │ both │ ledger block + log-x canvas → ms_nofinder_hits_*.png    │
+  └─────────┴──────┴─────────────────────────────────────────────────────────┘
+
+  Matched digi-pixel fit — nf_digipix, ms_nofinder.C:1035–1191
+
+  ┌───────────┬──────┬───────────────────────────────────────────────────────┐
+  │   lines   │ side │                   source & grouping                   │
+  ├───────────┼──────┼───────────────────────────────────────────────────────┤
+  │ 1040–1057 │ both │ row-radius table load + nearRow (needed to build sim  │
+  │           │      │ x,y and to bin windows)                               │
+  ├───────────┼──────┼───────────────────────────────────────────────────────┤
+  │           │      │ doTrack — the per-track worker both sides pass        │
+  │ 1065–1094 │ both │ through: global fit at 1066–1070, the 45 sliding      │
+  │           │      │ 4-row local fits at 1072–1093                         │
+  ├───────────┼──────┼───────────────────────────────────────────────────────┤
+  │ 1095–1100 │ real │ same grouping as nf_hits — reuses realPixGroups, then │
+  │           │      │  doTrack(G, 0) at 1099                                │
+  ├───────────┼──────┼───────────────────────────────────────────────────────┤
+  │           │      │ digi pixels from digi_frames_production_v53.root      │
+  │ 1102–1130 │ sim  │ ntp_hit (opened 1104): charge-cloud pixels grouped by │
+  │           │      │  per-pixel (event, gtrackID), x,y built as rowR·(cos  │
+  │           │      │ φ, sin φ) at 1123, then doTrack(kv.second, 1) at 1129 │
+  ├───────────┼──────┼───────────────────────────────────────────────────────┤
+  │ 1131–1189 │ both │ ledger + two-pad canvas (global | local) →            │
+  │           │      │ ms_nofinder_digipix_*.png                             │
+  └───────────┴──────┴───────────────────────────────────────────────────────┘
+
+  The structural point the map makes visible: the real side is literally the 
+  same code in both entries — realPixGroups at 170–237 produces identical pixel
+  groups for each. The only thing that changed between "previous" and
+  "with-digi-pix" is the sim source: truth trajectory points (ntp_g4hit, lines
+  254–290) swapped for detector charge clouds (digi ntp_hit, lines 1102–1130).
+  That one swap is the entire matched-level correction.
+
+  For orientation, the other entries in the file: nf_clusters 351–453, nf_tracks
+  459–578, nf_ms_hits 594–856 (sim split-arc 608–690, real 692–769),
+  nf_sag_hits 873–1018 (window lambda 903–928, sim 929–961, real 962–973).
+
+✻ Crunched for 1m 3s
+❯ "│           │      │ digi pixels from digi_frames_production_v53.root        
+  ntp_hit (opened 1104):     │                                                  
+  │ 1102–1130 │ sim  │ charge-cloud pixels grouped by per-pixel (event,         
+  gtrackID), x,y built as    │                                                  
+  │           │      │ rowR·(cos φ, sin φ) at 1123, then doTrack(kv.second, 1)  
+  at 1129" nonono you should use v54c, and you said v54c already has digi       
+  frames. By using v53 is like saying "we should go back to v53"                
+
+  Listed 1 directory (ctrl+o to expand)
+
+● No regression happened — that file is v5.4c's pixel stage. The listing above
+  is the whole story: v5.4c exists on disk only as a cluster-level artifact
+  (island91_frames_production_v54c.root); there is no
+  digi_frames_production_v54c.root anywhere, and there never was one. Here's the
+  production chain with version tags attached to what actually changed:
+
+  G4 libs → frame composer → DIGI PIXELS (per-pixel gtrackID)   ← sealed at
+  v5.3, byte-identical in v5.4
+                                      │
+                                      ▼ islandize91: clustering + rowdr + field
+  overlay   ← the ONLY v5.4 step
+                                ISLAND91 CLUSTERS = island91_..._v54c.root
+
+  v5.4a/b/c were defined as positions-only overlays applied at cluster export on
+  top of the sealed v5.3 digi — that invariance is not an accident, it's the
+  acceptance condition I myself verified during the v5.4c re-acceptance (labels
+  bit-exact v5.3→v5.4c, truth side bit-identical). So at pixel level, "v5.4c"
+  and "the v5.3 digi" are the same bytes; the tag on the filename records where
+  the digi was sealed, not that something newer superseded it. When I said
+  "v5.4c already has the per-pixel-truth feature, on its input side," this file
+  is exactly what I meant. Using it isn't going back to v5.3 — it's using v5.4c
+  at the only stage where v5.4c has pixels at all.
+
+  The reason a digi_v54c cannot be conjured from the existing one is the grid
+  argument from before: pixels are integer (phibin, tbin) objects, and the field
+  displaces drifting charge before pad binning — so a genuine v5.4-field pixel
+  tree requires re-running the digitization stage with the displacement injected
+  pre-quantization (G4 libraries unchanged), plus label re-verification. That's
+  a real production request to the pipeline session, not an overlay. If you
+  want it — and the matched pixel-level comparison would then have the field on
+  both sides of the global panel too — I can draft the request doc in the
+  distortion_remodel_request.md pattern for you to relay.
+
+  For the results you already have, the choice costs nothing where it matters:
+  the local (response) ratio 0.90 is field-blind by construction, and the global
+  panel's caveat "sim pixels field-free" is declared on the canvas and ledger —
+  that's part of why real's global carries the ~1.9 mm long-range excess. If
+  the "v53" tag in the figure text is what would raise eyebrows, I can amend the
+  legend to "sim v5.4c digi pixels (pixel stage sealed at v5.3; field lives at
+  cluster export)" — the provenance stays honest either way.
+
+✻ Cooked for 1m 2s
+
+❯ if v54c doesn't have digi-frame.root, I can ask pipeline agent to generate a  
+  new one. Sounds good?                                                         
+
+● Sounds right — with one precision that changes what you ask for: the pipeline
+  agent must not "generate a v5.4c digi" (that would be byte-identical to the
+  v5.3 file under a new name — the overlay lives downstream of pixels). The
+  meaningful request is a field-in-digitization production: inject the same
+  measured v5.4c field as a charge displacement before pad quantization,
+  re-digitize, and turn the cluster-export overlay off so the field isn't
+  applied twice. Per the established pattern, I'm drafting the relay doc now:
+
+● Write(digi_field_request.md)
+  ⎿  Wrote 70 lines to digi_field_request.md
+       1 # Request: field-in-digitization production (pixel-level field r
+       2 
+       3 2026-08-13, from the ML/analysis session to the pipeline session
+       4 Follow-up to `distortion_remodel_request.md` (closed). That loop
+       5 into CLUSTER positions (v5.4c, cluster-export overlay on the sea
+         led v5.3 digi). This
+         level carries it too.
+       7 
+       9 
+         re
+     … +108 lines (ctrl+o to expand)
+
+  Wrote 1 memory (ctrl+o to expand)
+
+● Yes — and the request doc is ready to relay:
+  island_post/digi_field_request.md. Three things in it that matter when you
+  pass it on:
+
+  1. The ask is "field into digitization," not "a v5.4c digi export." Same
+  measured field model and parameters as v5.4c (SMOD 0.0426, side-shared k=2,3
+  harmonics, SCM 0.26 — the exact field-arg string is quoted), but applied as a
+  displacement of the transported charge before pad/tbin quantization, then
+  re-digitize from the existing G4 libraries and re-export with the
+  cluster-level overlay off — the field must enter exactly once. (rowdr is
+  explicitly excluded: the row-radius taper is a lookup convention, not a charge
+  displacement.)
+  2. Two acceptance consequences are declared upfront so they aren't mistaken 
+  for failures: labels will not be bit-exact this time (charge migrating across
+  pad boundaries changes cluster membership — quantify the drift, don't assert
+  invariance), and the cluster-level battery must be re-verified, with a small
+  SMOD re-solve plausible (quantization and centroiding absorb part of an
+  injected displacement, so the effective cluster smear may land slightly under
+  the overlay's).
+  3. My differential predictions are in the doc as ready-made acceptance meters:
+  nf_digipix global data/MC moves from 1.57 toward 1 by the field share, while
+  local stays at ~0.90 (±the ~4% granular share) — a sharp, falsifiable
+  signature that the injection worked and wasn't double-counted.
+
+  Also framed for the pipeline agent's decision: cost is a local re-digitization
+  of the 250 frames plus one verification campaign; benefit is entirely
+  pixel-level (matched global comparisons + pixel-ML realism); v5.4c stays valid
+  and preferred for cluster-level work either way, so nothing reopens the
+  closed distortion loop. Version tag (v5.4d vs v5.5) is left as their call.
+
+✻ Baked for 1m 47s
+
+❯ Asking it. And you'd better explain since I don't understand what happened in 
+  v53 era and why v54abc must not generate their digi, for a layman version     
+
+● Here's the layman version.
+
+  The sim is an assembly line. Stage 1: Geant4 flies particles through the
+  detector geometry (pure physics, "truth"). Stage 2: many collisions get
+  stacked into a DAQ-style time frame, like the real detector sees. Stage 3 —
+  digitization, the "digi": the detector response is simulated — each particle's
+  charge drifts through the gas, spreads out, and lands on the pad plane,
+  producing pixels: "pad number 517, time bin 213, charge 42." Each pixel gets
+  stamped with which particle made it (the per-pixel truth ID). Stage 4:
+  clustering glues touching pixels into clusters and computes each cluster's
+  position. The cluster file is what the tracker and the ML consume.
+
+  What v5.3 was: the era when the whole line finally got tuned end-to-end —
+  right collision species, right amount of charge, right electronics behavior —
+  and then frozen ("sealed") with checksums. v5.3 produced every stage's file:
+  the pixel file (digi) and the cluster file.
+
+  What v5.4 fixed: my circle-fit tests showed real tracks are slightly warped —
+  they fit circles worse than sim at high momentum, they point 2.5 cm away from
+  the beamline, there's a small jump at the TPC's central membrane. The real
+  detector has distortions and misalignments; the sealed sim was too perfect.
+  The fix, v5.4a/b/c (three iterations of the warp's shape), was applied in the
+  cheapest, safest possible place: the very last stage. After clusters are
+  built, each cluster's position gets nudged by the measured warp. Nothing else
+  is touched. That was deliberate: it guaranteed every pixel, every truth label,
+  every cluster's pixel membership stayed byte-identical to sealed v5.3 — so
+  all the v5.3-era tuning and label quality carried over with zero risk, and I
+  could verify it ("labels bit-exact") in a day.
+
+  Why v5.4 has no pixel file of its own: look at where the nudge sits on the
+  line — downstream of the pixels. Pixels → clustering → [v5.4 nudge] →
+  clusters. The pixels of "v5.4c" are therefore literally the v5.3 pixel file; a
+  "v54c digi" would be the identical bytes under a new name. It's like editing
+  a finished photo in Photoshop: the edited print is new, but the negatives are
+  the same negatives — there is no "edited negative."
+
+  Why you can't just nudge the pixels the same way: a pixel is not a dot you can
+  move — it's a square on graph paper. "Pad 517, time bin 213" has no position
+  half a pad to the left; the grid is fixed hardware. In the real detector, the
+  distortion happens to the drifting electron cloud while it's still in the gas,
+  before it lands — so what actually changes is which pads receive how much 
+  charge (the sharing between neighboring pads shifts a little, and that's what
+  moves the cluster's computed position). To imitate that honestly you have to
+  displace the charge before it's binned onto the pads — which means going
+  inside stage 3 and re-running digitization. That's exactly the request you're
+  relaying: same measured warp, injected one stage earlier, cluster-stage nudge
+  switched off so the warp isn't applied twice.
+
+  The price, and why it's a real decision rather than an afternoon job: once
+  charge moves before binning, some of it crosses pad borders — pixels regroup
+  slightly, so the labels will no longer be byte-identical, and the
+  cluster-level checks all have to be re-verified. v5.4's overlay traded a
+  little physical purity for perfect safety; the new production trades that
+  safety back for pixel-level realism, so it comes with a verification campaign
+  attached.
+
+✻ Worked for 55s
+
+❯ Pixels → clustering → [v5.4 nudge] → clusters <= this sounds for our sagitta  
+  fits surfaced that the v53 is better than v54 since the v54's Photoshop job   
+  did something bad on the photo                                                
+
+● No — the sagitta fits graded the negatives, not the retouch, and the negatives
+  are shared by both versions. But your instinct is picking up something real,
+  so let me separate the two halves cleanly.
+
+  What the local fits actually measured. The matched short-sagitta comparison
+  ran at pixel level — real pixels vs sim digi pixels. That stage sits upstream
+  of the v5.4 nudge; those pixels are identical in v5.3 and v5.4c. The 0.90
+  local ratio says: the sim's raw charge clouds are ~10% too wide. That's a flaw
+  in the photoshoot itself (the digitization/response stage), present since the
+  v5.3 era and earlier — the retouch never touched those pixels, so the local
+  fits are constitutionally incapable of grading v5.4. They grade the film.
+
+  Where v5.3 "looking better" comes from — and why it's an illusion. At one
+  meter, low-pT cluster RMS, v5.3 scored 0.94 and v5.4c scores 0.82, so v5.3
+  looks closer. But we showed by arithmetic that the 0.94 was two errors 
+  canceling: sim's clouds too wide (pushes sim RMS up) while the warp was
+  missing (pushes sim RMS down). √(733² + 426²) = 848 ≈ the 842 that v5.4c
+  actually measures — the retouch didn't add blur, it un-hid blur that the
+  missing warp had been compensating. An un-retouched print of a blurry negative
+  can accidentally match a sharp-but-warped real photo at one viewing angle.
+  That's not "better"; that's luck.
+
+  The meters where the two versions genuinely differ say the retouch did its
+  job:
+
+  ┌─────────────────────┬───────────────┬────────────────┬──────────────────┐
+  │     observable      │     v5.3      │     v5.4c      │     verdict      │
+  ├─────────────────────┼───────────────┼────────────────┼──────────────────┤
+  │ stiff-track cluster │ 1.31–1.33     │                │                  │
+  │  RMS, data/MC       │ (sim too      │ 0.99           │ fixed by v5.4    │
+  │                     │ clean)        │                │                  │
+  ├─────────────────────┼───────────────┼────────────────┼──────────────────┤
+  │ d0 (2.5 cm          │ absent in sim │ matched (2.37  │ fixed by v5.4    │
+  │ off-origin)         │               │ vs 2.51)       │                  │
+  ├─────────────────────┼───────────────┼────────────────┼──────────────────┤
+  │ central-membrane    │               │ real-sized     │                  │
+  │ jump                │ absent        │ (0.536 vs      │ fixed by v5.4    │
+  │                     │               │ 0.480)         │                  │
+  ├─────────────────────┼───────────────┼────────────────┼──────────────────┤
+  │ curvature-noise     │ sim below     │ still below    │ warp             │
+  │ width               │ real          │ real (0.276 vs │ conservative,    │
+  │                     │               │  0.402)        │ not overdone     │
+  ├─────────────────────┼───────────────┼────────────────┼──────────────────┤
+  │                     │ 0.94 (two     │ 0.82 (one      │ honest, not      │
+  │ low-pT cluster RMS  │ errors        │ error,         │ worse            │
+  │                     │ canceling)    │ visible)       │                  │
+  ├─────────────────────┼───────────────┼────────────────┼──────────────────┤
+  │ pixel-level local   │ 0.90          │ 0.90 (same     │ the true culprit │
+  │ response            │               │ pixels)        │  — pre-v5.4      │
+  └─────────────────────┴───────────────┴────────────────┴──────────────────┘
+
+  Note especially the curvature meter: if the Photoshop job had been
+  heavy-handed, sim would carry more shape noise than real — it still carries
+  less. And the warp's amplitude was calibrated on stiff tracks, where the
+  cloud-width error cancels between real and sim, so it's not contaminated by
+  the blur it later exposed.
+
+  So the correct reading of everything the sagitta fits surfaced: the negatives 
+  are slightly blurry (response, ~10% at pixel level, ~30% after clustering at 
+  low pT — the open med05 item), and that blur predates v5.4. Going back to v5.3
+  would re-hide the blur behind a missing warp while breaking stiff tracks, d0,
+  and the membrane again — trading one honest open item for four wrong ones.
+  The right move is the one already queued: keep the warp, fix the blur at its
+  own stage (digitization response) — and the field-in-digi production you just
+  requested moves the warp to the physically honest place at the same time.
+
+✻ Brewed for 50s
+
+❯ ok, now still about this pipeline: Pixels → clustering → [v5.4 nudge] →       
+  clusters, what will the pipeline agent do based on your                       
+  digi_field_request.md? he will adjust which step of the four?                 
+
+● A step before your first box — plus deleting (most of) the nudge box. The
+  four-box diagram starts at "Pixels," but pixels themselves are manufactured by
+  an earlier stage, and that's where the work goes:
+
+  Now (v5.4c):
+  charge from G4 → [digitization: drift + diffusion + pad/tbin binning] →
+  Pixels(v53)
+                  → clustering → [nudge: rowdr + FIELD on cluster positions] →
+  clusters(v54c)
+
+  Requested:
+  charge from G4 → [digitization + FIELD displaces the charge BEFORE binning] →
+  Pixels(new, warped)
+                  → clustering → [nudge: rowdr only, FIELD OFF] → clusters(new)
+
+  Per box, what the pipeline agent does:
+
+  1. Digitization (upstream of "Pixels") — the one real code change. Inside
+  their transport/digitize step, displace each drifting electron's arrival point
+  by the v5.4c field (same SMOD/SPHI/SCM parameters, quoted in the doc) before
+  the charge is binned onto pads and time bins. The warp then shows up the
+  physical way: as slightly changed charge-sharing between neighboring pads.
+  2. Pixels — not edited, regenerated: re-run the digitization over the same 250
+  frames from the same G4 libraries. A new digi file is born, warped and with
+  per-pixel truth IDs — the "v5.4-era negatives" that couldn't exist before.
+  3. Clustering — algorithm untouched, simply re-run on the new pixels.
+  4. The nudge box — the FIELD part is switched off (it must enter exactly once,
+  and it now enters upstream). One subtlety the doc spells out: the nudge box
+  actually contained two things, and only one moves. The r-φ field
+  (SMOD/SPHI/SCM) migrates into digitization; the rowdr part (knob A —
+  relabeling each row's radius to the measured real value) stays at export,
+  because it's a bookkeeping convention about what radius a pad row is called,
+  not a displacement of charge — there's nothing physical to inject.
+
+  Untouched entirely: the generator, the G4 collision libraries, the frame
+  composer, and the clustering algorithm.
+
+  And the acceptance chain afterward is where I come back in: labels won't be
+  bit-exact this time (charge crossing pad borders regroups a few pixels), the
+  cluster-level battery gets re-verified with a small SMOD re-solve allowed, and
+  my two differential predictions — nf_digipix global 1.57 moving toward 1,
+  local 0.90 staying put — are the sharp test that the field landed in the right
+  stage exactly once.
+
+✻ Brewed for 35s
+
+❯ /model                                                                        
+  ⎿  Set model to Fable 5 and saved as your default for new sessions
+
+❯ /effort max                                                                   
+  ⎿  Set effort level to max (this session only): Maximum capability with
+     deepest reasoning. May use excessive tokens resulting in long response
+     times or overthinking. Use sparingly for the hardest tasks.
+
+❯ I must confirm firmly with you: the v54 introduced the "field", which is a    
+  discrepancy between the ideal .gdml geometry and the measured real geometry   
+  from the real data's boundaries - yes or no?                                  
+
+● Yes in essence — but two words in your sentence need tightening before you 
+  carve it in stone, because as phrased it slightly overclaims what we proved.
+
+  What's exactly right: v5.4 introduced a measured, empirical correction for the
+  discrepancy between where the sim (built on the ideal .gdml geometry) puts
+  reconstructed positions and where run 79507's real data actually puts them.
+  All of its amplitudes are anchored to real-data measurements, none are
+  invented. For one component it's even literally geometry-vs-geometry: knob A
+  (rowdr) is the per-layer difference between real reconstructed row radii and
+  GDML nominal, measured directly (real_row_radii_v54.txt, +1.2 mm at layer 7
+  tapering outward).
+
+  Correction 1 — "geometry" should be "effective geometry" (position residuals),
+  because the physical origin is deliberately unproven. A reconstructed
+  position can be displaced either because the hardware isn't where GDML says
+  (mechanical misalignment) or because the drifting charge was deflected on its
+  way down (space charge, E×B, drift-field non-uniformity) with the hardware
+  perfectly placed. Both produce identical signatures in our observables, and we
+  never separated them. What the pipeline measured is narrower: the CDB static
+  distortion map is excluded as the mechanism (real clusters are uncorrected and
+  row-locked, and the map's cm-scale bulk doesn't match anything observed);
+  everything else was left mechanism-agnostic. The field models the total
+  residual, whatever its mix of causes.
+
+  Correction 2 — "from the real data's boundaries" misnames the anchors. Only
+  one component is boundary-measured: the SCM term, sized to the
+  central-membrane jump (0.480 ± 0.13 cm, a genuine boundary discontinuity). The
+  rest are anchored elsewhere: rowdr to the row radii themselves, SMOD to the
+  stiff-track circle-RMS meter (the 1.33 → 1.00 fix), the k = 2,3 harmonics to
+  the d0 distribution and its cosine isotropy (with k = 1 excluded by a
+  real-data null). So the inputs are row radii + track-fit meters + one boundary
+  jump — not boundaries generally.
+
+  The relay-ready version, firm and defensible: "v5.4 introduced an empirical 
+  position-residual field — the measured discrepancy between reconstructed 
+  positions under the ideal GDML geometry and those observed in run 79507 — 
+  anchored to the measured row radii, the stiff-track circle-fit width, the d0 
+  distribution, and the central-membrane jump. Its physical origin (mechanical 
+  misalignment vs drift distortion) is left open by design; only the CDB static 
+  map is excluded."
+
+✻ Sautéed for 1m 3s
+
+❯ that's enough. Then you're moving this correction from downstream to upper    
+  stream - why not directly move it to .gdml, say decode the ideal .gdml, add   
+  the "field" in it then recode it back for Geant4 - once and for all?          
+
+● Because in a TPC, the geometry you'd be warping doesn't actually participate
+  in the measurement — and baking the correction into the baseline would destroy
+  the very reference that makes it measurable. Four reasons, in increasing
+  order of importance:
+
+  1. There's no object in the GDML to warp. The field is a per-(layer, sector,
+  side) displacement of readout coordinates. But pads and rows don't exist in
+  the GDML as geometry — the sensitive volume is one featureless gas cylinder,
+  and the pad segmentation lives entirely in the readout/digitization software.
+  You could move internal boundaries of uniform gas all day and Geant4 would
+  deposit exactly the same charge in exactly the same places, because deposits
+  depend on the gas, not on imaginary lines inside it. "Where the pads are"
+  first becomes a meaningful concept at digitization — which is precisely why
+  that's the stage that must carry the warp.
+
+  2. Warping the GDML moves the wrong object: the world instead of the camera.
+  Real particles fly clean circles through the real TPC — we proved the
+  trajectory is a circle to 20 µm, and that's true in reality too, misalignment
+  or not. Neither candidate mechanism touches the particle: mechanical
+  misalignment means the pads report shifted coordinates; drift distortion means
+  the signal electrons get deflected on their way to the pads. Both live
+  between trajectory and pixels — in the camera, not the streets. Editing the
+  GDML would warp the streets: truth trajectories would come from a distorted
+  world, so truth would stop being truth. Every truth-anchored result — the
+  circle test, the MS measurement, the ML labels' meaning of "where the particle
+  really was" — would be silently corrupted. The current factorization (truth =
+  ideal physics, response = everything the detector does to it) is exactly what
+  a distortion-aware analysis or model needs preserved.
+
+  3. The practical cost explodes. The GDML is the input to the most expensive
+  sealed stage: the G4 collision libraries and every content/shape tune from
+  v3.6 through v5.3 were validated on it. Change the geometry and all of that
+  reopens. The digitization injection was designed to reuse the G4 libraries
+  unchanged — that's the cheap half of the rerun, and it's only possible because
+  the geometry stays put.
+
+  4. "Once and for all" is exactly backwards — the field is a perishable, 
+  run-specific number. Part of it is plausibly space charge, which varies with
+  beam conditions; all of it is provisional on run 79507's uncorrected
+  production state (if the collaboration reprocesses with corrections on, the
+  field must be re-sized against the new files). Such a quantity belongs in a
+  versioned, swappable, clearly-labeled stage — not fossilized into the one
+  component that's supposed to be the stable, collaboration-shared ideal
+  reference. And note the self-defeating loop: the field is defined as "measured
+  real minus ideal." Bake it into the ideal, and the next measurement has no
+  anchor — you'd be measuring residuals against your own previous correction,
+  forever.
+
+  So digitization isn't the compromise location — it's the physically correct
+  one: the single stage that sits downstream of the particle physics (protecting
+  truth), upstream of pad binning (letting the warp express itself as
+  charge-sharing, like reality), covers both candidate mechanisms without
+  choosing between them, and keeps the correction versioned beside a pristine
+  reference. The GDML's job is to stay ideal so that "the discrepancy" remains a
+  well-defined, re-measurable thing.
+
+✻ Sautéed for 1m 13s
+
+❯ OK. Wrap up all the talking conclusions into                                  
+  island_post/digi_field_request.md.                                            
+● Write(digi_field_request.md)
+  ⎿  Added 104 lines, removed 24 lines
+       4  Follow-up to `distortion_remodel_request.md` (closed). That loo
+          p put the measured field
+       5  into CLUSTER positions (v5.4c, cluster-export overlay on the se
+          aled v5.3 digi). This
+       6  request asks for the same field one stage earlier, so the PIXEL
+           level carries it too.
+       7 +Sections marked (discussion) wrap up the design conclusions agr
+         +eed with the user on                                           
+       8 +2026-08-13 so the full rationale travels with the request.     
+       9  
+      10 +## What the "field" is — agreed definition (discussion)        
+      11 +                                                               
+      12 +"v5.4 introduced an empirical position-residual field: the meas
+         +ured discrepancy                                               
+      13 +between reconstructed positions under the ideal GDML geometry a
+         +nd those observed in                                           
+      14 +run 79507 — anchored to the measured row radii, the stiff-track
+         + circle-fit width, the                                         
+      15 +d0 distribution, and the central-membrane jump. Its physical or
+         +igin (mechanical                                               
+      16 +misalignment vs drift distortion) is left open by design; only 
+         +the CDB static map is                                          
+      17 +excluded (real clusters uncorrected + row-locked; the map's cm-
+         +scale bulk matches                                             
+      18 +nothing observed)."                                            
+      19 +                                                               
+      20 +Anchor-by-component:                                           
+      21 +- rowdr (knob A): per-layer real reco row radius minus GDML nom
+         +inal, measured                                                 
+      22 +  directly (`real_row_radii_v54.txt`) — the one literally geome
+         +try-vs-geometry part.                                          
+      23 +- SMOD 0.0426 cm per-(layer,sector,side) hashed r-phi scatter: 
+         +sized to the                                                   
+      24 +  stiff-track circle-RMS meter (data/MC 1.33 -> 1.00).         
+      25 +- SPHI k=2,3 side-shared harmonics (amp 2.49): sized to the d0 
+         +RMS/median and its                                             
+      26 +  cosine isotropy; k=1 excluded BY a real-data null.           
+      27 +- SCM 0.26 cm per-side membrane term: sized to the measured CM 
+         +jump 0.480 +- 0.13 cm                                          
+      28 +  (the only boundary-anchored component).                      
+      29 +                                                               
+      30  ## Why (measured motivation)
+      31  
+      32  `ms_nofinder.C::nf_digipix` (ledger `ms_nofinder_v54c.txt`, fig
+          ure
      ...
-      968    lg->AddEntry(hsW, Form("sim, whole track: med %.0f #mum", wM
-           ed[1]), "l");
-      969    lg->Draw();
-      970    TLatex tx; tx.SetNDC(); tx.SetTextSize(0.028);
-      971 -  tx.DrawLatex(0.40, 0.57, Form("N tracks: real %ld, sim %ld",
-          - (long) Pc[0][iL4].size(), (long) Pc[1][iL4].size()));        
-      972 -  tx.DrawLatex(0.40, 0.52, "same fitter, same bar; piece RMS =
-          - #sqrt{#Sigma#chi^{2}/#Sigma(n#minus3)}");                    
-      973 -  tx.DrawLatex(0.40, 0.47, Form("data/MC: whole %.2f #rightarr
-          -ow 4-layer pieces %.2f",                                      
-      971 +  tx.DrawLatex(0.13, 0.57, Form("N tracks: real %ld, sim %ld",
-          + (long) Pc[0][iL4].size(), (long) Pc[1][iL4].size()));        
-      972 +  tx.DrawLatex(0.13, 0.52, "same fitter, same bar; piece RMS =
-          + #sqrt{#Sigma#chi^{2}/#Sigma(n#minus3)}");                    
-      973 +  tx.DrawLatex(0.13, 0.47, Form("data/MC: whole %.2f #rightarr
-          +ow 4-layer pieces %.2f",                                      
-      974                                  wMed[1] > 0 ? wMed[0] / wMed[1
-           ] : 0,
-      975                                  sMed[iL4] > 0 ? rMed[iL4] / sM
-           ed[iL4] : 0));
-      976    cv->cd(2);
+       42    Field-blind response meter: raw charge clouds agree to ~10%.
+       43  
+       44  Wanted: field on BOTH sides of the global panel, and field-rea
+           listic sim pixels for
+       23 -any future pixel-level training. The overlay route is closed i
+          -n principle: pixels are                                       
+       24 -integer (phibin, tbin) grid objects, and the real field displa
+          -ces drifting charge                                           
+       25 -BEFORE pad binning - it manifests as changed charge sharing be
+          -tween neighboring pads,                                       
+       26 -not as movable coordinates. Faithful = inject in transport/dig
+          -itization.                                                    
+       45 +any future pixel-level training.                              
+       46  
+       47 +## Pipeline-stage map — what changes where (discussion)       
+       48 +                                                              
+       49 +NOW (v5.4c):                                                  
+       50 +  charge from G4 -> [digitization: drift + diffusion + pad/tbi
+          +n binning] -> pixels(v53)                                     
+       51 +                 -> clustering -> [export nudge: rowdr + FIELD
+          + on cluster xy] -> clusters(v54c)                             
+       52 +                                                              
+       53 +REQUESTED:                                                    
+       54 +  charge from G4 -> [digitization + FIELD displaces charge BEF
+          +ORE binning] -> pixels(new)                                   
+       55 +                 -> clustering -> [export nudge: rowdr only, F
+          +IELD OFF] -> clusters(new)                                    
+       56 +                                                              
+       57 +Per stage: digitization gets the one real code change (displac
+          +e each transported                                            
+       58 +electron's arrival point by the field before pad/tbin binning,
+          + so the warp expresses                                        
+       59 +itself as changed charge sharing between neighboring pads — as
+          + in reality); pixels are                                      
+       60 +regenerated, not edited; clustering code is untouched, just re
+          +-run; the export keeps                                        
+       61 +rowdr (a lookup convention about what radius a row is called —
+          + nothing physical to                                          
+       62 +inject) and switches the field components OFF so the field ent
+          +ers exactly once.                                             
+       63 +Untouched entirely: generator, G4 collision libraries, frame c
+          +omposer, clustering                                           
+       64 +algorithm.                                                    
+       65 +                                                              
+       66  ## The ask
+       67  
+       68  1. Apply the v5.4c field model as an r-phi displacement of the
+            transported charge
+       31 -   (electron arrival positions) BEFORE pad/tbin quantization, 
+          -in the digitization                                           
+       32 -   stage. Same model, same measured parameters as the v5.4c cl
+          -uster overlay:                                                
+       33 -   islandize91 field arg `"0:0|0|0.0426|0|0|2.49|0.26"` semant
+          -ics                                                           
+       34 -   (SMOD 0.0426 cm per-(layer,sector,side) hashed scatter; sid
+          -e-SHARED SPHI k=2,3                                           
+       35 -   harmonics, amplitude 2.49; per-side SCM 0.26 cm membrane te
+          -rm).                                                          
+       36 -2. Re-digitize the 250-frame pp production from the existing G
+          -4 libraries                                                   
+       37 -   (G4/generator untouched), then re-export island91/prodclus/
+          -hit69 with the                                                
+       38 -   islandize91 field arg OFF - the field must enter exactly on
+          -ce.                                                           
+       39 -3. NOT requested: rowdr (knob A). The row-radius taper is a lo
+          -okup convention                                               
+       40 -   (which radius a consumer assigns to a row), not a charge di
+          -splacement; it stays                                          
+       41 -   at export/reader level. (Noted for my own readers: pixel x,
+          -y should use the                                              
+       42 -   measured real row radii table where mm-level correctness ma
+          -tters.)                                                       
+       69 +   BEFORE pad/tbin quantization, in the digitization stage. Sa
+          +me model, same measured                                       
+       70 +   parameters as the v5.4c cluster overlay: islandize91 field 
+          +arg                                                           
+       71 +   `"0:0|0|0.0426|0|0|2.49|0.26"` semantics.                  
+       72 +2. Re-digitize the 250-frame pp production from the existing G
+          +4 libraries, then                                             
+       73 +   re-export island91/prodclus/hit69 with the islandize91 fiel
+          +d arg OFF.                                                    
+       74 +3. NOT requested: rowdr (knob A) — stays at export/reader leve
+          +l as a lookup                                                 
+       75 +   convention. (Noted for my own readers: pixel x,y should use
+          + the measured real row                                        
+       76 +   radii where mm-level correctness matters.)                 
+       77  
+       78 +## Why this stage and not elsewhere (discussion)              
+       79 +                                                              
+       80 +Why v5.4a/b/c never had a digi of their own: the overlay lives
+          + DOWNSTREAM of pixels                                         
+       81 +(it nudges cluster positions at export), so the pixel stage of
+          + v5.4c IS the sealed                                          
+       82 +v5.3 digi, byte-identical — a "digi_v54c" made by overlay is i
+          +mpossible in principle,                                       
+       83 +because pixels are integer (phibin, tbin) grid objects with no
+          + position between pads.                                       
+       84 +Real distortion acts on the drifting charge before it lands; f
+          +aithful modeling must                                         
+       85 +therefore act inside digitization.                            
+       86 +                                                              
+       87 +Why not bake the field into the GDML ("decode, add, recode — o
+          +nce and for all"):                                            
+       88 +1. No object to warp: pads/rows do not exist in the GDML — the
+          + sensitive volume is                                          
+       89 +   one featureless gas cylinder and the pad segmentation lives
+          + in readout software.                                         
+       90 +   Moving imaginary boundaries inside uniform gas changes no d
+          +eposit.                                                       
+       91 +2. Wrong object: neither candidate mechanism touches the parti
+          +cle — misaligned pads                                         
+       92 +   report shifted coordinates, deflected drift electrons land 
+          +shifted; both live                                            
+       93 +   between trajectory and pixels. A GDML warp would distort TR
+          +UTH itself, corrupting                                        
+       94 +   every truth-anchored result (circle test, MS measurement, M
+          +L label semantics).                                           
+       95 +3. Cost: the GDML feeds the sealed G4 libraries and every cont
+          +ent/shape tune since                                          
+       96 +   v3.6; changing it reopens all of that. Digitization injecti
+          +on reuses the G4                                              
+       97 +   libraries unchanged.                                       
+       98 +4. "Once and for all" is backwards: the field is run-79507-spe
+          +cific and provisional                                         
+       99 +   (space charge varies with conditions; a corrected official 
+          +reprocessing would                                            
+      100 +   re-size it). It belongs in a versioned, swappable stage. An
+          +d it is DEFINED as                                            
+      101 +   measured-real minus ideal: bake it into the ideal and the n
+          +ext measurement has no                                        
+      102 +   reference left.                                            
+      103 +                                                              
+      104  ## Expected acceptance consequences (plan for these, they are 
+           not failures)
+      105  
+       46 -- Labels will NOT be bit-exact vs v5.3/v5.4c: displacing charg
+          -e across pad                                                  
+       47 -  boundaries changes cluster membership/fragmentation at the e
+          -dges. Quantify the                                            
+       48 -  label agreement and class-balance drift instead of asserting
+          - invariance.                                                  
+       49 -- Cluster-level meters must be RE-VERIFIED against the v5.4c m
+          -atched set (stiff                                             
+       50 -  circle-RMS ratio, d0 RMS/median + cosine null, cmcheck CM ju
+          -mp + crossers,                                                
+       51 -  split-rate). The effective cluster-level smear of an injecte
+          -d field may come out                                          
+       52 -  slightly below the overlay's (quantization + centroiding abs
+          -orb part of the                                               
+       53 -  displacement) -> a small SMOD re-solve against the stiff met
+          -er is plausible.                                              
+      106 +- Labels will NOT be bit-exact vs v5.3/v5.4c: charge crossing 
+          +pad boundaries changes                                        
+      107 +  cluster membership/fragmentation. Quantify label agreement +
+          + class-balance drift.                                         
+      108 +- Cluster-level meters re-verified against the v5.4c matched s
+          +et (stiff circle-RMS                                          
+      109 +  ratio, d0 RMS/median + cosine null, cmcheck CM jump + crosse
+          +rs, split-rate). The                                          
+      110 +  effective cluster-level smear of an injected field may land 
+          +slightly below the                                            
+      111 +  overlay's (quantization + centroiding absorb part of the dis
+          +placement) -> a small                                         
+      112 +  SMOD re-solve against the stiff meter is plausible.         
+      113 +- The low-pT cluster RMS ratio (med05 family) will REMAIN ~0.8
+          + — the response                                               
+      114 +  (charge-cloud width) is deliberately untouched by this reque
+          +st. Do not read that                                          
+      115 +  as the injection failing: v5.3's apparent 0.94 there was two
+          + errors canceling                                             
+      116 +  (missing field vs too-wide clouds; sqrt(733^2+426^2)=848 ~ t
+          +he 842 now measured).                                         
+      117 +  The response fix is a separate, still-open axis (sim base ~7
+          +35 vs real ~564 um at                                         
+      118 +  0.5 GeV; pixel-level local meter says clouds ~10% wide).    
+      119  - ML datasets derived from cluster labels regenerate on the ne
+           w production.
+      120  
+      121  ## Differential predictions (my acceptance meters, ready to ru
+           n)
+     ...
+      125  - nf_digipix LOCAL: 0.90 stays put (local fits reject the smoo
+           th field; only the
+      126    granular SMOD share, ~400 um in quadrature on mm clouds ~ +4
+           %, may appear).
+      127  - Cluster-level battery: reproduces v5.4c values within errors
+            after any re-solve.
+      128 +A pass on all three = the field landed in the right stage, exa
+          +ctly once.                                                    
+      129  
+      130 +## Version scorecard for context (discussion; why the v5.4 dir
+          +ection stands)                                                
+      131 +                                                              
+      132 +| meter | v5.3 | v5.4c |                                      
+      133 +|---|---|---|                                                 
+      134 +| stiff cluster-RMS data/MC | 1.31-1.33 | 0.99 |              
+      135 +| d0 (2.5 cm off-origin) | absent | matched (2.37 vs 2.51) |  
+      136 +| CM jump | absent | real-sized (0.536 vs 0.480) |            
+      137 +| half-arc curvature width | sim < real | still conservative (
+          +0.276 vs 0.402) |                                             
+      138 +| low-pT cluster RMS | 0.94 (cancellation) | 0.82 (honest, res
+          +ponse-owned) |                                                
+      139 +| pixel-level local response | 0.90 | 0.90 (same pixels) |    
+      140 +                                                              
+      141 +The matched local fits graded the shared pixel stage, not the 
+          +overlay; the response                                         
+      142 +flaw they surfaced predates v5.4 and is out of this request's 
+          +scope.                                                        
+      143 +                                                              
+      144  ## Cost/benefit framing for the decision
+      145  
+      146  Local re-digitization of 250 frames + exports + acceptance bat
+           tery (order hours of
 
-  Read 3 files, ran 1 shell command (ctrl+o to expand)
+● Done — island_post/digi_field_request.md now carries the full discussion,
+  marked (discussion) so the pipeline agent can tell agreed rationale from the
+  ask itself. Added on top of the original request:
 
-● Update(ms_nofinder.C)
-  ⎿  Added 4 lines, removed 3 lines
-      968    lg->AddEntry(hsW, Form("sim, whole track: med %.0f #mum", wM
-           ed[1]), "l");
-      969    lg->Draw();
-      970    TLatex tx; tx.SetNDC(); tx.SetTextSize(0.028);
-      971 -  tx.DrawLatex(0.13, 0.57, Form("N tracks: real %ld, sim %ld",
-          - (long) Pc[0][iL4].size(), (long) Pc[1][iL4].size()));        
-      972 -  tx.DrawLatex(0.13, 0.52, "same fitter, same bar; piece RMS =
-          - #sqrt{#Sigma#chi^{2}/#Sigma(n#minus3)}");                    
-      973 -  tx.DrawLatex(0.13, 0.47, Form("data/MC: whole %.2f #rightarr
-          -ow 4-layer pieces %.2f",                                      
-      971 +  tx.DrawLatex(0.62, 0.83, Form("N: real %ld, sim %ld", (long)
-          + Pc[0][iL4].size(), (long) Pc[1][iL4].size()));               
-      972 +  tx.DrawLatex(0.62, 0.78, "same fitter, same bar");          
-      973 +  tx.DrawLatex(0.62, 0.73, "piece RMS = #sqrt{#Sigma#chi^{2}/#
-          +Sigma(n#minus3)}");                                           
-      974 +  tx.DrawLatex(0.62, 0.68, Form("data/MC: whole %.2f, pieces %
-          +.2f",                                                         
-      975                                  wMed[1] > 0 ? wMed[0] / wMed[1
-           ] : 0,
-      976                                  sMed[iL4] > 0 ? rMed[iL4] / sM
-           ed[iL4] : 0));
-      977    cv->cd(2);
+  - The agreed field definition — the relay-ready sentence (empirical
+  position-residual field, mechanism-agnostic, CDB map excluded) plus the
+  anchor-by-component list showing which measurement sized each of
+  rowdr/SMOD/SPHI/SCM.
+  - The pipeline-stage map — the before/after diagram with the per-stage change
+  list (digitization gets the one code change; pixels regenerated not edited;
+  rowdr stays at export as a lookup convention; field components OFF there).
+  - "Why this stage and not elsewhere" — why no digi_v54c can exist by overlay
+  (grid argument), and the four reasons against baking the field into the GDML
+  (no pad objects to warp in uniform gas, truth corruption, sealed-G4-library
+  cost, and the field being run-specific — plus the self-defeating loop of
+  destroying the measurement reference).
+  - A guarded acceptance note — the med05-family low-pT ratio will stay ~0.8
+  after this production because response is deliberately out of scope; the
+  two-errors-canceling arithmetic is included so nobody reads that meter as the
+  injection failing.
+  - The version scorecard — the v5.3 vs v5.4c table with the closing line that
+  the matched local fits graded the shared pixel stage, not the overlay.
 
-  Read 1 file, ran 2 shell commands, recalled 1 memory, wrote 2 memories (ctrl+o to expand)
+  The differential predictions (global 1.57 → toward 1, local 0.90 fixed,
+  cluster battery reproduced) remain the pass/fail contract at the end. Ready to
+  relay as-is.
 
-● The supervisor's test is implemented and run — his mechanism is confirmed, but
-  with a twist he didn't predict. Two new figures:
-  sim_validation_plots/ms_nofinder_hits_pieces_v54c.png and
-  ms_nofinder_clusters_pieces_v54c.png (functions nf_hits_pieces /
-  nf_clusters_pieces in island_post/ms_nofinder.C, numbers appended to the v54c
-  ledger). Same tracks, same bar, same Kasa+GN fitter — only the fit scope
-  changes: fixed windows of 4 consecutive layers, per-track RMS = √(Σχ²/Σ(n−3))
-  pooled over pieces (dof-corrected, since a 4-point piece has 1 dof).
+✻ Churned for 1m 21s
 
-  Cluster level (the level his sentence names): real improves exactly as he 
-  predicted, sim doesn't move — but agreement overshoots past 1. Real drops 780
-  → 484 µm going whole-track → 4-layer pieces, while sim v5.4c stays flat at 893
-  → 919 µm. So data/MC goes 0.87 → 0.53. Reading: real on-track clusters carry
-  ~620 µm (in quadrature) of long-wavelength distortion that local fits absorb —
-  his point, confirmed. But the whole-track 0.87 was accidental compensation:
-  once distortions are removed, sim clusters are locally ~2× fatter than real
-  ones (919 vs 484 µm). The flat sim scan curve (940 → 919 µm from L=48 down to
-  L=4) says sim residuals are almost pure local scatter with nothing
-  long-wavelength to remove — as expected for distortion-free sim. This lands
-  directly on the amplitude-tuning work: the tuning target should be sim's local
-  scatter vs 484 µm, not the whole-track ratio.
+※ recap: Circle-fit and multiple-scattering comparisons are done through the matched pixel level on v5.4c, and digi_field_request.md now contains all agreed conclusions. Next: you relay that doc to the pipeline agent; I verify their new production afterward.
 
-  Hit level (the figure he commented on): the gap widens, and that's expected.
-  Real drops 2358 → 1714 µm — i.e. ~1.7 mm (quadrature) of the pixel-level
-  residual was distortion sag, and the remaining 1714 µm is the irreducible
-  floor: diffusion + pad/tbin quantization, which is what the original caption
-  claimed. Sim g4hits drop 21 → 2.3 µm (whole-track sim is 20.9 here, not 30.7,
-  because row-alignment restricts sim to the pad-row region r ≈ 31.5–75.4 cm).
-  Convergence was never possible at this level — g4hits carry no digitization at
-  all, so short fits push sim to its geometric floor while real stops at the
-  granularity floor. One technical note for reproduction: ntp_g4hit has no
-  usable layer index (glayer=99), so sim hits are row-assigned by radius against
-  the 48 pad-row radii measured from real ntp_hit.
-
-  The median-vs-L scan panels are the cleanest one-look answer to his "would
-  this get better" — real rises monotonically with piece length at both levels
-  (the long-wavelength signature), sim cluster stays flat.
-
-  One caveat before quoting sim's 919 µm as pure cluster resolution: the sim
-  piece distribution has a shoulder at 1.5–2 mm, which could be the composer
-  truth-conflation issue (merged gtrackID groups putting two tracks in one
-  4-layer window inflates piece RMS). It affects the published whole-track 893
-  equally, but worth re-checking against a conflation-fixed truth before tuning
-  amplitude to these numbers.
-
-✻ Churned for 22m 45s
-
-※ recap: Ran the supervisor's 4-layer piece-fit test at hit and cluster level; both figures and ledger are done. Cluster data/MC went 0.87 to 0.53, so sim clusters are locally about 2x fatter. Next: relay results to your supervisor. (disable recaps in /config)
+❯ /rename TPC-ML-App 
+  ⎿  Session renamed to: TPC-ML-App

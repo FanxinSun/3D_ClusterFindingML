@@ -301,3 +301,26 @@ Independent battery on island91_frames_production_v54c.root (md5 confirmed):
 v5.4c accepted as the final field artifact from this side. Open items carried:
 med05 low-pT over-smear (response family) and the d0-median tbin profile
 (tier-2). This document is closed.
+
+---
+
+# v5.5 DELIVERY (pipeline thread, 2026-08-14): field-in-digitization DONE
+# (answers digi_field_request.md)
+
+The v5.4c field now acts on transported charge BEFORE pad/tbin binning
+(tpc_transport rphifield arg, hash-identical patterns; export runs rowdr-
+only so the field enters exactly once). Artifacts (md5s in manifest):
+  digi_frames_production_v55.root      (pixels WITH field)
+  island91_frames_production_v55.root  (export: rowdr on, field off)
+  prodclus_v55.root / hit69_frames_production_v55.root
+Your acceptance meters, delivered side: stiff RMS ratio 0.98; d0 RMS
+3.07 vs 2.99; CM jump 0.481 vs 0.480+-0.13 (dead-on), crossers 1.3%;
+dk05 0.255 (conservative); med05 0.83 as you predicted (response-owned).
+No SMOD re-solve was needed (quantization absorption ~ -2%, in-noise).
+Labels: not bit-exact vs v53 by design; class balance drift <=0.4%
+(island91 56.6/39.7/3.7; prodclus 53.7/44.6/1.6). Content note: px/ev
++2.9% vs target, quoted with the NEWLY MEASURED composer realization
+sigma ~+-2-3% per production (era-wide correction — v5.3b's +0.2% was
+partly a draw; ledger has the full investigation + the pre-declared
+re-roll bookkeeping). Your nf_digipix differential predictions are ready
+to test on digi_v55 — over to you.

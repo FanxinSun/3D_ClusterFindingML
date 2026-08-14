@@ -209,7 +209,8 @@ void zigzag(int L, double phi, double sig, std::vector<int> &pads, std::vector<d
 using namespace TDG;
 
 // ---------------- STAGE A: transport ----------------
-void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud = -1.0, double cloud_k = 0.0)
+void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud = -1.0, double cloud_k = 0.0,
+                   const char *rphifield = "")
 {
   CLOUD_EFF = (cloud > 0) ? cloud : CFG::CLOUD;
   loadGeo();
@@ -219,6 +220,90 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
   }
   buildLUT();
   TRandom3 rng(20260708);
+
+  // --- v5.5 field-in-digitization (digi_field_request.md, 2026-08-13): the
+  // v5.4c empirical position-residual field applied to each transported
+  // electron's arrival azimuth BEFORE pad/tbin binning, so the warp becomes
+  // real charge sharing. Arg string = islandize91 semantics
+  // "znodes|GRS|SMOD|SREG|SSEC|SPHI|SCM" (rowdr stays a reader convention,
+  // NOT injected here). Hash seeds/patterns BIT-IDENTICAL to islandize91's
+  // so this is the same field, one stage earlier. Deterministic lookups —
+  // consumes NO rng draws: the transport random stream is identical to
+  // v5.3's, so any downstream difference is purely field-driven.
+  // Default "" = field off = byte-identical behavior.
+  std::vector<double> FZN, FZA;
+  double FGRS = 0., FSMOD = 0., FSREG = 0., FSSEC = 0., FSPHI = 0., FSCM = 0.;
+  if (rphifield && rphifield[0])
+  {
+    TString fs(rphifield);
+    auto *two = fs.Tokenize("|");
+    if (two->GetEntries() > 1) FGRS = atof(two->At(1)->GetName());
+    if (two->GetEntries() > 2) FSMOD = atof(two->At(2)->GetName());
+    if (two->GetEntries() > 3) FSREG = atof(two->At(3)->GetName());
+    if (two->GetEntries() > 4) FSSEC = atof(two->At(4)->GetName());
+    if (two->GetEntries() > 5) FSPHI = atof(two->At(5)->GetName());
+    if (two->GetEntries() > 6) FSCM = atof(two->At(6)->GetName());
+    auto *nod = TString(two->At(0)->GetName()).Tokenize(",");
+    for (int i = 0; i < nod->GetEntries(); ++i)
+    {
+      double zz, aa;
+      if (sscanf(nod->At(i)->GetName(), "%lf:%lf", &zz, &aa) == 2)
+      {
+        FZN.push_back(zz);
+        FZA.push_back(aa);
+      }
+    }
+    printf("tpc_transport: rphi field IN-DIGI: GRS %.4f SMOD %.4f SREG %.4f SSEC %.4f SPHI %.4f SCM %.4f\n",
+           FGRS, FSMOD, FSREG, FSSEC, FSPHI, FSCM);
+  }
+  const bool FIELD_ON = (rphifield && rphifield[0]);
+  double UMOD[55][12][2], UREG[3][12][2], USEC[12][2], PPHI[2], PCM[2][2];
+  if (FIELD_ON)
+  {
+    for (int L = 0; L < 55; ++L)
+      for (int sct = 0; sct < 12; ++sct)
+        for (int sd2 = 0; sd2 < 2; ++sd2)
+        {
+          TRandom3 hg(1000000U + L * 10000U + sct * 100U + sd2);
+          UMOD[L][sct][sd2] = hg.Gaus(0., 1.);
+        }
+    for (int rg = 0; rg < 3; ++rg)
+      for (int sct = 0; sct < 12; ++sct)
+        for (int sd2 = 0; sd2 < 2; ++sd2)
+        {
+          TRandom3 hg(7000000U + rg * 10000U + sct * 100U + sd2);
+          UREG[rg][sct][sd2] = hg.Gaus(0., 1.);
+        }
+    for (int sct = 0; sct < 12; ++sct)
+      for (int sd2 = 0; sd2 < 2; ++sd2)
+      {
+        TRandom3 hg(4000000U + sct * 100U + sd2);
+        USEC[sct][sd2] = hg.Gaus(0., 1.);
+      }
+    {
+      TRandom3 hg(9000000U);
+      PPHI[0] = hg.Uniform(0., 2 * M_PI);
+      PPHI[1] = hg.Uniform(0., 2 * M_PI);
+    }
+    for (int sd2 = 0; sd2 < 2; ++sd2)
+    {
+      TRandom3 hg(9500000U + sd2);
+      PCM[0][sd2] = hg.Uniform(0., 2 * M_PI);
+      PCM[1][sd2] = hg.Uniform(0., 2 * M_PI);
+    }
+  }
+  auto fieldA = [&](double zz) -> double {
+    if (FZN.empty()) return 0.;
+    if (zz <= FZN.front()) return FZA.front();
+    if (zz >= FZN.back()) return FZA.back();
+    for (size_t i = 1; i < FZN.size(); ++i)
+      if (zz < FZN[i])
+      {
+        double f = (zz - FZN[i - 1]) / (FZN[i] - FZN[i - 1]);
+        return FZA[i - 1] + f * (FZA[i] - FZA[i - 1]);
+      }
+    return FZA.back();
+  };
 
   TFile *fi = TFile::Open(in);
   TTree *t = (TTree *) fi->Get("ntp_g4hit");
@@ -329,6 +414,23 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
         continue;
       }
       double phi = std::atan2(y, x);
+      if (FIELD_ON)
+      {
+        double phw = phi < 0 ? phi + 2 * M_PI : phi;
+        int sct = std::min(11, std::max(0, (int) (phw / (M_PI / 6.))));
+        int sd2 = z >= 0 ? 1 : 0;
+        int rg = L < 23 ? 0 : (L < 39 ? 1 : 2);
+        double rr = GEO[L].radius;
+        double d = FSMOD * UMOD[L][sct][sd2] + FSREG * UREG[rg][sct][sd2] + FSSEC * USEC[sct][sd2];
+        if (FSPHI > 0)
+          d += FSPHI * (std::cos(2 * phw + PPHI[0]) + std::cos(3 * phw + PPHI[1]));
+        if (FSCM > 0)
+          d += FSCM * (std::cos(2 * phw + PCM[0][sd2]) + std::cos(3 * phw + PCM[1][sd2]));
+        if (!FZN.empty()) d += fieldA(z) * (1. + FGRS * (rr - 49.));
+        phi += d / rr;
+        if (phi > M_PI) phi -= 2 * M_PI;
+        if (phi < -M_PI) phi += 2 * M_PI;
+      }
       if (inGap(phi, region(L)))
       {
         continue;
