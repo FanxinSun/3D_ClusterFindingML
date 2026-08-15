@@ -93,7 +93,14 @@ P5/field_probe_sa
 P5/geo_audit_sa
 P5/region_audit_sa
 P5/standalone_tpc
+P5/p5_display
 P5/*.txt
+
+# event-display artefacts (rebuild: P5/build_display.sh; the per-event range
+# caches rebuild themselves on first use)
+.p5disp/
+**/.p5disp/
+g4tsg_offscreen*.png
 
 external_data/**/*.csv
 external_data/**/*.tex

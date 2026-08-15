@@ -1,0 +1,64 @@
+# vis_p5.mac — viewer setup for p5_display (P5 v5.5 batch-output event display).
+#
+# Executed automatically by p5_display after the geometry is built and the first
+# frame is loaded. The driver comes from $P5_VIS_DRIVER (set by p5_display.sh);
+# override with `p5_display.sh --vis TSG` or `--vis OGL`.
+#
+# Driver-specific commands below are guarded: suppressAbortion keeps the macro
+# running when a driver does not implement one of them.
+
+/control/suppressAbortion 2
+/control/verbose 0
+/vis/verbose warnings
+
+/control/getEnv P5_VIS_DRIVER
+/control/getEnv P5_VIS_SIZE
+/vis/open {P5_VIS_DRIVER} {P5_VIS_SIZE}
+
+/vis/viewer/set/autoRefresh false
+
+# ---- scene -----------------------------------------------------------
+/vis/drawVolume
+/vis/scene/add/userAction
+/vis/scene/add/axes 0 0 0 20 cm auto false
+/vis/scene/add/eventID
+
+# ---- Geant4 tracking, for /run/beamOn inside the GUI -----------------
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByCharge
+/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts false
+/vis/scene/endOfEventAction accumulate
+
+# ---- style -----------------------------------------------------------
+# dark surface #1a1a19 — the surface the overlay palette was validated against
+/vis/viewer/set/background 0.102 0.102 0.098
+/vis/viewer/set/style wireframe
+/vis/viewer/set/auxiliaryEdge false
+/vis/viewer/set/lineSegmentsPerCircle 24
+/vis/viewer/set/hiddenMarker false
+/vis/viewer/set/globalLineWidthScale 1
+
+# the overlay can be a few hundred thousand markers — the OpenGL stored viewer
+# silently stops at 50k primitives unless this is raised
+/vis/ogl/set/displayListLimit 100000000
+
+# ---- default view ----------------------------------------------------
+# slightly off-axis so the r-phi structure and the z extent both read.
+/vis/viewer/set/viewpointThetaPhi 72 20
+/vis/viewer/set/upVector 0 1 0
+/vis/viewer/set/targetPoint 0 0 0 cm
+# framing is set by /p5/view, which derives the zoom from the live scene
+# extent — a fixed zoomTo would frame the TPC or the whole beam line depending
+# on which geometry preset happens to be visible
+/p5/view 3d
+
+/vis/viewer/set/autoRefresh true
+/vis/viewer/flush
+
+# Handy from the session prompt (or just use /p5/view 3d|rphi|rz|iso):
+#   /vis/viewer/set/viewpointThetaPhi 0 0     r-phi (beam into the screen)
+#   /vis/viewer/set/viewpointThetaPhi 90 0    r-z   (beam across the screen)
+#   /vis/viewer/zoomTo 8
+#   /vis/viewer/set/projection perspective 35 deg
+#   /vis/ogl/export p5_frame.png                (OGL)  save the current view
+#   /vis/tsg/export p5_frame.png                (TSG)  save the current view
