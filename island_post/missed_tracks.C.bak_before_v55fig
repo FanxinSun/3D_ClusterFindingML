@@ -633,17 +633,12 @@ void mt_cluscmp(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
   const char *sn[2] = {"real", "sim"};
   std::vector<double> nfound[2], rmsv[2], rv[2];
   long nin[2] = {0, 0}, ntot[2] = {0, 0}, nevC = 0;
-  TH1D *hn[2], *hr[2], *hR[2], *hT[2];
+  TH1D *hn[2], *hr[2];
   for (int s = 0; s < 2; ++s)
   {
     hn[s] = new TH1D(Form("hcn%d", s), ";track-class circles found / event;events (unit area)", 30, 0, 600);
     hr[s] = new TH1D(Form("hcr%d", s), ";per-track circle-fit RMS [mm];tracks (unit area)", 50, 0, 2.5);
-    hR[s] = new TH1D(Form("hcR%d", s), ";fitted radius [cm]  (p_{T} = 0.0042 R);circles / event / bin", 30, 45, 345);
-    hT[s] = new TH1D(Form("hcT%d", s), ";median drift-time bin of the circle;circles / event / bin", 40, 0, 1000);
   }
-  // per-track dump (v5.5 figure work): side, event, n, R, rms, medtb
-  FILE *fdump = fopen(Form("ms_cluscmp_%s_tracks.txt", ver), "w");
-  fprintf(fdump, "# side(0=real,1=sim) event ncl R_cm rms_cm medtb\n");
   for (int s = 0; s < 2; ++s)
   {
     for (auto &kv : ev[s])
@@ -660,13 +655,9 @@ void mt_cluscmp(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
         rmsv[s].push_back(T.F.rms * 10);
         rv[s].push_back(T.F.R);
         hr[s]->Fill(std::min(T.F.rms * 10, 2.49));
-        hR[s]->Fill(std::min(T.F.R, 344.9));
-        hT[s]->Fill(T.medtb);
-        fprintf(fdump, "%d %d %d %.2f %.4f %.1f\n", s, kv.first, (int) T.idx.size(), T.F.R, T.F.rms, T.medtb);
       }
     }
   }
-  fclose(fdump);
   auto med = [](std::vector<double> v) {
     if (v.empty()) return 0.;
     std::sort(v.begin(), v.end());
@@ -710,17 +701,9 @@ void mt_cluscmp(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
     lg->SetBorderSize(0);
     lg->AddEntry(h[0], p == 0 ? Form("real complete, med %.0f/ev", med(nfound[0]))
                               : Form("real, med %.0f #mum", med(rmsv[0]) * 1000), "l");
-    lg->AddEntry(h[1], p == 0 ? Form("sim %s, med %.0f/ev", ver, med(nfound[1]))
-                              : Form("sim %s, med %.0f #mum", ver, med(rmsv[1]) * 1000), "l");
+    lg->AddEntry(h[1], p == 0 ? Form("sim v5.4c, med %.0f/ev", med(nfound[1]))
+                              : Form("sim v5.4c, med %.0f #mum", med(rmsv[1]) * 1000), "l");
     lg->Draw();
-  }
-  {
-    // per-event normalized radius + drift-time spectra of found circles (report figure input)
-    double nR = nevC > 0 ? nevC : 1, nS = nsimev > 0 ? nsimev : 1;
-    hR[0]->Scale(1. / nR); hR[1]->Scale(1. / nS); hT[0]->Scale(1. / nR); hT[1]->Scale(1. / nS);
-    TFile fh(Form("ms_cluscmp_%s_hists.root", ver), "RECREATE");
-    for (int s = 0; s < 2; ++s) { hn[s]->Write(); hr[s]->Write(); hR[s]->Write(); hT[s]->Write(); }
-    fh.Close();
   }
   cv->SaveAs(Form("../sim_validation_plots/ms_cluscmp_%s.png", ver));
   printf("wrote ms_cluscmp_%s outputs\n", ver);

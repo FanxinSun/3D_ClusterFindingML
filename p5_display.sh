@@ -145,11 +145,15 @@ EOP
     echo "  (per-event counts appear here once this chunk has been indexed;"
     echo "   in-session: /p5/g4list 10)"
   fi
-  read -e -p "Library event index [0]: " EV
+  echo "  index 0..1999. A RANGE or LIST superimposes several collisions:"
+  echo "    0-9      ten collisions at once      2,860,1354   these three"
+  read -e -p "Library event index / range [0]: " EV
   ARGS+=(--g4chunk "$CH" --g4event "${EV:-0}")
   echo ""
-  echo "A single pp collision is sparse — for a dense picture use mode 1"
-  echo "(a production frame is ~200k pixels / 20k clusters of composed pile-up)."
+  echo "Note: every library collision is generated at the origin (gen_pp runs with"
+  echo "      vertex spread 0), so a range stacks them all on the same vertex. It is"
+  echo "      N collisions superimposed, NOT a production frame — mode 1 is that,"
+  echo "      with drift time, z spread and digitisation."
   read -e -p "G4 hit mark size in px [2.5]: " PS
   [ -n "$PS" ] && ARGS+=(--pixsize "$PS")
 else

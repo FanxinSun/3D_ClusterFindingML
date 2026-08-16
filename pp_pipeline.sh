@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # pp_pipeline.sh — ALL-IN-ONE v5.0 pipeline driver: gen_pp.cc -> prodclus.C
-# (species pivot 2026-07-22: real run 79507 is pp by scaler evidence;
-#  the pAu v1-v4.0 line is closed — this is the species-correct chain.)
+# (species pivot 2026-07-22: real run 79*** is pp by scaler evidence;)
 #
 #   stage gen      Pythia8 pp MB (inelastic incl. diffraction) -> HepMC2 ASCII
 #                  chunks + in-generator MBD proxy -> island_post/pp_mbd.txt

@@ -117,21 +117,20 @@ const G4Colour AXIS(0.220, 0.220, 0.208);    // #383835  geometry chrome
 const G4Colour INK(1.000, 1.000, 1.000);     // #ffffff  primary ink (legend text)
 const G4Colour SURFACE(0.102, 0.102, 0.098); // #1a1a19  viewer background
 
-// blue sequential ramp for magnitude, ordered dark -> light because the surface
-// is dark (step 600 is the documented near-surface floor that still clears 2:1).
-const int NRAMP = 11;
+// Blue sequential ramp for magnitude, dark -> light because the surface is dark.
+// It stops at step 400 (#3987e5) ON PURPOSE: the pixel layer is the BACKGROUND,
+// and the full 100..700 scale ran to #cde2fb at luminance 0.87 — brighter than
+// the cluster accent (0.478) and the chain accent (0.443), so high-ADC pixels
+// owned the brightest marks on screen and the hierarchy read inverted. Capped
+// here, every stop clears both accents by 20.9-34.3 normal-vision dE (floor 15)
+// and none of them outshines an accent.
+const int NRAMP = 5;
 const G4Colour RAMP[NRAMP] = {
     G4Colour(0.094, 0.310, 0.584),  // #184f95  600
     G4Colour(0.110, 0.361, 0.671),  // #1c5cab  550
     G4Colour(0.145, 0.416, 0.749),  // #256abf  500
     G4Colour(0.165, 0.471, 0.839),  // #2a78d6  450
-    G4Colour(0.224, 0.529, 0.898),  // #3987e5  400
-    G4Colour(0.333, 0.596, 0.906),  // #5598e7  350
-    G4Colour(0.427, 0.655, 0.925),  // #6da7ec  300
-    G4Colour(0.525, 0.714, 0.937),  // #86b6ef  250
-    G4Colour(0.620, 0.773, 0.957),  // #9ec5f4  200
-    G4Colour(0.718, 0.828, 0.965),  // #b7d3f6  150
-    G4Colour(0.804, 0.886, 0.984)}; // #cde2fb  100
+    G4Colour(0.224, 0.529, 0.898)}; // #3987e5  400
 
 // the 8 documented dark categorical slots, in the documented order, used ONLY
 // by the track-spotlight mode. Slots past 3 do not clear the all-pairs floors —
@@ -178,7 +177,8 @@ struct Cfg
 
   int frame = 0;         // production frame (0..NB*PER-1)
   int g4chunk = 0;       // PP_g4hit_<chunk>.root
-  int g4event = -1;      // library event; <0 = frame mode
+  int g4event = -1;      // first library event; <0 = frame mode
+  std::vector<int> g4evList;  // every library event to superimpose
   int layerLo = 7, layerHi = 54;
   int sector = -1;       // TPC 30-degree wedge 0..11; -1 = all
   double zLo = -105.5, zHi = 105.5;  // physical TPC by default; see /p5/zrange
@@ -203,6 +203,9 @@ struct Cfg
 // and the overlay legend both reach into it
 static void applyChromeColours();
 static bool viewerLive();
+static std::vector<int> parseEvSpec(const std::string &spec);
+static std::string evSpecLabel();
+static void setG4Events(const std::string &spec);
 
 // =====================================================================
 //  TPC row geometry (the pipeline's own tables)
@@ -413,7 +416,7 @@ struct Clus
 struct G4H
 {
   float x, y, z, edep, t;
-  int trk, prim;
+  int ev, trk, prim;
 };
 struct Trk
 {
@@ -426,7 +429,7 @@ static std::vector<Pix> g_pix;
 static std::vector<Clus> g_clus;
 static std::vector<G4H> g_g4;
 static std::vector<Trk> g_trk;
-static std::map<int, std::vector<G4H *>> g_g4trk;
+static std::map<long long, std::vector<G4H *>> g_g4trk;
 static long g_pixTotal = 0, g_pixDrop = 0, g_clusTotal = 0;
 static long g_pixOutZ = 0, g_clusOutZ = 0;
 static int g_pixStride = 1;
@@ -619,13 +622,6 @@ static void loadG4()
     return;
   }
   const EvtMap &idx = getIdx(fn, "ntp_g4hit", t);
-  auto it = idx.find(C.g4event);
-  if (it == idx.end())
-  {
-    printf("p5_display: library event %d has no TPC hits in %s\n", C.g4event, fn.c_str());
-    f->Close();
-    return;
-  }
   float gx, gy, gz, ge, gt, gid, gpr;
   t->SetBranchStatus("*", 0);
   for (const char *b : {"gx", "gy", "gz", "gedep", "gt", "gtrackID", "gprimary"})
@@ -637,23 +633,103 @@ static void loadG4()
   t->SetBranchAddress("gt", &gt);
   t->SetBranchAddress("gtrackID", &gid);
   t->SetBranchAddress("gprimary", &gpr);
-  for (auto &r : it->second)
-    for (Long64_t i = r.first; i < r.first + r.n; ++i)
-    {
-      t->GetEntry(i);
-      g_g4.push_back({gx, gy, gz, ge, gt, (int) gid, (int) gpr});
-    }
+  int nfound = 0, nempty = 0;
+  for (int ev : C.g4evList)
+  {
+    auto it = idx.find(ev);
+    if (it == idx.end()) { nempty++; continue; }
+    nfound++;
+    for (auto &r : it->second)
+      for (Long64_t i = r.first; i < r.first + r.n; ++i)
+      {
+        t->GetEntry(i);
+        g_g4.push_back({gx, gy, gz, ge, gt, ev, (int) gid, (int) gpr});
+      }
+  }
   t->ResetBranchAddresses();
   f->Close();
-  for (auto &h : g_g4) g_g4trk[h.trk].push_back(&h);
+  if (nempty)
+    printf("p5_display: %d of %zu requested events have no TPC hits\n", nempty, C.g4evList.size());
+  // key on (event, trackID): each library event numbers its tracks from 1, so a
+  // bare trackID would weld unrelated particles from different collisions into
+  // one polyline
+  for (auto &h : g_g4) g_g4trk[((long long) h.ev << 32) | (uint32_t) h.trk].push_back(&h);
   // order by STEP TIME, not radius: a G4 track is a trajectory, and low-energy
   // secondaries spiral inward and outward again — radius order would connect
   // those points into a scribble
   for (auto &kv : g_g4trk)
     std::sort(kv.second.begin(), kv.second.end(),
               [](const G4H *a, const G4H *b) { return a->t < b->t; });
-  printf("p5_display: library %s event %d -> %zu g4 hits, %zu G4 tracks\n", fn.c_str(), C.g4event,
-         g_g4.size(), g_g4trk.size());
+  printf("p5_display: library %s event %s -> %zu g4 hits, %zu G4 tracks\n", fn.c_str(),
+         evSpecLabel().c_str(), g_g4.size(), g_g4trk.size());
+}
+
+// "7" | "0-9" | "0,3,7-9" | "-1" (frame mode). A leading '-' is a sign, not a
+// range separator, so the search for the dash starts at index 1.
+static std::vector<int> parseEvSpec(const std::string &spec)
+{
+  std::vector<int> out;
+  std::stringstream ss(spec);
+  std::string tok;
+  while (std::getline(ss, tok, ','))
+  {
+    while (!tok.empty() && isspace((unsigned char) tok.front())) tok.erase(tok.begin());
+    while (!tok.empty() && isspace((unsigned char) tok.back())) tok.pop_back();
+    if (tok.empty()) continue;
+    size_t d = tok.find('-', 1);
+    try
+    {
+      if (d == std::string::npos) out.push_back(std::stoi(tok));
+      else
+      {
+        int a = std::stoi(tok.substr(0, d)), b = std::stoi(tok.substr(d + 1));
+        if (b < a) std::swap(a, b);
+        for (int i = a; i <= b; ++i) out.push_back(i);
+      }
+    }
+    catch (...) { printf("p5_display: cannot parse event spec '%s'\n", tok.c_str()); }
+  }
+  return out;
+}
+
+// a runaway range (a typo like 0-19999) would pull millions of rows, so cap the
+// event COUNT and say so rather than silently truncating
+static void setG4Events(const std::string &spec)
+{
+  std::vector<int> v = parseEvSpec(spec);
+  if (v.empty()) { printf("p5_display: /p5/g4event <n> | <lo>-<hi> | <list>; -1 = frame\n"); return; }
+  if (v.size() == 1 && v[0] < 0) { C.g4event = -1; C.g4evList.clear(); return; }
+  const size_t CAP = 500;
+  if (v.size() > CAP)
+  {
+    printf("p5_display: %zu events requested, drawing the first %zu\n", v.size(), CAP);
+    v.resize(CAP);
+  }
+  C.g4evList = v;
+  C.g4event = v.front();
+}
+
+static std::string evSpecLabel()
+{
+  if (C.g4evList.size() <= 1) return std::to_string(C.g4event);
+  bool contiguous = true;
+  for (size_t i = 1; i < C.g4evList.size(); ++i)
+    if (C.g4evList[i] != C.g4evList[i - 1] + 1) { contiguous = false; break; }
+  char b[96];
+  if (contiguous)
+  {
+    snprintf(b, sizeof b, "%d-%d (%zu)", C.g4evList.front(), C.g4evList.back(), C.g4evList.size());
+    return b;
+  }
+  if (C.g4evList.size() <= 4)
+  {
+    std::string j;
+    for (size_t i = 0; i < C.g4evList.size(); ++i)
+      j += (i ? "," : "") + std::to_string(C.g4evList[i]);
+    return j;
+  }
+  snprintf(b, sizeof b, "%zu picked", C.g4evList.size());
+  return b;
 }
 
 // A minimum-bias pp collision is genuinely sparse — the median library event
@@ -694,8 +770,8 @@ static void makeStatus()
 {
   char b[512];
   if (C.g4event >= 0)
-    snprintf(b, sizeof b, "chunk %d event %d   %zu g4 hits   %zu G4 tracks", C.g4chunk, C.g4event,
-             g_g4.size(), g_g4trk.size());
+    snprintf(b, sizeof b, "chunk %d event%s %s   %zu g4 hits   %zu G4 tracks", C.g4chunk,
+             C.g4evList.size() > 1 ? "s" : "", evSpecLabel().c_str(), g_g4.size(), g_g4trk.size());
   else
     snprintf(b, sizeof b, "frame %d   %zu/%ld px   %zu/%ld clus   %zu truth chains", C.frame,
              g_pix.size(), g_pixTotal, g_clus.size(), g_clusTotal, g_trk.size());
@@ -1047,7 +1123,13 @@ static std::string baseName(const G4String &n)
   return p == std::string::npos ? s : s.substr(0, p);
 }
 
-// Detector systems. Uniform grey is unreadable once more than the TPC is on
+// Detector systems. Tints are held at 0.65x luminance and 0.95x chroma of the
+// hues they name: MEASURED, because at full strength six of the fifteen
+// geometry-vs-data pairs sat below the 15 normal-vision dE floor (worst was
+// HCal vs the truth chains at 8.1) and the detector competed with the overlay.
+// Luminance is the lever — desaturating alone only moved that 8.1 to 12.0,
+// while dropping luminance clears every pair at >=16.9 with the hue intact.
+// Uniform grey is unreadable once more than the TPC is on
 // screen — recognition needs DIFFERENTIATION, not brightness — so each system
 // gets its own tint and a legend row. The tints are deliberately dark and
 // desaturated, and they avoid the overlay's blue/orange/aqua entirely, so the
@@ -1064,29 +1146,29 @@ struct GeoSys
 std::vector<GeoSys> G_SYS = {
     // the TPC is the subject, so it is the brightest thing and it gets a legend
     // row even though its swatch is neutral rather than a hue
-    {"TPC gas", 0, true, G4Colour(0.753, 0.741, 0.702), {"tpc_gas"}},
-    {"TPC cage", 0, false, G4Colour(0.451, 0.443, 0.412),
+    {"TPC gas", 0, true, G4Colour(0.493, 0.482, 0.445), {"tpc_gas"}},
+    {"TPC cage", 0, false, G4Colour(0.296, 0.288, 0.259),
      {"tpc_cage_layer_", "tpc_window", "tpc_envelope"}},
     // the endcap/wagon-wheel assembly is ~2000 touchables and buries the
     // overlay at event-display zoom, so it joins only from 'tracker' outwards
-    {"TPC endcap", 1, false, G4Colour(0.337, 0.329, 0.306),
+    {"TPC endcap", 1, false, G4Colour(0.221, 0.214, 0.192),
      {"TPC_ENDCAP_", "tpc_hanger", "tpc_tie_rod"}},
-    {"MVTX", 1, true, G4Colour(0.643, 0.333, 0.490),
+    {"MVTX", 1, true, G4Colour(0.478, 0.183, 0.333),
      {"log_MVTX_", "MVTX", "CYSS", "ConeL", "EndWheel"}},
-    {"INTT", 1, true, G4Colour(0.420, 0.373, 0.659),
+    {"INTT", 1, true, G4Colour(0.273, 0.229, 0.500),
      {"ladder_", "ladderext_", "stave_", "staveext_", "siactive", "siinactive", "si_glue",
       "fphx", "hdi_", "hdiext_", "rail_volume", "outer_skin_volume", "inner_skin_volume",
       "service_barrel_", "support_tube_volume", "endcap_AlPEEK_", "bus_extender_"}},
-    {"TPOT", 1, true, G4Colour(0.612, 0.514, 0.188),
+    {"TPOT", 1, true, G4Colour(0.429, 0.336, 0.026),
      {"MICROMEGAS_55_", "invisible_MICROMEGAS_55_", "micromegas_"}},
-    {"beam pipe", 1, false, G4Colour(0.416, 0.404, 0.369),
+    {"beam pipe", 1, false, G4Colour(0.274, 0.263, 0.229),
      {"BE_PIPE", "VAC_BE_PIPE", "N_AL_PIPE", "S_AL_PIPE", "VAC_N_", "VAC_S_", "N_FLANGE_",
       "S_FLANGE_", "N_OUTER_PIPE_", "S_OUTER_PIPE_"}},
-    {"CEMC", 2, true, G4Colour(0.627, 0.329, 0.275), {"CEMC_"}},
-    {"HCal / cryostat", 2, true, G4Colour(0.310, 0.510, 0.314),
+    {"CEMC", 2, true, G4Colour(0.472, 0.189, 0.138), {"CEMC_"}},
+    {"HCal / cryostat", 2, true, G4Colour(0.166, 0.356, 0.170),
      {"HCAL_", "CRYOSTAT", "CRYOINT", "CONNECTOR", "BusbarD"}},
-    {"EPD", 2, false, G4Colour(0.227, 0.224, 0.212), {"EPD_tile_"}},
-    {"beam line", 3, false, G4Colour(0.216, 0.212, 0.196), {}},
+    {"EPD", 2, false, G4Colour(0.149, 0.146, 0.134), {"EPD_tile_"}},
+    {"beam line", 3, false, G4Colour(0.142, 0.138, 0.123), {}},
 };
 static std::vector<G4VisAttributes *> g_sysVis;
 std::vector<char> g_sysOn;                 // is this system currently on screen
@@ -1302,8 +1384,9 @@ class P5Messenger : public G4UImessenger
     dirTrk = new G4UIdirectory("/p5/trk/");
 
     cFrame = mk<G4UIcmdWithAnInteger>("/p5/frame", "production frame index (0..249 for 5x50)");
-    cG4ev = mk<G4UIcmdWithAnInteger>("/p5/g4event",
-                                     "library G4 event to show instead of a frame; -1 = frame mode");
+    cG4ev = mk<G4UIcmdWithAString>(
+        "/p5/g4event",
+        "library event(s): <n> | <lo>-<hi> | <a>,<b>,<c-d> superimposed; -1 = frame mode");
     cG4ch = mk<G4UIcmdWithAnInteger>("/p5/g4chunk", "PP_g4hit chunk index for /p5/g4event");
     cG4List = mk<G4UIcmdWithAnInteger>("/p5/g4list",
                                        "print the N busiest library events in the current chunk");
@@ -1366,8 +1449,8 @@ class P5Messenger : public G4UImessenger
 
   void SetNewValue(G4UIcommand *cmd, G4String val) override
   {
-    if (cmd == cFrame) { C.frame = std::stoi(val); C.g4event = -1; refresh(true); }
-    else if (cmd == cG4ev) { C.g4event = std::stoi(val); refresh(true); }
+    if (cmd == cFrame) { C.frame = std::stoi(val); C.g4event = -1; C.g4evList.clear(); refresh(true); }
+    else if (cmd == cG4ev) { setG4Events(val); refresh(true); }
     else if (cmd == cG4ch) { C.g4chunk = std::stoi(val); refresh(true); }
     else if (cmd == cReload) refresh(true);
     else if (cmd == cPrint) printSummary();
@@ -1544,10 +1627,10 @@ class P5Messenger : public G4UImessenger
   }
 
   G4UIdirectory *dir, *dirPix, *dirTrk, *dirGeom;
-  G4UIcmdWithAnInteger *cFrame, *cG4ev, *cG4ch, *cPixMax, *cMinClus, *cTop, *cSelect, *cList,
+  G4UIcmdWithAnInteger *cFrame, *cG4ch, *cPixMax, *cMinClus, *cTop, *cSelect, *cList,
       *cSector, *cG4List;
   G4UIcmdWithoutParameter *cReload, *cPrint;
-  G4UIcmdWithAString *cGeom, *cGShow, *cGHide, *cGList, *cColour, *cField, *cView;
+  G4UIcmdWithAString *cGeom, *cGShow, *cGHide, *cGList, *cColour, *cField, *cView, *cG4ev;
   G4UIcommand *cGStyle;
   G4UIcmdWithABool *cLegend, *cPrim, *cRowDr, *cGTint;
   G4UIcmdWithADouble *cAdcMin, *cAdcMax, *cPixSize, *cPtMin, *cClusSize, *cZoom, *cGBright;
@@ -1791,7 +1874,7 @@ static void usage(const char *p)
       "  --repo <dir>       repository root (default %s)\n"
       "  --ver <tag>        production tag (default v55)\n"
       "  --frame <n>        production frame to load (default 0)\n"
-      "  --g4event <n>      show a library G4 event instead of a frame\n"
+      "  --g4event <spec>   library event(s) instead of a frame: n | lo-hi | a,b,c-d\n"
       "  --g4chunk <i>      PP_g4hit chunk for --g4event (default 0)\n"
       "  --digi <file>      override digi_frames_production_<ver>.root\n"
       "  --island <file>    override island91_frames_production_<ver>.root\n"
@@ -1831,7 +1914,7 @@ int main(int argc, char **argv)
     if (a == "--repo") C.repo = nxt();
     else if (a == "--ver") C.ver = nxt();
     else if (a == "--frame") C.frame = std::stoi(nxt());
-    else if (a == "--g4event") C.g4event = std::stoi(nxt());
+    else if (a == "--g4event") setG4Events(nxt());
     else if (a == "--g4chunk") C.g4chunk = std::stoi(nxt());
     else if (a == "--digi") over_digi = nxt();
     else if (a == "--island") over_isl = nxt();

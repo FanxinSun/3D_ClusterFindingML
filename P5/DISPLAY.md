@@ -23,7 +23,7 @@ Run bare (`./p5_display.sh`) for the interactive menu instead.
 |---|---|---|
 | `--ver <tag>` | `v55` | production tag; picks `digi_frames_production_<tag>.root` and `island91_frames_production_<tag>.root` |
 | `--frame <n>` | `0` | production frame (0..249 for the 5x50 layout) |
-| `--g4event <n>` | `-1` = off | show a **library** G4 collision instead of a frame |
+| `--g4event <spec>` | `-1` = off | library collision(s) instead of a frame: `7`, `0-9`, `2,860,1354`. A range or list SUPERIMPOSES them (capped at 500) |
 | `--g4chunk <i>` | `0` | which `PP_g4hit_<i>.root` `--g4event` reads |
 
 ### Filters at startup
@@ -94,7 +94,7 @@ with parameter types.
 | command | default | meaning |
 |---|---|---|
 | `/p5/frame <n>` | `0` | load a production frame (also leaves library mode) |
-| `/p5/g4event <n>` | `-1` | load a library G4 event; `-1` returns to frame mode |
+| `/p5/g4event <spec>` | `-1` | `7` \| `0-9` \| `2,860,1354` — a range or list superimposes those collisions; `-1` returns to frame mode |
 | `/p5/g4chunk <i>` | `0` | `PP_g4hit` chunk for `/p5/g4event` |
 | `/p5/g4list <n>` | — | the N busiest library events in the current chunk, with the multiple of the median |
 | `/p5/reload` | — | re-read the current selection |
@@ -146,6 +146,13 @@ with parameter types.
 | `/p5/geom/style <s> [alpha]` | `auto` | `wireframe` / `surface [alpha]` / `auto`; alpha defaults 1.0 except 0.12 for surface |
 
 A `/p5/geometry` preset resets everything, including earlier `geom/show` picks.
+
+Tints sit at 0.65x luminance / 0.95x chroma of the hues they name. That is
+measured, not taste: at full strength six of the fifteen geometry-vs-data pairs
+fell below the ΔE 15 normal-vision floor (worst: HCal vs the truth chains at
+8.1), so the detector competed with the overlay. Luminance is the lever —
+desaturating alone only lifted that 8.1 to 12.0, whereas dropping luminance
+clears every pair at ≥16.9 with the hue intact.
 
 Each system carries its own tint and, if it has a hue, a legend row — uniform
 grey is unreadable once more than the TPC is on screen, and brightness alone
@@ -208,10 +215,34 @@ an order of magnitude of spread. If an event looks thin, it probably is one.
 - `/p5/g4list 10` ranks the chunk's events and gives each as a multiple of the
   median; the menu prints the top 8 for you when the chunk has been indexed.
 - Chunk 5 event 860 is 24014 hits = 8.1x median, and looks like a busy event.
+- A **range** stacks collisions: `--g4event 0-19` on chunk 5 gives 61,778 G4
+  steps and 13,393 tracks, ~12x one median event. Every library collision is
+  generated at the origin (`gen_pp` runs with vertex spread 0), so they pile onto
+  the same vertex — it is N collisions superimposed, not a frame. Track polylines
+  are keyed on (event, trackID), so particles from different collisions never get
+  welded into one line.
 - For a genuinely dense picture use **mode 1, a production frame**: ~200k
   pixels, ~20k clusters and ~250 truth chains of composed pile-up over the
   51 us readout. That is a different object, not a denser version of the same
   one — a frame is many collisions, a library event is exactly one.
+
+## 4d. The `level` data palette
+
+| layer | colour | encodes |
+|---|---|---|
+| pixels | blue ramp `#184f95 → #3987e5`, 5 stops | ADC, log-scaled between `adcmin` and `adcmax`, one polymarker per stop |
+| clusters | orange `#d95926`, flat | nothing — mark **size** carries cluster size |
+| truth chains | aqua `#199e70`, flat, width 1.5 | nothing |
+
+The ramp stops at step 400 deliberately. The full 100–700 blue scale ran up to
+`#cde2fb` at luminance 0.87 — brighter than the cluster accent (0.478) and the
+chain accent (0.443) — so high-ADC pixels owned the brightest marks on screen
+and the hierarchy read inverted, with the background layer shouting over the
+things it sits behind. Capped at `#3987e5`, every ramp stop clears both accents
+by 20.9–34.3 normal-vision ΔE and none of them outshines an accent.
+
+`SLOT[8]` and `GRID` are used only by `track` mode; `BLUE` and `MUTED` only by
+`class` mode.
 
 ## 4c. A frame is dense — what to turn down
 

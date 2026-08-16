@@ -7,6 +7,50 @@ project's source rule), and the ruling. Newest first.
 
 ---
 
+## 2026-08-16 — Finding: small loopers exist in the sim with real morphology, but at ~1/3 the real rate
+
+**Question (user):** can the sim reproduce the "small loopers" visible in the
+supervisor's real event-74 3D cluster view (`Visualizing/images/event74_ntp_cluster_py.pdf`,
+from `Visualizing/src/plot_event74_hits.ipynb`)?
+
+**Method.** New macro `island_post/looper_view.C`: (a) a ROOT twin of the notebook
+view — same cuts (`zelem==1`, 7<layer<55), same (z, x, y) axes and orientation
+(matplotlib elev 24/azim 62 ⇒ ROOT theta 24/phi −118, verified with a synthetic
+helix), adc-tertile colouring; (b) a **finder-free small-looper census applied
+identically to real and sim** — 3D proximity linking (3 cm) into chains, Kasa xy
+circle fit, accept R ≤ 12 cm, xy rms ≤ 0.6 cm, ≥ 30 clusters, ≥ 2.5 unwrapped
+turns, z-span ≤ 130 cm. No truth on either side (truth was used only once, to
+calibrate the criteria on known sim loopers: 30–250 clusters, R ≈ 4–12 cm, z-span
+40–100 cm). Ledger: `island_post/looper_census_v55.txt`; figures
+`sim_validation_plots/looper_view_ev{236,81}_v55.png` (event 81 = the sim's
+richest, 6 loopers incl. a face-on ring).
+
+**Result (99 real vs 250 sim events):**
+
+| | real | sim v5.5 |
+|---|---|---|
+| small loopers / event | 2.27 (81 % of events ≥ 1, max 7) | 0.85 (55 % ≥ 1, max 6) |
+| clusters / event (zelem==1) | 13,295 | 15,780 |
+| **loopers per 10k clusters** | **1.71** | **0.54** |
+| median R, turns of found loopers | 1.8 cm, 6.7 | 1.8 cm, 7.1 |
+
+**Verdict.** Yes — the sim contains the same object, and its *morphology* is
+matched to the digit (R and turn count). But the *rate* is ~3× low per cluster.
+Caveats before treating this as a residual: (1) the census is greedy and cut-based,
+so absolute rates depend on the thresholds — the ratio is the robust number, and
+it survives loosening (at R ≤ 25/≥ 1.5 turns the same direction held);
+(2) the truth-based hunt found 3,258 loopers (R ≤ 25, ≥ 1.5 turns) in the sim, so
+the finder is not what's starving the sim — the deficit is in the *tight, many-turn*
+class specifically. Candidate owners, in order: soft-electron content (δ-rays and
+photon conversions in material — the CEMC effective-fill and passive-material
+approximations feed exactly this class), generator soft spectrum, and the response
+axis (wide sim clouds merge/blur tight coils so fewer pass the rms gate). This is
+consistent with the standing "content owner = response/conditions side" attribution
+and adds a specific, cheap meter for it. Recommended as an acceptance meter for the
+next production; not a blocker for v5.5 adoption.
+
+---
+
 ## 2026-08-14 — Review: v5.5 (field-in-digitization) + the closed circle-fit loop
 
 **Scope.** The v5.5 campaign (`digi_field_request.md` follow-up: the v5.4c

@@ -1,0 +1,27 @@
+# v5.5 residual summary (2026-08-15): dev% = sim/real - 1
+# group | label | dev_vs_ALL_real | dev_vs_COMPLETE_real (999 = n/a)
+# v5.5 = field-in-digitization production (draw 2, seeds 2026094x). Content
+# +2.9% quoted with the measured composer realization sigma ~+-2%.
+# fired-mean red = gate census +5.0% vs anchor 10,897.
+time|window w1 (early)|-17.4|-2.0
+time|window w2 (mid)|-5.7|-2.0
+time|window w3 (late)|+24.5|+3.2
+time|trigger bump|-9.8|-0.0
+time|drift-edge step|+1.6|+2.0
+time|fired-mean (trig-only)|999|+5.0
+content|px/event mean|+29.7|+2.9
+content|px/event CV|-50.0|-5.0
+content|R1 px share|-7.2|-4.6
+content|R2 px share|+2.7|+0.9
+content|R3 px share|+7.5|+5.5
+content|low-adc(<30)/event|+35.7|+7.6
+islands|islands/event|+37.9|+9.9
+islands|island <size>|+5.8|-10.5
+islands|island <phi-size>|-2.1|-2.4
+shapes|<abs asym>|+3.4|+3.4
+shapes|<maxadc/adc>|+7.8|+8.2
+pixel|pixmean|+2.5|+1.0
+pixel|sub10 trace|+6.7|-5.5
+pixel|sh/hi band|+17.7|+19.2
+pixel|run mean|-1.4|-2.0
+pixel|run tail P10|+20.6|+19.2

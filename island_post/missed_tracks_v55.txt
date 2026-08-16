@@ -1,0 +1,19 @@
+missed_tracks v55 — exhaustive Hough+circle search for tracks the classical
+tracker missed. Bar: >=13 distinct layers after 3 mm cleaning, span >=15,
+no layer gap >6, RMS <= 0.20 cm, R_fit >= 45 cm; roads azimuthally local
+(+-40 deg), drift-coherent (tbin-vs-layer RANSAC +-8), best-1 per layer.
+FINDER CALIBRATION (sim v5.5, 50 events, truth-known):
+  truth findable full-crossers: 17477 (349.5/event)
+  finder efficiency on them: 71.9%   purity of found tracks: 74.2% (18964 found)
+REAL, full cluster set: finder returns 15804 tracks/100 ev; 20.3% of them are
+  majority-on-track (re-finds of the tracker's 6038 audited tracks).
+REAL, UNUSED clusters only (the actual question):
+  MISSED track-class circles found: 12728 (127.28/event)
+  of these OUT-OF-TIME (median tbin outside [60,360]): 8547 (67.2%)
+  medians: clusters/track 24, R_fit 91 cm (pT ~0.38 GeV), tbin 470
+SIM-CALIBRATED estimate: true missed tracks/event ~ found x purity / eff
+  = 127.3 x 0.74 / 0.72 = 131 per event (in-time share 33%)
+reading: the tracker saves ~60 tracks/event; the in-time missed subset is
+recoverable inefficiency, the out-of-time subset is invisible to an
+in-time tracker by design but is real charge that cluster-level ML must
+classify. All rates carry the finder calibration above.

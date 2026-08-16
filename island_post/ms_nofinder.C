@@ -1034,7 +1034,7 @@ void nf_sag_hits(const char *g4pat = "../P5/PP_g4hit_%d.root", int ng4 = 10,
 //    clusters (association tails included).
 void nf_digipix(const char *digif = "digi_frames_production_v55.root", int nsim = 60,
                 const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                const char *ver = "v55")
+                const char *ver = "v55", const char *dump = "")
 {
   using namespace MNF;
   double rowR[55];
@@ -1127,6 +1127,20 @@ void nf_digipix(const char *digif = "digi_frames_production_v55.root", int nsim 
     f->Close();
     printf("sim digi: %zu truth groups in %d frames\n", g.size(), nsim);
     for (auto &kv : g) doTrack(kv.second, 1);
+  }
+  if (dump && dump[0])                       // per-fit RMS values for external (clean-label) figures
+  {
+    FILE *fd = fopen(dump, "w");
+    if (fd)
+    {
+      for (int s = 0; s < 2; ++s)
+      {
+        for (double q : grms[s]) fprintf(fd, "G %d %.1f\n", s, q);
+        for (double q : wrms[s]) fprintf(fd, "L %d %.1f\n", s, q);
+      }
+      fclose(fd);
+      printf("dumped per-fit RMS values to %s\n", dump);
+    }
   }
   FILE *fo = openLedger(ver);
   auto P = [&](const char *fmt, ...) {

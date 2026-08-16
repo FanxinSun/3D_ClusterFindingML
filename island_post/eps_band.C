@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-void eps_band()
+void eps_band(double official = 0., const char *out = "/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/eps_scan_band_v51.png")
 {
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
@@ -72,6 +72,11 @@ void eps_band()
   tx.DrawLatex(0.556, 11.6, "#varepsilon = 0.588 #pm 0.033");
   tx.SetTextSize(0.026); tx.SetTextColor(kGray + 2);
   tx.DrawLatex(0.4955, 11.6, "proxy 0.519");
-  c.SaveAs("/home/rog/sPHENIX/3D_ClusterFindingML/sim_validation_plots/eps_scan_band_v51.png");
+  // 2026-08-14: official Vernier-scan value (sigma_MBD 25.6 mb / 42 mb ~ 0.61,
+  // sPH-CONF-JET-2025-03) — drawn only when passed (era figure unchanged).
+  TLine off(official, -34, official, 14);
+  if (official > 0) { off.SetLineStyle(9); off.SetLineWidth(2); off.SetLineColor(kRed + 1); off.Draw();
+    tx.SetTextColor(kRed + 1); tx.DrawLatex(official + 0.004, -30.5, "official (Vernier) 0.61"); tx.SetTextColor(kBlack); }
+  c.SaveAs(out);
   printf("saved eps_scan_band_v51.png\n");
 }

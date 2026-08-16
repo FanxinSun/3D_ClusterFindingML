@@ -42,6 +42,7 @@ memory/
 ML_Ground_Truth_Hits.csv
 GroundTruth_Making/*.csv
 PIPELINE.md
+Reporting
 
 *_backup*
 Simulations/dataset
