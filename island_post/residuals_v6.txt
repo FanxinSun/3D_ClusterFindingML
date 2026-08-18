@@ -1,0 +1,32 @@
+# V6 residual summary (2026-08-19): dev% = sim/real - 1
+# group | label | dev_vs_ALL-99_real | dev_vs_COMPLETE-61_real (999 = n/a)
+# V6 = laser-vetoed re-baseline: real reference drops the GL1 laser event 44
+# (complete-61 / all-99); sim injects NO flash; ENV6 envelope re-derived on the
+# flash-free profile; readout capped at the real DAQ record (tbin 960); trigger
+# bump flash-blind; island means FULL-RANGE (the old <size> row mixed ranges).
+# all-99 spectral rows (shares..P10) reuse the all-100 back-solved values (event
+# 44 = 1% of hits, spectra unaffected at this precision) EXCEPT sub10, whose old
+# target event 44 had inflated ~2x: honest targets 1.00e-4 (complete-61) / 1.08e-4
+# (all-99); sim 9.56e-5 after the V6 trace-table refit (was 2.09e-4). fired-mean = gate.
+time|window w1 (early)|-15.9|+0.1
+time|window w2 (mid)|-3.7|+0.1
+time|window w3 (late)|+20.5|-0.5
+time|trigger bump (flash-blind)|-12.6|-3.1
+time|drift-edge step|-2.9|-2.3
+time|fired-mean (trig-only)|999|+5.0
+content|px/event mean|+27.6|+1.1
+content|px/event CV|-52.8|-7.8
+content|R1 px share|-7.7|-5.3
+content|R2 px share|+2.1|+0.6
+content|R3 px share|+8.6|+6.2
+content|low-adc(<30)/event|+33.7|+6.1
+islands|islands/event|+35.5|+8.0
+islands|island <size> (full range)|-5.6|-6.1
+islands|island <phi-size>|-2.9|-3.2
+shapes|<abs asym>|+3.4|+3.4
+shapes|<maxadc/adc>|+7.5|+7.9
+pixel|pixmean|+2.6|+1.3
+pixel|sub10 trace|-11.5|-4.4
+pixel|sh/hi band|+17.2|+18.8
+pixel|run mean|-1.4|-2.0
+pixel|run tail P10|+20.6|+19.2

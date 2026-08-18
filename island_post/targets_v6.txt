@@ -1,0 +1,33 @@
+# targets_v6.txt — REAL references with the GL1 laser event (44) VETOED (2026-08-17),
+# mirroring the official reco (TpcClusterizer skips laser events). Two references:
+#   COMPLETE-61 = the 61 non-laser events whose readout is complete (p99.9 tbin > 950)
+#   ALL-99      = all non-laser events as recorded (38 end-truncated events included)
+# Meter definitions = island_post/pp_accept.C (windows exclude 318-345; trigger bump
+# flash-blind = 60-240 mean over 270-450 mean with 318-345 excluded; islands means over
+# the FULL size range — the pre-2026-08-17 <size> targets mixed a full-range real mean
+# with 0-200 sim means; the "-10% <size>" residual was largely that mismatch).
+#                     COMPLETE-61     ALL-99
+w1                    0.2278          0.2710
+w2                    0.3431          0.3566
+w3                    0.3411          0.2817
+bump_flashblind       1.1396          1.2643
+step                  1.1192          1.1255
+px_per_event          320586          254056
+px_cv                 0.230           0.449
+lowadc_per_event      90657           71909
+islands_per_event     29656           23630
+island_size_full      10.79           10.73
+island_phisize_full   3.43            3.42
+asym_abs              0.265           -
+maxadc_over_adc       0.291           -
+shares_R1_R2_R3       0.394/0.332/0.275   -
+pixmean               94.35           -
+sh_hi                 0.229           -
+sub10_fraction        1.00e-4         1.08e-4    # adc<=10 / adc>0 hits; the pre-veto
+#   2.38e-4 was inflated ~2x by event 44's flash+tail (it held ~half of the file's
+#   sub-10 hits). Sim V6 before the trace refit 2.09e-4 (+109%); after refit (tables on
+#   vetoed real vs no-ZS raw, p2 1.25) 9.56e-5 (-4%).
+coarse_profile_61     33247.8 35915.5 32948.9 30450.1 31725.4 32471.7 31413.4 31660.6 31293.8 29182.2
+# (coarse profile: hits/event per 97-tbin bin, layer 7-54 adc>0, INCLUDES the tbin
+#  318-345 window - the real side no longer holds a flash, the sim injects none.)
+# Superseded (event 44 included, mixed size ranges): targets_v51.txt.

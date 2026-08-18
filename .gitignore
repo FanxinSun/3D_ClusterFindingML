@@ -48,6 +48,7 @@ Reporting
 Simulations/dataset
 labeled_*
 *.log
+log.*
 
 CDB_offline/*
 !cdb_manifest.yaml

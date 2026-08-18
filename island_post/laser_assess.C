@@ -1,3 +1,6 @@
+// RETIRED 2026-08-17: the "REAL" flash curves in this macro are event 44 alone
+// (laser_flash_remodel_request.md); the spike-ratio gate and the "44 flashes" logic
+// no longer apply. Kept for provenance only.
 // laser_assess.C — assessment figure: real flash vs collaboration models through the
 // detached pipeline (CM injected in frames; DL isolated signature).
 void laser_assess(){

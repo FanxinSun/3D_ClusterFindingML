@@ -48,12 +48,12 @@ using namespace RFP;
 // "z-105.5*(zelem==0)" for hit69 exports (real storage convention, same corr as real).
 // realfile/NR: default = as-recorded 100 events; pass real_complete62_hits.root
 // with NR=62 for the COMPLETE-window reference (dual-reference directive).
-void residual_fingerprint(double s = 0.6974,
+void residual_fingerprint(double s = 0.6974,   // NR default 99: the real as-recorded reference is laser-vetoed (event 44) since 2026-08-17
                           const char *simfile = "digi_frames_production_v40b.root",
                           const char *simz = "z", const char *suffix = "",
                           const char *tag = "SIM v4.0",
                           const char *realfile = "/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root",
-                          double NR = 100.)
+                          double NR = 99.)
 {
   RFP::SIMTAG = tag;
   gROOT->SetBatch(1); gStyle->SetOptStat(0); gStyle->SetTitleFontSize(0.055);

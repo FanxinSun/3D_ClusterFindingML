@@ -298,3 +298,23 @@ a61dbfd129329eb17be8c2dfafb40495  island91_frames_production_v54b.root
 #   prodclus 53.7/44.6/1.6 vs 53.3/44.8/1.9.
 # PIXEL-LEVEL consumers: use v5.5. CLUSTER-level work: v5.4c remains
 #   valid; v5.5 supersedes it as the full-chain artifact.
+--- V6 (2026-08-19): LASER-VETOED RE-BASELINE. Real reference = the 61 complete
+--- non-laser events (all-99 as-recorded); GL1 laser event 44 vetoed everywhere
+--- on the real side (canon.h LASER_VETO; reference files rebuilt, pre-veto
+--- backups *_prelaserveto.root). Sim: NO flash injection (FLASH_PROB 0);
+--- ENV6 envelope re-derived on the flash-free profile; readout capped at the
+--- real DAQ record (tbin<=960); half-pool composer batches (LIB_SPLIT 2);
+--- sub-threshold trace tables refit on the vetoed real (R3-only phenomenon;
+--- p2 1.25); field-in-digitization as v5.5; seeds 2026094x; targets_v6.txt.
+e7e4aa1c54e0f73f3052cb28ff921ace  digi_frames_production_v6.root
+5aae95e09599c754ae43dac2c309b160  island91_frames_production_v6.root
+b4e88edec1e788ca69e982709b6bb9df  prodclus_v6.root
+dd96dcdf749c6af23c3d2ad32f234d22  hit69_frames_production_v6.root
+# hit69 V6: 81,056,927 rows (1,136 merged). prodclus 9,261,400 clusters
+#   (53.9/44.7/1.4). Acceptance vs complete-61: windows +0.1/+0.0/-0.5 (the
+#   early-window bias since v5.3 is GONE - it was envelope contamination by
+#   the laser flash + the sim's unrecorded 961-970 pixels), px/ev +1.1% (+-2),
+#   step -2.2, bump(fb) -3.0, CV -7.4, <size> -6.1 (full-range, like-for-
+#   like), islands +7.9, phisize -3.2, sub10 trace -4% (was +109% before the
+#   refit); position meters hold (stiff RMS ratio 0.99, d0 3.06/2.99, CM jump
+#   0.475/0.48). SUPERSEDES v5.5 as the production baseline.

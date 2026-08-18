@@ -28,23 +28,24 @@ void p3_cmp3(const char *simfile = "digi_frames_production_v53.root",
   TH1D h6a("h6a", "", 150, 0, 6000), h6c("h6c", "", 150, 0, 6000), h6s("h6s", "", 150, 0, 6000);
 
   std::set<int> evset;  // complete-62 event ids (island filter)
-  {  // real all-100 pixels
+  {  // real all-99 pixels (as recorded, laser event 44 vetoed — 2026-08-19 fix:
+     // this block had read the raw ntuplizer without the veto)
     TFile *f = TFile::Open("/home/rog/sPHENIX/3D_ClusterFindingML/clusters_seeds_island_79507-0.root_ntuplizer.root");
     TTree *t = (TTree *) f->Get("ntp_hit");
-    float lay, adc, tb;
+    float lay, adc, tb, evr;
     t->SetBranchStatus("*", 0);
-    for (auto b : {"layer", "adc", "tbin"}) t->SetBranchStatus(b, 1);
-    t->SetBranchAddress("layer", &lay); t->SetBranchAddress("adc", &adc); t->SetBranchAddress("tbin", &tb);
+    for (auto b : {"event", "layer", "adc", "tbin"}) t->SetBranchStatus(b, 1);
+    t->SetBranchAddress("event", &evr); t->SetBranchAddress("layer", &lay); t->SetBranchAddress("adc", &adc); t->SetBranchAddress("tbin", &tb);
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
-      if (lay < 7 || lay > 54 || adc <= 0) continue;
+      if (lay < 7 || lay > 54 || adc <= 0 || (int) evr == 44) continue;
       h1a.Fill(adc); h2a.Fill(tb);
     }
     f->Close();
   }
   {  // real complete-62 pixels + event set
-    TFile *f = TFile::Open("real_complete62_hits.root");
+    TFile *f = TFile::Open("real_complete61_hits.root");  // laser-vetoed complete set (2026-08-17)
     TTree *t = (TTree *) f->Get("ntp_hit");
     float ev, lay, adc, tb;
     t->SetBranchStatus("*", 0);
@@ -97,7 +98,7 @@ void p3_cmp3(const char *simfile = "digi_frames_production_v53.root",
     for (Long64_t i = 0; i < t->GetEntries(); ++i) { t->GetEntry(i); h3s.Fill(sz); h4s.Fill(ps); h5s.Fill(zs); h6s.Fill(ad); }
     f->Close();
   }
-  printf("p3_cmp3: complete-62 event set %zu events\n", evset.size());
+  printf("p3_cmp3: complete event set %zu events (laser-vetoed)\n", evset.size());
 
   auto d3 = [&](TVirtualPad *p, TH1D *a, TH1D *c, TH1D *s, const char *ti, bool logy) {
     p->cd();
@@ -113,8 +114,8 @@ void p3_cmp3(const char *simfile = "digi_frames_production_v53.root",
     a->Draw("HIST"); c->Draw("HIST SAME"); s->Draw("HIST SAME");
     TLegend *L = new TLegend(0.40, 0.70, 0.89, 0.89);
     L->SetBorderSize(0); L->SetFillStyle(0);
-    L->AddEntry(a, "REAL all 100 (as recorded)", "l");
-    L->AddEntry(c, "REAL 62 complete windows", "l");
+    L->AddEntry(a, "REAL all 99 non-laser (as recorded)", "l");
+    L->AddEntry(c, "REAL 61 complete non-laser", "l");
     L->AddEntry(s, tag, "l");
     L->Draw();
   };

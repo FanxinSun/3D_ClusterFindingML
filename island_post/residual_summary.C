@@ -99,8 +99,8 @@ void residual_summary(const char *datafile = "residuals_v50.txt",
   lg->SetBorderSize(0); lg->SetFillStyle(0);
   TGraph *ga = new TGraph(1); ga->SetMarkerColor(kBlue + 1); ga->SetMarkerStyle(20);
   TGraph *gs = new TGraph(1); gs->SetMarkerColor(kRed + 1); gs->SetMarkerStyle(24);
-  lg->AddEntry(ga, "vs ALL real events (as recorded)", "p");
-  lg->AddEntry(gs, "vs COMPLETE subset (62 ev, full windows)", "p");
+  lg->AddEntry(ga, "vs ALL real events as recorded (99, laser event vetoed)", "p");
+  lg->AddEntry(gs, "vs COMPLETE subset (61 non-laser events, full windows)", "p");
   lg->Draw();
   c.SaveAs(out);
   printf("residual_summary: %d rows -> %s\n", N, out);

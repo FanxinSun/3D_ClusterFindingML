@@ -35,7 +35,7 @@ IP=$ROOTDIR/island_post
 LOGS=$IP/pp_logs; mkdir -p "$LOGS"
 
 # ---------------- parameters ----------------
-VER=v55
+VER=v6                    # V6 (user naming, 2026-08-18): the laser-vetoed re-baseline; was provisionally v5.6
 FIELD="0:0|0|0.0426|0|0|2.49|0.26"
                           # v5.5 field-in-digitization (digi_field_request.md,
                           #  2026-08-13): the v5.4c empirical position-residual
@@ -75,7 +75,16 @@ RSPEC=$(grep -v '^#' "$IP/rspec99_v52.txt" 2>/dev/null)
                           #  all 99 measured per-event rmbd values / eps 0.519
                           #  (proxy; replace file when team eps arrives).
                           #  Window accounting judged by acceptance, not pre-fit.
-ENV="5.80:0.938,11.10:1.001,16.40:0.956,21.70:1.067,27.00:1.056,32.30:1.055,37.60:0.953,42.90:1.035,47.96:0.939"
+ENV="5.80:0.968,11.10:1.064,16.40:0.965,21.70:1.055,27.00:1.055,32.30:1.036,37.60:0.913,42.90:1.012,47.96:0.931"
+                          # ENV6 (2026-08-19): E2 residual correction of ENV53b against the
+                          #  LASER-VETOED complete-61 real profile with the sim's own
+                          #  window-length artefact removed (bin 10 compared over 874-960
+                          #  only). ENV53b had been solved against profiles that held event
+                          #  44's flash (real bin 3) and the sim's 44%-frequency injected
+                          #  spike, and its last node against sim pixels at 961-970 that
+                          #  the real DAQ never records. Ratios applied: 1.042 1.073 1.019
+                          #  0.998 1.008 0.991 0.967 0.987 | node8 avg(0.976, 1.026).
+                          #  Previous (ENV53b): 0.938,1.001,0.956,1.067,1.056,1.055,0.953,1.035,0.939
                           # v5.2 nodes (ENV52, 2026-07-24): references at the
                           #  FIXED composer (correct fired flags — trigger now
                           #  genuinely MBD-fired) + v5.1 electronics + eps 0.588.
@@ -84,7 +93,11 @@ ENV="5.80:0.938,11.10:1.001,16.40:0.956,21.70:1.067,27.00:1.056,32.30:1.055,37.6
                           #  trigger subtraction removes the early-window tilt.
                           #  Anchor recalib: 280.3 px/unit -> 10,897.
 FLASH=raw_lib_cmflash_w.root                        # CM flash lib (species-free)
-SPEC="0.008:1,0.009:1,0.011:1,0.012:1,0.013:1,0.014:1,0.018:1,0.021:1,0.027:1,0.037:1,2.2:0.25"
+FLASH_PROB=0.0            # v5.6 FINAL (2026-08-17, user): follow the official reco, which
+                          #  vetoes GL1 laser events before TPC clustering -> NO flash
+                          #  injection; the real reference drops event 44 (complete-61 /
+                          #  all-99). Machinery parked: set >0 with SPEC to re-enable.
+SPEC="2.2:1"              # (parked) giant-only spectrum, the yield fitted to event 44
 FM=$ROOTDIR/CDB_offline/FIELDMAP_GAP/65/a9/65a930ed6de9c0e049cd0f3ef226e6b4_sphenix3dbigmapxyz_gap_rebuild_v2.root
 DM=$ROOTDIR/CDB_offline/TPC_DEADCHANNELMAP/ff/c3/ffc3f6498934c5a8ba31065292c6ebcc_TPCDeadMap_79471.root
 ANCHOR=10897              # rate-free fired anchor (complete-62 excess 38.87
@@ -157,7 +170,7 @@ if run_stage gate; then
   for i in $(seq 0 $((NCHUNK-1))); do
     root -l -b -q -e "gROOT->ProcessLine(\".L tpc_digitize.C+\");
       tpc_transport(\"$P5/PP_g4hit_$i.root\",\"${RAWPFX}_$i.root\",$GEN_PER,$SIGMA0,$KPRF,\"$FIELD\");
-      tpc_readout(\"${RAWPFX}_$i.root\",\"cens_pp_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.81,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,0.0);" \
+      tpc_readout(\"${RAWPFX}_$i.root\",\"cens_pp_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,1.25,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,0.0);" \
       > "$LOGS/pp_gate_$i.log" 2>&1
     echo "[gate] chunk $i transported+censused"
   done
@@ -209,12 +222,27 @@ if run_stage prod; then
   for i in $(seq 0 $((NCHUNK-1))); do
     ln -sf "$P5/PP_g4hit_$i.root" eval_pp_$i.root   # identity numbering: g4hit IS the eval
   done
+  # LIB_SPLIT (2026-08-18): the composer holds every library pixel in memory
+  # (~16 B x 1.36 G pixels ~ 22 GB for the 10-chunk pool) and dies at this
+  # machine's ~27 GB ceiling (RAM 23 + swap 8; twice silently on 08-17/18).
+  # Each 50-event batch now draws from HALF the pool (chunks 0-4 / 5-9,
+  # alternating): 8.9k collisions per batch vs 3.25k draws — the pool is
+  # still 2.7x oversampled, so per-batch reuse rises from ~0.18 to ~0.37
+  # draws/collision; peak memory ~14 GB. The MBD map and truth tables follow
+  # the same subset so (libsrc, event) bookkeeping stays aligned.
+  LIB_SPLIT=${LIB_SPLIT:-2}
   for i in $(seq 0 $((NB-1))); do
+    LIBS_B=""; EVALS_B=""; MBD_B=""
+    for c in $(seq 0 $((NCHUNK-1))); do
+      [ $(( c % LIB_SPLIT )) -eq $(( i % LIB_SPLIT )) ] || continue
+      LIBS_B+="${RAWPFX}_$c.root,"; EVALS_B+="eval_pp_$c.root,"; MBD_B+="pp_run_$c.dat,"
+    done
+    LIBS_B=${LIBS_B%,}; EVALS_B=${EVALS_B%,}; MBD_B="pp_mbd.txt|${MBD_B%,}"
     root -l -b -q -e "
     gROOT->ProcessLine(\".L frame_composer.C+\");
-    frame_composer(\"$LIBS\",\"fPP_$i.root\",$PER,600.,${COMP_SEED_BASE}$i,$((i*PER)),\"$EVALS\",\"$FLASH\",0.44,1.0,\"$SPEC\",1.5,2.0,1.1,0.75,\"$RSPEC\",$ISO_SCALE,\"$MBD\",$TRIG_N,0.0,\"$ENV\");
+    frame_composer(\"$LIBS_B\",\"fPP_$i.root\",$PER,600.,${COMP_SEED_BASE}$i,$((i*PER)),\"$EVALS_B\",\"$FLASH\",$FLASH_PROB,1.0,\"$SPEC\",1.5,2.0,1.1,0.75,\"$RSPEC\",$ISO_SCALE,\"$MBD_B\",$TRIG_N,0.0,\"$ENV\");
     gROOT->ProcessLine(\".L tpc_digitize.C+\");
-    tpc_readout(\"fPP_$i.root\",\"dPP_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,0.81,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,1.0);" \
+    tpc_readout(\"fPP_$i.root\",\"dPP_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,1.25,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,1.0);" \
       2>&1 | tee "$LOGS/pp_prod_$i.log" | grep -E "frame_composer: $PER|rate envelope|tpc_readout: fPP"
     root -l -b -q "islandize91.C+(\"dPP_$i.root\",\"i91pp_$i.root\",1,\"\",\"fPP_$i.root\",\"real_row_radii_v54.txt\",\"\")" 2>&1 | grep "islandize91: dPP"
   done

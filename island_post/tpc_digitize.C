@@ -35,7 +35,12 @@ namespace CFG
 const double VDRIFT = 0.0080;    // cm/ns (real calibration)
 const double HALFZ = 105.5;      // cm
 const double CLOCK = 53.0;       // ns
-const int NTBIN = 965;           // ~51.1 us window
+const int NTBIN = 965;           // ~51.1 us window (transport arrival cap)
+const int DAQ_LAST_TBIN = 960;   // V6 (2026-08-19): the real DAQ record is live to tbin
+                                 // ~961 (0.04% of real hits above 960); the sim used to
+                                 // export to 970 (0.96% of px) — a pure window-length
+                                 // mismatch that also biased the envelope's last node.
+                                 // Readout now drops samples with tbin > 960.
 const double TS = 45.0;          // ns EFFECTIVE peaking time — day-2 calibrated vs real
                                  // run-length + near-threshold spectrum (master default 55;
                                  // 45 shortens the Gamma4 tail to match real runs at low thr)
@@ -852,9 +857,20 @@ void tpc_readout(const char *rawin, const char *out,
         // fitted as (real per-region trace)/(no-ZS raw spectrum) so the KEPT trace
         // reproduces run 79507 in SHAPE, not just rate (flat p2 inherited the steep
         // raw falloff: x2.5 hot at adc 1, x3 cold at 9-10). p2 = SCALE (nominal 1.0).
-        static const double P2R1[11] = {0, 2.68e-05, 3.00e-05, 4.83e-05, 4.90e-05, 8.66e-05, 9.99e-05, 1.28e-04, 1.93e-04, 1.69e-04, 1.94e-04};
-        static const double P2R2[21] = {0, 3.24e-05, 3.90e-05, 6.49e-05, 1.12e-04, 1.56e-04, 2.14e-04, 2.55e-04, 3.67e-04, 3.59e-04, 3.31e-04, 3.23e-04, 4.49e-04, 3.98e-04, 5.14e-04, 3.80e-04, 5.55e-04, 5.33e-04, 7.04e-04, 6.71e-04, 4.89e-04};
-        static const double P2R3[21] = {0, 9.91e-05, 1.03e-04, 2.05e-04, 2.56e-04, 3.59e-04, 4.05e-04, 3.94e-04, 5.16e-04, 3.91e-04, 4.73e-04, 4.39e-04, 5.17e-04, 4.12e-04, 3.41e-04, 4.63e-04, 5.35e-04, 5.15e-04, 5.13e-04, 5.30e-04, 4.00e-04};
+        // V6 REFIT (2026-08-19): the 2026-07-12 tables (kept below as *_v5) were
+        // fitted against real data that still held the GL1 laser event 44, whose
+        // flash + saturation tail carried ~half of the file's ADC 1-20 hits and
+        // was R2-heavy. Refit on the laser-vetoed complete-61 events against the
+        // V6 no-ZS raw spectrum (nozs_v6.root): the real trace is an R3
+        // phenomenon (~32 hits/event, falling with ADC), R1 carries ~1.5/event,
+        // R2 NONE. Nominal p2 = 1.0.
+        static const double P2R1[11] = {0, 1.767e-06, 1.755e-06, 4.944e-06, 3.384e-06, 1.146e-05, 1.716e-05, 1.643e-05, 2.223e-05, 2.349e-05, 2.987e-05};
+        static const double P2R2[21] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        static const double P2R3[21] = {0, 5.160e-05, 5.255e-05, 1.025e-04, 1.481e-04, 1.906e-04, 2.041e-04, 2.046e-04, 2.334e-04, 1.779e-04, 2.266e-04, 2.113e-04, 2.252e-04, 1.796e-04, 1.825e-04, 1.838e-04, 1.794e-04, 1.778e-04, 1.511e-04, 1.699e-04, 2.952e-04};
+        // pre-V6 tables (event-44-contaminated), provenance only:
+        // P2R1_v5 = {0, 2.68e-05, 3.00e-05, 4.83e-05, 4.90e-05, 8.66e-05, 9.99e-05, 1.28e-04, 1.93e-04, 1.69e-04, 1.94e-04}
+        // P2R2_v5 = {0, 3.24e-05, 3.90e-05, 6.49e-05, 1.12e-04, 1.56e-04, 2.14e-04, 2.55e-04, 3.67e-04, 3.59e-04, 3.31e-04, 3.23e-04, 4.49e-04, 3.98e-04, 5.14e-04, 3.80e-04, 5.55e-04, 5.33e-04, 7.04e-04, 6.71e-04, 4.89e-04}
+        // P2R3_v5 = {0, 9.91e-05, 1.03e-04, 2.05e-04, 2.56e-04, 3.59e-04, 4.05e-04, 3.94e-04, 5.16e-04, 3.91e-04, 4.73e-04, 4.39e-04, 5.17e-04, 4.12e-04, 3.41e-04, 4.63e-04, 5.35e-04, 5.15e-04, 5.13e-04, 5.30e-04, 4.00e-04}
         int ai = (int) std::lround(col[k].a);
         double pk = 0;
         if (colL < 23 && ai >= 1 && ai <= 10) pk = P2R1[ai];
@@ -888,6 +904,7 @@ void tpc_readout(const char *rawin, const char *out,
           nmasked++;
           continue;
         }
+        if (col[k].tb > CFG::DAQ_LAST_TBIN) continue;  // beyond the real DAQ record
         double zapp = (ss == 1 ? 1 : -1) * (CFG::HALFZ - col[k].tb * CFG::CLOCK * CFG::VDRIFT);
         float row[10] = {evf, (float) LL, (float) pp, (float) col[k].tb, (float) col[k].tb,
                          (float) col[k].a, (float) ss, (float) phi, (float) zapp, col[k].trk};
@@ -945,6 +962,7 @@ void tpc_readout(const char *rawin, const char *out,
             {
               int dp = (npx <= 2) ? (horiz ? p : 0) : (p & 1);
               int dt = (npx <= 2) ? (horiz ? 0 : p) : (p >> 1);
+              if (tb0 + dt > CFG::DAQ_LAST_TBIN) continue;  // beyond the real DAQ record
               double a = MTHR[rg] + 1.0 + rng.Exp(npx <= 2 ? 7.0 : MTAU34[rg]);
               float row[10] = {(float) ev, (float) lay, (float) (pad + dp), (float) (tb0 + dt), (float) (tb0 + dt),
                                (float) std::round(a), (float) side,

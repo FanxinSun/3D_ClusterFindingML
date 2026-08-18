@@ -10,7 +10,13 @@ namespace CANON
 {
 // Real-side selection for ANY histogram filled from the real ntuplizer file
 // (ntp_hit contains ALL trackers; adc=0 = instrumental-burst population, excluded by anchors).
-inline const char *TPC_CUT = "layer>=7&&layer<=54&&adc>0";
+// LASER VETO (2026-08-17, laser_flash_remodel_request.md; user decision): real
+// event 44 is a GL1 laser-triggered readout that the official reco vetoes before
+// TPC clustering. The sim follows the official criterion (no flash injection), so
+// every REAL-side selection vetoes the event: complete reference = 61 events,
+// as-recorded reference = 99 events. Cluster-level real files never held it.
+inline const char *LASER_VETO = "event!=44";
+inline const char *TPC_CUT = "layer>=7&&layer<=54&&adc>0&&event!=44";
 
 // Laser-flash fiducial time cut (SHORT-TERM filter, conventional analysis practice).
 // Identified as the sPHENIX DIFFUSE LASER calibration flash: 266 nm light liberates
@@ -18,11 +24,13 @@ inline const char *TPC_CUT = "layer>=7&&layer<=54&&adc>0";
 // flash arrives ~one full drift later -> fixed tbin ~329, detector-wide, both sides,
 // soft ADC, apparent z ~ -35 cm. Collaboration models it: coresoftware
 // PHG4TpcCentralMembrane (stripe generator, electrons_per_stripe) + tpccalib
-// TpcCentralMembraneMatching (extraction side). 44/100 frames flagged in laser_frames.txt.
+// TpcCentralMembraneMatching (extraction side). REAL: 1/100 events (event 44, GL1
+// laser-triggered, reco-vetoed) carries a flash; laser_frames.txt (44 "flashes") was a
+// slope artefact and is RETIRED (ev44_probe.C, 2026-08-17). SIM: flash_prob 0.01.
 // Excluding the fixed window on BOTH datasets identically is unbiased for steady-state
 // observables (drops 1.9% of the time axis). LONG-TERM (queued): inject a transported
 // PHG4TpcCentralMembrane stripe flash in frame_composer -> labeled noise class cls=2.
-inline const char *TPC_CUT_NOLASER = "layer>=7&&layer<=54&&adc>0&&!(tbin>=322&&tbin<=340)";
+inline const char *TPC_CUT_NOLASER = "layer>=7&&layer<=54&&adc>0&&event!=44&&!(tbin>=322&&tbin<=340)";
 // (sim digi zbin==tbin exactly, all rows verified 2026-07-20; hit69 exports carry
 //  zbin=NaN per the real TPC convention -> cut on tbin, valid for every sim source)
 inline const char *SIM_NOLASER = "!(tbin>=322&&tbin<=340)";  // apply symmetrically to sim
