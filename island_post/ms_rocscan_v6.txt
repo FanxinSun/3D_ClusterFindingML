@@ -1,0 +1,31 @@
+ms_rocscan v6 — eff/purity working curves of the acceptance cuts (user method)
+finder regime: sim 61901 cands / findable 19361 | real 47877 cands / reference seeds 6132 (complete-61)
+given-grouping regime: sim 30991 truth groups (genuine = gpt>=0.19) | real 6097 seeds (genuine = cleanFit ok)
+columns: FINDER sim eff | sim purity || real refind-eff | acc/ev | in-time || GIVEN sim eff | pur || real eff | pur
+NOMINAL  n12 L13 s15 g 6 rms0.20 R45 : 0.775 0.834 || 0.292 178.5 0.34 || 0.806 0.981 || 0.646 1.000
+rms      n12 L13 s15 g 6 rms0.10 R45 : 0.628 0.876 || 0.259 150.6 0.34 || 0.614 0.988 || 0.580 1.000
+rms      n12 L13 s15 g 6 rms0.15 R45 : 0.772 0.839 || 0.291 176.6 0.34 || 0.798 0.982 || 0.646 1.000
+rms      n12 L13 s15 g 6 rms0.30 R45 : 0.775 0.834 || 0.292 178.5 0.34 || 0.806 0.981 || 0.646 1.000
+gap      n12 L13 s15 g 3 rms0.20 R45 : 0.562 0.858 || 0.198 118.7 0.34 || 0.536 0.978 || 0.431 1.000
+gap      n12 L13 s15 g10 rms0.20 R45 : 0.795 0.709 || 0.319 282.0 0.33 || 0.882 0.981 || 0.740 1.000
+gap      n12 L13 s15 g99 rms0.20 R45 : 0.831 0.599 || 0.364 564.6 0.34 || 0.924 0.981 || 0.809 1.000
+nlay     n12 L 9 s15 g 6 rms0.20 R45 : 0.776 0.825 || 0.293 184.3 0.34 || 0.813 0.980 || 0.646 1.000
+nlay     n12 L17 s15 g 6 rms0.20 R45 : 0.725 0.870 || 0.273 152.0 0.35 || 0.754 0.984 || 0.636 1.000
+span     n12 L13 s10 g 6 rms0.20 R45 : 0.781 0.811 || 0.296 190.0 0.34 || 0.824 0.979 || 0.651 1.000
+span     n12 L13 s20 g 6 rms0.20 R45 : 0.691 0.857 || 0.267 147.8 0.35 || 0.737 0.985 || 0.625 1.000
+n        n16 L13 s15 g 6 rms0.20 R45 : 0.747 0.861 || 0.280 161.5 0.34 || 0.777 0.982 || 0.643 1.000
+n        n20 L13 s15 g 6 rms0.20 R45 : 0.654 0.885 || 0.251 128.7 0.35 || 0.713 0.986 || 0.621 1.000
+Rmin     n12 L13 s15 g 6 rms0.20 R40 : 0.777 0.762 || 0.303 199.6 0.34 || 0.819 0.955 || 0.685 1.000
+Rmin     n12 L13 s15 g 6 rms0.20 R50 : 0.749 0.853 || 0.276 167.0 0.34 || 0.778 0.991 || 0.603 1.000
+Rmin     n12 L13 s15 g 6 rms0.20 R60 : 0.677 0.860 || 0.242 144.4 0.34 || 0.698 0.997 || 0.528 1.000
+sealed-calibration cross-check at NOMINAL: eff 0.777 / purity 0.752 (2026-07-31, same frames class)
+NOTE: looser-than-nominal points (rms 0.30, gap 10/99, nlay 9, span 10, Rmin 40) carry the
+claiming approximation; tighter points are exact subsets of the sealed candidate stream.
+CORRECTION (2026-08-20, post-run): the real refind-eff column used reference
+seeds from ALL 99 events (6132) while the finder ran only on the complete-61
+events -> denominator overcounted. Genuine seeds inside complete-61: 4031 of
+6062 (frac 0.665, recounted; 6132 vs 6062 = Kasa-only vs Kasa+GN in the
+recount, marginal). Corrected NOMINAL refind eff = 0.292/0.665 ~ 0.44; all
+variant-to-variant ratios unaffected (constant scaling). Definition is
+strict (candidate majority-overlap >= 0.5); the earlier landscape's looser
+majority-on-track measure gave ~53% on the all-events basis - consistent.

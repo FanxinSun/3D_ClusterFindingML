@@ -7,6 +7,112 @@ project's source rule), and the ruling. Newest first.
 
 ---
 
+## 2026-08-23 — Review: the twist-field fix (V6-twist) — complete and reasonable, with the width axis re-opened by design
+
+**Scope.** The real-data-probe thread measured a per-region azimuthal sawtooth in
+run-79507 pixels (split-half Dsagitta real +6.5 mm vs sim +0.2; sawtooth ±1.4 mm
+locked to module regions, same sign both sides — the first SIGNED field anchor)
+and requested injection via `twist_field_request.md`. The pipeline agent injected
+it (uncommitted working tree on top of the V6 seal). This review assesses the fix.
+
+### Independent verification (this review, 2026-08-23)
+
+| claim | my check | verdict |
+|---|---|---|
+| Injection code (`tpc_transport` 7th arg, delta·1e-4/r per side/row, post-diffusion pre-binning, no rng draws, hard-fail on missing file) | code read | **CONFIRMED** |
+| The injection lands in the shipped libraries | **paired-library measurement**: raw_lib_pp55_0 vs pp6t_0, per-(event,trk,layer,side) centroid shifts × r vs payload — mean \|meas−payload\| = **19 µm over 96 cells**, all signs/sides correct | **CONFIRMED** end-to-end |
+| Geometry-bake prerequisite (real radii into `tpc_geom_table.txt`) | L7: 31.3805+0.11965 = 31.5002 exact; GDML original kept; rowdr double-count guard (`""` in driver) verified | **CONFIRMED** |
+| Payload freeze (`twist_payload_v6.txt` vs self-overwriting `twist_profile_v6.txt`) | headers + contents: frozen file carries mm-scale deltas; regenerated profile shows sim now ON the sawtooth (residual deltas 130–271 µm) | **CONFIRMED**, sharp operational catch |
+| Acceptance meter 1 (Dsagitta within ±1 mm/side) | post-twist nonrms: +6.31 (charge-resolved +5.72/+6.85) vs real +6.53 (+6.05/+7.12) | **PASS** |
+| Acceptance meter 2 (pixel pooled core must NOT move) | pre→post: q68 **1.88 → 1.88** bit-stable; q95 3.88→3.88; q99 8.63→7.38 (improved) | **PASS** |
+| Profile RMS-diff ≤ ~150 µm | 127 µm (in-memory closure predicted 126) | **PASS** |
+| Provenance despite in-place V6 re-cut | manifest carries BOTH generations (V6 e7e4aa1c… / V6-twist ba837766…); pp55+v5.3 libs kept; pre-twist V6 regenerable from sealed code + kept libs + seeds | **ACCEPTABLE**, flagged below |
+
+### Ruling
+
+**The fix is complete against the request and the implementation is reasonable** —
+mechanism-class reasoning sound (signed, charge-independent, same-sign-both-sides ⇒
+geometric; rowdr precedent for digi-level), full-table over 3-step model justified by
+closure (96% vs 60–70%), and the delivery honored the request's own scope guard
+(no retune of SMOD/SPHI/SCM, response/ZS untouched).
+
+### Flags
+
+1. **The width axis is now re-opened — schedule the down-retune as the next
+   campaign.** stiff 618→728 µm (ratio vs real 0.99→**1.16**), med05 829→907, CM
+   0.484→0.529, half-arc 0.26→0.34. This is expected double-counting (the v5.4b
+   smooth terms were fitted to a total width that already contained real's twist),
+   correctly parked per the request pending the probe thread's post-injection C(d);
+   but a previously closed headline meter is open, and the briefing's honest
+   "re-opened" declaration should not become a resting state.
+2. **Requester sign-off pending**: REAL_DATA_PROBES.md ends at the handover — the
+   delivery ran the requester's macros itself (and this review verified
+   independently), but the probe thread's formal re-acceptance should close the loop.
+3. **Naming**: sealed-V6 filenames were re-cut in place ("re-digitize the V6
+   production" per the request). Provenance survives via dual manifest blocks, but
+   records under `_v6` names now hold V6t numbers — keep the V6t label explicit in
+   every header (largely done) and prefer minting `_v6t` names next time.
+4. Composer realization re-roll (windows ±3.6%) from the lib-rebuild stream desync —
+   declared, not seed-shopped, consistent with the v5.5 honesty rule.
+5. Out of scope but in the tree: `missed_tracks.C` +395 lines (probe-side), commit
+   `58b19b4` has message "." — hygiene nits.
+
+Review artifact: paired-library verification macro (scratchpad; numbers above),
+no repo records touched.
+
+**Follow-up (same day):** user ruled re-balance-on-top over rewind; handover doc
+issued to the pipeline session — `island_post/width_rebalance_request.md`
+(SMOD down-retune with the twist byte-frozen, Dsagitta +6.3 as frozen holdout,
+C(d) sequencing gate, new version names mandatory).
+
+**Gate closed (same day):** probe thread formally accepted the twist (their own
+meters, incl. clipped GLOBAL 1.04→1.01 — the twist supplies previously-missing
+real LF, unexplained surplus 418→169 µm) and ruled the re-balance
+**granularity/composition-change, not amplitude-only** (post-twist sim granular
+share below real: cell coherence 145 vs 307 µm; C(1) 0.57 vs 0.30). Side review
+verified the ruling against the meter code (SMOD hashes independently per layer ⇒
+row-white along tracks ⇒ amplitude-only removes sim's only short-scale content)
+and **amended the request**: primary path = row-block-correlated SMOD (FSBLK,
+nb∈{2,3}), SPHI-cut path rejected (translation mode — tiny stiff share, d0
+anchors), composition meters promoted to acceptance gates with minimum-closure
+bands, probe thread to fix exact bands pre-pilot. Amendment in the request doc.
+
+**v6.1 delivery audit (same day, post sign-off): PASS — seal-ready once the probe
+battery formally lands.** Verified: all four manifest md5s (d0a5df64/6aa93b62/
+7353586c/49387c84) match disk; stiff meter independently re-run → real 626 vs
+sim 637 µm = 1.02 (was 1.16), CM 0.516 in band, med05 840.6 back to pre-twist
+family, d0 2.32/2.51 family; holdouts held (Dsagitta drift 0.01/0.03 mm vs ±0.3
+gate; profile 140 ≤ 150 µm; q68 1.88 bit-stable; spectral family unchanged);
+discipline clean (same-draw realization, no re-roll spent; v61/pp61 names; figure
+wave + residuals_v61 + briefing regenerated; C(1)=0.662 recorded as diagnostic
+with the adjudicated language; ML flag lifted; FSBLK shelved, harness kept; V6t
+probe-ledger generations backed up as `*_v6t.txt`). Producer trail: delivery
+battery in `pp_logs/v61_chain.log`. Two items before the git seal: (1) the probe
+thread's own v61 battery run + formal acceptance — their stated condition "runs
+when the true delivery lands" is now unblocked, and the requester-sign-off
+pattern is the process's spine even when the numbers are already triple-measured;
+(2) a one-line ledger note that the Aug-21 stale pre-twist `*_v61.root` drafts
+were overwritten (never manifested — nothing lost, but the probe's provenance
+flag deserves an explicit answer). Recommendation: relay the probe's go-ahead,
+add the stale note, then seal with the response campaign (four arrows) as the
+declared open front.
+
+**Clause-6 stop-and-report + resolution (same day):** the pipeline pilot
+**falsified the amendment's direction claim** — block-for-white swaps RAISE C(1)
+(reachable band [0.63, 0.67] vs gate ≤0.49; mixture arithmetic <0.01; dilution
+and statistic-sensitivity controls both negative). The error was shared by the
+probe ruling and this review; retracted on the record. The composition contrast
+lives in the frozen response floor (pilot decomposition: C(1)≈0.71 vs real 0.30)
+→ axis re-owned by the response campaign (now four arrows: med05 0.83, LOCAL
+0.90, content owner, floor correlation). Resolution appended to the request doc:
+retract composition gates for v6.1, execute amplitude-only fallback (SMOD′≈0.009,
+one confirmation pilot) with the raw-C(1) drift measured and recorded — pending
+user sign-off. FSBLK shelved behind its guard. Commendation: the stop-and-report
+discipline and the pilot's falsification hygiene are exactly what the clause was
+written for — a broken gate was caught *before* a production, at chunk-0 cost.
+
+---
+
 ## 2026-08-16 — Finding: small loopers exist in the sim with real morphology, but at ~1/3 the real rate
 
 **Question (user):** can the sim reproduce the "small loopers" visible in the

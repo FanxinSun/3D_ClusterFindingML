@@ -215,7 +215,7 @@ using namespace TDG;
 
 // ---------------- STAGE A: transport ----------------
 void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud = -1.0, double cloud_k = 0.0,
-                   const char *rphifield = "")
+                   const char *rphifield = "", const char *twistfile = "")
 {
   CLOUD_EFF = (cloud > 0) ? cloud : CFG::CLOUD;
   loadGeo();
@@ -238,6 +238,15 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
   // Default "" = field off = byte-identical behavior.
   std::vector<double> FZN, FZA;
   double FGRS = 0., FSMOD = 0., FSREG = 0., FSSEC = 0., FSPHI = 0., FSCM = 0.;
+  // v6.1 (width_rebalance_request.md ADJUDICATED AMENDMENT, 2026-08-23):
+  // FSBLK = per-(side, sector, ROW-BLOCK) hashed r-phi offset — the row-block-
+  // correlated re-model of SMOD. Real granular width is coherent over ~2-3
+  // rows (probe C(d)); white SMOD is row-independent (all C(0)). Block index
+  // = (L-7)/NBLK. New hash-seed family 5000000U (distinct from UMOD 1e6,
+  // USEC 4e6, UREG 7e6, phases 9/9.5e6); deterministic, zero main-rng draws;
+  // FSBLK=0 (or a 7-token field string) = byte-identical off-path.
+  double FSBLK = 0.;
+  int NBLK = 2;
   if (rphifield && rphifield[0])
   {
     TString fs(rphifield);
@@ -248,6 +257,8 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
     if (two->GetEntries() > 4) FSSEC = atof(two->At(4)->GetName());
     if (two->GetEntries() > 5) FSPHI = atof(two->At(5)->GetName());
     if (two->GetEntries() > 6) FSCM = atof(two->At(6)->GetName());
+    if (two->GetEntries() > 7) FSBLK = atof(two->At(7)->GetName());
+    if (two->GetEntries() > 8) NBLK = std::max(1, std::min(48, atoi(two->At(8)->GetName())));
     auto *nod = TString(two->At(0)->GetName()).Tokenize(",");
     for (int i = 0; i < nod->GetEntries(); ++i)
     {
@@ -258,11 +269,46 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
         FZA.push_back(aa);
       }
     }
-    printf("tpc_transport: rphi field IN-DIGI: GRS %.4f SMOD %.4f SREG %.4f SSEC %.4f SPHI %.4f SCM %.4f\n",
-           FGRS, FSMOD, FSREG, FSSEC, FSPHI, FSCM);
+    printf("tpc_transport: rphi field IN-DIGI: GRS %.4f SMOD %.4f SREG %.4f SSEC %.4f SPHI %.4f SCM %.4f SBLK %.4f nb %d\n",
+           FGRS, FSMOD, FSREG, FSSEC, FSPHI, FSCM, FSBLK, NBLK);
+  }
+  // --- V6 twist term (twist_field_request.md, 2026-08-21): per-(side, pad
+  // row) azimuthal displacement of the transported charge — the r-phi
+  // counterpart of the real-radius (rowdr) bake. File columns "layer side
+  // real_um sim_um delta_um"; the INJECTED value is delta (real - sim, so
+  // sim lands ON real); positive = larger azimuth (counter-clockwise).
+  // dphi = delta*1e-4/r with r = the (real) row radius from the baked
+  // geometry table. Deterministic — consumes NO rng draws. "" = off.
+  double TW[55][2] = {{0}};
+  bool TWIST_ON = false;
+  if (twistfile && twistfile[0])
+  {
+    FILE *ft = fopen(twistfile, "r");
+    if (!ft)
+    {
+      printf("ERROR: twist table %s missing\n", twistfile);
+      return;
+    }
+    char tl[256];
+    int nrow = 0;
+    while (fgets(tl, 256, ft))
+    {
+      int L, sdx;
+      double re, si, de;
+      if (tl[0] == '#') continue;
+      if (sscanf(tl, "%d %d %lf %lf %lf", &L, &sdx, &re, &si, &de) == 5 && L >= 0 && L < 55 && (sdx == 0 || sdx == 1))
+      {
+        TW[L][sdx] = de;
+        ++nrow;
+      }
+    }
+    fclose(ft);
+    TWIST_ON = (nrow > 0);
+    printf("tpc_transport: TWIST in-digi from %s (%d rows; L7 %+0.f/%+0.f L22 %+0.f/%+0.f L54 %+0.f/%+0.f um)\n",
+           twistfile, nrow, TW[7][0], TW[7][1], TW[22][0], TW[22][1], TW[54][0], TW[54][1]);
   }
   const bool FIELD_ON = (rphifield && rphifield[0]);
-  double UMOD[55][12][2], UREG[3][12][2], USEC[12][2], PPHI[2], PCM[2][2];
+  double UMOD[55][12][2], UREG[3][12][2], USEC[12][2], UBLK[48][12][2], PPHI[2], PCM[2][2];
   if (FIELD_ON)
   {
     for (int L = 0; L < 55; ++L)
@@ -285,6 +331,13 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
         TRandom3 hg(4000000U + sct * 100U + sd2);
         USEC[sct][sd2] = hg.Gaus(0., 1.);
       }
+    for (int bk = 0; bk < 48; ++bk)
+      for (int sct = 0; sct < 12; ++sct)
+        for (int sd2 = 0; sd2 < 2; ++sd2)
+        {
+          TRandom3 hg(5000000U + bk * 10000U + sct * 100U + sd2);
+          UBLK[bk][sct][sd2] = hg.Gaus(0., 1.);
+        }
     {
       TRandom3 hg(9000000U);
       PPHI[0] = hg.Uniform(0., 2 * M_PI);
@@ -427,12 +480,20 @@ void tpc_transport(const char *in, const char *rawout, int NEV = 2, double cloud
         int rg = L < 23 ? 0 : (L < 39 ? 1 : 2);
         double rr = GEO[L].radius;
         double d = FSMOD * UMOD[L][sct][sd2] + FSREG * UREG[rg][sct][sd2] + FSSEC * USEC[sct][sd2];
+        if (FSBLK > 0) d += FSBLK * UBLK[std::max(0, std::min(47, (L - 7) / NBLK))][sct][sd2];
         if (FSPHI > 0)
           d += FSPHI * (std::cos(2 * phw + PPHI[0]) + std::cos(3 * phw + PPHI[1]));
         if (FSCM > 0)
           d += FSCM * (std::cos(2 * phw + PCM[0][sd2]) + std::cos(3 * phw + PCM[1][sd2]));
         if (!FZN.empty()) d += fieldA(z) * (1. + FGRS * (rr - 49.));
         phi += d / rr;
+      }
+      if (TWIST_ON)
+      {
+        phi += TW[L][(z >= 0) ? 1 : 0] * 1e-4 / GEO[L].radius;
+      }
+      if (FIELD_ON || TWIST_ON)
+      {  // re-wrap once, after all azimuthal displacements
         if (phi > M_PI) phi -= 2 * M_PI;
         if (phi < -M_PI) phi += 2 * M_PI;
       }

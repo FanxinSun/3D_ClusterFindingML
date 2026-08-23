@@ -161,6 +161,13 @@ void islandize91(const char *pixels, const char *out, int isSim, const char *tru
     if (two->GetEntries() > 4) FSSEC = atof(two->At(4)->GetName());
     if (two->GetEntries() > 5) FSPHI = atof(two->At(5)->GetName());
     if (two->GetEntries() > 6) FSCM = atof(two->At(6)->GetName());
+    if (two->GetEntries() > 7)
+    {
+      printf("islandize91 ERROR: field string carries an FSBLK component — the export overlay\n"
+             "  path is DEPRECATED for v6.1+ field terms (semantics live in tpc_transport only;\n"
+             "  width_rebalance_request.md amendment, 2026-08-23). Refusing to run.\n");
+      return;
+    }
     auto *nod = TString(two->At(0)->GetName()).Tokenize(",");
     for (int i = 0; i < nod->GetEntries(); ++i)
     {

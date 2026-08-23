@@ -1,0 +1,13 @@
+[rscale_probe v6] before/after the 4-row sagitta fit, beyond one RMS ratio
+  RMS(L): median per-fit RMS vs window length (rows); clip = per-window 3xMAD
+   L    real raw  real clip  sim raw  sim clip   (windows real/sim)
+   4      1205      1165      1337     1321     (134742/815635)
+   6      1272      1228      1395     1385     (56407/306236)
+   8      1336      1283      1430     1422     (42476/226399)
+  12      1473      1369      1469     1462     (27467/145164)
+  16      1575      1392      1487     1480     (19741/104821)
+  24      1883      1456      1509     1504     (12155/63868)
+  32      2092      1480      1523     1519     (8235/43330)
+  48      2330      1587      1556     1552     (4094/21827)
+  real PAIRED (4830 tracks): global med 2356 | own-4-row-median med 1187 | ratio g/l med 1.82 (q90 3.48) | removed sqrt(g^2-l^2) med 1930 um | tracks with no reduction (g<1.05*l): 0.8%
+  sim  PAIRED (24658 tracks): global med 1539 | own-4-row-median med 1329 | ratio g/l med 1.15 (q90 1.29) | removed sqrt(g^2-l^2) med 755 um | tracks with no reduction (g<1.05*l): 5.7%

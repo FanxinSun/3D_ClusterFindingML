@@ -1,0 +1,36 @@
+[gtail_probe v6t] anatomy of the GLOBAL whole-track pixel-fit tail (nf_digipix population)
+  real: 4836 tracks | RAW rms med 2358 (75% 3154, 90% 3957, 95% 4520) | >3mm 29.2% | >=6mm 0.6%
+        TRIMMED rms med 1590 | med fdrop 3.1% | med LF 914 HF 1273 um
+  sim : 23946 tracks | RAW rms med 1587 (75% 1844, 90% 2157, 95% 2352) | >3mm 1.3% | >=6mm 0.4%
+        TRIMMED rms med 1581 | med fdrop 0.0% | med LF 809 HF 1347 um
+  data/MC GLOBAL: raw 1.49 -> trimmed 1.01   (trim = 3x MAD clip, 3 iters, floor 500 um)
+  real tracks with >10% of pixels clipped: 19.9% (sim: 0.2%)
+  real trimmed LF med by span [15,25)/[25,35)/[35,45] cm: 800 / 864 / 925 um
+  sim  trimmed LF med by span [15,25)/[25,35)/[35,45] cm: 654 / 722 / 852 um
+  real TAIL (raw rms>3mm): 1414 tracks (29.2%)
+    CONTAM (trims to clean)    804 (56.9% of tail) | med fdrop 13.9% rmsT 1560 um R 112 cm rowPP 13327 um
+    BENT   (LF>HF survives)    357 (25.2% of tail) | med fdrop  3.3% rmsT 3356 um R 117 cm rowPP 12562 um
+    WIDE   (HF survives)       253 (17.9% of tail) | med fdrop  6.3% rmsT 2710 um R 85 cm rowPP 15150 um
+  sim  TAIL (raw rms>3mm): 304 tracks (1.3%)
+    CONTAM (trims to clean)      0 ( 0.0% of tail) | med fdrop  0.0% rmsT    0 um R 0 cm rowPP    0 um
+    BENT   (LF>HF survives)    102 (33.6% of tail) | med fdrop  0.0% rmsT 4758 um R 65 cm rowPP 14550 um
+    WIDE   (HF survives)       202 (66.4% of tail) | med fdrop  0.0% rmsT 4271 um R 61 cm rowPP 20089 um
+  real cell coherence (side,sector,layer row-mean residual, >=8 tracks): 1149 cells, RMS 307 um
+  sim  cell coherence (side,sector,layer row-mean residual, >=8 tracks): 1152 cells, RMS 145 um
+  real occupancy tercile 1 (ev px 17k-254k): med raw rms 2134 um | raw>3mm 23.0% | trimmed>3mm 5.9%
+  real occupancy tercile 2 (ev px 254k-334k): med raw rms 2366 um | raw>3mm 29.8% | trimmed>3mm 6.5%
+  real occupancy tercile 3 (ev px 334k-467k): med raw rms 2578 um | raw>3mm 34.9% | trimmed>3mm 8.0%
+  real worst 12: ev/npx/R0/span | rms0 -> rmsT (fdrop%) LF/HF rowPP cls
+    ev  9 n  30 R   734 sp 39 |  8529 -> 8529 ( 0.0%) 7638/3796 18528 BENT
+    ev 78 n 112 R   605 sp 39 |  7757 -> 1762 (36.6%) 1349/1134 20226 CONTAM
+    ev 41 n  43 R   276 sp 41 |  7701 -> 7701 ( 0.0%) 7020/3168 14646 BENT
+    ev 32 n 104 R    51 sp 19 |  7376 -> 4703 (11.5%) 2047/4234 22348 WIDE
+    ev 40 n  80 R   192 sp 24 |  7221 -> 4744 ( 6.2%) 3855/2764 12295 BENT
+    ev 12 n  47 R    68 sp 25 |  7205 -> 1331 (38.3%)  503/1232 20673 CONTAM
+    ev 62 n  77 R   153 sp 43 |  6972 -> 2963 (20.8%) 2399/1739 12703 BENT
+    ev 35 n  49 R    59 sp 22 |  6921 -> 5918 ( 6.1%) 4911/3303 17077 BENT
+    ev 29 n  78 R   249 sp 28 |  6810 -> 6810 ( 0.0%) 6376/2392 12327 BENT
+    ev 59 n  91 R   110 sp 44 |  6705 -> 2019 (26.4%) 1660/1149 21631 CONTAM
+    ev 47 n  75 R    75 sp 29 |  6651 -> 6651 ( 0.0%) 6097/2658 12695 BENT
+    ev  4 n  69 R    98 sp 20 |  6644 -> 5920 ( 4.3%) 4786/3484 17299 BENT
+  exemplar (panel 3): ev 78, 112 px, R0 605 cm, rms 7757 -> 1762 um, fdrop 36.6%

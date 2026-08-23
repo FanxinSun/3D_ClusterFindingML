@@ -1,0 +1,17 @@
+[fscale_probe v6] before/after the 4-row sagitta fit WITH the exhaustive finder
+  grouping: MTK::hunt on ALL clusters both sides (real ntp_cluster, all 99 events; sim island91, 50 frames),
+  pixels attached by the nf_digipix road to member clusters; fit bar >=12 px, span>=15, 45<=R<2e4
+  finder tracks: real 15804 -> 13488 pass pixel bar | sim 19049 -> 16921
+  RMS(L): median per-fit RMS vs window length; clip = per-window 3xMAD
+   L    real raw  real clip  sim raw  sim clip   (windows real/sim)
+   4      1357      1338      1466     1437     (346777/447811)
+   6      1405      1377      1547     1514     (132112/172688)
+   8      1445      1406      1612     1561     (98502/128195)
+  12      1532      1442      1720     1606     (64064/83082)
+  16      1613      1461      1813     1631     (46457/60277)
+  24      1796      1498      1972     1662     (28530/37031)
+  32      1916      1516      2069     1670     (19230/25334)
+  48      2063      1545      2200     1705     (8718/11734)
+  real PAIRED (13470 tracks): global med 2065 | own-4-row med 1359 | g/l med 1.35 (q90 2.36) | removed med 1341 um
+  sim  PAIRED (16921 tracks): global med 2189 | own-4-row med 1463 | g/l med 1.34 (q90 2.18) | removed med 1408 um
+  no-finder reference (rscale_probe_v6.txt): real raw 1205->2330, real clip 1165->1587, g/l 1.82, removed 1930

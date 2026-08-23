@@ -306,10 +306,41 @@ a61dbfd129329eb17be8c2dfafb40495  island91_frames_production_v54b.root
 --- real DAQ record (tbin<=960); half-pool composer batches (LIB_SPLIT 2);
 --- sub-threshold trace tables refit on the vetoed real (R3-only phenomenon;
 --- p2 1.25); field-in-digitization as v5.5; seeds 2026094x; targets_v6.txt.
+--- GEOMETRY BAKE (2026-08-19): tpc_geom_table.txt radius column = REAL row
+--- radii (GDML kept as tpc_geom_table_gdml.txt); islandize91 rowdr arg ""
+--- (double-count guard). island91 re-cut = rounding-level (cluster r == real
+--- rows to <=1 um; meters unchanged); hit69 re-cut = PHYSICAL (pixel r moves
+--- to real rows: R1 taper up to 1.2 mm + 0.43 mm R1/R2 seam step removed from
+--- the sim side of pixel-level meters). digi + prodclus md5s stand (readout
+--- writes no r; prodclus is radius-blind).
 e7e4aa1c54e0f73f3052cb28ff921ace  digi_frames_production_v6.root
-5aae95e09599c754ae43dac2c309b160  island91_frames_production_v6.root
+0695ae8c38e1657b6f470c55e4d03d4b  island91_frames_production_v6.root
 b4e88edec1e788ca69e982709b6bb9df  prodclus_v6.root
-dd96dcdf749c6af23c3d2ad32f234d22  hit69_frames_production_v6.root
+12a0bd07cb7a1d493408cdf0c023c045  hit69_frames_production_v6.root
+--- V6-TWIST (2026-08-23): per-(side,row) azimuthal displacement field term
+--- injected at transport (twist_field_request.md; frozen payload
+--- twist_payload_v6.txt; lib family raw_lib_pp6t_*). Full lib rebuild ->
+--- composer stream re-rolled (v5.5 A/B precedent: new libs = new realization;
+--- window sigma 1.5-3%): windows +3.6/+0.4/-3.7, bump +1.6, step +2.3,
+--- px/ev +1.7 (+-2) — realization draw, spectral/response meters unchanged
+--- (sub10 9.83e-5, sh/hi 0.270, run tail P10 1.98e-2, <size> 10.10).
+--- TWIST ACCEPTANCE (delivery run; probe thread re-runs its own): split-half
+--- Dsagitta sim +6.31 (side0 +6.24 / side1 +6.37) vs real +6.53 (+6.04/+7.15)
+--- — inside the +-1 mm gate; profile RMS-diff 127 um (gate ~150); residual
+--- boundary jumps +84/+90 and +165/+138 um (were ~1700). FLAG: cluster-level
+--- width meters now ABOVE real (stiff 728 vs ~626, med05 907, CM jump 0.529
+--- vs 0.480) — the smooth field terms (SMOD/SPHI/SCM) were fitted to width
+--- anchors that already contained real's twist; down-retune parked pending
+--- the probe thread's C(d) re-measure (their request, sect. NOT-requested).
+ba837766d4b6ad36605c604450feaa74  digi_frames_production_v6.root
+237107f38c887bb4a973f961aa2ebf36  island91_frames_production_v6.root
+4c056903853c928d3b2323d8c9e49f27  prodclus_v6.root
+0df0a68cb734fe29d6a1aa00123d5337  hit69_frames_production_v6.root
+# hit69 V6-twist: 81,535,926 rows (1,038 merged). Figures/residual table/
+#   briefing regenerated on this state 2026-08-23 (standing rule). INTERIM ML
+#   FLAG (side review 2026-08-23): V6t clusters NOT for ML training until the
+#   width re-balance (width_rebalance_request.md -> v6.1) returns stiff to
+#   1.00; the flag is lifted at v6.1 delivery and the ML thread told.
 # hit69 V6: 81,056,927 rows (1,136 merged). prodclus 9,261,400 clusters
 #   (53.9/44.7/1.4). Acceptance vs complete-61: windows +0.1/+0.0/-0.5 (the
 #   early-window bias since v5.3 is GONE - it was envelope contamination by
@@ -318,3 +349,26 @@ dd96dcdf749c6af23c3d2ad32f234d22  hit69_frames_production_v6.root
 #   like), islands +7.9, phisize -3.2, sub10 trace -4% (was +109% before the
 #   refit); position meters hold (stiff RMS ratio 0.99, d0 3.06/2.99, CM jump
 #   0.475/0.48). SUPERSEDES v5.5 as the production baseline.
+--- v6.1 (2026-08-23): WIDTH RE-BALANCE, path (ii) amplitude-only
+--- (width_rebalance_request.md CLAUSE-6 RESOLUTION + user sign-off). White
+--- SMOD 0.0426 -> 0.009 (the twist now carries the width share explicitly);
+--- SPHI/SCM frozen (v5.4c); twist payload byte-frozen; FSBLK implemented but
+--- SHELVED (7-token field string = off; off-path byte-identity proven vs
+--- pp6t). Lib family raw_lib_pp61_* (pp6t/pp55/v5.3 kept); seeds 2026094x
+--- (realization held — no re-roll spent); targets_v6.txt references.
+d0a5df64f462037051e229dfbfecd8b4  digi_frames_production_v61.root
+6aa93b625be5217c49f5a5f59bc7b50c  island91_frames_production_v61.root
+7353586ca55e2b522c8d04410e02bb97  prodclus_v61.root
+49387c842f6745f3fe0ff05de44dac22  hit69_frames_production_v61.root
+# hit69 v6.1: 81,567,573 rows (1,153 merged). WIDTH GATES CLOSED: stiff 636.3
+#   vs real ~626 um (1.02, was 1.16 post-twist), CM jump 0.516 vs 0.480+-0.13,
+#   med05 840.6 = pre-twist family (gap to real 692 = response axis, out of
+#   scope), d0 3.047/2.237 (v5.4c family). HOLDOUTS HELD: Dsagitta +6.23/+6.34
+#   per side (real +6.04/+7.15; +-0.3 gate), twist profile RMS-diff 140 um
+#   (<=150), pixel q68 1.88 mm bit-stable, spectral/content = the V6t
+#   realization (windows +3.6/+0.4/-3.7, px/ev +1.8, sub10 9.57e-5, sh/hi
+#   0.270). DIAGNOSTIC (adjudicated language): raw C(1) 0.662 — best reachable
+#   configuration; the composition axis is owned by the response campaign.
+#   Gate PASS +4.7%. SUPERSEDES V6-twist as the production baseline.
+#   ML FLAG LIFTED: stiff is back at 1.00-within-band -> v6.1 clusters
+#   (prodclus_v61/hit69_v61) ARE cleared for ML training; tell the ML thread.

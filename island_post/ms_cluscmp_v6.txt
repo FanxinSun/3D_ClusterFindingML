@@ -1,0 +1,5 @@
+ms_cluscmp v6 — SYMMETRIC cluster-level exhaustive circle comparison
+same finder + acceptance both sides; real = complete events (61), sim = 50 frames
+real: found/event median 184 (mean 178.5) | in-time frac 0.34 | per-track RMS med 658 um | R_fit med 93 cm
+sim: found/event median 377 (mean 380.2) | in-time frac 0.33 | per-track RMS med 803 um | R_fit med 102 cm
+data/MC: rate 0.49 | RMS 0.82

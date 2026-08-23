@@ -1,0 +1,13 @@
+[nonrms_probe v6] non-RMS metric battery on the nf_digipix groups (real road / sim truth)
+  real: 4836 tracks, 600976 pixels pooled
+    (1) |residual| quantiles q68/q95/q99: 1.88 / 6.38 / 10.88 mm | frac |res|>3mm per track med 11.9% | per-track skewness med +0.12
+    (2) pull tails: frac |pull|>3 per track med 3.0%
+    (3) row-lag autocorrelation C(d)/C(0): d=1 0.30 | 2 0.18 | 4 0.08 | 8 -0.06 | 16 -0.01 | 24 -0.02
+    (4) |d0| med 2.45 cm (q90 10.80) | R med 93 cm | split-half Dsagitta: robust sigma 9.12 mm, med +6.53 (n=4384)
+        charge-resolved Dsagitta med: bend<0 +6.05 mm (n=2024) | bend>0 +7.12 mm (n=2360)  [same sign both = coherent twist; opposite = |k| effect]
+  sim : 24667 tracks, 6572800 pixels pooled
+    (1) |residual| quantiles q68/q95/q99: 1.88 / 3.88 / 8.63 mm | frac |res|>3mm per track med 4.2% | per-track skewness med +0.00
+    (2) pull tails: frac |pull|>3 per track med 0.0%
+    (3) row-lag autocorrelation C(d)/C(0): d=1 0.77 | 2 0.67 | 4 0.55 | 8 0.25 | 16 -0.04 | 24 -0.07
+    (4) |d0| med 2.56 cm (q90 6.69) | R med 101 cm | split-half Dsagitta: robust sigma 5.24 mm, med +0.21 (n=21458)
+        charge-resolved Dsagitta med: bend<0 +0.31 mm (n=11518) | bend>0 +0.10 mm (n=9940)  [same sign both = coherent twist; opposite = |k| effect]

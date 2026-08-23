@@ -1,0 +1,30 @@
+[nf_hits v6] HIT level, NO finder; bar >=12 pts, span >=15 cm, R_fit >=45 cm, raw fit
+  sim ntp_g4hit truth-grouped: 18124 collisions -> 253600 tracks | RMS med 30.2 um | R med 101 cm
+  real ntp_hit tracker-grouped (road dxy<1.2 cm, |dtbin|<=6): 6138 seeds -> 4836 tracks (124 px/track mean) | RMS med 2358 um | R med 93 cm
+  gap = the detector: diffusion + pad/tbin quantization (no centroiding at pixel level)
+[nf_ms_hits v6] HIT-level split-arc MS check (ms_split method), 10 g4 chunks
+  sim r0=35 pT [0.45,0.55]: N=16555 sigma 1.365 +- 0.008 mrad (core 1.173, fit noise 0.08) | Highland order 1.509
+  sim r0=35 pT [1.50,2.50]: N=2275 sigma 0.367 +- 0.005 mrad (core 0.300, fit noise 0.02) | Highland order 0.416
+  [r0=35 reproduction check vs ms_split_v53f record: 1.365 +- 0.008 / 0.367 +- 0.005]
+  sim r0=49 pT [0.45,0.55]: N=16595 sigma 1.073 +- 0.006 mrad (core 0.891, fit noise 0.07)
+  sim r0=49 pT [1.50,2.50]: N=2279 sigma 0.307 +- 0.005 mrad (core 0.230, fit noise 0.02)
+  real r0=49 window 0 (R_fit 101-137 cm, pT~0.5): N=661 sigma 88.9 +- 2.4 mrad (core 55.7, fit noise med 26.4)
+  real r0=49 window 1 (R_fit 357-595 cm, stiff): N=57 sigma 119.9 +- 11.2 mrad (core 90.7, fit noise med 33.8)
+  1/p check: sim r0=49 ratio 3.50 (Highland 3.63) | real ratio 0.74 (pT-flat => resolution)
+[nf_sag_hits v6] HIT-level SHORT-SAGITTA local fits: 4 adjacent pad rows, 45 sliding windows
+  sample = tracks passing the nf_hits GLOBAL bar; window gate >=3 distinct rows, n>=5
+  real: 4836 tracks -> 134742/191216 windows fittable (70%) | local RMS med 1205 um | n/window med 12
+  sim : 253600 tracks -> 6859611/9702610 windows fittable (71%) | local RMS med 1.02 um | n/window med 6
+  (sim fittable fraction limited by G4 ~1 cm stepping: 3-6 truth pts per window;
+   local RMS suppressed by sqrt((n-3)/n) dof factor: real ~0.87, sim ~0.63)
+[nf_tracks v6] TRACK level, NO finder; real only (sim has no tracker output)
+  ntp_clus_trk seeds: 6138 total, 4875 pass bar (79%) | RMS med 780 um | R med 93 cm | |d0| med 2.52 cm
+[nf_digipix v6] MATCHED pixel level: sim DIGI pixels (digi_frames_production_v6.root, truth-grouped) vs real pixels (tracker-grouped)
+  real: 4836 tracks (124 px/track) | GLOBAL RMS med 2358 um | LOCAL (4-row) med 1205 um (134742/191216 windows, 70%)
+  sim : 24630 tracks (266 px/track) | GLOBAL RMS med 1538 um | LOCAL (4-row) med 1337 um (814492/961266 windows, 85%)
+  data/MC: GLOBAL 1.53 | LOCAL 0.90   (supervisor test: matched local = response ratio)
+  global-vs-local gap: real 2358 -> 1205 | sim 1538 -> 1337  (the removed part = each side's long-range share)
+[nf_clusters v6] CLUSTER level, NO finder; same bar, raw fit
+  real ntp_clus_trk (event,seedID): 4875 tracks | RMS med 780 um | R med 93 cm
+  sim island91 ntp_cluster (event,gtrackID>0): 99169 tracks | RMS med 863 um | R med 102 cm
+  data/MC RMS 0.90

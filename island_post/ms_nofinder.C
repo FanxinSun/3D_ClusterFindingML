@@ -117,7 +117,19 @@ double med(std::vector<double> v)
   return v[v.size() / 2];
 }
 
-// the ONE selection of this file
+// the ONE selection of this file. Values MEASURED as the working point
+// (2026-08-20): ms_barscan_v6.txt = headline medians insensitive (n 8-20,
+// span 10-25 cm, Rmin 40-60 move the med05-family ratio by <= 1%);
+// ms_rocscan_v6.txt = in this given-grouping regime purity is ~0.98 at
+// every variant and audit-fake seeds are rejected 100% everywhere, so
+// tightening any cut only costs efficiency. R >= 45 cm (pT 0.189 GeV,
+// margin above the 39.1 cm looper bound) is the one cut that also
+// filters: R >= 40 admits looper leakage (-2.6 purity even here). NO gap
+// or RMS gate here ON PURPOSE: gap kills stitched ghosts, which exist
+// only under algorithmic grouping (that gate lives in
+// missed_tracks.C::acceptTrack, where the ROC scan shows it IS the ghost
+// filter); fits stay raw by the branch's design. Note the span here is
+// RADIAL cm; acceptTrack's is layer units.
 struct Grp { std::vector<double> x, y, r; };
 bool fitBar(const Grp &G, Fit &F)
 {
@@ -188,6 +200,7 @@ int realPixGroups(const char *realf, std::vector<Grp> &px)
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       auto key = std::make_pair((int) ev, (int) sid);
       auto it = seedIdx.find(key);
@@ -216,6 +229,7 @@ int realPixGroups(const char *realf, std::vector<Grp> &px)
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54 || adc <= 0) continue;
       auto bit = bucket.find((int) ev * 100 + (int) lay);
       if (bit == bucket.end()) continue;
@@ -248,7 +262,7 @@ FILE *openLedger(const char *ver)
 //    ntp_hit pixels, same canvas (log-x RMS: the two are 40x apart).
 void nf_hits(const char *g4pat = "../P5/PP_g4hit_%d.root", int nfiles = 10,
              const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-             const char *ver = "v55")
+             const char *ver = "v6")
 {
   using namespace MNF;
   // --- sim: truth groups per collision -------------------------------------
@@ -348,9 +362,9 @@ void nf_hits(const char *g4pat = "../P5/PP_g4hit_%d.root", int nfiles = 10,
 // ---------------------------------------------------------------------------
 // 2. CLUSTER LEVEL, no finder: sim island91 ntp_cluster truth-grouped vs real
 //    ntp_clus_trk tracker-grouped, same canvas.
-void nf_clusters(const char *i91 = "island91_frames_production_v54c.root",
+void nf_clusters(const char *i91 = "island91_frames_production_v6.root",
                  const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                 const char *ver = "v54c")
+                 const char *ver = "v6")
 {
   using namespace MNF;
   std::vector<double> rms[2], Rv[2];                  // [0]=real [1]=sim
@@ -370,6 +384,7 @@ void nf_clusters(const char *i91 = "island91_frames_production_v54c.root",
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       Grp &G = g[{(int) ev, (int) sid}];
       G.x.push_back(x); G.y.push_back(y); G.r.push_back(std::hypot(x, y));
@@ -443,7 +458,7 @@ void nf_clusters(const char *i91 = "island91_frames_production_v54c.root",
   TLegend *lg = new TLegend(0.40, 0.72, 0.89, 0.87);
   lg->SetBorderSize(0);
   lg->AddEntry(h[0], Form("real ntp_clus_trk (tracker), med %.0f #mum", med(rms[0]) * 1000), "l");
-  lg->AddEntry(h[1], Form("sim v5.4c ntp_cluster (truth), med %.0f #mum", med(rms[1]) * 1000), "l");
+  lg->AddEntry(h[1], Form("sim %s ntp_cluster (truth), med %.0f #mum", ver, med(rms[1]) * 1000), "l");
   lg->Draw();
   TLatex tx; tx.SetNDC(); tx.SetTextSize(0.030);
   tx.DrawLatex(0.40, 0.66, Form("N tracks: real %ld, sim %ld; data/MC %.2f",
@@ -457,7 +472,7 @@ void nf_clusters(const char *i91 = "island91_frames_production_v54c.root",
 // 3. TRACK LEVEL, no finder: real-only (local sim reco yields no tracks).
 //    ntp_clus_trk fitted; event display + statistics on one canvas.
 void nf_tracks(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-               const char *ver = "v54c", int showev = 7)
+               const char *ver = "v6", int showev = 7)
 {
   using namespace MNF;
   std::map<std::pair<int, int>, Grp> g;
@@ -475,6 +490,7 @@ void nf_tracks(const char *realf = "../clusters_seeds_island_79507-0.root_ntupli
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       Grp &G = g[{(int) ev, (int) sid}];
       G.x.push_back(x); G.y.push_back(y); G.r.push_back(std::hypot(x, y));
@@ -593,7 +609,7 @@ void nf_tracks(const char *realf = "../clusters_seeds_island_79507-0.root_ntupli
 //    distribution itself); sigma about the sample mean, 3sigma-clipped core.
 void nf_ms_hits(const char *g4pat = "../P5/PP_g4hit_%d.root", int ng4 = 10,
                 const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                const char *ver = "v55")
+                const char *ver = "v6")
 {
   using namespace MNF;
   const double PTW[2][2] = {{0.45, 0.55}, {1.5, 2.5}};
@@ -872,7 +888,7 @@ void nf_ms_hits(const char *g4pat = "../P5/PP_g4hit_%d.root", int ng4 = 10,
 //    unfittable; truth local RMS = the um floor (locally exact arc).
 void nf_sag_hits(const char *g4pat = "../P5/PP_g4hit_%d.root", int ng4 = 10,
                  const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                 const char *ver = "v55")
+                 const char *ver = "v6")
 {
   using namespace MNF;
   double rowR[55];
@@ -1032,9 +1048,9 @@ void nf_sag_hits(const char *g4pat = "../P5/PP_g4hit_%d.root", int ng4 = 10,
 //    quadrature effect on the real side; (b) grouping asymmetry: sim = the
 //    particle's own pixels (truth), real = road-matched pixels around seed
 //    clusters (association tails included).
-void nf_digipix(const char *digif = "digi_frames_production_v55.root", int nsim = 60,
+void nf_digipix(const char *digif = "digi_frames_production_v6.root", int nsim = 60,
                 const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                const char *ver = "v55", const char *dump = "")
+                const char *ver = "v6", const char *dump = "")
 {
   using namespace MNF;
   double rowR[55];

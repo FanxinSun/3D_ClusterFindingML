@@ -1,0 +1,34 @@
+# v6.1 residual summary (2026-08-23): dev% = sim/real - 1
+# group | label | dev_vs_ALL-99_real | dev_vs_COMPLETE-61_real (999 = n/a)
+# v6.1 = V6 (laser-vetoed re-baseline + real-radius geometry bake + twist field
+# term) + WIDTH RE-BALANCE (width_rebalance_request.md, clause-6 resolution +
+# user sign-off): white SMOD 0.0426 -> 0.009, SPHI/SCM frozen, twist byte-
+# frozen, FSBLK shelved. Width gates closed: stiff 636 vs real 626 um (1.02,
+# was 1.16 post-twist), CM jump 0.516 vs 0.480+-0.13, med05 840 back in its
+# pre-twist family (gap to real 692 = response axis). Holdouts held: Dsagitta
+# +6.23/+6.34 per side (real +6.04/+7.15), twist profile RMS-diff 140 um, q68
+# 1.88 mm. DIAGNOSTIC (adjudicated language): raw C(1) 0.662 — best reachable
+# configuration; the composition axis is owned by the response campaign.
+# Windows/content = the V6t realization (essentially unchanged draw).
+time|window w1 (early)|-12.9|+3.6
+time|window w2 (mid)|-3.4|+0.4
+time|window w3 (late)|+16.6|-3.7
+time|trigger bump (flash-blind)|-8.4|+1.6
+time|drift-edge step|+1.9|+2.4
+time|fired-mean (trig-only)|999|+4.7
+content|px/event mean|+28.4|+1.8
+content|px/event CV|-53.0|-8.3
+content|R1 px share|-7.9|-5.6
+content|R2 px share|+2.7|+1.2
+content|R3 px share|+9.0|+6.5
+content|low-adc(<30)/event|+34.4|+6.6
+islands|islands/event|+36.7|+8.9
+islands|island <size> (full range)|-5.9|-6.4
+islands|island <phi-size>|-3.2|-3.5
+shapes|<abs asym>|+3.5|+3.5
+shapes|<maxadc/adc>|+7.8|+8.2
+pixel|pixmean|+2.4|+1.1
+pixel|sub10 trace|-11.4|-4.3
+pixel|sh/hi band|+16.4|+17.9
+pixel|run mean|-1.5|-2.1
+pixel|run tail P10|+20.0|+18.6

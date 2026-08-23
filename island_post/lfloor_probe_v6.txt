@@ -1,0 +1,12 @@
+[lfloor_probe v6] the 'only halved' question: what the LOCAL fit removed and what its floor is
+  real (4836 tracks):
+    LADDER: pixel GLOBAL raw 2358 -> 3sig-clipped 1590 -> pixel LOCAL 4-row 1205 -> row-centroid GLOBAL refit  953 um (4797 tracks)
+    variance removed by LOCAL vs raw GLOBAL: sqrt(2358^2-1205^2)=2026 um = 74% of the variance
+    window decomposition: rms med 1205 = HF (within-row) 1133 (+) LF (row means)  219 um -> the 4-row fit zeroes trajectory content
+    fit-free cloud width per row: sample RMS med 1105 um (= 0.49 pad pitch) | ADC-weighted  997 um | pads/row med 2 | tbin samples/pad med 1.5
+  sim  (24667 tracks):
+    LADDER: pixel GLOBAL raw 1539 -> 3sig-clipped 1535 -> pixel LOCAL 4-row 1337 -> row-centroid GLOBAL refit  809 um (24373 tracks)
+    variance removed by LOCAL vs raw GLOBAL: sqrt(1539^2-1337^2)= 762 um = 25% of the variance
+    window decomposition: rms med 1337 = HF (within-row) 1278 (+) LF (row means)  272 um -> the 4-row fit zeroes trajectory content
+    fit-free cloud width per row: sample RMS med 1301 um (= 0.69 pad pitch) | ADC-weighted 1056 um | pads/row med 3 | tbin samples/pad med 2.5
+  reference: nf_tracks cluster-level whole-track fit (tracker clusters) = 780 um -> centroid refit closes onto it

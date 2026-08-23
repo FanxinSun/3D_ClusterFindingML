@@ -108,6 +108,15 @@ struct Cl { float x, y, lay, tb; int id; };       // id: sim gtrackID (-1 real)
 struct Trk { std::vector<int> idx; Fit F; double medtb = 0; };
 
 // the established acceptance bar (same circularity criteria as ms_realcheck)
+struct CandRec
+{
+  int n, nlay, span, maxgap;
+  double R, rms;
+  bool acc;
+  std::vector<int> idx;
+};
+std::vector<CandRec> *gCand = nullptr;   // armed by mt_rocscan around hunt()
+
 bool acceptTrack(const std::vector<Cl> &C, std::vector<int> &idx, Fit &F,
                  double rescut = 0.30)
 {
@@ -136,13 +145,23 @@ bool acceptTrack(const std::vector<Cl> &C, std::vector<int> &idx, Fit &F,
     lmax = std::max(lmax, (int) C[i].lay);
     lays.insert((int) C[i].lay);
   }
-  if (!(F.ok && F.rms <= 0.20 && lmax - lmin >= 15 && (int) lays.size() >= 13 &&
-        F.R >= 45 && F.R < 2e4)) return false;
   // contiguity: real tracks have no big radial holes; stitched ghosts do
   std::vector<int> lv(lays.begin(), lays.end());
+  int maxgap = 0;
   for (size_t i = 1; i < lv.size(); ++i)
-    if (lv[i] - lv[i - 1] > 6) return false;
-  return true;
+    maxgap = std::max(maxgap, lv[i] - lv[i - 1]);
+  bool pass = F.ok && F.rms <= 0.20 && lmax - lmin >= 15 && (int) lays.size() >= 13 &&
+              F.R >= 45 && F.R < 2e4 && maxgap <= 6;
+  // ROC-scan collector (2026-08-20): when armed, record every candidate that
+  // survives the FIXED cleaning stage, with its gate scalars and the nominal
+  // verdict. Claiming behavior is untouched (return value unchanged), so the
+  // nominal candidate stream stays bit-exact; the offline cut scan re-applies
+  // gates to these records (exact for tighter-than-nominal claiming, second-
+  // order approximate for looser).
+  if (gCand)
+    gCand->push_back({(int) idx.size(), (int) lays.size(), lmax - lmin, maxgap,
+                      F.R, F.rms, pass, idx});
+  return pass;
 }
 
 // exhaustive circle search on one event's cluster list.
@@ -326,6 +345,7 @@ void missed_tracks(const char *realf = "../clusters_seeds_island_79507-0.root_nt
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       trkkey.insert(((long long) ev << 40) ^ ((long long) llround(x * 1e3) << 20) ^ (long long) llround(y * 1e3));
       ntrkrows++;
@@ -343,6 +363,7 @@ void missed_tracks(const char *realf = "../clusters_seeds_island_79507-0.root_nt
     for (Long64_t i = 0; i < c->GetEntries(); ++i)
     {
       c->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       bool on = trkkey.count(((long long) ev << 40) ^ ((long long) llround(x * 1e3) << 20) ^ (long long) llround(y * 1e3)) > 0;
       rev[(int) ev].push_back({x, y, lay, tb, -1});
@@ -568,8 +589,8 @@ void missed_tracks(const char *realf = "../clusters_seeds_island_79507-0.root_nt
 // Real rates quoted on COMPLETE events (cluster-tbin p99.9 > 950) per the
 // dual-reference convention; sim frames are always complete.
 void mt_cluscmp(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                const char *i91 = "island91_frames_production_v54c.root",
-                const char *ver = "v54c", int nsimev = 50)
+                const char *i91 = "island91_frames_production_v6.root",
+                const char *ver = "v6", int nsimev = 50)
 {
   using namespace MTK;
   std::map<int, std::vector<Cl>> ev[2];
@@ -589,6 +610,7 @@ void mt_cluscmp(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
     for (Long64_t i = 0; i < c->GetEntries(); ++i)
     {
       c->GetEntry(i);
+      if ((int) evn == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       ev[0][(int) evn].push_back({x, y, lay, tb, -1});
       auto &h = tbc[(int) evn];
@@ -734,7 +756,7 @@ void mt_cluscmp(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
 // principles findable track-class rate per collision, against the direct
 // truth-group count under the same acceptance.
 void mt_g4scan(const char *g4pat = "../P5/PP_g4hit_%d.root", int nfiles = 1,
-               const char *ver = "v54c")
+               const char *ver = "v6")
 {
   using namespace MTK;
   long ncoll = 0, nfound = 0, ntruth = 0, nrec = 0, ndupe = 0, nsub = 0, nghost = 0, nrms05 = 0;
@@ -831,7 +853,7 @@ void mt_g4scan(const char *g4pat = "../P5/PP_g4hit_%d.root", int nfiles = 1,
 // (no charge weighting), so the per-point RMS is expected slightly above
 // the cluster level.
 void mt_pixscan(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                int nev = 25, const char *ver = "v54c")
+                int nev = 25, const char *ver = "v6")
 {
   using namespace MTK;
   TFile *f = TFile::Open(realf);
@@ -850,6 +872,7 @@ void mt_pixscan(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
   for (Long64_t i = 0; i < t->GetEntries(); ++i)
   {
     t->GetEntry(i);
+    if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
     if (lay < 7 || lay > 54 || adc <= 0) continue;
     auto &h = tbc[(int) ev];
     if (h.empty()) h.assign(200, 0);
@@ -876,6 +899,7 @@ void mt_pixscan(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
   for (Long64_t i = 0; i < t->GetEntries(); ++i)
   {
     t->GetEntry(i);
+    if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
     if (lay < 7 || lay > 54 || adc <= 0) continue;
     if (!chosen.count((int) ev)) continue;
     evs[(int) ev].push_back({x, y, lay, tb, -1});
@@ -962,4 +986,359 @@ void mt_pixscan(const char *realf = "../clusters_seeds_island_79507-0.root_ntupl
   }
   cv->SaveAs(Form("../sim_validation_plots/ms_pixscan_%s.png", ver));
   printf("wrote ms_pixscan_%s outputs\n", ver);
+}
+
+// ---------------------------------------------------------------------------
+// mt_rocscan — efficiency/purity working curves for the acceptance-bar cuts
+// (user method, 2026-08-20): ONE exhaustive finder pass per dataset with the
+// candidate collector armed (claiming stays bit-exact nominal), then an
+// OFFLINE scan re-applies gate variants to the cached candidates.
+//   Regime FINDER (the fake-circle filter the user asked about): sim = hunt()
+//   over ALL island91-V6 clusters of 50 frames, candidates labeled by truth
+//   majority; eff = findable truth tracks recovered (findable = nominal
+//   acceptTrack on truth groups, FIXED across the scan; dupes not double-
+//   counted); purity = accepted candidates with majority purity >= 0.6 on a
+//   findable track (dupes count as real) / accepted. Real = hunt() over ALL
+//   clusters of the complete-61 events; reference = audited-genuine seeds
+//   (cleanFit-style, >=12 clusters); refind eff + composition proxies.
+//   Regime GIVEN-GROUPING (the no-finder bar's home, my comparison): the
+//   same collector run on truth groups (sim; genuine = gpt >= 0.19) and on
+//   tracker seeds (real; genuine = cleanFit ok), same offline scan.
+// Scan restricted to the post-cleaning gates; the 0.30 cm cleaning itself is
+// fixed (rms variants above 0.30 would be no-ops by construction). Looser-
+// than-nominal points carry a second-order claiming approximation (declared).
+void mt_rocscan(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
+                const char *i91 = "island91_frames_production_v6.root",
+                const char *ver = "v6", int nsimev = 50)
+{
+  using namespace MTK;
+  struct SR { int n, nlay, span, maxgap; double R, rms, medtb, pur; bool nom; int lab; };
+  // lab: FINDER sim: 1 = majority (pur>=0.6) on findable truth, 0 = else (ghost/sub-bar)
+  //      FINDER real: 1 = majority overlap on reference seed, 0 = else
+  //      GIVEN sim: 1 = genuine track-class (gpt>=0.19), 0 = else
+  //      GIVEN real: 1 = cleanFit-genuine seed, 0 = fake
+  std::vector<SR> fs, fr, gs, gr;                     // finder-sim/real, given-sim/real
+  std::vector<int> fsTid;                             // finder-sim: majority tid key (dedup)
+  long findableS = 0, refSeeds = 0;
+  std::vector<int> fsFindKey;                         // per-candidate findable-truth key or -1
+  std::vector<int> frSeedKey;                         // finder-real: matched reference seed key or -1
+
+  // ---------------- SIM ----------------
+  {
+    TFile *f = TFile::Open(i91);
+    if (!f || f->IsZombie()) { printf("missing %s\n", i91); return; }
+    TTree *c = (TTree *) f->Get("ntp_cluster");
+    TTree *u = (TTree *) f->Get("ntp_truth");
+    float ev, lay, x, y, tb, tid, gpt;
+    c->SetBranchStatus("*", 0);
+    for (auto b : {"event", "layer", "x", "y", "tbin"}) c->SetBranchStatus(b, 1);
+    c->SetBranchAddress("event", &ev);
+    c->SetBranchAddress("layer", &lay);
+    c->SetBranchAddress("x", &x);
+    c->SetBranchAddress("y", &y);
+    c->SetBranchAddress("tbin", &tb);
+    u->SetBranchStatus("*", 0);
+    for (auto b : {"gtrackID", "gpt"}) u->SetBranchStatus(b, 1);
+    u->SetBranchAddress("gtrackID", &tid);
+    u->SetBranchAddress("gpt", &gpt);
+    std::map<int, std::vector<Cl>> evc;
+    std::map<int, std::vector<int>> evtid;
+    std::map<int, std::vector<float>> evgpt;
+    for (Long64_t i = 0; i < c->GetEntries(); ++i)
+    {
+      c->GetEntry(i); u->GetEntry(i);
+      if ((int) ev >= nsimev) continue;
+      if (lay < 7 || lay > 54) continue;
+      evc[(int) ev].push_back({x, y, lay, tb, -1});
+      evtid[(int) ev].push_back((int) tid);
+      evgpt[(int) ev].push_back(gpt);
+    }
+    f->Close();
+    for (auto &kv : evc)
+    {
+      int e = kv.first;
+      std::vector<Cl> &C = kv.second;
+      std::vector<int> &T = evtid[e];
+      std::vector<float> &G = evgpt[e];
+      // truth groups
+      std::map<int, std::vector<int>> tg;
+      for (size_t i = 0; i < C.size(); ++i)
+        if (T[i] > 0) tg[T[i]].push_back((int) i);
+      // findable set (FIXED nominal definition) + GIVEN-regime records
+      std::set<int> findable;
+      gCand = nullptr;
+      for (auto &g : tg)
+      {
+        if ((int) g.second.size() < 12) continue;
+        std::vector<int> idx = g.second;
+        Fit F;
+        if (acceptTrack(C, idx, F)) { findable.insert(g.first); findableS++; }
+      }
+      std::vector<CandRec> cand;
+      gCand = &cand;
+      for (auto &g : tg)
+      {
+        if ((int) g.second.size() < 12) continue;
+        std::vector<int> idx = g.second;
+        Fit F;
+        acceptTrack(C, idx, F);
+      }
+      gCand = nullptr;
+      for (auto &r : cand)
+      {
+        double gp = 0;
+        std::vector<double> tbv;
+        for (int i : r.idx) tbv.push_back(C[i].tb);
+        if (!r.idx.empty()) gp = G[r.idx[0]];
+        std::sort(tbv.begin(), tbv.end());
+        gs.push_back({r.n, r.nlay, r.span, r.maxgap, r.R, r.rms,
+                      tbv.empty() ? 0 : tbv[tbv.size() / 2], 1.0, r.acc,
+                      gp >= 0.19 ? 1 : 0});
+      }
+      // FINDER regime
+      cand.clear();
+      gCand = &cand;
+      hunt(C);
+      gCand = nullptr;
+      for (auto &r : cand)
+      {
+        std::map<int, int> cnt;
+        std::vector<double> tbv;
+        for (int i : r.idx)
+        {
+          if (T[i] > 0) cnt[T[i]]++;
+          tbv.push_back(C[i].tb);
+        }
+        int mtid = -1, mc = 0;
+        for (auto &q : cnt)
+          if (q.second > mc) { mc = q.second; mtid = q.first; }
+        double pur = r.idx.empty() ? 0 : (double) mc / r.idx.size();
+        bool onfind = pur >= 0.6 && findable.count(mtid);
+        std::sort(tbv.begin(), tbv.end());
+        fs.push_back({r.n, r.nlay, r.span, r.maxgap, r.R, r.rms,
+                      tbv.empty() ? 0 : tbv[tbv.size() / 2], pur, r.acc,
+                      onfind ? 1 : 0});
+        fsFindKey.push_back(onfind ? e * 1000000 + mtid : -1);
+      }
+      printf("rocscan sim frame %d: %zu finder cands\n", e, cand.size());
+    }
+  }
+  // ---------------- REAL ----------------
+  {
+    TFile *f = TFile::Open(realf);
+    if (!f || f->IsZombie()) { printf("missing %s\n", realf); return; }
+    // seeds + audit
+    struct SCl { float x, y; int lay; };
+    std::map<std::pair<int, int>, std::vector<SCl>> seeds;
+    {
+      TTree *t = (TTree *) f->Get("ntp_clus_trk");
+      float ev, sid, lay, x, y;
+      t->SetBranchStatus("*", 0);
+      for (auto b : {"event", "seedID", "layer", "x", "y"}) t->SetBranchStatus(b, 1);
+      t->SetBranchAddress("event", &ev);
+      t->SetBranchAddress("seedID", &sid);
+      t->SetBranchAddress("layer", &lay);
+      t->SetBranchAddress("x", &x);
+      t->SetBranchAddress("y", &y);
+      for (Long64_t i = 0; i < t->GetEntries(); ++i)
+      {
+        t->GetEntry(i);
+        if ((int) ev == 44) continue;                 // V6 laser veto
+        if (lay < 7 || lay > 54) continue;
+        seeds[{(int) ev, (int) sid}].push_back({x, y, (int) lay});
+      }
+    }
+    // genuine reference seeds (cleanFit-style: iterative 0.30 cm, ok && >=6)
+    std::map<std::pair<int, int>, int> refkey;        // seed -> reference index
+    {
+      int k = 0;
+      for (auto &kv : seeds)
+      {
+        if ((int) kv.second.size() < 12) continue;
+        std::vector<double> X, Y;
+        for (auto &p : kv.second) { X.push_back(p.x); Y.push_back(p.y); }
+        bool ok = true;
+        Fit F;
+        for (int it = 0; it < 6; ++it)
+        {
+          if ((int) X.size() < 6) { ok = false; break; }
+          std::vector<double> Xc = X, Yc = Y;
+          F = fitCircle(Xc, Yc);
+          if (!F.ok) { ok = false; break; }
+          std::vector<double> KX, KY;
+          for (size_t i = 0; i < X.size(); ++i)
+          {
+            double res = std::hypot(X[i] - F.a, Y[i] - F.b) - F.R;
+            if (std::fabs(res) <= 0.30) { KX.push_back(X[i]); KY.push_back(Y[i]); }
+          }
+          if (KX.size() == X.size()) break;
+          X = KX; Y = KY;
+        }
+        ok = ok && (int) X.size() >= 6;
+        // GIVEN-regime real record via collector on the seed's clusters
+        std::vector<Cl> SC;
+        for (auto &p : kv.second) SC.push_back({p.x, p.y, (float) p.lay, 0, -1});
+        std::vector<int> idx(SC.size());
+        for (size_t i = 0; i < SC.size(); ++i) idx[i] = (int) i;
+        std::vector<CandRec> cand;
+        gCand = &cand;
+        Fit FF;
+        acceptTrack(SC, idx, FF);
+        gCand = nullptr;
+        for (auto &r : cand)
+          gr.push_back({r.n, r.nlay, r.span, r.maxgap, r.R, r.rms, 0, 1.0, r.acc, ok ? 1 : 0});
+        if (ok) { refkey[kv.first] = k++; refSeeds++; }
+      }
+    }
+    // complete-61 events + finder pass
+    TTree *c = (TTree *) f->Get("ntp_cluster");
+    float ev, lay, x, y, tb;
+    c->SetBranchStatus("*", 0);
+    for (auto b : {"event", "layer", "x", "y", "tbin"}) c->SetBranchStatus(b, 1);
+    c->SetBranchAddress("event", &ev);
+    c->SetBranchAddress("layer", &lay);
+    c->SetBranchAddress("x", &x);
+    c->SetBranchAddress("y", &y);
+    c->SetBranchAddress("tbin", &tb);
+    std::map<int, std::vector<Cl>> evc;
+    std::map<int, std::vector<int>> tbc;
+    for (Long64_t i = 0; i < c->GetEntries(); ++i)
+    {
+      c->GetEntry(i);
+      if ((int) ev == 44) continue;                   // V6 laser veto
+      if (lay < 7 || lay > 54) continue;
+      evc[(int) ev].push_back({x, y, lay, tb, -1});
+      auto &h = tbc[(int) ev];
+      if (h.empty()) h.assign(200, 0);
+      int b = (int) (tb / 5);
+      if (b >= 0 && b < 200) h[b]++;
+    }
+    f->Close();
+    for (auto &kv : evc)
+    {
+      long tot = 0, acc2 = 0;
+      int endp = 0;
+      for (int q : tbc[kv.first]) tot += q;
+      for (int b = 0; b < 200; ++b)
+      {
+        acc2 += tbc[kv.first][b];
+        if (acc2 >= (long) (0.999 * tot)) { endp = b * 5; break; }
+      }
+      if (endp <= 950) continue;                      // complete events only
+      std::vector<Cl> &C = kv.second;
+      // per-(layer) position lookup of this event's seed clusters
+      std::map<int, std::vector<std::array<double, 3>>> lut;  // lay -> (x, y, seedkey)
+      for (auto &sv : seeds)
+      {
+        if (sv.first.first != kv.first) continue;
+        auto it = refkey.find(sv.first);
+        if (it == refkey.end()) continue;
+        for (auto &p : sv.second)
+          lut[p.lay].push_back({(double) p.x, (double) p.y, (double) it->second});
+      }
+      std::vector<CandRec> cand;
+      gCand = &cand;
+      hunt(C);
+      gCand = nullptr;
+      for (auto &r : cand)
+      {
+        std::map<int, int> cnt;
+        std::vector<double> tbv;
+        for (int i : r.idx)
+        {
+          tbv.push_back(C[i].tb);
+          auto lit = lut.find((int) C[i].lay);
+          if (lit == lut.end()) continue;
+          for (auto &p : lit->second)
+            if (std::hypot(C[i].x - p[0], C[i].y - p[1]) < 0.1) { cnt[(int) p[2]]++; break; }
+        }
+        int msk = -1, mc = 0;
+        for (auto &q : cnt)
+          if (q.second > mc) { mc = q.second; msk = q.first; }
+        double ov = r.idx.empty() ? 0 : (double) mc / r.idx.size();
+        std::sort(tbv.begin(), tbv.end());
+        fr.push_back({r.n, r.nlay, r.span, r.maxgap, r.R, r.rms,
+                      tbv.empty() ? 0 : tbv[tbv.size() / 2], ov, r.acc,
+                      ov >= 0.5 ? 1 : 0});
+        frSeedKey.push_back(ov >= 0.5 ? msk : -1);
+      }
+      printf("rocscan real ev %d: %zu finder cands\n", kv.first, cand.size());
+    }
+  }
+  // ---------------- offline scan ----------------
+  struct Var { const char *fam; int n, nlay, span, gap; double rms, rmin; };
+  std::vector<Var> vars = {
+    {"NOMINAL", 12, 13, 15, 6, 0.20, 45},
+    {"rms", 12, 13, 15, 6, 0.10, 45}, {"rms", 12, 13, 15, 6, 0.15, 45}, {"rms", 12, 13, 15, 6, 0.30, 45},
+    {"gap", 12, 13, 15, 3, 0.20, 45}, {"gap", 12, 13, 15, 10, 0.20, 45}, {"gap", 12, 13, 15, 99, 0.20, 45},
+    {"nlay", 12, 9, 15, 6, 0.20, 45}, {"nlay", 12, 17, 15, 6, 0.20, 45},
+    {"span", 12, 13, 10, 6, 0.20, 45}, {"span", 12, 13, 20, 6, 0.20, 45},
+    {"n", 16, 13, 15, 6, 0.20, 45}, {"n", 20, 13, 15, 6, 0.20, 45},
+    {"Rmin", 12, 13, 15, 6, 0.20, 40}, {"Rmin", 12, 13, 15, 6, 0.20, 50}, {"Rmin", 12, 13, 15, 6, 0.20, 60}};
+  auto pass = [](const SR &r, const Var &v) {
+    return r.n >= v.n && r.nlay >= v.nlay && r.span >= v.span && r.maxgap <= v.gap &&
+           r.rms <= v.rms && r.R >= v.rmin && r.R < 2e4;
+  };
+  FILE *fo = fopen(Form("ms_rocscan_%s.txt", ver), "w");
+  auto P = [&](const char *fmt, ...) {
+    va_list ap; va_start(ap, fmt); vprintf(fmt, ap); va_end(ap);
+    va_start(ap, fmt); vfprintf(fo, fmt, ap); va_end(ap);
+  };
+  P("ms_rocscan %s — eff/purity working curves of the acceptance cuts (user method)\n", ver);
+  P("finder regime: sim %zu cands / findable %ld | real %zu cands / reference seeds %ld (complete-61)\n",
+    fs.size(), findableS, fr.size(), refSeeds);
+  P("given-grouping regime: sim %zu truth groups (genuine = gpt>=0.19) | real %zu seeds (genuine = cleanFit ok)\n",
+    gs.size(), gr.size());
+  P("columns: FINDER sim eff | sim purity || real refind-eff | acc/ev | in-time || GIVEN sim eff | pur || real eff | pur\n");
+  std::vector<std::array<double, 4>> rocF, rocG;      // for the figure: (effS, purS) x 2 regimes
+  for (auto &v : vars)
+  {
+    // finder sim: eff via unique findable keys; purity over accepted
+    std::set<int> rec;
+    long accS = 0, realS = 0;
+    for (size_t i = 0; i < fs.size(); ++i)
+    {
+      if (!pass(fs[i], v)) continue;
+      accS++;
+      if (fs[i].lab) { realS++; if (fsFindKey[i] >= 0) rec.insert(fsFindKey[i]); }
+    }
+    double effS = findableS ? (double) rec.size() / findableS : 0;
+    double purS = accS ? (double) realS / accS : 0;
+    // finder real
+    std::set<int> refound;
+    long accR = 0, intime = 0;
+    for (size_t i = 0; i < fr.size(); ++i)
+    {
+      if (!pass(fr[i], v)) continue;
+      accR++;
+      if (fr[i].medtb >= 60 && fr[i].medtb <= 360) intime++;
+      if (frSeedKey[i] >= 0) refound.insert(frSeedKey[i]);
+    }
+    double effR = refSeeds ? (double) refound.size() / refSeeds : 0;
+    // given regimes
+    auto gep = [&](std::vector<SR> &g, double &e, double &p) {
+      long gen = 0, acc = 0, accgen = 0;
+      for (auto &r : g)
+      {
+        if (r.lab) gen++;
+        if (!pass(r, v)) continue;
+        acc++;
+        if (r.lab) accgen++;
+      }
+      e = gen ? (double) accgen / gen : 0;
+      p = acc ? (double) accgen / acc : 0;
+    };
+    double eGS, pGS, eGR, pGR;
+    gep(gs, eGS, pGS); gep(gr, eGR, pGR);
+    P("%-8s n%2d L%2d s%2d g%2d rms%.2f R%2.0f : %.3f %.3f || %.3f %5.1f %.2f || %.3f %.3f || %.3f %.3f\n",
+      v.fam, v.n, v.nlay, v.span, v.gap, v.rms, v.rmin,
+      effS, purS, effR, (double) accR / 61., accR ? (double) intime / accR : 0,
+      eGS, pGS, eGR, pGR);
+    rocF.push_back({effS, purS, eGS, pGS});
+  }
+  P("sealed-calibration cross-check at NOMINAL: eff 0.777 / purity 0.752 (2026-07-31, same frames class)\n");
+  P("NOTE: looser-than-nominal points (rms 0.30, gap 10/99, nlay 9, span 10, Rmin 40) carry the\n");
+  P("claiming approximation; tighter points are exact subsets of the sealed candidate stream.\n");
+  fclose(fo);
+  printf("wrote ms_rocscan_%s.txt\n", ver);
 }

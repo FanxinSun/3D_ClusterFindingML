@@ -1,0 +1,21 @@
+ms_barscan v6 — statistics + sensitivity of the fitBar cuts (n>=12, span>=15, 45<=R<2e4)
+R=45 cm at 1.4 T <-> pT = 0.189 GeV (looper/track class boundary 0.164 GeV <-> R = 39.1 cm)
+real seeds : 6138 raw groups | n p10/med 22/39 | span p10/med 22.4/42.8 cm
+  cut-flow: fail n 0.0% -> fail span 3.1% -> unfittable 0.00% -> fail R-window 17.4% -> PASS 79.4%
+  N-1 marginals: n<12 0.0% | span<15 2.2% | R outside 18.0%
+sim truthgr: 1061834 raw groups | n p10/med 1/1 | span p10/med 0.0/0.0 cm
+  cut-flow: fail n 85.2% -> fail span 2.9% -> unfittable 0.00% -> fail R-window 2.5% -> PASS 9.3%
+  N-1 marginals: n<12 0.5% | span<15 11.6% | R outside 21.1%
+sensitivity (real / sim medians, real:sim ratio) — NOMINAL first:
+  n>=12 span>=15 R>=45 : RMSmed all  780 /  863 um (ratio 0.904) | 0.5GeV-win  675 /  793 (ratio 0.851)
+  n>= 8 span>=15 R>=45 : RMSmed all  780 /  863 um (ratio 0.903) | 0.5GeV-win  675 /  794 (ratio 0.850)
+  n>=16 span>=15 R>=45 : RMSmed all  779 /  864 um (ratio 0.902) | 0.5GeV-win  675 /  793 (ratio 0.851)
+  n>=20 span>=15 R>=45 : RMSmed all  775 /  869 um (ratio 0.892) | 0.5GeV-win  674 /  794 (ratio 0.849)
+  n>=12 span>=10 R>=45 : RMSmed all  774 /  844 um (ratio 0.917) | 0.5GeV-win  674 /  781 (ratio 0.863)
+  n>=12 span>=20 R>=45 : RMSmed all  788 /  879 um (ratio 0.896) | 0.5GeV-win  678 /  802 (ratio 0.846)
+  n>=12 span>=25 R>=45 : RMSmed all  791 /  893 um (ratio 0.886) | 0.5GeV-win  683 /  810 (ratio 0.842)
+  n>=12 span>=15 R>=40 : RMSmed all  798 /  881 um (ratio 0.905) | 0.5GeV-win  675 /  793 (ratio 0.851)
+  n>=12 span>=15 R>=50 : RMSmed all  757 /  846 um (ratio 0.895) | 0.5GeV-win  675 /  793 (ratio 0.851)
+  n>=12 span>=15 R>=60 : RMSmed all  723 /  811 um (ratio 0.892) | 0.5GeV-win  675 /  793 (ratio 0.851)
+real seeds : accepted with R in [45,60) (near-boundary): 18.7%
+sim truthgr: accepted with R in [45,60) (near-boundary): 14.7%

@@ -215,8 +215,8 @@ bool splitClus(CT &T, double r0, double &out,
 }  // namespace MSR
 
 void ms_real(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-             const char *i91 = "island91_frames_production_v53.root",
-             const char *ver = "v53f", const char *vtag = "v5.3",
+             const char *i91 = "island91_frames_production_v6.root",
+             const char *ver = "v6", const char *vtag = "V6",
              double r0 = 49.0)
 {
   using namespace MSR;
@@ -239,6 +239,7 @@ void ms_real(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplize
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;           // TPC clusters only
       CT &T = grp[0][(long) ev * 1000 + (long) sid];
       T.x.push_back(x); T.y.push_back(y); T.r.push_back(std::hypot(x, y));
@@ -405,8 +406,8 @@ void ms_real(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplize
 // (full-crosser gates on survivors), giving purified data/MC ratios.
 // Output: ../sim_validation_plots/ms_realcheck_<ver>.png + ms_realcheck_<ver>.txt
 void ms_realcheck(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                  const char *i91 = "island91_frames_production_v53.root",
-                  const char *ver = "v53f", const char *vtag = "v5.3",
+                  const char *i91 = "island91_frames_production_v6.root",
+                  const char *ver = "v6", const char *vtag = "V6",
                   double rescut = 0.30)
 {
   using namespace MSR;
@@ -428,6 +429,7 @@ void ms_realcheck(const char *realf = "../clusters_seeds_island_79507-0.root_ntu
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       CT &T = grp[0][(long) ev * 1000 + (long) sid];
       T.x.push_back(x); T.y.push_back(y); T.r.push_back(std::hypot(x, y));
@@ -611,8 +613,8 @@ void ms_realcheck(const char *realf = "../clusters_seeds_island_79507-0.root_ntu
 //          ../sim_validation_plots/ms_real_showcase_<ver>.png
 //          ms_real_split_<ver>.txt
 void ms_real_split(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-                   const char *i91 = "island91_frames_production_v53.root",
-                   const char *ver = "v53f", const char *vtag = "v5.3",
+                   const char *i91 = "island91_frames_production_v6.root",
+                   const char *ver = "v6", const char *vtag = "V6",
                    double r0 = 49.0)
 {
   using namespace MSR;
@@ -635,6 +637,7 @@ void ms_real_split(const char *realf = "../clusters_seeds_island_79507-0.root_nt
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       CT &T = grp[0][(long) ev * 1000 + (long) sid];
       T.x.push_back(x); T.y.push_back(y); T.r.push_back(std::hypot(x, y));
@@ -894,8 +897,8 @@ void ms_real_split(const char *realf = "../clusters_seeds_island_79507-0.root_nt
 // medians per bin are used for display robustness against secondaries.
 // Output: ../sim_validation_plots/ms_d0diag_<ver>.png + ms_d0diag_<ver>.txt
 void ms_d0diag(const char *realf = "../clusters_seeds_island_79507-0.root_ntuplizer.root",
-               const char *i91 = "island91_frames_production_v53.root",
-               const char *ver = "v53f", const char *vtag = "v5.3")
+               const char *i91 = "island91_frames_production_v6.root",
+               const char *ver = "v6", const char *vtag = "V6")
 {
   using namespace MSR;
   struct DT { std::vector<double> x, y; int lmin = 99, lmax = 0; std::vector<double> tb; };
@@ -915,6 +918,7 @@ void ms_d0diag(const char *realf = "../clusters_seeds_island_79507-0.root_ntupli
     for (Long64_t i = 0; i < t->GetEntries(); ++i)
     {
       t->GetEntry(i);
+      if ((int) ev == 44) continue;   // V6 laser veto (canon.h)
       if (lay < 7 || lay > 54) continue;
       DT &T = grp[0][(long) ev * 1000 + (long) sid];
       T.x.push_back(x); T.y.push_back(y); T.tb.push_back(tb);

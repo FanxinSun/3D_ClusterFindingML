@@ -1,0 +1,17 @@
+[fc_clusters v6] SIM-ONLY ideal vs distortion field, island91 truth-grouped tracks
+  files: ideal=island91_frames_production_v6ideal.root | field=island91_frames_production_v6.root (only delta: FIELD at transport)
+  ideal: 98911 tracks | RMS med 0.5GeV 689 um / stiff 454 um | sigma(dpsi) 32.8+-0.2 / 30.8+-0.8 mrad | d0s: med|d0| 0.36 cm, RMS 1.66 cm (|d0s|<8)
+  field: 99169 tracks | RMS med 0.5GeV 793 um / stiff 601 um | sigma(dpsi) 38.3+-0.2 / 21.3+-0.5 mrad | d0s: med|d0| 2.29 cm, RMS 3.09 cm (|d0s|<8)
+  FIELD SHARE (quadrature, dist (-) ideal): RMS 0.5GeV 392 um | stiff 394 um | dpsi 0.5GeV 19.7 mrad
+  truth-hit level (identical in both by construction): 20 um circle RMS, 1.365 mrad MS
+[fc_pixels v6] SIM-ONLY ideal vs distortion field, digi raw-pixel tracks (60 frames)
+  ideal: 24283 tracks | GLOBAL RMS med 1489 um | LOCAL 4-row med 1334 um (798440/948056 windows)
+  field: 24667 tracks | GLOBAL RMS med 1539 um | LOCAL 4-row med 1337 um (815635/962607 windows)
+  FIELD SHARE: global 392 um in quadrature | local shift 3 um (short-sagitta fit rejects the smooth field by construction)
+  NOTE stiff-window sigma(dpsi) 30.8 -> 21.3 mrad (field-on SMALLER): fitted-R
+  window migration, not physics. Field-on R_fit smears, so the [357,595] cm
+  window admits upscattered lower-pT tracks whose half-arcs carry real
+  curvature to grip (smaller tangent variance); the ideal window is pure
+  genuine-stiff, whose near-degenerate half-arcs (sagitta ~0.8 mm) maximize
+  it. The RMS meters (392/394 um, momentum-independent) are the field-share
+  measurement; sigma(dpsi) windows are selection-coupled at stiff.

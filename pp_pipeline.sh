@@ -35,8 +35,16 @@ IP=$ROOTDIR/island_post
 LOGS=$IP/pp_logs; mkdir -p "$LOGS"
 
 # ---------------- parameters ----------------
-VER=v6                    # V6 (user naming, 2026-08-18): the laser-vetoed re-baseline; was provisionally v5.6
-FIELD="0:0|0|0.0426|0|0|2.49|0.26"
+VER=v61                   # v6.1 (2026-08-23): width re-balance, path (ii) amplitude-only
+FIELD="0:0|0|0.009|0|0|2.49|0.26"
+                          # v6.1 (width_rebalance_request.md, CLAUSE-6 RESOLUTION
+                          #  + user sign-off 2026-08-23): SMOD 0.0426 -> 0.009 —
+                          #  amplitude-only down-retune; the width share the twist
+                          #  now carries explicitly (385 um) leaves sqrt(394^2-385^2)
+                          #  ~ 84 um for white scatter. SPHI/SCM frozen (v5.4c).
+                          #  Pilot point 2026-08-23: removed share 339 um chunk-0
+                          #  scale, quadrature-linear. FSBLK term SHELVED (7-token
+                          #  string = off; off-path byte-identity proven).
                           # v5.5 field-in-digitization (digi_field_request.md,
                           #  2026-08-13): the v5.4c empirical position-residual
                           #  field injected at transport (charge displaced in
@@ -44,8 +52,13 @@ FIELD="0:0|0|0.0426|0|0|2.49|0.26"
                           #  the v5.4c cluster overlay; the islandize91 export
                           #  then runs with the field OFF (rowdr only) so the
                           #  field enters exactly once. Empty string = off.
-RAWPFX=raw_lib_pp55       # field-on library family — the sealed v5.3 libs
-                          #  (raw_lib_pp_*) are left untouched.
+TWIST="twist_payload_v6.txt"
+                          # V6 twist term (twist_field_request.md, 2026-08-21):
+                          #  per-(side,row) azimuthal displacement injected at
+                          #  transport next to $FIELD — the r-phi counterpart
+                          #  of the real-radius geometry bake. Empty = off.
+RAWPFX=raw_lib_pp61       # v6.1 re-balance family — pp6t (twist, SMOD 0.0426),
+                          #  pp55 (v5.5) and v5.3 libs all left untouched.
 NCHUNK=10                 # generator/G4/transport chunks
 GEN_PER=2000              # pp events per chunk (pp collision ~1/25 pAu content
                           #  -> 10x the v4.0 event count for comparable library charge)
@@ -169,7 +182,7 @@ if run_stage gate; then
   cd "$IP"
   for i in $(seq 0 $((NCHUNK-1))); do
     root -l -b -q -e "gROOT->ProcessLine(\".L tpc_digitize.C+\");
-      tpc_transport(\"$P5/PP_g4hit_$i.root\",\"${RAWPFX}_$i.root\",$GEN_PER,$SIGMA0,$KPRF,\"$FIELD\");
+      tpc_transport(\"$P5/PP_g4hit_$i.root\",\"${RAWPFX}_$i.root\",$GEN_PER,$SIGMA0,$KPRF,\"$FIELD\",\"$TWIST\");
       tpc_readout(\"${RAWPFX}_$i.root\",\"cens_pp_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,1.25,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,0.0);" \
       > "$LOGS/pp_gate_$i.log" 2>&1
     echo "[gate] chunk $i transported+censused"
@@ -244,7 +257,7 @@ if run_stage prod; then
     gROOT->ProcessLine(\".L tpc_digitize.C+\");
     tpc_readout(\"fPP_$i.root\",\"dPP_$i.root\",$GAIN,20.0,1,1,4711,\"$DM\",11.0,0.39,0.55,1.25,0.016,7.0,36.0,70.0,11.0,940.0,2,0.29,10.0,1.24,1.06,-1.0,5.0,1.0);" \
       2>&1 | tee "$LOGS/pp_prod_$i.log" | grep -E "frame_composer: $PER|rate envelope|tpc_readout: fPP"
-    root -l -b -q "islandize91.C+(\"dPP_$i.root\",\"i91pp_$i.root\",1,\"\",\"fPP_$i.root\",\"real_row_radii_v54.txt\",\"\")" 2>&1 | grep "islandize91: dPP"
+    root -l -b -q "islandize91.C+(\"dPP_$i.root\",\"i91pp_$i.root\",1,\"\",\"fPP_$i.root\",\"\",\"\")" 2>&1 | grep "islandize91: dPP"
   done
   hadd -f frames_pp_production_${VER}.root fPP_*.root  > /dev/null 2>&1
   hadd -f digi_frames_production_${VER}.root dPP_*.root > /dev/null 2>&1

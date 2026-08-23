@@ -1,0 +1,4 @@
+[fc_pixels v61_L2-blk3] SIM-ONLY ideal vs distortion field, digi raw-pixel tracks (2000 frames)
+  ideal: 16145 tracks | GLOBAL RMS med 1533 um | LOCAL 4-row med 1299 um (545324/646070 windows)
+  field: 16149 tracks | GLOBAL RMS med 1547 um | LOCAL 4-row med 1295 um (545069/646024 windows)
+  FIELD SHARE: global 210 um in quadrature | local shift -3 um (short-sagitta fit rejects the smooth field by construction)
