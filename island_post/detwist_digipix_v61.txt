@@ -1,0 +1,6 @@
+[detwist_digipix v61] nf_digipix meters on DE-TWISTED real (own measured profile subtracted)
+  real          : 4836 tracks | GLOBAL med 2358 | LOCAL med 1205 um
+  real DE-TWIST : 4834 tracks | GLOBAL med 2323 | LOCAL med 1204 um
+  sim digi v61   : 23938 tracks | GLOBAL med 1549 | LOCAL med 1333 um
+  REDUCTION: GLOBAL 1.5%, LOCAL 0.1%  ->  more than half? NO (would need >50%)
+  data/MC: GLOBAL 1.52 -> 1.50 | LOCAL 0.90 -> 0.90

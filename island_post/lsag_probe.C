@@ -9,7 +9,7 @@
 // plus a dof-corrected overlay rms/sqrt((n-3)/n).
 // usage: root -l -b -q 'lsag_probe.C+()'   out: lsag_probe_<ver>.txt +
 // ../sim_validation_plots/lsag_probe_<ver>.png
-#include "ms_nofinder.C"
+#include "../sim_validation_plots/src/ms_nofinder.C"
 #include <THStack.h>
 #include <TH2D.h>
 #include <TLine.h>

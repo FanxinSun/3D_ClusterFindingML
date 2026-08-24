@@ -1,0 +1,16 @@
+[cfloor_probe v61] floor-subtracted composition meters (response-campaign instruments)
+  definitions in the header; thinned = sim subsampled to real px/row (keep p=0.49)
+  real       : C(0) 1582033 um^2 | stat floor 950339 um^2 (60%) | Csig(0) 631694 um^2 (= 795 um rms)
+      raw C(1)/C(0) 0.30 -> FLOOR-SUB C_sub(1) 0.76 | C_sub(2) 0.46 | C_sub(4) 0.20 | C_sub(8) -0.15 | plateau(10-14) -0.31
+      SHARES of non-stat signal: WHITE 0.24 | SHORT(1-3 rows) 1.06 | SMOOTH -0.31
+      cell coherence: raw 310 um -> floor-subtracted 296 um
+  sim        : C(0) 2461483 um^2 | stat floor 543617 um^2 (22%) | Csig(0) 1917866 um^2 (= 1385 um rms)
+      raw C(1)/C(0) 0.61 -> FLOOR-SUB C_sub(1) 0.79 | C_sub(2) 0.69 | C_sub(4) 0.54 | C_sub(8) 0.30 | plateau(10-14) 0.08
+      SHARES of non-stat signal: WHITE 0.21 | SHORT(1-3 rows) 0.71 | SMOOTH 0.08
+      cell coherence: raw 154 um -> floor-subtracted 151 um
+  sim thinned: C(0) 2951077 um^2 | stat floor 975002 um^2 (33%) | Csig(0) 1976075 um^2 (= 1406 um rms)
+      raw C(1)/C(0) 0.55 -> FLOOR-SUB C_sub(1) 0.82 | C_sub(2) 0.70 | C_sub(4) 0.56 | C_sub(8) 0.32 | plateau(10-14) 0.09
+      SHARES of non-stat signal: WHITE 0.18 | SHORT(1-3 rows) 0.73 | SMOOTH 0.09
+      cell coherence: raw 158 um -> floor-subtracted 153 um
+  reading guide: WHITE = response-floor systematic (row-white, non-statistical);
+  SHORT = granular field/alignment; SMOOTH = long-range (SPHI+twist).

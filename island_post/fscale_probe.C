@@ -12,7 +12,7 @@
 // is overlaid from rscale_probe_<ver>.txt for direct comparison.
 // usage: root -l -b -q 'fscale_probe.C+()'
 // out: fscale_probe_<ver>.txt + ../sim_validation_plots/fscale_probe_<ver>.png
-#include "missed_tracks.C"
+#include "../sim_validation_plots/src/missed_tracks.C"
 #include <TROOT.h>
 #include <TH2D.h>
 #include <TLine.h>

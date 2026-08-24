@@ -13,7 +13,7 @@
 // usage: root -l -b -q 'twist_probe.C+()'
 // out: twist_probe_<ver>.txt, twist_profile_<ver>.txt,
 //      ../sim_validation_plots/twist_probe_<ver>.png
-#include "ms_nofinder.C"
+#include "../sim_validation_plots/src/ms_nofinder.C"
 #include <TROOT.h>
 #include <TH2D.h>
 #include <TGraph.h>
@@ -284,6 +284,13 @@ void twist_probe(const char *digif = "digi_frames_production_v6.root", int nsim 
   double dprof[2][55] = {{0}};
   for (int sd = 0; sd < 2; ++sd) for (int L = 7; L <= 54; ++L) dprof[sd][L] = profR[sd][L] - profS[sd][L];
   measure(1, dprof, profI, secI, dsI, dsIa, ntI);
+  // DE-TWIST CHECK (2026-08-23): real corrected by its OWN measured profile —
+  // the available real-data fitting update; shows what adopting it buys.
+  double dneg[2][55] = {{0}};
+  for (int sd = 0; sd < 2; ++sd) for (int L = 7; L <= 54; ++L) dneg[sd][L] = -profR[sd][L];
+  double profD[2][55] = {{0}}, secD[2][12][55] = {{{0}}};
+  std::vector<double> dsD[2], dsDa; long ntD = 0;
+  measure(0, dneg, profD, secD, dsD, dsDa, ntD);
   // 3-level STEP models from the real profile's boundary jumps (rows 22->23, 38->39):
   double j1[2], j2[2];
   for (int sd = 0; sd < 2; ++sd) { j1[sd] = dprof[sd][23] - dprof[sd][22]; j2[sd] = dprof[sd][39] - dprof[sd][38]; }
@@ -323,6 +330,16 @@ void twist_probe(const char *digif = "digi_frames_production_v6.root", int nsim 
   P("    B1 constant r-phi offset per region: sim+B1 Dsagitta med %+.2f mm | profile RMS diff to real %.0f um\n", medv(dsAa), rmsdiff(profA));
   P("    B2 rigid rotation per region (const dphi): sim+B2 Dsagitta med %+.2f mm | profile RMS diff to real %.0f um\n", medv(dsBa), rmsdiff(profB));
   P("    (full injected profile: Dsagitta %+.2f mm | profile RMS diff %.0f um ; sim alone: RMS diff %.0f um)\n", medv(dsIa), rmsdiff(profI), rmsdiff(profS));
+  {
+    double s2f = 0; int nf2 = 0;
+    for (int sd = 0; sd < 2; ++sd) for (int L = 7; L <= 54; ++L) { s2f += profD[sd][L] * profD[sd][L]; nf2++; }
+    double s2r = 0;
+    for (int sd = 0; sd < 2; ++sd) for (int L = 7; L <= 54; ++L) s2r += profR[sd][L] * profR[sd][L];
+    P("  REAL DE-TWISTED (own profile subtracted, %ld tracks): Dsagitta med %+.2f mm "
+      "(was %+.2f) | side0 %+.2f side1 %+.2f | residual profile RMS %.0f um (was %.0f)\n",
+      ntD, medv(dsDa), medv(dsRa), medv(dsD[0]), medv(dsD[1]),
+      std::sqrt(s2f / nf2), std::sqrt(s2r / nf2));
+  }
   P("  profile [um]  (real | sim | real-sim = injected | sim+injected reproduces)\n");
   P("   row    side0: real   sim  delta  inj |  side1: real   sim  delta  inj\n");
   FILE *fp = fopen(Form("twist_profile_%s.txt", ver), "w");
@@ -381,7 +398,7 @@ void twist_probe(const char *digif = "digi_frames_production_v6.root", int nsim 
     }
     L->Draw();
   };
-  profPanel(1, "twist profile: real vs sim (v6 digi)", profR, profS, "real", "sim", nullptr, "");
+  profPanel(1, Form("twist profile: real vs sim (%s digi)", ver), profR, profS, "real", "sim", nullptr, "");
   profPanel(2, "closure: sim + injected (real#minussim) vs real", profR, profI, "real", "sim + injected", nullptr, "");
   // [3] Dsagitta distributions
   cv->cd(3);

@@ -43,6 +43,7 @@ ML_Ground_Truth_Hits.csv
 GroundTruth_Making/*.csv
 PIPELINE.md
 Reporting
+Playground
 
 *_backup*
 Simulations/dataset
@@ -112,4 +113,5 @@ external_data/**/*.cls
 external_data/**/*.bin
 external_data/**/*.bbl
 external_data/**/*.sty
-*logo*
+*logo*env_v61.sh
+.paths_ported

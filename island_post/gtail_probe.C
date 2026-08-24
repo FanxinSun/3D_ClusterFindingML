@@ -14,7 +14,7 @@
 // Classes (thresholds printed): CONTAM rms_trim<1.3*med_trim ; BENT LF>HF ;
 // WIDE rest. usage: root -l -b -q 'gtail_probe.C+(...)'
 // out: ../sim_validation_plots/gtail_probe_<ver>.png + gtail_probe_<ver>.txt
-#include "ms_nofinder.C"
+#include "../sim_validation_plots/src/ms_nofinder.C"
 #include <THStack.h>
 #include <TH2D.h>
 #include <TLine.h>

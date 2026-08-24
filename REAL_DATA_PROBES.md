@@ -440,3 +440,87 @@ Bands on M1-M4 will be proposed when the response campaign's request doc
 opens; v6.1 acceptance here stays the unchanged battery with twist holdouts
 as gates. The v61 battery runs when the true v6.1 delivery lands (manifest
 md5s — NOT the stale Aug-21 draft).
+
+---------------------------------------------------------------------------------
+
+## 2026-08-23 — v6.1 ACCEPTED on the probe battery (tag v61); diagnostics recorded
+
+v6.1 (width re-balance, path (ii) amplitude-only, SMOD 0.0426 -> 0.009) shipped
+and sealed by the pipeline; digi md5 verified against the manifest
+(d0a5df64... — the stale Aug-21 draft was overwritten by the true delivery).
+Battery: twist_probe + nonrms_probe + gtail_probe + cfloor_probe, tag v61,
+ledgers island_post/*_v61.txt, figures sim_validation_plots/*_v61.png.
+
+GATES (twist holdouts) — ALL PASS:
+  - split-half Dsagitta sim +6.28 (side0 +6.23 / side1 +6.34) — inside
+    +6.3 +- 0.3 per side; independently reproduces the pipeline delivery run;
+    charge independence held (+5.73/+6.71); real reference unchanged
+    (+6.53; +6.04/+7.15).
+  - twist profile RMS-diff to real 140 um (gate <= ~150; matches their 140).
+  - pixel pooled q68 = 1.88 mm bit-stable.
+  - family checks: clipped GLOBAL data/MC 1.03 (v6t 1.01, pre-twist 1.04);
+    raw 1.52; d0 med 2.52 / q90 6.87 (family).
+DIAGNOSTICS (recorded per clause-6 adjudicated language — "best reachable
+configuration; the composition axis is owned by the response campaign"):
+  - raw C(1) = 0.61 on this harness (v6t 0.57; predicted drift ~+0.05;
+    pipeline harness 0.662). raw cell coherence 141-154 um (v6t 145-158;
+    real 307-310).
+  - cfloor M-set: M1 sqrt(Csig0) sim 1385 um (v6t 1414; real 795) — the SMOD
+    shrink removed only ~285 um in quadrature at pixel level; M2
+    C_sub(4)/C_sub(1) = 0.68 (unchanged; real 0.26) — the correlation-length
+    gap is intact, as an amplitude-only change must leave it; M4 C_sub(1)
+    0.79 (v6t 0.72; real 0.76) and WHITE share 0.28 -> 0.21 — removing white
+    SMOD raised the correlated fraction, the direction the clause-6 pilot
+    predicted; all consistent, all diagnostics.
+  - sim trimmed GLOBAL 1581 -> 1542, trimmed LF 809 -> 734 (SMOD width
+    removed at pixel level, small — matches its small visible row-mean share).
+Cosmetic: twist_probe P1 title hardcoded "(v6 digi)" -> now versioned;
+v61 figure regenerated.
+
+---------------------------------------------------------------------------------
+
+## 2026-08-23 — DE-TWIST option for real-data fitting, measured (available, NOT adopted)
+
+Question (user): any updates for real-data circle/sagitta fitting since v6.1?
+v6.1 itself changes nothing on the real side (sim-only; all real fit numbers
+bit-identical across v6/v6t/v61 ledgers). But the twist measurement created one
+new OPTION, now quantified: correct real pixels by real's own measured profile
+before fitting (subtract twist_probe's per-(side,row) mean D(rphi) from the
+pixel azimuths). Producer: twist_probe.C "REAL DE-TWISTED" block (ledger tag
+detw). Result: split-half Dsagitta +6.53 -> +1.85 mm (side0 +1.57 / side1
++2.09); residual mean profile RMS 431 -> 108 um. The remaining +1.85 mm =
+per-sector scatter (~100 um) + higher-order structure the phi-averaged mean
+profile cannot carry (a per-sector table and/or a second iteration would go
+lower — measurable on request).
+STATUS: available, NOT adopted. Adoption notes: (i) for sim-vs-real symmetric
+meters it is unnecessary — both sides carry the twist since V6t; (ii) for
+REAL-only physics fitting (ms_real / nf_tracks / exhaustive-finder curvature,
+d0, sagitta studies) it removes a known +6.5 mm signed bias and is a one-line
+correction; (iii) if adopted anywhere, adopt it as an explicit flag with the
+profile file pinned (twist_profile_v6.txt), never silently — real-side numbers
+change wherever it is on.
+
+---------------------------------------------------------------------------------
+
+## 2026-08-24 — de-twisted real in the nf_digipix meters: med RMS does NOT halve
+## (GLOBAL -1.5%, LOCAL -0.1%) — and cannot, by the variance budget
+
+Question (user): de-twist the real data, plot in the nf_digipix style, check
+whether the med RMS drops by more than half. Producer:
+island_post/detwist_digipix.C -> detwist_digipix_v61.txt +
+sim_validation_plots/detwist_digipix_v61.png (nf_digipix-style two panels,
+three curves: real / real DE-TWISTED / sim digi v6.1; groups, gates, fitter
+verbatim nf_digipix; de-twist = subtract real's own measured per-(side,row)
+profile from the pixel azimuths, measured in-macro exactly as twist_probe.C).
+
+RESULT: GLOBAL med 2358 -> 2323 um (-1.5%), LOCAL 1205 -> 1204 (-0.1%);
+data/MC 1.52 -> 1.50 and 0.90 -> 0.90. NOT more than half — and >50% is
+impossible in principle: halving GLOBAL (2358 -> 1179) would land below the
+1205 um charge-cloud floor, and the LOCAL panel IS that floor. The variance
+budget says why: the twist's share of the whole-track RMS is
+sqrt(2358^2 - 2323^2) ~ 405 um in quadrature (the previously-attributed twist
+LF share), while the RMS medians are owned by road pickup (~1.7 mm in
+quadrature, removable only by the 3-sigma clip) and the cloud width. Where
+the de-twist IS large is the SIGNED meter: split-half Dsagitta +6.53 ->
++1.85 mm (previous entry) — a mm-scale bias can be a small RMS share; RMS
+adds in quadrature, bias adds linearly in its own meter.

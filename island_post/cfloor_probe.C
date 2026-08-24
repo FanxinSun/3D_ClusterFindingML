@@ -22,7 +22,7 @@
 // statistic attributes to sampling alone, on THIS harness.
 // usage: root -l -b -q 'cfloor_probe.C+()'
 // out: cfloor_probe_<ver>.txt + ../sim_validation_plots/cfloor_probe_<ver>.png
-#include "ms_nofinder.C"
+#include "../sim_validation_plots/src/ms_nofinder.C"
 #include <TROOT.h>
 #include <TH2D.h>
 #include <TGraph.h>

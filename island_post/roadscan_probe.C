@@ -11,7 +11,7 @@
 // truth-grouped sim digi reference (no road on sim), recomputed here.
 // usage: root -l -b -q 'roadscan_probe.C+()'
 // out: roadscan_probe_<ver>.txt + ../sim_validation_plots/roadscan_probe_<ver>.png
-#include "ms_nofinder.C"
+#include "../sim_validation_plots/src/ms_nofinder.C"
 #include <TROOT.h>
 #include <TH2D.h>
 #include <TGraph.h>

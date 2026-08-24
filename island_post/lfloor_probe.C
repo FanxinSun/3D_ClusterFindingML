@@ -18,7 +18,7 @@
 //   - ADC-weighted row centroids -> whole-track circle refit = RMS_centroid
 // usage: root -l -b -q 'lfloor_probe.C+()'
 // out: lfloor_probe_<ver>.txt + ../sim_validation_plots/lfloor_probe_<ver>.png
-#include "ms_nofinder.C"
+#include "../sim_validation_plots/src/ms_nofinder.C"
 #include <THStack.h>
 #include <TH2D.h>
 #include <TLine.h>
