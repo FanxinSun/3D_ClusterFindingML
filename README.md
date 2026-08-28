@@ -1,5 +1,10 @@
 # 3D_ClusterFindingML
 
+> **New here?** Start with **[FIRST_RUN.md](FIRST_RUN.md)** — environment setup, a
+> two-minute demo of the whole chain, and the full production run. The notes below
+> describe the original container-based approach, which the current detached
+> pipeline (v6.1) no longer requires.
+
 Use Singularity for using official sPHENIX geometry and conditioned DB: 
 https://github.com/sPHENIX-Collaboration/Singularity
 
