@@ -385,3 +385,26 @@ d0a5df64f462037051e229dfbfecd8b4  digi_frames_production_v61.root
 --- n 135,670,812 xor 48a7edd2397518fa add 96a5119eb62624a6 — both equal the
 --- sealed C++17 references to the bit. The dormant C++17 stack remains at
 --- ~/sw/{root-6.40.02,geant4-11.4.2,pythia8-8.317}; revert-cxx17.sh restores.
+--- v7 DRAFT (2026-09-02): WORLD-TUNED GENERATOR "W1" (Monash + pT0Ref 2.55,
+--- StringPT:sigma 0.36, StringFlav:probStoUD 0.27, probQQtoQ 0.11; dNch/deta
+--- 2.18, MBD eps 0.515) with the v6.1 DETECTOR CHAIN FROZEN (field, twist,
+--- response, ZS, envelope, DAQ cap). pp7 file family (PP7_g4hit_*, pp7_run_*,
+--- pp7_mbd.txt, raw_lib_pp7_*), seeds gen 20260902+i / composer 2026097x,
+--- driver pp_pipeline_v7.sh, clean C++20 env. NOT A SEALED VERSION — the
+--- decision draft for the reshape fork (declare the deficit vs measured owner).
+821ddb97249134c125669f022e45207c  digi_frames_production_v7d.root
+5012e06037b0c9de4a276c0fe9758ffb  island91_frames_production_v7d.root
+a440b0a16b14c1b9f57ea0af06970c21  prodclus_v7d.root
+d7b08e12ec715d0e3e430074375afec6  hit69_frames_production_v7d.root
+# hit69 v7d: 52,819,871 rows (721 merged). vs complete-61: CONTENT px/ev
+#   211,282 = -34.1% (lowadc -30.6, islands -28.9); every SHAPE meter at its
+#   v6.1 place: windows -0.7/+2.3/-2.8, step -2.9, bump -6.4 (noisy), size
+#   -7.1, phisize -3.8, shapes 0.274/0.317, sub10 -4.2, sh/hi +18.8, run
+#   tail P10 +18.6; track meters stiff 655 (1.05), med05 840, d0 3.07, CM
+#   0.479 (real 0.480). The effective tune had been compensating CONTENT
+#   only. v6.1 remains the production baseline until the fork is decided.
+# --- v7 DRAFT DISPOSITION (2026-09-02): recorded as REFERENCE v7* (user rule:
+#     outcome worse than v6.1 -> rewind). PRODUCTION BASELINE = v6.1. The v7*
+#     block above stays for the record: world generator W1 + v6.1 chain gives
+#     -34% content with every shape meter equal to v6.1; ~13% of the gap is
+#     the rate-efficiency bookkeeping (600 -> ~680 kHz), the rest unowned.

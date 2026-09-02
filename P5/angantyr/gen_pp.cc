@@ -32,6 +32,18 @@ int main(int argc, char **argv)
     py.readString(("MultipartonInteractions:pT0Ref = " + std::string(argv[4])).c_str());
     fprintf(stderr, "TUNE pT0Ref %s\n", argv[4]);
   }
+  if (argc > 6 && argv[6][0])  // v7 reshape (2026-09-02): extra settings "key=val;key=val" applied AFTER
+  {                              // the pT0Ref knob (world tune W1: StringPT:sigma, StringFlav:*). Omitted =
+    std::string ex = argv[6];    // byte-identical behaviour to the v6.1 binary.
+    size_t a = 0;
+    while (a < ex.size())
+    {
+      size_t b = ex.find(';', a); if (b == std::string::npos) b = ex.size();
+      std::string kv = ex.substr(a, b - a); size_t eq = kv.find('=');
+      if (eq != std::string::npos) { py.readString((kv.substr(0, eq) + " = " + kv.substr(eq + 1)).c_str()); fprintf(stderr, "EXTRA %s\n", kv.c_str()); }
+      a = b + 1;
+    }
+  }
   py.readString("Random:setSeed = on");
   py.readString(("Random:seed = " + std::to_string(seed)).c_str());
   py.readString("Print:quiet = on");
