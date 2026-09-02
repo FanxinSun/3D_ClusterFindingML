@@ -9,7 +9,7 @@ source /home/rog/geant4/bin/geant4.sh
 # G4OpenInventorXtExtended.hh, so G4VisExecutive.icc will not compile with them
 # on. Undefine after the config flags — every other driver (OpenGL X/Xm/Qt,
 # ToolsSG, RayTracer, VTK) is complete and stays registered.
-g++ -O2 -std=c++17 -o p5_display p5_display.cc \
+g++ -O2 -std=c++$(root-config --cxxstandard) -o p5_display p5_display.cc \
   $(geant4-config --cflags --libs) \
   -UG4VIS_USE_OIX -UG4VIS_USE_OI \
   $(root-config --cflags --libs) \

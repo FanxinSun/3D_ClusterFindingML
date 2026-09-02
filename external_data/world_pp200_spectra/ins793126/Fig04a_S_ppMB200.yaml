@@ -1,0 +1,12 @@
+independent_variables:
+- header: {name: '$(N_{part}/2)^{2/3}$'}
+  values:
+  - {value: 1.00}
+dependent_variables:
+- header: {name: '$S/(N_{part}/2)^{2/3} [fm^2]$'}
+  qualifiers:
+  - {name: '$(N_{part}/2)^{2/3}$', value: 'pp MB 200 GeV'}
+  values:
+  - value: 4.10
+    errors:
+    - {symerror: 0.20, label: 'stat'}

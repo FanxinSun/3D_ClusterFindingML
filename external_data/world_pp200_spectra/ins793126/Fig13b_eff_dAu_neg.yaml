@@ -1,0 +1,270 @@
+independent_variables:
+- header: {name: '$p_t^{MC} [GeV/c]$'}
+  values:
+  - {value: 0.125000}
+  - {value: 0.175000}
+  - {value: 0.225000}
+  - {value: 0.275000}
+  - {value: 0.325000}
+  - {value: 0.375000}
+  - {value: 0.425000}
+  - {value: 0.475000}
+  - {value: 0.525000}
+  - {value: 0.575000}
+  - {value: 0.625000}
+  - {value: 0.675000}
+  - {value: 0.725000}
+  - {value: 0.775000}
+  - {value: 0.825000}
+  - {value: 0.875000}
+  - {value: 0.925000}
+  - {value: 0.975000}
+  - {value: 1.025000}
+  - {value: 1.075000}
+  - {value: 1.125000}
+  - {value: 1.175000}
+  - {value: 1.225000}
+  - {value: 1.275000}
+  - {value: 1.325000}
+  - {value: 1.375000}
+dependent_variables:
+- header: {name: 'Efficiency'}
+  qualifiers:
+  - {name: '$p_t^{MC} [GeV/c]$', value: '$\pi^{-}$'}
+  values:
+  - value: 0.185133
+    errors:
+    - {symerror: 0.002016, label: 'stat'}
+  - value: 0.668184
+    errors:
+    - {symerror: 0.002298, label: 'stat'}
+  - value: 0.734840
+    errors:
+    - {symerror: 0.002152, label: 'stat'}
+  - value: 0.757919
+    errors:
+    - {symerror: 0.002149, label: 'stat'}
+  - value: 0.776473
+    errors:
+    - {symerror: 0.002230, label: 'stat'}
+  - value: 0.800374
+    errors:
+    - {symerror: 0.002309, label: 'stat'}
+  - value: 0.813399
+    errors:
+    - {symerror: 0.002452, label: 'stat'}
+  - value: 0.819677
+    errors:
+    - {symerror: 0.002639, label: 'stat'}
+  - value: 0.827554
+    errors:
+    - {symerror: 0.002869, label: 'stat'}
+  - value: 0.825429
+    errors:
+    - {symerror: 0.003208, label: 'stat'}
+  - value: 0.829838
+    errors:
+    - {symerror: 0.003528, label: 'stat'}
+  - value: 0.836271
+    errors:
+    - {symerror: 0.003848, label: 'stat'}
+  - value: 0.837644
+    errors:
+    - {symerror: 0.004291, label: 'stat'}
+  - value: 0.848926
+    errors:
+    - {symerror: 0.004658, label: 'stat'}
+  - value: 0.836131
+    errors:
+    - {symerror: 0.005362, label: 'stat'}
+  - value: 0.822188
+    errors:
+    - {symerror: 0.006120, label: 'stat'}
+  - value: 0.831036
+    errors:
+    - {symerror: 0.006710, label: 'stat'}
+  - value: 0.837982
+    errors:
+    - {symerror: 0.007203, label: 'stat'}
+  - value: 0.835461
+    errors:
+    - {symerror: 0.008062, label: 'stat'}
+  - value: 0.867365
+    errors:
+    - {symerror: 0.008181, label: 'stat'}
+  - value: 0.822742
+    errors:
+    - {symerror: 0.009877, label: 'stat'}
+  - value: 0.838499
+    errors:
+    - {symerror: 0.010510, label: 'stat'}
+  - value: 0.840467
+    errors:
+    - {symerror: 0.011421, label: 'stat'}
+  - value: 0.845252
+    errors:
+    - {symerror: 0.012383, label: 'stat'}
+  - value: 0.867052
+    errors:
+    - {symerror: 0.012907, label: 'stat'}
+  - value: 0.810316
+    errors:
+    - {symerror: 0.015992, label: 'stat'}
+- header: {name: 'Efficiency'}
+  qualifiers:
+  - {name: '$p_t^{MC} [GeV/c]$', value: '$K^{-}$'}
+  values:
+  - value: 0.000000
+  - value: 0.025379
+    errors:
+    - {symerror: 0.000768, label: 'stat'}
+  - value: 0.177086
+    errors:
+    - {symerror: 0.001861, label: 'stat'}
+  - value: 0.344960
+    errors:
+    - {symerror: 0.002384, label: 'stat'}
+  - value: 0.418507
+    errors:
+    - {symerror: 0.002640, label: 'stat'}
+  - value: 0.471482
+    errors:
+    - {symerror: 0.002883, label: 'stat'}
+  - value: 0.516954
+    errors:
+    - {symerror: 0.003145, label: 'stat'}
+  - value: 0.551220
+    errors:
+    - {symerror: 0.003414, label: 'stat'}
+  - value: 0.583203
+    errors:
+    - {symerror: 0.003745, label: 'stat'}
+  - value: 0.599198
+    errors:
+    - {symerror: 0.004142, label: 'stat'}
+  - value: 0.615627
+    errors:
+    - {symerror: 0.004566, label: 'stat'}
+  - value: 0.648598
+    errors:
+    - {symerror: 0.004965, label: 'stat'}
+  - value: 0.636101
+    errors:
+    - {symerror: 0.005599, label: 'stat'}
+  - value: 0.651754
+    errors:
+    - {symerror: 0.006197, label: 'stat'}
+  - value: 0.663944
+    errors:
+    - {symerror: 0.006842, label: 'stat'}
+  - value: 0.650633
+    errors:
+    - {symerror: 0.007631, label: 'stat'}
+  - value: 0.676012
+    errors:
+    - {symerror: 0.008380, label: 'stat'}
+  - value: 0.644195
+    errors:
+    - {symerror: 0.009359, label: 'stat'}
+  - value: 0.679372
+    errors:
+    - {symerror: 0.010148, label: 'stat'}
+  - value: 0.698413
+    errors:
+    - {symerror: 0.011069, label: 'stat'}
+  - value: 0.698052
+    errors:
+    - {symerror: 0.011874, label: 'stat'}
+  - value: 0.726531
+    errors:
+    - {symerror: 0.012730, label: 'stat'}
+  - value: 0.727660
+    errors:
+    - {symerror: 0.013884, label: 'stat'}
+  - value: 0.685279
+    errors:
+    - {symerror: 0.015901, label: 'stat'}
+  - value: 0.711957
+    errors:
+    - {symerror: 0.017215, label: 'stat'}
+  - value: 0.753165
+    errors:
+    - {symerror: 0.017588, label: 'stat'}
+- header: {name: 'Efficiency'}
+  qualifiers:
+  - {name: '$p_t^{MC} [GeV/c]$', value: 'pbar'}
+  values:
+  - value: 0.000000
+  - value: 0.000000
+  - value: 0.012346
+    errors:
+    - {symerror: 0.000538, label: 'stat'}
+  - value: 0.165400
+    errors:
+    - {symerror: 0.001864, label: 'stat'}
+  - value: 0.448573
+    errors:
+    - {symerror: 0.002662, label: 'stat'}
+  - value: 0.717429
+    errors:
+    - {symerror: 0.002601, label: 'stat'}
+  - value: 0.770601
+    errors:
+    - {symerror: 0.002646, label: 'stat'}
+  - value: 0.792285
+    errors:
+    - {symerror: 0.002785, label: 'stat'}
+  - value: 0.781174
+    errors:
+    - {symerror: 0.003140, label: 'stat'}
+  - value: 0.799186
+    errors:
+    - {symerror: 0.003386, label: 'stat'}
+  - value: 0.790661
+    errors:
+    - {symerror: 0.003819, label: 'stat'}
+  - value: 0.798635
+    errors:
+    - {symerror: 0.004170, label: 'stat'}
+  - value: 0.805613
+    errors:
+    - {symerror: 0.004605, label: 'stat'}
+  - value: 0.794016
+    errors:
+    - {symerror: 0.005260, label: 'stat'}
+  - value: 0.807305
+    errors:
+    - {symerror: 0.005713, label: 'stat'}
+  - value: 0.802276
+    errors:
+    - {symerror: 0.006375, label: 'stat'}
+  - value: 0.806240
+    errors:
+    - {symerror: 0.007077, label: 'stat'}
+  - value: 0.770161
+    errors:
+    - {symerror: 0.008224, label: 'stat'}
+  - value: 0.805556
+    errors:
+    - {symerror: 0.008606, label: 'stat'}
+  - value: 0.830688
+    errors:
+    - {symerror: 0.009045, label: 'stat'}
+  - value: 0.820000
+    errors:
+    - {symerror: 0.009936, label: 'stat'}
+  - value: 0.823944
+    errors:
+    - {symerror: 0.010878, label: 'stat'}
+  - value: 0.803347
+    errors:
+    - {symerror: 0.012397, label: 'stat'}
+  - value: 0.798913
+    errors:
+    - {symerror: 0.013724, label: 'stat'}
+  - value: 0.792079
+    errors:
+    - {symerror: 0.015427, label: 'stat'}
+  - value: 0.797688
+    errors:
+    - {symerror: 0.016387, label: 'stat'}

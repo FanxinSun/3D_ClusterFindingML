@@ -1,0 +1,471 @@
+independent_variables:
+- header: {name: '$p_{T}$ [GeV/c]'}
+  values:
+  - {value: 4.57e-01}
+  - {value: 5.56e-01}
+  - {value: 6.55e-01}
+  - {value: 7.54e-01}
+  - {value: 8.54e-01}
+  - {value: 9.54e-01}
+  - {value: 1.05e+00}
+  - {value: 1.15e+00}
+  - {value: 1.30e+00}
+  - {value: 1.50e+00}
+  - {value: 1.70e+00}
+dependent_variables:
+- header: {name: '$K^{+}$, d+Au minbias'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 2.41e-01
+    errors:
+    - {symerror: 9.47e-03, label: 'stat'}
+    - {symerror: 1.93e-02, label: 'syst'}
+  - value: 1.87e-01
+    errors:
+    - {symerror: 7.53e-03, label: 'stat'}
+    - {symerror: 1.49e-02, label: 'syst'}
+  - value: 1.33e-01
+    errors:
+    - {symerror: 5.14e-03, label: 'stat'}
+    - {symerror: 1.07e-02, label: 'syst'}
+  - value: 1.01e-01
+    errors:
+    - {symerror: 3.18e-03, label: 'stat'}
+    - {symerror: 8.07e-03, label: 'syst'}
+  - value: 6.97e-02
+    errors:
+    - {symerror: 2.48e-03, label: 'stat'}
+    - {symerror: 5.57e-03, label: 'syst'}
+  - value: 5.01e-02
+    errors:
+    - {symerror: 1.95e-03, label: 'stat'}
+    - {symerror: 4.01e-03, label: 'syst'}
+  - value: 3.77e-02
+    errors:
+    - {symerror: 1.65e-03, label: 'stat'}
+    - {symerror: 3.02e-03, label: 'syst'}
+  - value: 2.73e-02
+    errors:
+    - {symerror: 1.31e-03, label: 'stat'}
+    - {symerror: 2.18e-03, label: 'syst'}
+  - value: 1.78e-02
+    errors:
+    - {symerror: 7.25e-04, label: 'stat'}
+    - {symerror: 1.42e-03, label: 'syst'}
+  - value: 9.12e-03
+    errors:
+    - {symerror: 5.25e-04, label: 'stat'}
+    - {symerror: 7.30e-04, label: 'syst'}
+  - value: 4.68e-03
+    errors:
+    - {symerror: 3.96e-04, label: 'stat'}
+    - {symerror: 3.75e-04, label: 'syst'}
+- header: {name: '$K^{+}$, p+p NSD'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 6.47e-02
+    errors:
+    - {symerror: 3.01e-03, label: 'stat'}
+    - {symerror: 5.18e-03, label: 'syst'}
+  - value: 4.32e-02
+    errors:
+    - {symerror: 2.10e-03, label: 'stat'}
+    - {symerror: 3.45e-03, label: 'syst'}
+  - value: 3.18e-02
+    errors:
+    - {symerror: 1.51e-03, label: 'stat'}
+    - {symerror: 2.54e-03, label: 'syst'}
+  - value: 2.18e-02
+    errors:
+    - {symerror: 9.70e-04, label: 'stat'}
+    - {symerror: 1.74e-03, label: 'syst'}
+  - value: 1.57e-02
+    errors:
+    - {symerror: 7.69e-04, label: 'stat'}
+    - {symerror: 1.25e-03, label: 'syst'}
+  - value: 9.92e-03
+    errors:
+    - {symerror: 5.60e-04, label: 'stat'}
+    - {symerror: 7.93e-04, label: 'syst'}
+  - value: 7.17e-03
+    errors:
+    - {symerror: 4.74e-04, label: 'stat'}
+    - {symerror: 5.74e-04, label: 'syst'}
+  - value: 5.60e-03
+    errors:
+    - {symerror: 4.18e-04, label: 'stat'}
+    - {symerror: 4.48e-04, label: 'syst'}
+  - value: 3.73e-03
+    errors:
+    - {symerror: 2.72e-04, label: 'stat'}
+    - {symerror: 2.98e-04, label: 'syst'}
+  - value: 1.81e-03
+    errors:
+    - {symerror: 1.18e-04, label: 'stat'}
+    - {symerror: 1.45e-04, label: 'syst'}
+  - value: '-'
+- header: {name: '$K^{+}$, d+Au 0-20$\%$'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 4.83e-01
+    errors:
+    - {symerror: 2.75e-02, label: 'stat'}
+    - {symerror: 3.86e-02, label: 'syst'}
+  - value: 3.87e-01
+    errors:
+    - {symerror: 2.14e-02, label: 'stat'}
+    - {symerror: 3.10e-02, label: 'syst'}
+  - value: 2.81e-01
+    errors:
+    - {symerror: 1.53e-02, label: 'stat'}
+    - {symerror: 2.25e-02, label: 'syst'}
+  - value: 2.14e-01
+    errors:
+    - {symerror: 1.09e-02, label: 'stat'}
+    - {symerror: 1.72e-02, label: 'syst'}
+  - value: 1.58e-01
+    errors:
+    - {symerror: 8.74e-03, label: 'stat'}
+    - {symerror: 1.27e-02, label: 'syst'}
+  - value: 9.95e-02
+    errors:
+    - {symerror: 6.30e-03, label: 'stat'}
+    - {symerror: 7.96e-03, label: 'syst'}
+  - value: 8.92e-02
+    errors:
+    - {symerror: 5.83e-03, label: 'stat'}
+    - {symerror: 7.14e-03, label: 'syst'}
+  - value: 5.61e-02
+    errors:
+    - {symerror: 4.30e-03, label: 'stat'}
+    - {symerror: 4.49e-03, label: 'syst'}
+  - value: 4.00e-02
+    errors:
+    - {symerror: 2.49e-03, label: 'stat'}
+    - {symerror: 3.20e-03, label: 'syst'}
+  - value: 1.95e-02
+    errors:
+    - {symerror: 1.89e-03, label: 'stat'}
+    - {symerror: 1.56e-03, label: 'syst'}
+  - value: '-'
+- header: {name: '$K^{+}$, d+Au 20-40$\%$'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 3.63e-01
+    errors:
+    - {symerror: 2.06e-02, label: 'stat'}
+    - {symerror: 2.91e-02, label: 'syst'}
+  - value: 2.74e-01
+    errors:
+    - {symerror: 1.54e-02, label: 'stat'}
+    - {symerror: 2.19e-02, label: 'syst'}
+  - value: 2.01e-01
+    errors:
+    - {symerror: 1.11e-02, label: 'stat'}
+    - {symerror: 1.60e-02, label: 'syst'}
+  - value: 1.58e-01
+    errors:
+    - {symerror: 8.18e-03, label: 'stat'}
+    - {symerror: 1.27e-02, label: 'syst'}
+  - value: 1.01e-01
+    errors:
+    - {symerror: 6.16e-03, label: 'stat'}
+    - {symerror: 8.06e-03, label: 'syst'}
+  - value: 7.97e-02
+    errors:
+    - {symerror: 4.89e-03, label: 'stat'}
+    - {symerror: 6.37e-03, label: 'syst'}
+  - value: 5.34e-02
+    errors:
+    - {symerror: 3.83e-03, label: 'stat'}
+    - {symerror: 4.27e-03, label: 'syst'}
+  - value: 3.91e-02
+    errors:
+    - {symerror: 3.12e-03, label: 'stat'}
+    - {symerror: 3.13e-03, label: 'syst'}
+  - value: 2.51e-02
+    errors:
+    - {symerror: 1.67e-03, label: 'stat'}
+    - {symerror: 2.01e-03, label: 'syst'}
+  - value: 1.32e-02
+    errors:
+    - {symerror: 1.19e-03, label: 'stat'}
+    - {symerror: 1.05e-03, label: 'syst'}
+  - value: '-'
+- header: {name: '$K^{+}$, d+Au 40-100$\%$'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 1.27e-01
+    errors:
+    - {symerror: 7.70e-03, label: 'stat'}
+    - {symerror: 1.02e-02, label: 'syst'}
+  - value: 1.07e-01
+    errors:
+    - {symerror: 6.16e-03, label: 'stat'}
+    - {symerror: 8.60e-03, label: 'syst'}
+  - value: 7.37e-02
+    errors:
+    - {symerror: 4.26e-03, label: 'stat'}
+    - {symerror: 5.89e-03, label: 'syst'}
+  - value: 5.25e-02
+    errors:
+    - {symerror: 2.99e-03, label: 'stat'}
+    - {symerror: 4.20e-03, label: 'syst'}
+  - value: 3.73e-02
+    errors:
+    - {symerror: 2.35e-03, label: 'stat'}
+    - {symerror: 2.98e-03, label: 'syst'}
+  - value: 2.80e-02
+    errors:
+    - {symerror: 1.86e-03, label: 'stat'}
+    - {symerror: 2.24e-03, label: 'syst'}
+  - value: 1.91e-02
+    errors:
+    - {symerror: 1.47e-03, label: 'stat'}
+    - {symerror: 1.52e-03, label: 'syst'}
+  - value: 1.36e-02
+    errors:
+    - {symerror: 1.18e-03, label: 'stat'}
+    - {symerror: 1.09e-03, label: 'syst'}
+  - value: 8.65e-03
+    errors:
+    - {symerror: 6.83e-04, label: 'stat'}
+    - {symerror: 6.92e-04, label: 'syst'}
+  - value: 4.69e-03
+    errors:
+    - {symerror: 5.07e-04, label: 'stat'}
+    - {symerror: 3.75e-04, label: 'syst'}
+  - value: '-'
+- header: {name: '$K^{-}$, d+Au minbias'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 2.34e-01
+    errors:
+    - {symerror: 9.47e-03, label: 'stat'}
+    - {symerror: 1.87e-02, label: 'syst'}
+  - value: 1.92e-01
+    errors:
+    - {symerror: 7.98e-03, label: 'stat'}
+    - {symerror: 1.54e-02, label: 'syst'}
+  - value: 1.39e-01
+    errors:
+    - {symerror: 5.81e-03, label: 'stat'}
+    - {symerror: 1.12e-02, label: 'syst'}
+  - value: 9.21e-02
+    errors:
+    - {symerror: 3.10e-03, label: 'stat'}
+    - {symerror: 7.37e-03, label: 'syst'}
+  - value: 7.11e-02
+    errors:
+    - {symerror: 2.61e-03, label: 'stat'}
+    - {symerror: 5.69e-03, label: 'syst'}
+  - value: 4.70e-02
+    errors:
+    - {symerror: 1.94e-03, label: 'stat'}
+    - {symerror: 3.76e-03, label: 'syst'}
+  - value: 3.11e-02
+    errors:
+    - {symerror: 1.49e-03, label: 'stat'}
+    - {symerror: 2.48e-03, label: 'syst'}
+  - value: 2.28e-02
+    errors:
+    - {symerror: 1.21e-03, label: 'stat'}
+    - {symerror: 1.82e-03, label: 'syst'}
+  - value: 1.61e-02
+    errors:
+    - {symerror: 7.10e-04, label: 'stat'}
+    - {symerror: 1.29e-03, label: 'syst'}
+  - value: 9.47e-03
+    errors:
+    - {symerror: 5.54e-04, label: 'stat'}
+    - {symerror: 7.58e-04, label: 'syst'}
+  - value: 4.44e-03
+    errors:
+    - {symerror: 4.19e-04, label: 'stat'}
+    - {symerror: 3.55e-04, label: 'syst'}
+- header: {name: '$K^{-}$, p+p NSD'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 5.99e-02
+    errors:
+    - {symerror: 2.91e-03, label: 'stat'}
+    - {symerror: 4.79e-03, label: 'syst'}
+  - value: 4.79e-02
+    errors:
+    - {symerror: 2.35e-03, label: 'stat'}
+    - {symerror: 3.83e-03, label: 'syst'}
+  - value: 3.06e-02
+    errors:
+    - {symerror: 1.58e-03, label: 'stat'}
+    - {symerror: 2.45e-03, label: 'syst'}
+  - value: 2.15e-02
+    errors:
+    - {symerror: 9.81e-04, label: 'stat'}
+    - {symerror: 1.72e-03, label: 'syst'}
+  - value: 1.46e-02
+    errors:
+    - {symerror: 7.67e-04, label: 'stat'}
+    - {symerror: 1.17e-03, label: 'syst'}
+  - value: 1.01e-02
+    errors:
+    - {symerror: 5.86e-04, label: 'stat'}
+    - {symerror: 8.09e-04, label: 'syst'}
+  - value: 7.87e-03
+    errors:
+    - {symerror: 5.22e-04, label: 'stat'}
+    - {symerror: 6.30e-04, label: 'syst'}
+  - value: 5.25e-03
+    errors:
+    - {symerror: 4.27e-04, label: 'stat'}
+    - {symerror: 4.20e-04, label: 'syst'}
+  - value: 3.42e-03
+    errors:
+    - {symerror: 2.57e-04, label: 'stat'}
+    - {symerror: 2.74e-04, label: 'syst'}
+  - value: 1.75e-03
+    errors:
+    - {symerror: 1.61e-04, label: 'stat'}
+    - {symerror: 1.40e-04, label: 'syst'}
+  - value: '-'
+- header: {name: '$K^{-}$, d+Au 0-20$\%$'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 4.87e-01
+    errors:
+    - {symerror: 2.81e-02, label: 'stat'}
+    - {symerror: 3.90e-02, label: 'syst'}
+  - value: 4.01e-01
+    errors:
+    - {symerror: 2.28e-02, label: 'stat'}
+    - {symerror: 3.21e-02, label: 'syst'}
+  - value: 2.91e-01
+    errors:
+    - {symerror: 1.69e-02, label: 'stat'}
+    - {symerror: 2.33e-02, label: 'syst'}
+  - value: 1.90e-01
+    errors:
+    - {symerror: 1.04e-02, label: 'stat'}
+    - {symerror: 1.52e-02, label: 'syst'}
+  - value: 1.45e-01
+    errors:
+    - {symerror: 8.76e-03, label: 'stat'}
+    - {symerror: 1.16e-02, label: 'syst'}
+  - value: 9.49e-02
+    errors:
+    - {symerror: 6.34e-03, label: 'stat'}
+    - {symerror: 7.59e-03, label: 'syst'}
+  - value: 6.56e-02
+    errors:
+    - {symerror: 5.07e-03, label: 'stat'}
+    - {symerror: 5.25e-03, label: 'syst'}
+  - value: 4.74e-02
+    errors:
+    - {symerror: 4.00e-03, label: 'stat'}
+    - {symerror: 3.79e-03, label: 'syst'}
+  - value: 3.70e-02
+    errors:
+    - {symerror: 2.41e-03, label: 'stat'}
+    - {symerror: 2.96e-03, label: 'syst'}
+  - value: 2.01e-02
+    errors:
+    - {symerror: 1.78e-03, label: 'stat'}
+    - {symerror: 1.61e-03, label: 'syst'}
+  - value: '-'
+- header: {name: '$K^{-}$, d+Au 20-40$\%$'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 3.24e-01
+    errors:
+    - {symerror: 1.95e-02, label: 'stat'}
+    - {symerror: 2.59e-02, label: 'syst'}
+  - value: 2.66e-01
+    errors:
+    - {symerror: 1.58e-02, label: 'stat'}
+    - {symerror: 2.13e-02, label: 'syst'}
+  - value: 1.99e-01
+    errors:
+    - {symerror: 1.18e-02, label: 'stat'}
+    - {symerror: 1.59e-02, label: 'syst'}
+  - value: 1.36e-01
+    errors:
+    - {symerror: 7.60e-03, label: 'stat'}
+    - {symerror: 1.08e-02, label: 'syst'}
+  - value: 1.13e-01
+    errors:
+    - {symerror: 6.64e-03, label: 'stat'}
+    - {symerror: 9.04e-03, label: 'syst'}
+  - value: 7.35e-02
+    errors:
+    - {symerror: 4.83e-03, label: 'stat'}
+    - {symerror: 5.88e-03, label: 'syst'}
+  - value: 4.51e-02
+    errors:
+    - {symerror: 3.57e-03, label: 'stat'}
+    - {symerror: 3.61e-03, label: 'syst'}
+  - value: 3.03e-02
+    errors:
+    - {symerror: 2.74e-03, label: 'stat'}
+    - {symerror: 2.43e-03, label: 'syst'}
+  - value: 2.35e-02
+    errors:
+    - {symerror: 1.66e-03, label: 'stat'}
+    - {symerror: 1.88e-03, label: 'syst'}
+  - value: 1.05e-02
+    errors:
+    - {symerror: 1.20e-03, label: 'stat'}
+    - {symerror: 8.36e-04, label: 'syst'}
+  - value: '-'
+- header: {name: '$K^{-}$, d+Au 40-100$\%$'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: '1/$N_{event}$$d^{2}$N/(2$\pi$$p_{T}$$dp_{T}$dy)$(GeV/c)^{-2}$'}
+  values:
+  - value: 1.39e-01
+    errors:
+    - {symerror: 8.25e-03, label: 'stat'}
+    - {symerror: 1.11e-02, label: 'syst'}
+  - value: 1.13e-01
+    errors:
+    - {symerror: 6.63e-03, label: 'stat'}
+    - {symerror: 9.03e-03, label: 'syst'}
+  - value: 7.50e-02
+    errors:
+    - {symerror: 4.61e-03, label: 'stat'}
+    - {symerror: 6.00e-03, label: 'syst'}
+  - value: 5.62e-02
+    errors:
+    - {symerror: 3.16e-03, label: 'stat'}
+    - {symerror: 4.50e-03, label: 'syst'}
+  - value: 3.78e-02
+    errors:
+    - {symerror: 2.47e-03, label: 'stat'}
+    - {symerror: 3.03e-03, label: 'syst'}
+  - value: 2.55e-02
+    errors:
+    - {symerror: 1.82e-03, label: 'stat'}
+    - {symerror: 2.04e-03, label: 'syst'}
+  - value: 1.93e-02
+    errors:
+    - {symerror: 1.51e-03, label: 'stat'}
+    - {symerror: 1.54e-03, label: 'syst'}
+  - value: 1.36e-02
+    errors:
+    - {symerror: 1.20e-03, label: 'stat'}
+    - {symerror: 1.09e-03, label: 'syst'}
+  - value: 7.84e-03
+    errors:
+    - {symerror: 6.41e-04, label: 'stat'}
+    - {symerror: 6.27e-04, label: 'syst'}
+  - value: 5.10e-03
+    errors:
+    - {symerror: 5.72e-04, label: 'stat'}
+    - {symerror: 4.08e-04, label: 'syst'}
+  - value: '-'

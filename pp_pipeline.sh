@@ -130,7 +130,7 @@ if run_stage gen; then
   echo "=== [gen] Pythia8 pp MB: $NCHUNK x $GEN_PER events ==="
   cd "$GEN"
   if [ ! -x gen_pp ] || [ gen_pp.cc -nt gen_pp ]; then
-    g++ -O2 -std=c++17 gen_pp.cc -o gen_pp \
+    g++ -O2 -std=c++$(root-config --cxxstandard) gen_pp.cc -o gen_pp \
         -I install/include -L install/lib -lpythia8 -ldl \
         -Wl,-rpath,"$GEN/install/lib"
     echo "gen_pp compiled"

@@ -1,0 +1,44 @@
+independent_variables:
+- header: {name: '$N_{part}$'}
+  values:
+  - {value: 15.7, low: 13.1, high: 18.3}
+  - {value: 28.8, low: 25.1, high: 32.5}
+  - {value: 49.3, low: 44.6, high: 54}
+  - {value: 78.3, low: 73, high: 83.6}
+  - {value: 117.1, low: 111.9, high: 122.3}
+  - {value: 167.6, low: 162.2, high: 173}
+  - {value: 234.3, low: 229.7, high: 238.9}
+  - {value: 298.6, low: 294.5, high: 302.7}
+  - {value: 350.6, low: 348.2, high: 353}
+dependent_variables:
+- header: {name: 'Bj_energy_density*tau[GeV/fm^2]'}
+  qualifiers:
+  - {name: '$N_{part}$', value: 'Au+Au 200 GeV'}
+  values:
+  - value: 1.22
+    errors:
+    - {symerror: 0.17, label: 'stat'}
+  - value: 1.63
+    errors:
+    - {symerror: 0.18, label: 'stat'}
+  - value: 2.05
+    errors:
+    - {symerror: 0.19, label: 'stat'}
+  - value: 2.49
+    errors:
+    - {symerror: 0.20, label: 'stat'}
+  - value: 3.00
+    errors:
+    - {symerror: 0.23, label: 'stat'}
+  - value: 3.63
+    errors:
+    - {symerror: 0.27, label: 'stat'}
+  - value: 4.15
+    errors:
+    - {symerror: 0.30, label: 'stat'}
+  - value: 4.69
+    errors:
+    - {symerror: 0.34, label: 'stat'}
+  - value: 5.13
+    errors:
+    - {symerror: 0.38, label: 'stat'}

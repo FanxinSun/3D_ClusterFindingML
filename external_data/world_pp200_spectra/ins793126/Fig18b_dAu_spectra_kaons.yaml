@@ -1,0 +1,311 @@
+independent_variables:
+- header: {name: '$p_t [GeV/c]$'}
+  values:
+  - {value: 0.225}
+  - {value: 0.275}
+  - {value: 0.325}
+  - {value: 0.375}
+  - {value: 0.425}
+  - {value: 0.475}
+  - {value: 0.525}
+  - {value: 0.575}
+  - {value: 0.625}
+  - {value: 0.675}
+  - {value: 0.725}
+dependent_variables:
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^-$ (min-bias)'}
+  values:
+  - value: 0.515084
+    errors:
+    - {symerror: 0.016133, label: 'stat'}
+  - value: 0.433514
+    errors:
+    - {symerror: 0.005211, label: 'stat'}
+  - value: 0.364117
+    errors:
+    - {symerror: 0.007591, label: 'stat'}
+  - value: 0.313470
+    errors:
+    - {symerror: 0.028265, label: 'stat'}
+  - value: 0.261523
+    errors:
+    - {symerror: 0.036648, label: 'stat'}
+  - value: 0.210803
+    errors:
+    - {symerror: 0.023237, label: 'stat'}
+  - value: 0.184669
+    errors:
+    - {symerror: 0.012989, label: 'stat'}
+  - value: 0.162504
+    errors:
+    - {symerror: 0.014669, label: 'stat'}
+  - value: 0.131942
+    errors:
+    - {symerror: 0.006672, label: 'stat'}
+  - value: 0.116210
+    errors:
+    - {symerror: 0.009364, label: 'stat'}
+  - value: 0.101208
+    errors:
+    - {symerror: 0.005333, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^-$ (40-100%)'}
+  values:
+  - value: 0.320850
+    errors:
+    - {symerror: 0.010794, label: 'stat'}
+  - value: 0.273013
+    errors:
+    - {symerror: 0.004100, label: 'stat'}
+  - value: 0.225381
+    errors:
+    - {symerror: 0.005034, label: 'stat'}
+  - value: 0.195590
+    errors:
+    - {symerror: 0.017697, label: 'stat'}
+  - value: 0.160912
+    errors:
+    - {symerror: 0.022589, label: 'stat'}
+  - value: 0.123517
+    errors:
+    - {symerror: 0.013672, label: 'stat'}
+  - value: 0.109145
+    errors:
+    - {symerror: 0.007749, label: 'stat'}
+  - value: 0.096289
+    errors:
+    - {symerror: 0.008744, label: 'stat'}
+  - value: 0.076736
+    errors:
+    - {symerror: 0.003964, label: 'stat'}
+  - value: 0.067615
+    errors:
+    - {symerror: 0.005530, label: 'stat'}
+  - value: 0.061600
+    errors:
+    - {symerror: 0.003568, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^-$ (20-40%)'}
+  values:
+  - value: 0.665476
+    errors:
+    - {symerror: 0.022870, label: 'stat'}
+  - value: 0.563441
+    errors:
+    - {symerror: 0.008974, label: 'stat'}
+  - value: 0.474543
+    errors:
+    - {symerror: 0.010814, label: 'stat'}
+  - value: 0.405943
+    errors:
+    - {symerror: 0.036773, label: 'stat'}
+  - value: 0.343416
+    errors:
+    - {symerror: 0.048235, label: 'stat'}
+  - value: 0.276465
+    errors:
+    - {symerror: 0.030632, label: 'stat'}
+  - value: 0.243801
+    errors:
+    - {symerror: 0.017347, label: 'stat'}
+  - value: 0.214842
+    errors:
+    - {symerror: 0.019533, label: 'stat'}
+  - value: 0.172231
+    errors:
+    - {symerror: 0.008950, label: 'stat'}
+  - value: 0.157210
+    errors:
+    - {symerror: 0.012870, label: 'stat'}
+  - value: 0.130698
+    errors:
+    - {symerror: 0.007663, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^-$ (0-20%)'}
+  values:
+  - value: 0.947393
+    errors:
+    - {symerror: 0.031715, label: 'stat'}
+  - value: 0.785090
+    errors:
+    - {symerror: 0.011736, label: 'stat'}
+  - value: 0.669900
+    errors:
+    - {symerror: 0.014901, label: 'stat'}
+  - value: 0.574637
+    errors:
+    - {symerror: 0.051985, label: 'stat'}
+  - value: 0.481461
+    errors:
+    - {symerror: 0.067579, label: 'stat'}
+  - value: 0.407001
+    errors:
+    - {symerror: 0.045012, label: 'stat'}
+  - value: 0.352109
+    errors:
+    - {symerror: 0.024956, label: 'stat'}
+  - value: 0.308813
+    errors:
+    - {symerror: 0.028007, label: 'stat'}
+  - value: 0.257272
+    errors:
+    - {symerror: 0.013239, label: 'stat'}
+  - value: 0.220993
+    errors:
+    - {symerror: 0.018019, label: 'stat'}
+  - value: 0.190539
+    errors:
+    - {symerror: 0.010790, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^+$ (min-bias)'}
+  values:
+  - value: 0.484395
+    errors:
+    - {symerror: 0.015143, label: 'stat'}
+  - value: 0.428207
+    errors:
+    - {symerror: 0.005094, label: 'stat'}
+  - value: 0.368438
+    errors:
+    - {symerror: 0.007660, label: 'stat'}
+  - value: 0.324016
+    errors:
+    - {symerror: 0.029212, label: 'stat'}
+  - value: 0.273473
+    errors:
+    - {symerror: 0.038319, label: 'stat'}
+  - value: 0.225424
+    errors:
+    - {symerror: 0.024842, label: 'stat'}
+  - value: 0.200499
+    errors:
+    - {symerror: 0.014092, label: 'stat'}
+  - value: 0.173858
+    errors:
+    - {symerror: 0.015688, label: 'stat'}
+  - value: 0.141001
+    errors:
+    - {symerror: 0.007118, label: 'stat'}
+  - value: 0.126836
+    errors:
+    - {symerror: 0.010208, label: 'stat'}
+  - value: 0.105963
+    errors:
+    - {symerror: 0.005552, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^+$ (40-100%)'}
+  values:
+  - value: 0.299044
+    errors:
+    - {symerror: 0.010021, label: 'stat'}
+  - value: 0.270883
+    errors:
+    - {symerror: 0.003986, label: 'stat'}
+  - value: 0.230536
+    errors:
+    - {symerror: 0.005110, label: 'stat'}
+  - value: 0.199460
+    errors:
+    - {symerror: 0.018041, label: 'stat'}
+  - value: 0.168373
+    errors:
+    - {symerror: 0.023629, label: 'stat'}
+  - value: 0.134038
+    errors:
+    - {symerror: 0.014824, label: 'stat'}
+  - value: 0.122153
+    errors:
+    - {symerror: 0.008649, label: 'stat'}
+  - value: 0.104604
+    errors:
+    - {symerror: 0.009481, label: 'stat'}
+  - value: 0.082263
+    errors:
+    - {symerror: 0.004231, label: 'stat'}
+  - value: 0.073568
+    errors:
+    - {symerror: 0.005990, label: 'stat'}
+  - value: 0.061123
+    errors:
+    - {symerror: 0.003482, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^+$ (20-40%)'}
+  values:
+  - value: 0.631948
+    errors:
+    - {symerror: 0.021571, label: 'stat'}
+  - value: 0.550269
+    errors:
+    - {symerror: 0.008613, label: 'stat'}
+  - value: 0.482986
+    errors:
+    - {symerror: 0.010914, label: 'stat'}
+  - value: 0.428039
+    errors:
+    - {symerror: 0.038753, label: 'stat'}
+  - value: 0.357957
+    errors:
+    - {symerror: 0.050264, label: 'stat'}
+  - value: 0.295351
+    errors:
+    - {symerror: 0.032694, label: 'stat'}
+  - value: 0.263953
+    errors:
+    - {symerror: 0.018740, label: 'stat'}
+  - value: 0.229704
+    errors:
+    - {symerror: 0.020867, label: 'stat'}
+  - value: 0.188440
+    errors:
+    - {symerror: 0.009729, label: 'stat'}
+  - value: 0.168079
+    errors:
+    - {symerror: 0.013733, label: 'stat'}
+  - value: 0.144053
+    errors:
+    - {symerror: 0.008364, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$K^+$ (0-20%)'}
+  values:
+  - value: 0.892897
+    errors:
+    - {symerror: 0.029753, label: 'stat'}
+  - value: 0.778115
+    errors:
+    - {symerror: 0.011405, label: 'stat'}
+  - value: 0.667593
+    errors:
+    - {symerror: 0.014775, label: 'stat'}
+  - value: 0.593662
+    errors:
+    - {symerror: 0.053687, label: 'stat'}
+  - value: 0.504288
+    errors:
+    - {symerror: 0.070767, label: 'stat'}
+  - value: 0.429652
+    errors:
+    - {symerror: 0.047487, label: 'stat'}
+  - value: 0.372085
+    errors:
+    - {symerror: 0.026341, label: 'stat'}
+  - value: 0.325775
+    errors:
+    - {symerror: 0.029532, label: 'stat'}
+  - value: 0.269776
+    errors:
+    - {symerror: 0.013835, label: 'stat'}
+  - value: 0.245394
+    errors:
+    - {symerror: 0.019936, label: 'stat'}
+  - value: 0.202391
+    errors:
+    - {symerror: 0.011320, label: 'stat'}

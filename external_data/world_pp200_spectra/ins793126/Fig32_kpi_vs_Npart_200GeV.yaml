@@ -1,0 +1,44 @@
+independent_variables:
+- header: {name: '$N_{part}$'}
+  values:
+  - {value: 15.7}
+  - {value: 28.8}
+  - {value: 49.3}
+  - {value: 78.3}
+  - {value: 117.1}
+  - {value: 167.6}
+  - {value: 234.3}
+  - {value: 298.6}
+  - {value: 350.6}
+dependent_variables:
+- header: {name: '$K^-/\pi^-$'}
+  qualifiers:
+  - {name: '$N_{part}$', value: 'STAR Au+Au 200 GeV'}
+  values:
+  - value: 0.1271
+    errors:
+    - {symerror: 0.0121, label: 'stat'}
+  - value: 0.1368
+    errors:
+    - {symerror: 0.0129, label: 'stat'}
+  - value: 0.1429
+    errors:
+    - {symerror: 0.0135, label: 'stat'}
+  - value: 0.1422
+    errors:
+    - {symerror: 0.0138, label: 'stat'}
+  - value: 0.1470
+    errors:
+    - {symerror: 0.0147, label: 'stat'}
+  - value: 0.1446
+    errors:
+    - {symerror: 0.0150, label: 'stat'}
+  - value: 0.1465
+    errors:
+    - {symerror: 0.0164, label: 'stat'}
+  - value: 0.1526
+    errors:
+    - {symerror: 0.0183, label: 'stat'}
+  - value: 0.1513
+    errors:
+    - {symerror: 0.0196, label: 'stat'}

@@ -1,0 +1,164 @@
+independent_variables:
+- header: {name: 'b [fm]'}
+  values:
+  - {value: 0.250000}
+  - {value: 0.750000}
+  - {value: 1.250000}
+  - {value: 1.750000}
+  - {value: 2.250000}
+  - {value: 2.750000}
+  - {value: 3.250000}
+  - {value: 3.750000}
+  - {value: 4.250000}
+  - {value: 4.750000}
+  - {value: 5.250000}
+  - {value: 5.750000}
+  - {value: 6.250000}
+  - {value: 6.750000}
+  - {value: 7.250000}
+  - {value: 7.750000}
+  - {value: 8.250000}
+  - {value: 8.750000}
+  - {value: 9.250000}
+  - {value: 9.750000}
+  - {value: 10.250000}
+  - {value: 10.750000}
+  - {value: 11.250000}
+  - {value: 11.750000}
+  - {value: 12.250000}
+  - {value: 12.750000}
+  - {value: 13.250000}
+  - {value: 13.750000}
+  - {value: 14.250000}
+  - {value: 14.750000}
+  - {value: 15.250000}
+  - {value: 15.750000}
+  - {value: 16.250000}
+  - {value: 16.750000}
+  - {value: 17.250000}
+  - {value: 17.750000}
+  - {value: 18.250000}
+  - {value: 18.750000}
+  - {value: 19.250000}
+dependent_variables:
+- header: {name: '$d\sigma/db [barn/fm]$'}
+  qualifiers:
+  - {name: 'b [fm]', value: 'MC Glauber'}
+  values:
+  - value: 0.014326
+    errors:
+    - {symerror: 0.001897, label: 'stat'}
+  - value: 0.049009
+    errors:
+    - {symerror: 0.003510, label: 'stat'}
+  - value: 0.070623
+    errors:
+    - {symerror: 0.004213, label: 'stat'}
+  - value: 0.108071
+    errors:
+    - {symerror: 0.005212, label: 'stat'}
+  - value: 0.139487
+    errors:
+    - {symerror: 0.005921, label: 'stat'}
+  - value: 0.171908
+    errors:
+    - {symerror: 0.006573, label: 'stat'}
+  - value: 0.198046
+    errors:
+    - {symerror: 0.007055, label: 'stat'}
+  - value: 0.228457
+    errors:
+    - {symerror: 0.007577, label: 'stat'}
+  - value: 0.269926
+    errors:
+    - {symerror: 0.008237, label: 'stat'}
+  - value: 0.286263
+    errors:
+    - {symerror: 0.008482, label: 'stat'}
+  - value: 0.308882
+    errors:
+    - {symerror: 0.008811, label: 'stat'}
+  - value: 0.360907
+    errors:
+    - {symerror: 0.009524, label: 'stat'}
+  - value: 0.398606
+    errors:
+    - {symerror: 0.010009, label: 'stat'}
+  - value: 0.427258
+    errors:
+    - {symerror: 0.010363, label: 'stat'}
+  - value: 0.434043
+    errors:
+    - {symerror: 0.010444, label: 'stat'}
+  - value: 0.465962
+    errors:
+    - {symerror: 0.010822, label: 'stat'}
+  - value: 0.522511
+    errors:
+    - {symerror: 0.011460, label: 'stat'}
+  - value: 0.538093
+    errors:
+    - {symerror: 0.011629, label: 'stat'}
+  - value: 0.585092
+    errors:
+    - {symerror: 0.012126, label: 'stat'}
+  - value: 0.580819
+    errors:
+    - {symerror: 0.012082, label: 'stat'}
+  - value: 0.624299
+    errors:
+    - {symerror: 0.012526, label: 'stat'}
+  - value: 0.664763
+    errors:
+    - {symerror: 0.012926, label: 'stat'}
+  - value: 0.698943
+    errors:
+    - {symerror: 0.013254, label: 'stat'}
+  - value: 0.730359
+    errors:
+    - {symerror: 0.013548, label: 'stat'}
+  - value: 0.787913
+    errors:
+    - {symerror: 0.014072, label: 'stat'}
+  - value: 0.815811
+    errors:
+    - {symerror: 0.014319, label: 'stat'}
+  - value: 0.811789
+    errors:
+    - {symerror: 0.014284, label: 'stat'}
+  - value: 0.741166
+    errors:
+    - {symerror: 0.013648, label: 'stat'}
+  - value: 0.643902
+    errors:
+    - {symerror: 0.012721, label: 'stat'}
+  - value: 0.477523
+    errors:
+    - {symerror: 0.010955, label: 'stat'}
+  - value: 0.317427
+    errors:
+    - {symerror: 0.008932, label: 'stat'}
+  - value: 0.193020
+    errors:
+    - {symerror: 0.006965, label: 'stat'}
+  - value: 0.102793
+    errors:
+    - {symerror: 0.005083, label: 'stat'}
+  - value: 0.049009
+    errors:
+    - {symerror: 0.003510, label: 'stat'}
+  - value: 0.022620
+    errors:
+    - {symerror: 0.002384, label: 'stat'}
+  - value: 0.010304
+    errors:
+    - {symerror: 0.001609, label: 'stat'}
+  - value: 0.004524
+    errors:
+    - {symerror: 0.001066, label: 'stat'}
+  - value: 0.003016
+    errors:
+    - {symerror: 0.000871, label: 'stat'}
+  - value: 0.001005
+    errors:
+    - {symerror: 0.000503, label: 'stat'}

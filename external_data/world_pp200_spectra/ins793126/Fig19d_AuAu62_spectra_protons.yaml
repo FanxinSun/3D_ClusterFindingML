@@ -1,0 +1,460 @@
+independent_variables:
+- header: {name: '$p_t [GeV/c]$'}
+  values:
+  - {value: 0.425000}
+  - {value: 0.475000}
+  - {value: 0.525000}
+  - {value: 0.575000}
+  - {value: 0.625000}
+  - {value: 0.675000}
+  - {value: 0.725000}
+  - {value: 0.775000}
+  - {value: 0.825000}
+  - {value: 0.875000}
+  - {value: 0.925000}
+  - {value: 0.975000}
+  - {value: 1.025000}
+  - {value: 1.075000}
+  - {value: 1.125000}
+dependent_variables:
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (70-80%)'}
+  values:
+  - value: 0.266311
+    errors:
+    - {symerror: 0.003551, label: 'stat'}
+  - value: 0.245345
+    errors:
+    - {symerror: 0.003461, label: 'stat'}
+  - value: 0.220800
+    errors:
+    - {symerror: 0.003271, label: 'stat'}
+  - value: 0.211805
+    errors:
+    - {symerror: 0.003145, label: 'stat'}
+  - value: 0.192498
+    errors:
+    - {symerror: 0.004426, label: 'stat'}
+  - value: 0.169829
+    errors:
+    - {symerror: 0.003955, label: 'stat'}
+  - value: 0.155533
+    errors:
+    - {symerror: 0.003650, label: 'stat'}
+  - value: 0.129772
+    errors:
+    - {symerror: 0.003119, label: 'stat'}
+  - value: 0.115495
+    errors:
+    - {symerror: 0.002811, label: 'stat'}
+  - value: 0.094817
+    errors:
+    - {symerror: 0.003198, label: 'stat'}
+  - value: 0.081348
+    errors:
+    - {symerror: 0.002778, label: 'stat'}
+  - value: 0.066707
+    errors:
+    - {symerror: 0.002320, label: 'stat'}
+  - value: 0.061679
+    errors:
+    - {symerror: 0.002170, label: 'stat'}
+  - value: 0.051129
+    errors:
+    - {symerror: 0.002308, label: 'stat'}
+  - value: 0.042430
+    errors:
+    - {symerror: 0.002015, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (60-70%)'}
+  values:
+  - value: 0.527760
+    errors:
+    - {symerror: 0.006324, label: 'stat'}
+  - value: 0.525223
+    errors:
+    - {symerror: 0.006371, label: 'stat'}
+  - value: 0.495202
+    errors:
+    - {symerror: 0.006137, label: 'stat'}
+  - value: 0.469031
+    errors:
+    - {symerror: 0.005884, label: 'stat'}
+  - value: 0.417314
+    errors:
+    - {symerror: 0.009003, label: 'stat'}
+  - value: 0.390420
+    errors:
+    - {symerror: 0.008449, label: 'stat'}
+  - value: 0.339009
+    errors:
+    - {symerror: 0.007415, label: 'stat'}
+  - value: 0.303338
+    errors:
+    - {symerror: 0.006682, label: 'stat'}
+  - value: 0.271589
+    errors:
+    - {symerror: 0.006028, label: 'stat'}
+  - value: 0.220896
+    errors:
+    - {symerror: 0.007037, label: 'stat'}
+  - value: 0.194968
+    errors:
+    - {symerror: 0.006223, label: 'stat'}
+  - value: 0.168736
+    errors:
+    - {symerror: 0.005456, label: 'stat'}
+  - value: 0.146708
+    errors:
+    - {symerror: 0.004787, label: 'stat'}
+  - value: 0.124196
+    errors:
+    - {symerror: 0.005315, label: 'stat'}
+  - value: 0.104931
+    errors:
+    - {symerror: 0.004582, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (50-60%)'}
+  values:
+  - value: 0.921138
+    errors:
+    - {symerror: 0.010316, label: 'stat'}
+  - value: 0.927372
+    errors:
+    - {symerror: 0.010506, label: 'stat'}
+  - value: 0.886516
+    errors:
+    - {symerror: 0.010184, label: 'stat'}
+  - value: 0.825958
+    errors:
+    - {symerror: 0.009626, label: 'stat'}
+  - value: 0.788754
+    errors:
+    - {symerror: 0.016496, label: 'stat'}
+  - value: 0.712736
+    errors:
+    - {symerror: 0.014960, label: 'stat'}
+  - value: 0.644957
+    errors:
+    - {symerror: 0.013593, label: 'stat'}
+  - value: 0.584800
+    errors:
+    - {symerror: 0.012376, label: 'stat'}
+  - value: 0.513544
+    errors:
+    - {symerror: 0.010930, label: 'stat'}
+  - value: 0.433421
+    errors:
+    - {symerror: 0.013448, label: 'stat'}
+  - value: 0.383971
+    errors:
+    - {symerror: 0.011945, label: 'stat'}
+  - value: 0.339196
+    errors:
+    - {symerror: 0.010594, label: 'stat'}
+  - value: 0.296196
+    errors:
+    - {symerror: 0.009291, label: 'stat'}
+  - value: 0.256909
+    errors:
+    - {symerror: 0.010720, label: 'stat'}
+  - value: 0.225044
+    errors:
+    - {symerror: 0.009455, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (40-50%)'}
+  values:
+  - value: 1.434866
+    errors:
+    - {symerror: 0.015510, label: 'stat'}
+  - value: 1.425992
+    errors:
+    - {symerror: 0.015547, label: 'stat'}
+  - value: 1.382725
+    errors:
+    - {symerror: 0.015193, label: 'stat'}
+  - value: 1.324891
+    errors:
+    - {symerror: 0.014652, label: 'stat'}
+  - value: 1.258508
+    errors:
+    - {symerror: 0.025900, label: 'stat'}
+  - value: 1.172059
+    errors:
+    - {symerror: 0.024163, label: 'stat'}
+  - value: 1.066347
+    errors:
+    - {symerror: 0.022041, label: 'stat'}
+  - value: 0.964920
+    errors:
+    - {symerror: 0.019998, label: 'stat'}
+  - value: 0.871146
+    errors:
+    - {symerror: 0.018111, label: 'stat'}
+  - value: 0.755033
+    errors:
+    - {symerror: 0.023111, label: 'stat'}
+  - value: 0.671486
+    errors:
+    - {symerror: 0.020569, label: 'stat'}
+  - value: 0.594242
+    errors:
+    - {symerror: 0.018281, label: 'stat'}
+  - value: 0.523466
+    errors:
+    - {symerror: 0.016174, label: 'stat'}
+  - value: 0.462228
+    errors:
+    - {symerror: 0.018839, label: 'stat'}
+  - value: 0.404647
+    errors:
+    - {symerror: 0.016755, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (30-40%)'}
+  values:
+  - value: 2.136197
+    errors:
+    - {symerror: 0.022480, label: 'stat'}
+  - value: 2.099859
+    errors:
+    - {symerror: 0.022256, label: 'stat'}
+  - value: 2.073672
+    errors:
+    - {symerror: 0.022076, label: 'stat'}
+  - value: 2.032354
+    errors:
+    - {symerror: 0.021702, label: 'stat'}
+  - value: 1.901086
+    errors:
+    - {symerror: 0.038749, label: 'stat'}
+  - value: 1.777311
+    errors:
+    - {symerror: 0.036273, label: 'stat'}
+  - value: 1.662098
+    errors:
+    - {symerror: 0.033960, label: 'stat'}
+  - value: 1.506088
+    errors:
+    - {symerror: 0.030831, label: 'stat'}
+  - value: 1.367653
+    errors:
+    - {symerror: 0.028050, label: 'stat'}
+  - value: 1.213930
+    errors:
+    - {symerror: 0.036881, label: 'stat'}
+  - value: 1.085725
+    errors:
+    - {symerror: 0.033022, label: 'stat'}
+  - value: 0.962877
+    errors:
+    - {symerror: 0.029336, label: 'stat'}
+  - value: 0.862535
+    errors:
+    - {symerror: 0.026373, label: 'stat'}
+  - value: 0.773262
+    errors:
+    - {symerror: 0.031310, label: 'stat'}
+  - value: 0.684518
+    errors:
+    - {symerror: 0.027381, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (20-30%)'}
+  values:
+  - value: 2.978686
+    errors:
+    - {symerror: 0.030932, label: 'stat'}
+  - value: 2.999714
+    errors:
+    - {symerror: 0.031302, label: 'stat'}
+  - value: 2.985496
+    errors:
+    - {symerror: 0.031270, label: 'stat'}
+  - value: 2.894431
+    errors:
+    - {symerror: 0.030417, label: 'stat'}
+  - value: 2.778479
+    errors:
+    - {symerror: 0.056328, label: 'stat'}
+  - value: 2.619074
+    errors:
+    - {symerror: 0.053138, label: 'stat'}
+  - value: 2.440916
+    errors:
+    - {symerror: 0.049573, label: 'stat'}
+  - value: 2.253429
+    errors:
+    - {symerror: 0.045811, label: 'stat'}
+  - value: 1.922252
+    errors:
+    - {symerror: 0.039201, label: 'stat'}
+  - value: 1.743131
+    errors:
+    - {symerror: 0.052810, label: 'stat'}
+  - value: 1.590114
+    errors:
+    - {symerror: 0.048202, label: 'stat'}
+  - value: 1.444143
+    errors:
+    - {symerror: 0.043849, label: 'stat'}
+  - value: 1.322394
+    errors:
+    - {symerror: 0.040135, label: 'stat'}
+  - value: 1.174102
+    errors:
+    - {symerror: 0.047392, label: 'stat'}
+  - value: 1.068198
+    errors:
+    - {symerror: 0.042728, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (10-20%)'}
+  values:
+  - value: 4.222777
+    errors:
+    - {symerror: 0.043394, label: 'stat'}
+  - value: 4.199121
+    errors:
+    - {symerror: 0.043347, label: 'stat'}
+  - value: 4.158672
+    errors:
+    - {symerror: 0.043061, label: 'stat'}
+  - value: 4.076289
+    errors:
+    - {symerror: 0.042295, label: 'stat'}
+  - value: 3.932643
+    errors:
+    - {symerror: 0.079441, label: 'stat'}
+  - value: 3.748193
+    errors:
+    - {symerror: 0.075752, label: 'stat'}
+  - value: 3.491699
+    errors:
+    - {symerror: 0.070620, label: 'stat'}
+  - value: 3.236063
+    errors:
+    - {symerror: 0.065501, label: 'stat'}
+  - value: 3.012531
+    errors:
+    - {symerror: 0.061024, label: 'stat'}
+  - value: 2.690369
+    errors:
+    - {symerror: 0.081213, label: 'stat'}
+  - value: 2.433176
+    errors:
+    - {symerror: 0.073486, label: 'stat'}
+  - value: 2.195803
+    errors:
+    - {symerror: 0.066416, label: 'stat'}
+  - value: 1.978584
+    errors:
+    - {symerror: 0.060083, label: 'stat'}
+  - value: 1.807464
+    errors:
+    - {symerror: 0.072691, label: 'stat'}
+  - value: 1.631560
+    errors:
+    - {symerror: 0.065263, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (5-10%)'}
+  values:
+  - value: 5.346377
+    errors:
+    - {symerror: 0.055808, label: 'stat'}
+  - value: 5.371730
+    errors:
+    - {symerror: 0.056436, label: 'stat'}
+  - value: 5.377905
+    errors:
+    - {symerror: 0.056740, label: 'stat'}
+  - value: 5.274526
+    errors:
+    - {symerror: 0.055880, label: 'stat'}
+  - value: 5.046530
+    errors:
+    - {symerror: 0.102575, label: 'stat'}
+  - value: 4.802540
+    errors:
+    - {symerror: 0.097706, label: 'stat'}
+  - value: 4.518371
+    errors:
+    - {symerror: 0.092034, label: 'stat'}
+  - value: 4.206477
+    errors:
+    - {symerror: 0.085780, label: 'stat'}
+  - value: 3.898142
+    errors:
+    - {symerror: 0.079618, label: 'stat'}
+  - value: 3.452999
+    errors:
+    - {symerror: 0.104642, label: 'stat'}
+  - value: 3.182676
+    errors:
+    - {symerror: 0.096564, label: 'stat'}
+  - value: 2.934894
+    errors:
+    - {symerror: 0.089218, label: 'stat'}
+  - value: 2.657053
+    errors:
+    - {symerror: 0.081625, label: 'stat'}
+  - value: 2.413469
+    errors:
+    - {symerror: 0.097209, label: 'stat'}
+  - value: 2.176121
+    errors:
+    - {symerror: 0.088192, label: 'stat'}
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: '$proton$ (0-5%)'}
+  values:
+  - value: 6.473799
+    errors:
+    - {symerror: 0.067130, label: 'stat'}
+  - value: 6.502940
+    errors:
+    - {symerror: 0.067780, label: 'stat'}
+  - value: 6.442840
+    errors:
+    - {symerror: 0.067412, label: 'stat'}
+  - value: 6.375838
+    errors:
+    - {symerror: 0.066868, label: 'stat'}
+  - value: 6.089652
+    errors:
+    - {symerror: 0.123427, label: 'stat'}
+  - value: 5.839943
+    errors:
+    - {symerror: 0.118450, label: 'stat'}
+  - value: 5.485851
+    errors:
+    - {symerror: 0.111370, label: 'stat'}
+  - value: 5.106960
+    errors:
+    - {symerror: 0.103811, label: 'stat'}
+  - value: 4.804566
+    errors:
+    - {symerror: 0.097767, label: 'stat'}
+  - value: 4.292276
+    errors:
+    - {symerror: 0.129780, label: 'stat'}
+  - value: 3.904393
+    errors:
+    - {symerror: 0.118270, label: 'stat'}
+  - value: 3.601454
+    errors:
+    - {symerror: 0.109409, label: 'stat'}
+  - value: 3.274822
+    errors:
+    - {symerror: 0.099335, label: 'stat'}
+  - value: 2.996380
+    errors:
+    - {symerror: 0.120663, label: 'stat'}
+  - value: 2.693654
+    errors:
+    - {symerror: 0.109146, label: 'stat'}

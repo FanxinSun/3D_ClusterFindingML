@@ -11,7 +11,7 @@
 # Reference versions (this is what v6.1 was produced with — newer minor
 # versions work for running the chain, but md5-level reproduction of sealed
 # artifacts is only expected on x86_64 Linux with the reference stack):
-#   ROOT 6.40.02  ·  Geant4 11.4.2 (GDML, multithreaded)  ·  Pythia 8.317
+#   ROOT 6.40.02  ·  Geant4 11.4.2 (GDML, multithreaded)  ·  Pythia 8.317   [all C++20]
 #
 # Layout created (mirrors the reference machine so repo scripts run as-is):
 #   $HOME/sw/root-<ver>/        ROOT install (or system/brew ROOT)
@@ -80,6 +80,7 @@ else
   echo "    b) source build:"
   echo "       git clone --branch v6-40-02 --depth 1 https://github.com/root-project/root \$HOME/sw/src/root"
   echo "       cmake -S \$HOME/sw/src/root -B \$HOME/sw/build-root -DCMAKE_INSTALL_PREFIX=\$HOME/sw/root-6.40.02 \\"
+  echo "             -DCMAKE_CXX_STANDARD=20 \\"
   echo "             -DCMAKE_BUILD_TYPE=RelWithDebInfo && cmake --build \$HOME/sw/build-root -j$NCPU --target install"
   echo "  re-run this script afterwards."
 fi
@@ -97,6 +98,7 @@ else
     cmake -S "$HOME/sw/src/geant4" -B "$HOME/sw/build-g4" \
       -DCMAKE_INSTALL_PREFIX="$HOME/geant4" -DCMAKE_BUILD_TYPE=Release \
       -DGEANT4_USE_GDML=ON -DGEANT4_BUILD_MULTITHREADED=ON \
+      -DGEANT4_BUILD_CXXSTD=20 \
       -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_SYSTEM_EXPAT=OFF
     cmake --build "$HOME/sw/build-g4" -j"$NCPU" --target install
   fi
@@ -119,7 +121,8 @@ if [ ! -d "$REPO/P5/angantyr/install" ]; then
     [ -f pythia8317.tgz ] || wget -q https://pythia.org/download/pythia83/pythia8317.tgz \
       || { echo "  download failed — fetch pythia8317.tgz from https://pythia.org/releases/ manually into P5/angantyr/ and re-run"; exit 1; }
     tar xf pythia8317.tgz
-    cd pythia8317 && ./configure --prefix="$REPO/P5/angantyr/install" && make -j"$NCPU" install
+    cd pythia8317 && ./configure --prefix="$REPO/P5/angantyr/install" \
+      --cxx-common="-O2 -fPIC -pthread -std=c++20" && make -j"$NCPU" install
     cd "$REPO"
   fi
 fi
@@ -171,7 +174,7 @@ fi
 say "[7/8] in-repo binaries (standalone_tpc, gen_pp)"
 if [ "$CHECK_ONLY" = 0 ] && [ -f "$HOME/geant4/bin/geant4.sh" ]; then
   ( cd "$REPO/P5" && bash build_standalone.sh ) || echo "  standalone_tpc build FAILED — check ROOT/Geant4/xerces above"
-  ( cd "$REPO/P5/angantyr" && g++ -O2 -std=c++17 gen_pp.cc -o gen_pp \
+  ( cd "$REPO/P5/angantyr" && g++ -O2 -std=c++$(root-config --cxxstandard) gen_pp.cc -o gen_pp \
       -I install/include -L install/lib -lpythia8 -ldl \
       -Wl,-rpath,"$REPO/P5/angantyr/install/lib" ) \
     && echo "  gen_pp built" || echo "  gen_pp build FAILED"

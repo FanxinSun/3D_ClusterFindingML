@@ -1,0 +1,12 @@
+independent_variables:
+- header: {name: '$N_{coll}/(N_{part}/2)$'}
+  values:
+  - {value: 1.00}
+dependent_variables:
+- header: {name: '$(dN_{\pi}/dy/S [fm^{-2}]$'}
+  qualifiers:
+  - {name: '$N_{coll}/(N_{part}/2)$', value: 'pp MB 200 GeV'}
+  values:
+  - value: 0.70
+    errors:
+    - {symerror: 0.06, label: 'stat'}

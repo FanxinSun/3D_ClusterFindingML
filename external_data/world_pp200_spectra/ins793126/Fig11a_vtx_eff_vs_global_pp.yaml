@@ -1,0 +1,229 @@
+independent_variables:
+- header: {name: '$N_{glob}$'}
+  values:
+  - {value: 0.000000}
+  - {value: 1.000000}
+  - {value: 2.000000}
+  - {value: 3.000000}
+  - {value: 4.000000}
+  - {value: 5.000000}
+  - {value: 6.000000}
+  - {value: 7.000000}
+  - {value: 8.000000}
+  - {value: 9.000000}
+  - {value: 10.000000}
+  - {value: 11.000000}
+  - {value: 12.000000}
+  - {value: 13.000000}
+  - {value: 14.000000}
+  - {value: 15.000000}
+  - {value: 16.000000}
+  - {value: 17.000000}
+  - {value: 18.000000}
+  - {value: 19.000000}
+  - {value: 20.000000}
+  - {value: 21.000000}
+  - {value: 22.000000}
+  - {value: 23.000000}
+  - {value: 24.000000}
+  - {value: 25.000000}
+  - {value: 26.000000}
+  - {value: 27.000000}
+  - {value: 28.000000}
+  - {value: 29.000000}
+  - {value: 30.000000}
+dependent_variables:
+- header: {name: 'Efficiency'}
+  qualifiers:
+  - {name: '$N_{glob}$', value: 'pp collisions 200 GeV vertex finding efficiency'}
+  values:
+  - value: 0.000000
+    errors:
+    - {symerror: 0.000722, label: 'stat'}
+  - value: 0.382703
+    errors:
+    - {symerror: 0.004267, label: 'stat'}
+  - value: 0.525469
+    errors:
+    - {symerror: 0.004004, label: 'stat'}
+  - value: 0.630087
+    errors:
+    - {symerror: 0.003516, label: 'stat'}
+  - value: 0.679016
+    errors:
+    - {symerror: 0.003224, label: 'stat'}
+  - value: 0.715669
+    errors:
+    - {symerror: 0.003089, label: 'stat'}
+  - value: 0.751303
+    errors:
+    - {symerror: 0.003029, label: 'stat'}
+  - value: 0.772535
+    errors:
+    - {symerror: 0.003067, label: 'stat'}
+  - value: 0.787898
+    errors:
+    - {symerror: 0.003165, label: 'stat'}
+  - value: 0.815564
+    errors:
+    - {symerror: 0.003231, label: 'stat'}
+  - value: 0.844214
+    errors:
+    - {symerror: 0.003266, label: 'stat'}
+  - value: 0.854851
+    errors:
+    - {symerror: 0.003410, label: 'stat'}
+  - value: 0.875591
+    errors:
+    - {symerror: 0.003475, label: 'stat'}
+  - value: 0.892126
+    errors:
+    - {symerror: 0.003485, label: 'stat'}
+  - value: 0.911067
+    errors:
+    - {symerror: 0.003423, label: 'stat'}
+  - value: 0.927769
+    errors:
+    - {symerror: 0.003373, label: 'stat'}
+  - value: 0.930789
+    errors:
+    - {symerror: 0.003559, label: 'stat'}
+  - value: 0.939143
+    errors:
+    - {symerror: 0.003660, label: 'stat'}
+  - value: 0.951637
+    errors:
+    - {symerror: 0.003494, label: 'stat'}
+  - value: 0.945799
+    errors:
+    - {symerror: 0.003938, label: 'stat'}
+  - value: 0.965378
+    errors:
+    - {symerror: 0.003493, label: 'stat'}
+  - value: 0.967251
+    errors:
+    - {symerror: 0.003666, label: 'stat'}
+  - value: 0.968090
+    errors:
+    - {symerror: 0.003948, label: 'stat'}
+  - value: 0.965946
+    errors:
+    - {symerror: 0.004352, label: 'stat'}
+  - value: 0.984762
+    errors:
+    - {symerror: 0.003224, label: 'stat'}
+  - value: 0.969489
+    errors:
+    - {symerror: 0.004787, label: 'stat'}
+  - value: 0.965351
+    errors:
+    - {symerror: 0.006174, label: 'stat'}
+  - value: 0.966986
+    errors:
+    - {symerror: 0.005973, label: 'stat'}
+  - value: 0.979461
+    errors:
+    - {symerror: 0.005108, label: 'stat'}
+  - value: 0.979528
+    errors:
+    - {symerror: 0.005860, label: 'stat'}
+  - value: 0.980354
+    errors:
+    - {symerror: 0.006765, label: 'stat'}
+- header: {name: 'Efficiency'}
+  qualifiers:
+  - {name: '$N_{glob}$', value: 'pp collisions 200 GeV fake vertex rate'}
+  values:
+  - value: 0.025372
+    errors:
+    - {symerror: 0.000510, label: 'stat'}
+  - value: 0.075668
+    errors:
+    - {symerror: 0.003017, label: 'stat'}
+  - value: 0.113655
+    errors:
+    - {symerror: 0.002831, label: 'stat'}
+  - value: 0.114647
+    errors:
+    - {symerror: 0.002486, label: 'stat'}
+  - value: 0.118518
+    errors:
+    - {symerror: 0.002280, label: 'stat'}
+  - value: 0.116804
+    errors:
+    - {symerror: 0.002184, label: 'stat'}
+  - value: 0.107259
+    errors:
+    - {symerror: 0.002142, label: 'stat'}
+  - value: 0.101594
+    errors:
+    - {symerror: 0.002169, label: 'stat'}
+  - value: 0.097764
+    errors:
+    - {symerror: 0.002238, label: 'stat'}
+  - value: 0.085679
+    errors:
+    - {symerror: 0.002285, label: 'stat'}
+  - value: 0.073245
+    errors:
+    - {symerror: 0.002309, label: 'stat'}
+  - value: 0.068195
+    errors:
+    - {symerror: 0.002411, label: 'stat'}
+  - value: 0.058760
+    errors:
+    - {symerror: 0.002457, label: 'stat'}
+  - value: 0.051320
+    errors:
+    - {symerror: 0.002464, label: 'stat'}
+  - value: 0.042292
+    errors:
+    - {symerror: 0.002420, label: 'stat'}
+  - value: 0.034321
+    errors:
+    - {symerror: 0.002385, label: 'stat'}
+  - value: 0.033236
+    errors:
+    - {symerror: 0.002517, label: 'stat'}
+  - value: 0.028202
+    errors:
+    - {symerror: 0.002588, label: 'stat'}
+  - value: 0.022716
+    errors:
+    - {symerror: 0.002471, label: 'stat'}
+  - value: 0.026384
+    errors:
+    - {symerror: 0.002785, label: 'stat'}
+  - value: 0.016134
+    errors:
+    - {symerror: 0.002470, label: 'stat'}
+  - value: 0.015205
+    errors:
+    - {symerror: 0.002592, label: 'stat'}
+  - value: 0.015016
+    errors:
+    - {symerror: 0.002792, label: 'stat'}
+  - value: 0.016216
+    errors:
+    - {symerror: 0.003077, label: 'stat'}
+  - value: 0.006984
+    errors:
+    - {symerror: 0.002280, label: 'stat'}
+  - value: 0.015256
+    errors:
+    - {symerror: 0.003385, label: 'stat'}
+  - value: 0.014437
+    errors:
+    - {symerror: 0.004366, label: 'stat'}
+  - value: 0.015974
+    errors:
+    - {symerror: 0.004223, label: 'stat'}
+  - value: 0.010270
+    errors:
+    - {symerror: 0.003612, label: 'stat'}
+  - value: 0.009449
+    errors:
+    - {symerror: 0.004144, label: 'stat'}
+  - value: 0.007859
+    errors:
+    - {symerror: 0.004784, label: 'stat'}

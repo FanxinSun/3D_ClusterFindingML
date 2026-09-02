@@ -1,0 +1,12 @@
+independent_variables:
+- header: {name: '$\mu_B [MeV]$'}
+  values:
+  - {value: 8.9, low: 5.1, high: 12.7}
+dependent_variables:
+- header: {name: '$T_{chem} [MeV]$'}
+  qualifiers:
+  - {name: '$\mu_B [MeV]$', value: 'STAR pp'}
+  values:
+  - value: 157.5
+    errors:
+    - {symerror: 3.6, label: 'total'}

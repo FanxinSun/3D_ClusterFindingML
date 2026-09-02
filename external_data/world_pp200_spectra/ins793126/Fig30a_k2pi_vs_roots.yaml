@@ -1,0 +1,56 @@
+independent_variables:
+- header: {name: '$\sqrt(s_{NN}) [GeV]$'}
+  values:
+  - {value: 3.32}
+  - {value: 3.84}
+  - {value: 4.30}
+  - {value: 4.86}
+  - {value: 6.30}
+  - {value: 7.60}
+  - {value: 8.80}
+  - {value: 12.30}
+  - {value: 17.30}
+  - {value: 62.40}
+  - {value: 130.00}
+  - {value: 200.00}
+dependent_variables:
+- header: {name: '$K/\pi$'}
+  qualifiers:
+  - {name: '$\sqrt(s_{NN}) [GeV]$', value: '$K^{-}/\pi^{-}$'}
+  values:
+  - value: 0.0072
+    errors:
+    - {symerror: 0.0004, label: 'stat'}
+  - value: 0.0157
+    errors:
+    - {symerror: 0.0060, label: 'stat'}
+  - value: 0.0254
+    errors:
+    - {symerror: 0.0090, label: 'stat'}
+  - value: 0.0387
+    errors:
+    - {symerror: 0.0080, label: 'stat'}
+  - value: 0.0658
+    errors:
+    - {symerror: 0.0019, label: 'stat'}
+  - value: 0.0808
+    errors:
+    - {symerror: 0.0027, label: 'stat'}
+  - value: 0.0714
+    errors:
+    - {symerror: 0.0041, label: 'stat'}
+  - value: 0.0833
+    errors:
+    - {symerror: 0.0045, label: 'stat'}
+  - value: 0.0958
+    errors:
+    - {symerror: 0.0049, label: 'stat'}
+  - value: 0.1366
+    errors:
+    - {symerror: 0.0097, label: 'stat'}
+  - value: 0.1525
+    errors:
+    - {symerror: 0.0101, label: 'stat'}
+  - value: 0.1513
+    errors:
+    - {symerror: 0.0196, label: 'stat'}

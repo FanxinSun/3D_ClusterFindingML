@@ -1,0 +1,418 @@
+independent_variables:
+- header: {name: '$p^{meas} [GeV/c]$'}
+  values:
+  - {value: 0.144000}
+  - {value: 0.176000}
+  - {value: 0.208000}
+  - {value: 0.240000}
+  - {value: 0.272000}
+  - {value: 0.304000}
+  - {value: 0.336000}
+  - {value: 0.368000}
+  - {value: 0.400000}
+  - {value: 0.432000}
+  - {value: 0.464000}
+  - {value: 0.496000}
+  - {value: 0.528000}
+  - {value: 0.560000}
+  - {value: 0.592000}
+  - {value: 0.624000}
+  - {value: 0.656000}
+  - {value: 0.688000}
+  - {value: 0.720000}
+  - {value: 0.752000}
+  - {value: 0.784000}
+  - {value: 0.816000}
+  - {value: 0.848000}
+  - {value: 0.880000}
+  - {value: 0.912000}
+  - {value: 0.944000}
+  - {value: 0.976000}
+  - {value: 1.008000}
+  - {value: 1.040000}
+  - {value: 1.072000}
+  - {value: 1.104000}
+  - {value: 1.136000}
+  - {value: 1.168000}
+  - {value: 1.200000}
+  - {value: 1.232000}
+  - {value: 1.264000}
+  - {value: 1.296000}
+  - {value: 1.328000}
+  - {value: 1.360000}
+  - {value: 1.392000}
+  - {value: 1.424000}
+  - {value: 1.456000}
+  - {value: 1.488000}
+  - {value: 1.520000}
+  - {value: 1.552000}
+  - {value: 1.584000}
+  - {value: 1.616000}
+  - {value: 1.648000}
+  - {value: 1.680000}
+  - {value: 1.712000}
+  - {value: 1.744000}
+  - {value: 1.776000}
+  - {value: 1.808000}
+  - {value: 1.840000}
+  - {value: 1.872000}
+  - {value: 1.904000}
+  - {value: 1.936000}
+  - {value: 1.968000}
+dependent_variables:
+- header: {name: '$pt^{meas}-pt^{MC}[GeV/c]$'}
+  qualifiers:
+  - {name: '$p^{meas} [GeV/c]$', value: '$K^{-} (pp@200 GeV)$'}
+  values:
+  - value: -0.044500
+    errors:
+    - {symerror: 0.007369, label: 'stat'}
+  - value: -0.034591
+    errors:
+    - {symerror: 0.001708, label: 'stat'}
+  - value: -0.026587
+    errors:
+    - {symerror: 0.001057, label: 'stat'}
+  - value: -0.019419
+    errors:
+    - {symerror: 0.000687, label: 'stat'}
+  - value: -0.014390
+    errors:
+    - {symerror: 0.000528, label: 'stat'}
+  - value: -0.010530
+    errors:
+    - {symerror: 0.000429, label: 'stat'}
+  - value: -0.008844
+    errors:
+    - {symerror: 0.000340, label: 'stat'}
+  - value: -0.006380
+    errors:
+    - {symerror: 0.000381, label: 'stat'}
+  - value: -0.005716
+    errors:
+    - {symerror: 0.000350, label: 'stat'}
+  - value: -0.004497
+    errors:
+    - {symerror: 0.000329, label: 'stat'}
+  - value: -0.004295
+    errors:
+    - {symerror: 0.000347, label: 'stat'}
+  - value: -0.002642
+    errors:
+    - {symerror: 0.000377, label: 'stat'}
+  - value: -0.002027
+    errors:
+    - {symerror: 0.000519, label: 'stat'}
+  - value: -0.001739
+    errors:
+    - {symerror: 0.000414, label: 'stat'}
+  - value: -0.002500
+    errors:
+    - {symerror: 0.000532, label: 'stat'}
+  - value: -0.001464
+    errors:
+    - {symerror: 0.000577, label: 'stat'}
+  - value: -0.000611
+    errors:
+    - {symerror: 0.000527, label: 'stat'}
+  - value: -0.001657
+    errors:
+    - {symerror: 0.000801, label: 'stat'}
+  - value: -0.000902
+    errors:
+    - {symerror: 0.000791, label: 'stat'}
+  - value: 0.000723
+    errors:
+    - {symerror: 0.000759, label: 'stat'}
+  - value: 0.001300
+    errors:
+    - {symerror: 0.001025, label: 'stat'}
+  - value: 0.000518
+    errors:
+    - {symerror: 0.001437, label: 'stat'}
+  - value: -0.000089
+    errors:
+    - {symerror: 0.000912, label: 'stat'}
+  - value: 0.001019
+    errors:
+    - {symerror: 0.001008, label: 'stat'}
+  - value: 0.002913
+    errors:
+    - {symerror: 0.001518, label: 'stat'}
+  - value: 0.002279
+    errors:
+    - {symerror: 0.001890, label: 'stat'}
+  - value: 0.004484
+    errors:
+    - {symerror: 0.002923, label: 'stat'}
+  - value: -0.000663
+    errors:
+    - {symerror: 0.001736, label: 'stat'}
+  - value: 0.001924
+    errors:
+    - {symerror: 0.003406, label: 'stat'}
+  - value: -0.010240
+    errors:
+    - {symerror: 0.008141, label: 'stat'}
+  - value: 0.002222
+    errors:
+    - {symerror: 0.002193, label: 'stat'}
+  - value: 0.002155
+    errors:
+    - {symerror: 0.002838, label: 'stat'}
+  - value: -0.001271
+    errors:
+    - {symerror: 0.002492, label: 'stat'}
+  - value: -0.004342
+    errors:
+    - {symerror: 0.002314, label: 'stat'}
+  - value: 0.004048
+    errors:
+    - {symerror: 0.002321, label: 'stat'}
+  - value: 0.000382
+    errors:
+    - {symerror: 0.003434, label: 'stat'}
+  - value: 0.005060
+    errors:
+    - {symerror: 0.006443, label: 'stat'}
+  - value: -0.001460
+    errors:
+    - {symerror: 0.004867, label: 'stat'}
+  - value: 0.002079
+    errors:
+    - {symerror: 0.003707, label: 'stat'}
+  - value: 0.010591
+    errors:
+    - {symerror: 0.004513, label: 'stat'}
+  - value: 0.017500
+    errors:
+    - {symerror: 0.011741, label: 'stat'}
+  - value: 0.004500
+    errors:
+    - {symerror: 0.008027, label: 'stat'}
+  - value: -0.000571
+    errors:
+    - {symerror: 0.003435, label: 'stat'}
+  - value: 0.003136
+    errors:
+    - {symerror: 0.006325, label: 'stat'}
+  - value: 0.018111
+    errors:
+    - {symerror: 0.008418, label: 'stat'}
+  - value: -0.005625
+    errors:
+    - {symerror: 0.005236, label: 'stat'}
+  - value: -0.004417
+    errors:
+    - {symerror: 0.009913, label: 'stat'}
+  - value: 0.007682
+    errors:
+    - {symerror: 0.005748, label: 'stat'}
+  - value: 0.014654
+    errors:
+    - {symerror: 0.005446, label: 'stat'}
+  - value: 0.003833
+    errors:
+    - {symerror: 0.005573, label: 'stat'}
+  - value: -0.045929
+    errors:
+    - {symerror: 0.035836, label: 'stat'}
+  - value: -0.005682
+    errors:
+    - {symerror: 0.017537, label: 'stat'}
+  - value: -0.005643
+    errors:
+    - {symerror: 0.003285, label: 'stat'}
+  - value: 0.028500
+    errors:
+    - {symerror: 0.021479, label: 'stat'}
+  - value: 0.033500
+    errors:
+    - {symerror: 0.006242, label: 'stat'}
+  - value: -0.018500
+    errors:
+    - {symerror: 0.015692, label: 'stat'}
+  - value: -0.017750
+    errors:
+    - {symerror: 0.008792, label: 'stat'}
+  - value: 0.109100
+    errors:
+    - {symerror: 0.072420, label: 'stat'}
+- header: {name: '$pt^{meas}-pt^{MC}[GeV/c]$'}
+  qualifiers:
+  - {name: '$p^{meas} [GeV/c]$', value: '$K^{-} (Au+Au@62.4 GeV)$'}
+  values:
+  - value: -0.053278
+    errors:
+    - {symerror: 0.003284, label: 'stat'}
+  - value: -0.036877
+    errors:
+    - {symerror: 0.001190, label: 'stat'}
+  - value: -0.026902
+    errors:
+    - {symerror: 0.000547, label: 'stat'}
+  - value: -0.020235
+    errors:
+    - {symerror: 0.000439, label: 'stat'}
+  - value: -0.014568
+    errors:
+    - {symerror: 0.000354, label: 'stat'}
+  - value: -0.011968
+    errors:
+    - {symerror: 0.000325, label: 'stat'}
+  - value: -0.009550
+    errors:
+    - {symerror: 0.000290, label: 'stat'}
+  - value: -0.007329
+    errors:
+    - {symerror: 0.000297, label: 'stat'}
+  - value: -0.006029
+    errors:
+    - {symerror: 0.000291, label: 'stat'}
+  - value: -0.004835
+    errors:
+    - {symerror: 0.000418, label: 'stat'}
+  - value: -0.003708
+    errors:
+    - {symerror: 0.000303, label: 'stat'}
+  - value: -0.003345
+    errors:
+    - {symerror: 0.000361, label: 'stat'}
+  - value: -0.002016
+    errors:
+    - {symerror: 0.000329, label: 'stat'}
+  - value: -0.002079
+    errors:
+    - {symerror: 0.000361, label: 'stat'}
+  - value: -0.002578
+    errors:
+    - {symerror: 0.000441, label: 'stat'}
+  - value: -0.002053
+    errors:
+    - {symerror: 0.000435, label: 'stat'}
+  - value: -0.000488
+    errors:
+    - {symerror: 0.000441, label: 'stat'}
+  - value: -0.000233
+    errors:
+    - {symerror: 0.000483, label: 'stat'}
+  - value: -0.001299
+    errors:
+    - {symerror: 0.000524, label: 'stat'}
+  - value: -0.000303
+    errors:
+    - {symerror: 0.000499, label: 'stat'}
+  - value: -0.000854
+    errors:
+    - {symerror: 0.000635, label: 'stat'}
+  - value: -0.000915
+    errors:
+    - {symerror: 0.000563, label: 'stat'}
+  - value: -0.000020
+    errors:
+    - {symerror: 0.000622, label: 'stat'}
+  - value: 0.000464
+    errors:
+    - {symerror: 0.000758, label: 'stat'}
+  - value: 0.000360
+    errors:
+    - {symerror: 0.000831, label: 'stat'}
+  - value: 0.001286
+    errors:
+    - {symerror: 0.000630, label: 'stat'}
+  - value: 0.000300
+    errors:
+    - {symerror: 0.000839, label: 'stat'}
+  - value: -0.001656
+    errors:
+    - {symerror: 0.000905, label: 'stat'}
+  - value: -0.000967
+    errors:
+    - {symerror: 0.000752, label: 'stat'}
+  - value: 0.000386
+    errors:
+    - {symerror: 0.000724, label: 'stat'}
+  - value: 0.001639
+    errors:
+    - {symerror: 0.000666, label: 'stat'}
+  - value: -0.001351
+    errors:
+    - {symerror: 0.001363, label: 'stat'}
+  - value: -0.001152
+    errors:
+    - {symerror: 0.001107, label: 'stat'}
+  - value: -0.000371
+    errors:
+    - {symerror: 0.001321, label: 'stat'}
+  - value: 0.002854
+    errors:
+    - {symerror: 0.000927, label: 'stat'}
+  - value: 0.000721
+    errors:
+    - {symerror: 0.001388, label: 'stat'}
+  - value: 0.000106
+    errors:
+    - {symerror: 0.001192, label: 'stat'}
+  - value: -0.000663
+    errors:
+    - {symerror: 0.001161, label: 'stat'}
+  - value: 0.001391
+    errors:
+    - {symerror: 0.001205, label: 'stat'}
+  - value: 0.003169
+    errors:
+    - {symerror: 0.000975, label: 'stat'}
+  - value: -0.001593
+    errors:
+    - {symerror: 0.001617, label: 'stat'}
+  - value: 0.001073
+    errors:
+    - {symerror: 0.001635, label: 'stat'}
+  - value: 0.000893
+    errors:
+    - {symerror: 0.001600, label: 'stat'}
+  - value: -0.000418
+    errors:
+    - {symerror: 0.001645, label: 'stat'}
+  - value: 0.001209
+    errors:
+    - {symerror: 0.001336, label: 'stat'}
+  - value: 0.000143
+    errors:
+    - {symerror: 0.001439, label: 'stat'}
+  - value: -0.000221
+    errors:
+    - {symerror: 0.001856, label: 'stat'}
+  - value: 0.000895
+    errors:
+    - {symerror: 0.001648, label: 'stat'}
+  - value: 0.003222
+    errors:
+    - {symerror: 0.001816, label: 'stat'}
+  - value: 0.000626
+    errors:
+    - {symerror: 0.001433, label: 'stat'}
+  - value: 0.002435
+    errors:
+    - {symerror: 0.001662, label: 'stat'}
+  - value: 0.004613
+    errors:
+    - {symerror: 0.001964, label: 'stat'}
+  - value: 0.001504
+    errors:
+    - {symerror: 0.001600, label: 'stat'}
+  - value: 0.000727
+    errors:
+    - {symerror: 0.001746, label: 'stat'}
+  - value: 0.003618
+    errors:
+    - {symerror: 0.001638, label: 'stat'}
+  - value: 0.003350
+    errors:
+    - {symerror: 0.001748, label: 'stat'}
+  - value: 0.005940
+    errors:
+    - {symerror: 0.001578, label: 'stat'}
+  - value: 0.014500
+    errors:
+    - {symerror: 0.001964, label: 'stat'}

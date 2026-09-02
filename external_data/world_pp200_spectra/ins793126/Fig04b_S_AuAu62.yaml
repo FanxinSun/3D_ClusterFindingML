@@ -1,0 +1,44 @@
+independent_variables:
+- header: {name: '$N_{coll}/(N_{part}/2)$'}
+  values:
+  - {value: 1.84, low: 1.76, high: 1.92}
+  - {value: 2.15, low: 2.06, high: 2.24}
+  - {value: 2.55, low: 2.46, high: 2.64}
+  - {value: 3.00, low: 2.89, high: 3.11}
+  - {value: 3.47, low: 3.34, high: 3.60}
+  - {value: 3.97, low: 3.82, high: 4.12}
+  - {value: 4.45, low: 4.24, high: 4.66}
+  - {value: 4.83, low: 4.58, high: 5.08}
+  - {value: 5.14, low: 4.85, high: 5.43}
+dependent_variables:
+- header: {name: '$(dN_{\pi}/dy/S [fm^{-2}]$'}
+  qualifiers:
+  - {name: '$N_{coll}/(N_{part}/2)$', value: 'Au+Au 62.4 GeV'}
+  values:
+  - value: 0.92
+    errors:
+    - {symerror: 0.14, label: 'stat'}
+  - value: 1.19
+    errors:
+    - {symerror: 0.16, label: 'stat'}
+  - value: 1.49
+    errors:
+    - {symerror: 0.17, label: 'stat'}
+  - value: 1.79
+    errors:
+    - {symerror: 0.17, label: 'stat'}
+  - value: 2.11
+    errors:
+    - {symerror: 0.18, label: 'stat'}
+  - value: 2.45
+    errors:
+    - {symerror: 0.19, label: 'stat'}
+  - value: 2.76
+    errors:
+    - {symerror: 0.22, label: 'stat'}
+  - value: 3.01
+    errors:
+    - {symerror: 0.22, label: 'stat'}
+  - value: 3.18
+    errors:
+    - {symerror: 0.24, label: 'stat'}

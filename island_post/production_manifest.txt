@@ -372,3 +372,16 @@ d0a5df64f462037051e229dfbfecd8b4  digi_frames_production_v61.root
 #   Gate PASS +4.7%. SUPERSEDES V6-twist as the production baseline.
 #   ML FLAG LIFTED: stiff is back at 1.00-within-band -> v6.1 clusters
 #   (prodclus_v61/hit69_v61) ARE cleared for ML training; tell the ML thread.
+--- STACK PROVENANCE (2026-08-31): the machine's live stack is now the C++20
+--- build of ROOT 6.40.02 / Geant4 11.4.2 / Pythia 8.317 (user-executed flip,
+--- adopt-cxx20.sh; equivalence gate 2026-08-31, record ~/sw/cxx20_gate/
+--- {VERDICT.txt,REFERENCE_DIGESTS.txt}; landing package ~/sw/cxx20_gate/
+--- landing/). ALL artifacts above were produced under the C++17 build and are
+--- measured bit-identical under C++20 (transport/readout/islandize digest
+--- gates) — nothing regenerated; file md5s unchanged and identity-only as
+--- always. IN-SITU LANDING ACCEPTANCE (pipeline session, clean post-flip
+--- shell, ROOTSYS=root-6.40.02-cxx20 std=20): islandize n 8,075,307
+--- xor 2fd294b27ea01102 add cb9201316d707094; transport chunk-0
+--- n 135,670,812 xor 48a7edd2397518fa add 96a5119eb62624a6 — both equal the
+--- sealed C++17 references to the bit. The dormant C++17 stack remains at
+--- ~/sw/{root-6.40.02,geant4-11.4.2,pythia8-8.317}; revert-cxx17.sh restores.

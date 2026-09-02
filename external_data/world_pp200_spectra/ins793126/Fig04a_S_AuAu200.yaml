@@ -1,0 +1,44 @@
+independent_variables:
+- header: {name: '$(N_{part}/2)^{2/3}$'}
+  values:
+  - {value: 3.96, low: 3.53, high: 4.39}
+  - {value: 5.91, low: 5.41, high: 6.41}
+  - {value: 8.47, low: 7.93, high: 9.01}
+  - {value: 11.53, low: 11.01, high: 12.05}
+  - {value: 15.08, low: 14.64, high: 15.52}
+  - {value: 19.15, low: 18.74, high: 19.56}
+  - {value: 23.94, low: 23.63, high: 24.25}
+  - {value: 28.14, low: 27.88, high: 28.4}
+  - {value: 31.32, low: 31.18, high: 31.46}
+dependent_variables:
+- header: {name: '$S/(N_{part}/2)^{2/3} [fm^2]$'}
+  qualifiers:
+  - {name: '$(N_{part}/2)^{2/3}$', value: 'Au+Au 200 GeV'}
+  values:
+  - value: 4.50
+    errors:
+    - {symerror: 0.07, label: 'stat'}
+  - value: 4.61
+    errors:
+    - {symerror: 0.04, label: 'stat'}
+  - value: 4.58
+    errors:
+    - {symerror: 0.02, label: 'stat'}
+  - value: 4.52
+    errors:
+    - {symerror: 0.03, label: 'stat'}
+  - value: 4.48
+    errors:
+    - {symerror: 0.06, label: 'stat'}
+  - value: 4.50
+    errors:
+    - {symerror: 0.07, label: 'stat'}
+  - value: 4.59
+    errors:
+    - {symerror: 0.08, label: 'stat'}
+  - value: 4.73
+    errors:
+    - {symerror: 0.08, label: 'stat'}
+  - value: 4.91
+    errors:
+    - {symerror: 0.12, label: 'stat'}

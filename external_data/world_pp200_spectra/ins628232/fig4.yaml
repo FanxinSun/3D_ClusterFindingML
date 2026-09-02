@@ -1,0 +1,150 @@
+independent_variables:
+- header: {name: '$p_{T}$ [GeV/c]'}
+  values:
+  - {value: 4.50e-01}
+  - {value: 5.50e-01}
+  - {value: 6.50e-01}
+  - {value: 7.50e-01}
+  - {value: 8.50e-01}
+  - {value: 9.50e-01}
+  - {value: 1.05e+00}
+  - {value: 1.15e+00}
+  - {value: 1.30e+00}
+  - {value: 1.50e+00}
+  - {value: 1.70e+00}
+  - {value: 1.90e+00}
+  - {value: 2.25e+00}
+  - {value: 2.75e+00}
+  - {value: 3.25e+00}
+  - {value: 3.75e+00}
+dependent_variables:
+- header: {name: '(p + $\bar{p}$)/h dAu minbias'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: 'dAu minbias'}
+  values:
+  - value: 3.43e-02
+    errors:
+    - {symerror: 2.56e-03, label: 'stat'}
+    - {symerror: 3.43e-03, label: 'syst'}
+  - value: 4.97e-02
+    errors:
+    - {symerror: 3.00e-03, label: 'stat'}
+    - {symerror: 4.97e-03, label: 'syst'}
+  - value: 6.57e-02
+    errors:
+    - {symerror: 3.84e-03, label: 'stat'}
+    - {symerror: 6.57e-03, label: 'syst'}
+  - value: 8.97e-02
+    errors:
+    - {symerror: 5.25e-03, label: 'stat'}
+    - {symerror: 8.97e-03, label: 'syst'}
+  - value: 1.13e-01
+    errors:
+    - {symerror: 6.68e-03, label: 'stat'}
+    - {symerror: 1.13e-02, label: 'syst'}
+  - value: 1.25e-01
+    errors:
+    - {symerror: 8.90e-03, label: 'stat'}
+    - {symerror: 1.25e-02, label: 'syst'}
+  - value: 1.50e-01
+    errors:
+    - {symerror: 1.06e-02, label: 'stat'}
+    - {symerror: 4.49e-03, label: 'syst'}
+  - value: 1.65e-01
+    errors:
+    - {symerror: 8.91e-03, label: 'stat'}
+    - {symerror: 4.96e-03, label: 'syst'}
+  - value: 1.87e-01
+    errors:
+    - {symerror: 8.20e-03, label: 'stat'}
+    - {symerror: 5.60e-03, label: 'syst'}
+  - value: 2.07e-01
+    errors:
+    - {symerror: 1.15e-02, label: 'stat'}
+    - {symerror: 6.21e-03, label: 'syst'}
+  - value: 2.31e-01
+    errors:
+    - {symerror: 8.70e-03, label: 'stat'}
+    - {symerror: 6.94e-03, label: 'syst'}
+  - value: 2.35e-01
+    errors:
+    - {symerror: 1.16e-02, label: 'stat'}
+    - {symerror: 7.04e-03, label: 'syst'}
+  - value: 2.46e-01
+    errors:
+    - {symerror: 1.12e-02, label: 'stat'}
+    - {symerror: 7.39e-03, label: 'syst'}
+  - value: 2.24e-01
+    errors:
+    - {symerror: 1.98e-02, label: 'stat'}
+    - {symerror: 6.72e-03, label: 'syst'}
+  - value: 2.39e-01
+    errors:
+    - {symerror: 4.24e-02, label: 'stat'}
+    - {symerror: 7.17e-03, label: 'syst'}
+  - value: 2.67e-01
+    errors:
+    - {symerror: 6.99e-02, label: 'stat'}
+    - {symerror: 8.02e-03, label: 'syst'}
+- header: {name: '(p + $\bar{p}$)/h pp NSD'}
+  qualifiers:
+  - {name: '$p_{T}$ [GeV/c]', value: 'pp NSD'}
+  values:
+  - value: 3.13e-02
+    errors:
+    - {symerror: 2.60e-03, label: 'stat'}
+    - {symerror: 3.13e-03, label: 'syst'}
+  - value: 4.92e-02
+    errors:
+    - {symerror: 3.49e-03, label: 'stat'}
+    - {symerror: 4.92e-03, label: 'syst'}
+  - value: 6.42e-02
+    errors:
+    - {symerror: 4.34e-03, label: 'stat'}
+    - {symerror: 6.42e-03, label: 'syst'}
+  - value: 8.83e-02
+    errors:
+    - {symerror: 6.59e-03, label: 'stat'}
+    - {symerror: 8.83e-03, label: 'syst'}
+  - value: 1.03e-01
+    errors:
+    - {symerror: 7.64e-03, label: 'stat'}
+    - {symerror: 1.03e-02, label: 'syst'}
+  - value: 1.21e-01
+    errors:
+    - {symerror: 1.07e-02, label: 'stat'}
+    - {symerror: 1.21e-02, label: 'syst'}
+  - value: 1.42e-01
+    errors:
+    - {symerror: 1.28e-02, label: 'stat'}
+    - {symerror: 4.27e-03, label: 'syst'}
+  - value: 1.48e-01
+    errors:
+    - {symerror: 1.28e-02, label: 'stat'}
+    - {symerror: 4.43e-03, label: 'syst'}
+  - value: 1.63e-01
+    errors:
+    - {symerror: 1.19e-02, label: 'stat'}
+    - {symerror: 4.89e-03, label: 'syst'}
+  - value: 1.65e-01
+    errors:
+    - {symerror: 1.73e-02, label: 'stat'}
+    - {symerror: 4.94e-03, label: 'syst'}
+  - value: 1.72e-01
+    errors:
+    - {symerror: 1.25e-02, label: 'stat'}
+    - {symerror: 5.16e-03, label: 'syst'}
+  - value: 2.18e-01
+    errors:
+    - {symerror: 2.25e-02, label: 'stat'}
+    - {symerror: 6.55e-03, label: 'syst'}
+  - value: 2.16e-01
+    errors:
+    - {symerror: 2.06e-02, label: 'stat'}
+    - {symerror: 6.49e-03, label: 'syst'}
+  - value: 1.93e-01
+    errors:
+    - {symerror: 3.97e-02, label: 'stat'}
+    - {symerror: 5.79e-03, label: 'syst'}
+  - value: '-'
+  - value: '-'

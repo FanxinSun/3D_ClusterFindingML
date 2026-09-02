@@ -1,0 +1,44 @@
+independent_variables:
+- header: {name: '$p_t [GeV/c]$'}
+  values:
+  - {value: 0.957}
+  - {value: 1.060}
+  - {value: 1.160}
+  - {value: 1.310}
+  - {value: 1.500}
+  - {value: 1.700}
+  - {value: 1.900}
+  - {value: 2.250}
+  - {value: 2.750}
+dependent_variables:
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: 'TOF data'}
+  values:
+  - value: 3.800e-002
+    errors:
+    - {symerror: 2.300e-003, label: 'stat'}
+  - value: 3.270e-002
+    errors:
+    - {symerror: 1.410e-003, label: 'stat'}
+  - value: 2.360e-002
+    errors:
+    - {symerror: 1.120e-003, label: 'stat'}
+  - value: 1.550e-002
+    errors:
+    - {symerror: 6.160e-004, label: 'stat'}
+  - value: 8.000e-003
+    errors:
+    - {symerror: 4.040e-004, label: 'stat'}
+  - value: 4.780e-003
+    errors:
+    - {symerror: 2.970e-004, label: 'stat'}
+  - value: 2.560e-003
+    errors:
+    - {symerror: 2.040e-004, label: 'stat'}
+  - value: 1.060e-003
+    errors:
+    - {symerror: 7.970e-005, label: 'stat'}
+  - value: 2.020e-004
+    errors:
+    - {symerror: 1.630e-006, label: 'stat'}

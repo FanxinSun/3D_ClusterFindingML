@@ -1,0 +1,124 @@
+independent_variables:
+- header: {name: '$p_t [GeV/c]$'}
+  values:
+  - {value: 0.175000}
+  - {value: 0.225000}
+  - {value: 0.275000}
+  - {value: 0.325000}
+  - {value: 0.375000}
+  - {value: 0.425000}
+  - {value: 0.475000}
+  - {value: 0.525000}
+  - {value: 0.575000}
+  - {value: 0.625000}
+  - {value: 0.675000}
+  - {value: 0.725000}
+  - {value: 0.775000}
+  - {value: 0.825000}
+  - {value: 0.875000}
+  - {value: 0.925000}
+  - {value: 0.975000}
+  - {value: 1.025000}
+  - {value: 1.075000}
+  - {value: 1.125000}
+  - {value: 1.175000}
+  - {value: 1.225000}
+  - {value: 1.275000}
+  - {value: 1.325000}
+  - {value: 1.375000}
+  - {value: 1.425000}
+  - {value: 1.475000}
+  - {value: 1.525000}
+  - {value: 1.575000}
+dependent_variables:
+- header: {name: '$\frac{dN/dp_t (correct vertices)}{dN/dp_t (all vertices)}$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: 'pp 200 GeV MB'}
+  values:
+  - value: 1.041318
+    errors:
+    - {symerror: 0.004160, label: 'stat'}
+  - value: 1.034371
+    errors:
+    - {symerror: 0.003730, label: 'stat'}
+  - value: 1.037215
+    errors:
+    - {symerror: 0.003696, label: 'stat'}
+  - value: 1.037940
+    errors:
+    - {symerror: 0.003775, label: 'stat'}
+  - value: 1.033408
+    errors:
+    - {symerror: 0.003999, label: 'stat'}
+  - value: 1.033721
+    errors:
+    - {symerror: 0.004270, label: 'stat'}
+  - value: 1.032314
+    errors:
+    - {symerror: 0.004606, label: 'stat'}
+  - value: 1.030567
+    errors:
+    - {symerror: 0.005023, label: 'stat'}
+  - value: 1.025002
+    errors:
+    - {symerror: 0.005507, label: 'stat'}
+  - value: 1.022679
+    errors:
+    - {symerror: 0.006071, label: 'stat'}
+  - value: 1.020689
+    errors:
+    - {symerror: 0.006715, label: 'stat'}
+  - value: 1.014818
+    errors:
+    - {symerror: 0.007493, label: 'stat'}
+  - value: 1.009620
+    errors:
+    - {symerror: 0.008288, label: 'stat'}
+  - value: 1.006285
+    errors:
+    - {symerror: 0.009259, label: 'stat'}
+  - value: 1.005331
+    errors:
+    - {symerror: 0.010146, label: 'stat'}
+  - value: 0.999774
+    errors:
+    - {symerror: 0.011388, label: 'stat'}
+  - value: 0.997827
+    errors:
+    - {symerror: 0.012522, label: 'stat'}
+  - value: 0.991117
+    errors:
+    - {symerror: 0.013809, label: 'stat'}
+  - value: 0.990010
+    errors:
+    - {symerror: 0.015142, label: 'stat'}
+  - value: 0.993248
+    errors:
+    - {symerror: 0.016529, label: 'stat'}
+  - value: 0.989993
+    errors:
+    - {symerror: 0.017957, label: 'stat'}
+  - value: 0.989273
+    errors:
+    - {symerror: 0.019402, label: 'stat'}
+  - value: 0.969718
+    errors:
+    - {symerror: 0.021367, label: 'stat'}
+  - value: 0.967379
+    errors:
+    - {symerror: 0.023018, label: 'stat'}
+  - value: 0.964147
+    errors:
+    - {symerror: 0.024800, label: 'stat'}
+  - value: 0.947178
+    errors:
+    - {symerror: 0.027212, label: 'stat'}
+  - value: 0.942217
+    errors:
+    - {symerror: 0.030011, label: 'stat'}
+  - value: 0.950140
+    errors:
+    - {symerror: 0.030509, label: 'stat'}
+  - value: 0.941870
+    errors:
+    - {symerror: 0.032712, label: 'stat'}

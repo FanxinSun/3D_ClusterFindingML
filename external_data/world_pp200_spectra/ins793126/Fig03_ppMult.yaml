@@ -1,0 +1,266 @@
+independent_variables:
+- header: {name: '$N^{raw}_{ch} (|\eta|<0.5)$'}
+  values:
+  - {value: 0.500000}
+  - {value: 1.500000}
+  - {value: 2.500000}
+  - {value: 3.500000}
+  - {value: 4.500000}
+  - {value: 5.500000}
+  - {value: 6.500000}
+  - {value: 7.500000}
+  - {value: 8.500000}
+  - {value: 9.500000}
+  - {value: 10.500000}
+  - {value: 11.500000}
+  - {value: 12.500000}
+  - {value: 13.500000}
+  - {value: 14.500000}
+  - {value: 15.500000}
+  - {value: 16.500000}
+  - {value: 17.500000}
+  - {value: 18.500000}
+  - {value: 19.500000}
+  - {value: 20.500000}
+  - {value: 21.500000}
+  - {value: 22.500000}
+  - {value: 23.500000}
+  - {value: 24.500000}
+  - {value: 25.500000}
+  - {value: 26.500000}
+  - {value: 27.500000}
+  - {value: 28.500000}
+  - {value: 29.500000}
+  - {value: 30.500000}
+  - {value: 31.500000}
+  - {value: 32.500000}
+  - {value: 33.500000}
+  - {value: 34.500000}
+  - {value: 35.500000}
+  - {value: 36.500000}
+  - {value: 37.500000}
+  - {value: 38.500000}
+  - {value: 39.500000}
+  - {value: 40.500000}
+  - {value: 41.500000}
+  - {value: 42.500000}
+  - {value: 43.500000}
+  - {value: 44.500000}
+  - {value: 45.500000}
+  - {value: 46.500000}
+  - {value: 47.500000}
+  - {value: 48.500000}
+  - {value: 49.500000}
+  - {value: 50.500000}
+  - {value: 51.500000}
+  - {value: 52.500000}
+  - {value: 53.500000}
+  - {value: 54.500000}
+  - {value: 55.500000}
+  - {value: 56.500000}
+  - {value: 57.500000}
+  - {value: 58.500000}
+  - {value: 59.500000}
+  - {value: 60.500000}
+  - {value: 61.500000}
+  - {value: 62.500000}
+  - {value: 63.500000}
+  - {value: 64.500000}
+  - {value: 65.500000}
+  - {value: 66.500000}
+  - {value: 67.500000}
+  - {value: 68.500000}
+  - {value: 69.500000}
+  - {value: 70.500000}
+  - {value: 71.500000}
+  - {value: 72.500000}
+  - {value: 73.500000}
+  - {value: 74.500000}
+  - {value: 75.500000}
+  - {value: 76.500000}
+  - {value: 77.500000}
+  - {value: 78.500000}
+  - {value: 79.500000}
+  - {value: 80.500000}
+  - {value: 81.500000}
+  - {value: 82.500000}
+  - {value: 83.500000}
+  - {value: 84.500000}
+  - {value: 85.500000}
+  - {value: 86.500000}
+  - {value: 87.500000}
+  - {value: 88.500000}
+  - {value: 89.500000}
+  - {value: 90.500000}
+  - {value: 91.500000}
+  - {value: 92.500000}
+  - {value: 93.500000}
+  - {value: 94.500000}
+  - {value: 95.500000}
+  - {value: 96.500000}
+  - {value: 97.500000}
+  - {value: 98.500000}
+dependent_variables:
+- header: {name: '$(1/dN_{evt})N_{evt}/dN_{ch}^{raw}$'}
+  qualifiers:
+  - {name: '$N^{raw}_{ch} (|\eta|<0.5)$', value: 'pp 200 GeV'}
+  values:
+  - value: 1.563670e-001
+    errors:
+    - {symerror: 2.066155e-004, label: 'stat'}
+  - value: 2.598681e-001
+    errors:
+    - {symerror: 2.633184e-004, label: 'stat'}
+  - value: 2.003348e-001
+    errors:
+    - {symerror: 2.229521e-004, label: 'stat'}
+  - value: 1.483871e-001
+    errors:
+    - {symerror: 1.886944e-004, label: 'stat'}
+  - value: 1.046976e-001
+    errors:
+    - {symerror: 1.573882e-004, label: 'stat'}
+  - value: 7.193710e-002
+    errors:
+    - {symerror: 1.300652e-004, label: 'stat'}
+  - value: 4.816907e-002
+    errors:
+    - {symerror: 1.062974e-004, label: 'stat'}
+  - value: 3.216001e-002
+    errors:
+    - {symerror: 8.681315e-005, label: 'stat'}
+  - value: 2.089868e-002
+    errors:
+    - {symerror: 6.997114e-005, label: 'stat'}
+  - value: 1.340748e-002
+    errors:
+    - {symerror: 5.603841e-005, label: 'stat'}
+  - value: 8.674962e-003
+    errors:
+    - {symerror: 4.506612e-005, label: 'stat'}
+  - value: 5.348780e-003
+    errors:
+    - {symerror: 3.536813e-005, label: 'stat'}
+  - value: 3.345642e-003
+    errors:
+    - {symerror: 2.795112e-005, label: 'stat'}
+  - value: 2.057286e-003
+    errors:
+    - {symerror: 2.189924e-005, label: 'stat'}
+  - value: 1.234122e-003
+    errors:
+    - {symerror: 1.694452e-005, label: 'stat'}
+  - value: 7.368864e-004
+    errors:
+    - {symerror: 1.308002e-005, label: 'stat'}
+  - value: 4.496037e-004
+    errors:
+    - {symerror: 1.020790e-005, label: 'stat'}
+  - value: 2.667060e-004
+    errors:
+    - {symerror: 7.857982e-006, label: 'stat'}
+  - value: 1.497181e-004
+    errors:
+    - {symerror: 5.886065e-006, label: 'stat'}
+  - value: 9.020622e-005
+    errors:
+    - {symerror: 4.567784e-006, label: 'stat'}
+  - value: 5.318180e-005
+    errors:
+    - {symerror: 3.506706e-006, label: 'stat'}
+  - value: 3.214186e-005
+    errors:
+    - {symerror: 2.726240e-006, label: 'stat'}
+  - value: 1.988390e-005
+    errors:
+    - {symerror: 2.144136e-006, label: 'stat'}
+  - value: 6.936243e-006
+    errors:
+    - {symerror: 1.266379e-006, label: 'stat'}
+  - value: 3.930538e-006
+    errors:
+    - {symerror: 9.532954e-007, label: 'stat'}
+  - value: 1.618457e-006
+    errors:
+    - {symerror: 6.117191e-007, label: 'stat'}
+  - value: 1.849665e-006
+    errors:
+    - {symerror: 6.539553e-007, label: 'stat'}
+  - value: 1.156040e-006
+    errors:
+    - {symerror: 5.169970e-007, label: 'stat'}
+  - value: 4.624162e-007
+    errors:
+    - {symerror: 3.269776e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 4.624162e-007
+    errors:
+    - {symerror: 3.269776e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000

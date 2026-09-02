@@ -1,0 +1,696 @@
+independent_variables:
+- header: {name: '$N^{raw}_{ch} (|\eta|<0.5)$'}
+  values:
+  - {value: 2.500000}
+  - {value: 7.500000}
+  - {value: 12.500000}
+  - {value: 17.500000}
+  - {value: 22.500000}
+  - {value: 27.500000}
+  - {value: 32.500000}
+  - {value: 37.500000}
+  - {value: 42.500000}
+  - {value: 47.500000}
+  - {value: 52.500000}
+  - {value: 57.500000}
+  - {value: 62.500000}
+  - {value: 67.500000}
+  - {value: 72.500000}
+  - {value: 77.500000}
+  - {value: 82.500000}
+  - {value: 87.500000}
+  - {value: 92.500000}
+  - {value: 97.500000}
+  - {value: 102.500000}
+  - {value: 107.500000}
+  - {value: 112.500000}
+  - {value: 117.500000}
+  - {value: 122.500000}
+  - {value: 127.500000}
+  - {value: 132.500000}
+  - {value: 137.500000}
+  - {value: 142.500000}
+  - {value: 147.500000}
+  - {value: 152.500000}
+  - {value: 157.500000}
+  - {value: 162.500000}
+  - {value: 167.500000}
+  - {value: 172.500000}
+  - {value: 177.500000}
+  - {value: 182.500000}
+  - {value: 187.500000}
+  - {value: 192.500000}
+  - {value: 197.500000}
+  - {value: 202.500000}
+  - {value: 207.500000}
+  - {value: 212.500000}
+  - {value: 217.500000}
+  - {value: 222.500000}
+  - {value: 227.500000}
+  - {value: 232.500000}
+  - {value: 237.500000}
+  - {value: 242.500000}
+  - {value: 247.500000}
+  - {value: 252.500000}
+  - {value: 257.500000}
+  - {value: 262.500000}
+  - {value: 267.500000}
+  - {value: 272.500000}
+  - {value: 277.500000}
+  - {value: 282.500000}
+  - {value: 287.500000}
+  - {value: 292.500000}
+  - {value: 297.500000}
+  - {value: 302.500000}
+  - {value: 307.500000}
+  - {value: 312.500000}
+  - {value: 317.500000}
+  - {value: 322.500000}
+  - {value: 327.500000}
+  - {value: 332.500000}
+  - {value: 337.500000}
+  - {value: 342.500000}
+  - {value: 347.500000}
+  - {value: 352.500000}
+  - {value: 357.500000}
+  - {value: 362.500000}
+  - {value: 367.500000}
+  - {value: 372.500000}
+  - {value: 377.500000}
+  - {value: 382.500000}
+  - {value: 387.500000}
+  - {value: 392.500000}
+  - {value: 397.500000}
+  - {value: 402.500000}
+  - {value: 407.500000}
+  - {value: 412.500000}
+  - {value: 417.500000}
+  - {value: 422.500000}
+  - {value: 427.500000}
+  - {value: 432.500000}
+  - {value: 437.500000}
+  - {value: 442.500000}
+  - {value: 447.500000}
+  - {value: 452.500000}
+  - {value: 457.500000}
+  - {value: 462.500000}
+  - {value: 467.500000}
+  - {value: 472.500000}
+  - {value: 477.500000}
+  - {value: 482.500000}
+  - {value: 487.500000}
+  - {value: 492.500000}
+  - {value: 497.500000}
+  - {value: 502.500000}
+  - {value: 507.500000}
+  - {value: 512.500000}
+  - {value: 517.500000}
+  - {value: 522.500000}
+  - {value: 527.500000}
+  - {value: 532.500000}
+  - {value: 537.500000}
+  - {value: 542.500000}
+  - {value: 547.500000}
+  - {value: 552.500000}
+  - {value: 557.500000}
+  - {value: 562.500000}
+  - {value: 567.500000}
+  - {value: 572.500000}
+  - {value: 577.500000}
+  - {value: 582.500000}
+  - {value: 587.500000}
+  - {value: 592.500000}
+  - {value: 597.500000}
+  - {value: 602.500000}
+  - {value: 607.500000}
+  - {value: 612.500000}
+  - {value: 617.500000}
+  - {value: 622.500000}
+  - {value: 627.500000}
+  - {value: 632.500000}
+  - {value: 637.500000}
+  - {value: 642.500000}
+  - {value: 647.500000}
+  - {value: 652.500000}
+  - {value: 657.500000}
+  - {value: 662.500000}
+  - {value: 667.500000}
+  - {value: 672.500000}
+  - {value: 677.500000}
+  - {value: 682.500000}
+  - {value: 687.500000}
+  - {value: 692.500000}
+  - {value: 697.500000}
+  - {value: 702.500000}
+  - {value: 707.500000}
+  - {value: 712.500000}
+  - {value: 717.500000}
+  - {value: 722.500000}
+  - {value: 727.500000}
+  - {value: 732.500000}
+  - {value: 737.500000}
+  - {value: 742.500000}
+  - {value: 747.500000}
+  - {value: 752.500000}
+  - {value: 757.500000}
+  - {value: 762.500000}
+  - {value: 767.500000}
+  - {value: 772.500000}
+  - {value: 777.500000}
+  - {value: 782.500000}
+  - {value: 787.500000}
+  - {value: 792.500000}
+  - {value: 797.500000}
+  - {value: 802.500000}
+  - {value: 807.500000}
+  - {value: 812.500000}
+  - {value: 817.500000}
+  - {value: 822.500000}
+  - {value: 827.500000}
+  - {value: 832.500000}
+  - {value: 837.500000}
+  - {value: 842.500000}
+  - {value: 847.500000}
+  - {value: 852.500000}
+  - {value: 857.500000}
+  - {value: 862.500000}
+  - {value: 867.500000}
+  - {value: 872.500000}
+  - {value: 877.500000}
+  - {value: 882.500000}
+  - {value: 887.500000}
+  - {value: 892.500000}
+  - {value: 897.500000}
+  - {value: 902.500000}
+  - {value: 907.500000}
+  - {value: 912.500000}
+  - {value: 917.500000}
+  - {value: 922.500000}
+  - {value: 927.500000}
+  - {value: 932.500000}
+  - {value: 937.500000}
+  - {value: 942.500000}
+  - {value: 947.500000}
+  - {value: 952.500000}
+  - {value: 957.500000}
+  - {value: 962.500000}
+  - {value: 967.500000}
+  - {value: 972.500000}
+  - {value: 977.500000}
+  - {value: 982.500000}
+  - {value: 987.500000}
+  - {value: 992.500000}
+  - {value: 997.500000}
+dependent_variables:
+- header: {name: '$dN_{evt}/dN_{ch}^{raw}/N_{evt}$'}
+  qualifiers:
+  - {name: '$N^{raw}_{ch} (|\eta|<0.5)$', value: '200 GeV (scaled x5)'}
+  values:
+  - value: 5.071781e-002
+    errors:
+    - {symerror: 1.668295e-004, label: 'stat'}
+  - value: 6.254915e-002
+    errors:
+    - {symerror: 1.852692e-004, label: 'stat'}
+  - value: 4.815124e-002
+    errors:
+    - {symerror: 1.625535e-004, label: 'stat'}
+  - value: 3.844197e-002
+    errors:
+    - {symerror: 1.452431e-004, label: 'stat'}
+  - value: 3.195285e-002
+    errors:
+    - {symerror: 1.324181e-004, label: 'stat'}
+  - value: 2.776304e-002
+    errors:
+    - {symerror: 1.234315e-004, label: 'stat'}
+  - value: 2.467844e-002
+    errors:
+    - {symerror: 1.163728e-004, label: 'stat'}
+  - value: 2.215907e-002
+    errors:
+    - {symerror: 1.102728e-004, label: 'stat'}
+  - value: 2.053912e-002
+    errors:
+    - {symerror: 1.061655e-004, label: 'stat'}
+  - value: 1.864478e-002
+    errors:
+    - {symerror: 1.011512e-004, label: 'stat'}
+  - value: 1.734806e-002
+    errors:
+    - {symerror: 9.757038e-005, label: 'stat'}
+  - value: 1.630596e-002
+    errors:
+    - {symerror: 9.459446e-005, label: 'stat'}
+  - value: 1.548116e-002
+    errors:
+    - {symerror: 9.217102e-005, label: 'stat'}
+  - value: 1.467009e-002
+    errors:
+    - {symerror: 8.972407e-005, label: 'stat'}
+  - value: 1.387384e-002
+    errors:
+    - {symerror: 8.725510e-005, label: 'stat'}
+  - value: 1.322300e-002
+    errors:
+    - {symerror: 8.518392e-005, label: 'stat'}
+  - value: 1.272473e-002
+    errors:
+    - {symerror: 8.356353e-005, label: 'stat'}
+  - value: 1.206566e-002
+    errors:
+    - {symerror: 8.137071e-005, label: 'stat'}
+  - value: 1.175835e-002
+    errors:
+    - {symerror: 8.032779e-005, label: 'stat'}
+  - value: 1.136105e-002
+    errors:
+    - {symerror: 7.895902e-005, label: 'stat'}
+  - value: 1.084686e-002
+    errors:
+    - {symerror: 7.715153e-005, label: 'stat'}
+  - value: 1.067729e-002
+    errors:
+    - {symerror: 7.654610e-005, label: 'stat'}
+  - value: 1.030962e-002
+    errors:
+    - {symerror: 7.521663e-005, label: 'stat'}
+  - value: 1.002920e-002
+    errors:
+    - {symerror: 7.418664e-005, label: 'stat'}
+  - value: 9.689515e-003
+    errors:
+    - {symerror: 7.291948e-005, label: 'stat'}
+  - value: 9.347087e-003
+    errors:
+    - {symerror: 7.161940e-005, label: 'stat'}
+  - value: 9.062827e-003
+    errors:
+    - {symerror: 7.052197e-005, label: 'stat'}
+  - value: 8.897101e-003
+    errors:
+    - {symerror: 6.987420e-005, label: 'stat'}
+  - value: 8.698997e-003
+    errors:
+    - {symerror: 6.909190e-005, label: 'stat'}
+  - value: 8.486626e-003
+    errors:
+    - {symerror: 6.824331e-005, label: 'stat'}
+  - value: 8.310473e-003
+    errors:
+    - {symerror: 6.753135e-005, label: 'stat'}
+  - value: 8.134320e-003
+    errors:
+    - {symerror: 6.681180e-005, label: 'stat'}
+  - value: 8.015787e-003
+    errors:
+    - {symerror: 6.632323e-005, label: 'stat'}
+  - value: 7.906034e-003
+    errors:
+    - {symerror: 6.586761e-005, label: 'stat'}
+  - value: 7.653603e-003
+    errors:
+    - {symerror: 6.480754e-005, label: 'stat'}
+  - value: 7.496108e-003
+    errors:
+    - {symerror: 6.413727e-005, label: 'stat'}
+  - value: 7.329284e-003
+    errors:
+    - {symerror: 6.341958e-005, label: 'stat'}
+  - value: 7.135022e-003
+    errors:
+    - {symerror: 6.257347e-005, label: 'stat'}
+  - value: 7.082340e-003
+    errors:
+    - {symerror: 6.234203e-005, label: 'stat'}
+  - value: 7.000026e-003
+    errors:
+    - {symerror: 6.197869e-005, label: 'stat'}
+  - value: 6.824422e-003
+    errors:
+    - {symerror: 6.119635e-005, label: 'stat'}
+  - value: 6.732229e-003
+    errors:
+    - {symerror: 6.078158e-005, label: 'stat'}
+  - value: 6.572539e-003
+    errors:
+    - {symerror: 6.005638e-005, label: 'stat'}
+  - value: 6.468823e-003
+    errors:
+    - {symerror: 5.958064e-005, label: 'stat'}
+  - value: 6.476506e-003
+    errors:
+    - {symerror: 5.961601e-005, label: 'stat'}
+  - value: 6.359070e-003
+    errors:
+    - {symerror: 5.907305e-005, label: 'stat'}
+  - value: 6.253159e-003
+    errors:
+    - {symerror: 5.857905e-005, label: 'stat'}
+  - value: 6.163162e-003
+    errors:
+    - {symerror: 5.815598e-005, label: 'stat'}
+  - value: 6.007862e-003
+    errors:
+    - {symerror: 5.741859e-005, label: 'stat'}
+  - value: 5.991947e-003
+    errors:
+    - {symerror: 5.734249e-005, label: 'stat'}
+  - value: 5.952436e-003
+    errors:
+    - {symerror: 5.715312e-005, label: 'stat'}
+  - value: 5.774088e-003
+    errors:
+    - {symerror: 5.629039e-005, label: 'stat'}
+  - value: 5.700005e-003
+    errors:
+    - {symerror: 5.592812e-005, label: 'stat'}
+  - value: 5.627569e-003
+    errors:
+    - {symerror: 5.557161e-005, label: 'stat'}
+  - value: 5.481597e-003
+    errors:
+    - {symerror: 5.484615e-005, label: 'stat'}
+  - value: 5.507938e-003
+    errors:
+    - {symerror: 5.497777e-005, label: 'stat'}
+  - value: 5.354284e-003
+    errors:
+    - {symerror: 5.420549e-005, label: 'stat'}
+  - value: 5.340565e-003
+    errors:
+    - {symerror: 5.413600e-005, label: 'stat'}
+  - value: 5.355931e-003
+    errors:
+    - {symerror: 5.421382e-005, label: 'stat'}
+  - value: 5.192399e-003
+    errors:
+    - {symerror: 5.337976e-005, label: 'stat'}
+  - value: 5.156181e-003
+    errors:
+    - {symerror: 5.319326e-005, label: 'stat'}
+  - value: 5.083195e-003
+    errors:
+    - {symerror: 5.281545e-005, label: 'stat'}
+  - value: 4.998137e-003
+    errors:
+    - {symerror: 5.237170e-005, label: 'stat'}
+  - value: 5.014051e-003
+    errors:
+    - {symerror: 5.245501e-005, label: 'stat'}
+  - value: 4.953138e-003
+    errors:
+    - {symerror: 5.213541e-005, label: 'stat'}
+  - value: 4.937224e-003
+    errors:
+    - {symerror: 5.205159e-005, label: 'stat'}
+  - value: 4.762169e-003
+    errors:
+    - {symerror: 5.112048e-005, label: 'stat'}
+  - value: 4.714426e-003
+    errors:
+    - {symerror: 5.086359e-005, label: 'stat'}
+  - value: 4.635404e-003
+    errors:
+    - {symerror: 5.043551e-005, label: 'stat'}
+  - value: 4.668879e-003
+    errors:
+    - {symerror: 5.061729e-005, label: 'stat'}
+  - value: 4.504799e-003
+    errors:
+    - {symerror: 4.971990e-005, label: 'stat'}
+  - value: 4.554736e-003
+    errors:
+    - {symerror: 4.999472e-005, label: 'stat'}
+  - value: 4.455959e-003
+    errors:
+    - {symerror: 4.944964e-005, label: 'stat'}
+  - value: 4.356084e-003
+    errors:
+    - {symerror: 4.889232e-005, label: 'stat'}
+  - value: 4.380778e-003
+    errors:
+    - {symerror: 4.903071e-005, label: 'stat'}
+  - value: 4.303951e-003
+    errors:
+    - {symerror: 4.859888e-005, label: 'stat'}
+  - value: 4.326999e-003
+    errors:
+    - {symerror: 4.872883e-005, label: 'stat'}
+  - value: 4.272672e-003
+    errors:
+    - {symerror: 4.842196e-005, label: 'stat'}
+  - value: 4.235905e-003
+    errors:
+    - {symerror: 4.821317e-005, label: 'stat'}
+  - value: 4.175541e-003
+    errors:
+    - {symerror: 4.786840e-005, label: 'stat'}
+  - value: 4.091580e-003
+    errors:
+    - {symerror: 4.738469e-005, label: 'stat'}
+  - value: 4.044935e-003
+    errors:
+    - {symerror: 4.711382e-005, label: 'stat'}
+  - value: 4.015850e-003
+    errors:
+    - {symerror: 4.694413e-005, label: 'stat'}
+  - value: 3.956584e-003
+    errors:
+    - {symerror: 4.659644e-005, label: 'stat'}
+  - value: 3.886891e-003
+    errors:
+    - {symerror: 4.618423e-005, label: 'stat'}
+  - value: 3.875367e-003
+    errors:
+    - {symerror: 4.611572e-005, label: 'stat'}
+  - value: 3.815003e-003
+    errors:
+    - {symerror: 4.575515e-005, label: 'stat'}
+  - value: 3.816649e-003
+    errors:
+    - {symerror: 4.576502e-005, label: 'stat'}
+  - value: 3.779882e-003
+    errors:
+    - {symerror: 4.554406e-005, label: 'stat'}
+  - value: 3.704702e-003
+    errors:
+    - {symerror: 4.508885e-005, label: 'stat'}
+  - value: 3.664093e-003
+    errors:
+    - {symerror: 4.484105e-005, label: 'stat'}
+  - value: 3.575193e-003
+    errors:
+    - {symerror: 4.429374e-005, label: 'stat'}
+  - value: 3.587815e-003
+    errors:
+    - {symerror: 4.437186e-005, label: 'stat'}
+  - value: 3.519768e-003
+    errors:
+    - {symerror: 4.394906e-005, label: 'stat'}
+  - value: 3.536231e-003
+    errors:
+    - {symerror: 4.405172e-005, label: 'stat'}
+  - value: 3.461051e-003
+    errors:
+    - {symerror: 4.358094e-005, label: 'stat'}
+  - value: 3.451722e-003
+    errors:
+    - {symerror: 4.352216e-005, label: 'stat'}
+  - value: 3.357334e-003
+    errors:
+    - {symerror: 4.292298e-005, label: 'stat'}
+  - value: 3.374346e-003
+    errors:
+    - {symerror: 4.303159e-005, label: 'stat'}
+  - value: 3.356237e-003
+    errors:
+    - {symerror: 4.291596e-005, label: 'stat'}
+  - value: 3.145512e-003
+    errors:
+    - {symerror: 4.154686e-005, label: 'stat'}
+  - value: 3.161975e-003
+    errors:
+    - {symerror: 4.165544e-005, label: 'stat'}
+  - value: 3.099964e-003
+    errors:
+    - {symerror: 4.124496e-005, label: 'stat'}
+  - value: 3.059905e-003
+    errors:
+    - {symerror: 4.097760e-005, label: 'stat'}
+  - value: 3.071429e-003
+    errors:
+    - {symerror: 4.105469e-005, label: 'stat'}
+  - value: 3.030820e-003
+    errors:
+    - {symerror: 4.078239e-005, label: 'stat'}
+  - value: 2.957835e-003
+    errors:
+    - {symerror: 4.028835e-005, label: 'stat'}
+  - value: 2.901861e-003
+    errors:
+    - {symerror: 3.990533e-005, label: 'stat'}
+  - value: 2.820095e-003
+    errors:
+    - {symerror: 3.933910e-005, label: 'stat'}
+  - value: 2.771804e-003
+    errors:
+    - {symerror: 3.900083e-005, label: 'stat'}
+  - value: 2.657661e-003
+    errors:
+    - {symerror: 3.818936e-005, label: 'stat'}
+  - value: 2.656015e-003
+    errors:
+    - {symerror: 3.817753e-005, label: 'stat'}
+  - value: 2.484801e-003
+    errors:
+    - {symerror: 3.692652e-005, label: 'stat'}
+  - value: 2.420595e-003
+    errors:
+    - {symerror: 3.644632e-005, label: 'stat'}
+  - value: 2.258710e-003
+    errors:
+    - {symerror: 3.520650e-005, label: 'stat'}
+  - value: 2.139628e-003
+    errors:
+    - {symerror: 3.426587e-005, label: 'stat'}
+  - value: 1.988719e-003
+    errors:
+    - {symerror: 3.303537e-005, label: 'stat'}
+  - value: 1.831772e-003
+    errors:
+    - {symerror: 3.170504e-005, label: 'stat'}
+  - value: 1.573853e-003
+    errors:
+    - {symerror: 2.938832e-005, label: 'stat'}
+  - value: 1.390566e-003
+    errors:
+    - {symerror: 2.762412e-005, label: 'stat'}
+  - value: 1.253924e-003
+    errors:
+    - {symerror: 2.623181e-005, label: 'stat'}
+  - value: 1.053077e-003
+    errors:
+    - {symerror: 2.403934e-005, label: 'stat'}
+  - value: 9.158861e-004
+    errors:
+    - {symerror: 2.241885e-005, label: 'stat'}
+  - value: 7.232701e-004
+    errors:
+    - {symerror: 1.992245e-005, label: 'stat'}
+  - value: 6.426019e-004
+    errors:
+    - {symerror: 1.877862e-005, label: 'stat'}
+  - value: 5.004722e-004
+    errors:
+    - {symerror: 1.657229e-005, label: 'stat'}
+  - value: 4.055361e-004
+    errors:
+    - {symerror: 1.491789e-005, label: 'stat'}
+  - value: 3.007223e-004
+    errors:
+    - {symerror: 1.284622e-005, label: 'stat'}
+  - value: 2.129202e-004
+    errors:
+    - {symerror: 1.080939e-005, label: 'stat'}
+  - value: 1.646290e-004
+    errors:
+    - {symerror: 9.504861e-006, label: 'stat'}
+  - value: 1.245693e-004
+    errors:
+    - {symerror: 8.267954e-006, label: 'stat'}
+  - value: 7.957069e-005
+    errors:
+    - {symerror: 6.607986e-006, label: 'stat'}
+  - value: 6.530284e-005
+    errors:
+    - {symerror: 5.986302e-006, label: 'stat'}
+  - value: 4.115725e-005
+    errors:
+    - {symerror: 4.752430e-006, label: 'stat'}
+  - value: 2.798693e-005
+    errors:
+    - {symerror: 3.918954e-006, label: 'stat'}
+  - value: 1.810919e-005
+    errors:
+    - {symerror: 3.152406e-006, label: 'stat'}
+  - value: 1.317032e-005
+    errors:
+    - {symerror: 2.688381e-006, label: 'stat'}
+  - value: 4.938871e-006
+    errors:
+    - {symerror: 1.646290e-006, label: 'stat'}
+  - value: 7.133924e-006
+    errors:
+    - {symerror: 1.978595e-006, label: 'stat'}
+  - value: 2.195054e-006
+    errors:
+    - {symerror: 1.097527e-006, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 1.646290e-006
+    errors:
+    - {symerror: 9.504861e-007, label: 'stat'}
+  - value: 1.097527e-006
+    errors:
+    - {symerror: 7.760686e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 5.487634e-007
+    errors:
+    - {symerror: 5.487634e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 5.487634e-007
+    errors:
+    - {symerror: 5.487634e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000

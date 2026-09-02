@@ -1,0 +1,2736 @@
+independent_variables:
+- header: {name: '$N^{raw}_{ch} (|\eta|<0.5)$'}
+  values:
+  - {value: 0.500000}
+  - {value: 1.500000}
+  - {value: 2.500000}
+  - {value: 3.500000}
+  - {value: 4.500000}
+  - {value: 5.500000}
+  - {value: 6.500000}
+  - {value: 7.500000}
+  - {value: 8.500000}
+  - {value: 9.500000}
+  - {value: 10.500000}
+  - {value: 11.500000}
+  - {value: 12.500000}
+  - {value: 13.500000}
+  - {value: 14.500000}
+  - {value: 15.500000}
+  - {value: 16.500000}
+  - {value: 17.500000}
+  - {value: 18.500000}
+  - {value: 19.500000}
+  - {value: 20.500000}
+  - {value: 21.500000}
+  - {value: 22.500000}
+  - {value: 23.500000}
+  - {value: 24.500000}
+  - {value: 25.500000}
+  - {value: 26.500000}
+  - {value: 27.500000}
+  - {value: 28.500000}
+  - {value: 29.500000}
+  - {value: 30.500000}
+  - {value: 31.500000}
+  - {value: 32.500000}
+  - {value: 33.500000}
+  - {value: 34.500000}
+  - {value: 35.500000}
+  - {value: 36.500000}
+  - {value: 37.500000}
+  - {value: 38.500000}
+  - {value: 39.500000}
+  - {value: 40.500000}
+  - {value: 41.500000}
+  - {value: 42.500000}
+  - {value: 43.500000}
+  - {value: 44.500000}
+  - {value: 45.500000}
+  - {value: 46.500000}
+  - {value: 47.500000}
+  - {value: 48.500000}
+  - {value: 49.500000}
+  - {value: 50.500000}
+  - {value: 51.500000}
+  - {value: 52.500000}
+  - {value: 53.500000}
+  - {value: 54.500000}
+  - {value: 55.500000}
+  - {value: 56.500000}
+  - {value: 57.500000}
+  - {value: 58.500000}
+  - {value: 59.500000}
+  - {value: 60.500000}
+  - {value: 61.500000}
+  - {value: 62.500000}
+  - {value: 63.500000}
+  - {value: 64.500000}
+  - {value: 65.500000}
+  - {value: 66.500000}
+  - {value: 67.500000}
+  - {value: 68.500000}
+  - {value: 69.500000}
+  - {value: 70.500000}
+  - {value: 71.500000}
+  - {value: 72.500000}
+  - {value: 73.500000}
+  - {value: 74.500000}
+  - {value: 75.500000}
+  - {value: 76.500000}
+  - {value: 77.500000}
+  - {value: 78.500000}
+  - {value: 79.500000}
+  - {value: 80.500000}
+  - {value: 81.500000}
+  - {value: 82.500000}
+  - {value: 83.500000}
+  - {value: 84.500000}
+  - {value: 85.500000}
+  - {value: 86.500000}
+  - {value: 87.500000}
+  - {value: 88.500000}
+  - {value: 89.500000}
+  - {value: 90.500000}
+  - {value: 91.500000}
+  - {value: 92.500000}
+  - {value: 93.500000}
+  - {value: 94.500000}
+  - {value: 95.500000}
+  - {value: 96.500000}
+  - {value: 97.500000}
+  - {value: 98.500000}
+  - {value: 99.500000}
+  - {value: 100.500000}
+  - {value: 101.500000}
+  - {value: 102.500000}
+  - {value: 103.500000}
+  - {value: 104.500000}
+  - {value: 105.500000}
+  - {value: 106.500000}
+  - {value: 107.500000}
+  - {value: 108.500000}
+  - {value: 109.500000}
+  - {value: 110.500000}
+  - {value: 111.500000}
+  - {value: 112.500000}
+  - {value: 113.500000}
+  - {value: 114.500000}
+  - {value: 115.500000}
+  - {value: 116.500000}
+  - {value: 117.500000}
+  - {value: 118.500000}
+  - {value: 119.500000}
+  - {value: 120.500000}
+  - {value: 121.500000}
+  - {value: 122.500000}
+  - {value: 123.500000}
+  - {value: 124.500000}
+  - {value: 125.500000}
+  - {value: 126.500000}
+  - {value: 127.500000}
+  - {value: 128.500000}
+  - {value: 129.500000}
+  - {value: 130.500000}
+  - {value: 131.500000}
+  - {value: 132.500000}
+  - {value: 133.500000}
+  - {value: 134.500000}
+  - {value: 135.500000}
+  - {value: 136.500000}
+  - {value: 137.500000}
+  - {value: 138.500000}
+  - {value: 139.500000}
+  - {value: 140.500000}
+  - {value: 141.500000}
+  - {value: 142.500000}
+  - {value: 143.500000}
+  - {value: 144.500000}
+  - {value: 145.500000}
+  - {value: 146.500000}
+  - {value: 147.500000}
+  - {value: 148.500000}
+  - {value: 149.500000}
+  - {value: 150.500000}
+  - {value: 151.500000}
+  - {value: 152.500000}
+  - {value: 153.500000}
+  - {value: 154.500000}
+  - {value: 155.500000}
+  - {value: 156.500000}
+  - {value: 157.500000}
+  - {value: 158.500000}
+  - {value: 159.500000}
+  - {value: 160.500000}
+  - {value: 161.500000}
+  - {value: 162.500000}
+  - {value: 163.500000}
+  - {value: 164.500000}
+  - {value: 165.500000}
+  - {value: 166.500000}
+  - {value: 167.500000}
+  - {value: 168.500000}
+  - {value: 169.500000}
+  - {value: 170.500000}
+  - {value: 171.500000}
+  - {value: 172.500000}
+  - {value: 173.500000}
+  - {value: 174.500000}
+  - {value: 175.500000}
+  - {value: 176.500000}
+  - {value: 177.500000}
+  - {value: 178.500000}
+  - {value: 179.500000}
+  - {value: 180.500000}
+  - {value: 181.500000}
+  - {value: 182.500000}
+  - {value: 183.500000}
+  - {value: 184.500000}
+  - {value: 185.500000}
+  - {value: 186.500000}
+  - {value: 187.500000}
+  - {value: 188.500000}
+  - {value: 189.500000}
+  - {value: 190.500000}
+  - {value: 191.500000}
+  - {value: 192.500000}
+  - {value: 193.500000}
+  - {value: 194.500000}
+  - {value: 195.500000}
+  - {value: 196.500000}
+  - {value: 197.500000}
+  - {value: 198.500000}
+  - {value: 199.500000}
+  - {value: 200.500000}
+  - {value: 201.500000}
+  - {value: 202.500000}
+  - {value: 203.500000}
+  - {value: 204.500000}
+  - {value: 205.500000}
+  - {value: 206.500000}
+  - {value: 207.500000}
+  - {value: 208.500000}
+  - {value: 209.500000}
+  - {value: 210.500000}
+  - {value: 211.500000}
+  - {value: 212.500000}
+  - {value: 213.500000}
+  - {value: 214.500000}
+  - {value: 215.500000}
+  - {value: 216.500000}
+  - {value: 217.500000}
+  - {value: 218.500000}
+  - {value: 219.500000}
+  - {value: 220.500000}
+  - {value: 221.500000}
+  - {value: 222.500000}
+  - {value: 223.500000}
+  - {value: 224.500000}
+  - {value: 225.500000}
+  - {value: 226.500000}
+  - {value: 227.500000}
+  - {value: 228.500000}
+  - {value: 229.500000}
+  - {value: 230.500000}
+  - {value: 231.500000}
+  - {value: 232.500000}
+  - {value: 233.500000}
+  - {value: 234.500000}
+  - {value: 235.500000}
+  - {value: 236.500000}
+  - {value: 237.500000}
+  - {value: 238.500000}
+  - {value: 239.500000}
+  - {value: 240.500000}
+  - {value: 241.500000}
+  - {value: 242.500000}
+  - {value: 243.500000}
+  - {value: 244.500000}
+  - {value: 245.500000}
+  - {value: 246.500000}
+  - {value: 247.500000}
+  - {value: 248.500000}
+  - {value: 249.500000}
+  - {value: 250.500000}
+  - {value: 251.500000}
+  - {value: 252.500000}
+  - {value: 253.500000}
+  - {value: 254.500000}
+  - {value: 255.500000}
+  - {value: 256.500000}
+  - {value: 257.500000}
+  - {value: 258.500000}
+  - {value: 259.500000}
+  - {value: 260.500000}
+  - {value: 261.500000}
+  - {value: 262.500000}
+  - {value: 263.500000}
+  - {value: 264.500000}
+  - {value: 265.500000}
+  - {value: 266.500000}
+  - {value: 267.500000}
+  - {value: 268.500000}
+  - {value: 269.500000}
+  - {value: 270.500000}
+  - {value: 271.500000}
+  - {value: 272.500000}
+  - {value: 273.500000}
+  - {value: 274.500000}
+  - {value: 275.500000}
+  - {value: 276.500000}
+  - {value: 277.500000}
+  - {value: 278.500000}
+  - {value: 279.500000}
+  - {value: 280.500000}
+  - {value: 281.500000}
+  - {value: 282.500000}
+  - {value: 283.500000}
+  - {value: 284.500000}
+  - {value: 285.500000}
+  - {value: 286.500000}
+  - {value: 287.500000}
+  - {value: 288.500000}
+  - {value: 289.500000}
+  - {value: 290.500000}
+  - {value: 291.500000}
+  - {value: 292.500000}
+  - {value: 293.500000}
+  - {value: 294.500000}
+  - {value: 295.500000}
+  - {value: 296.500000}
+  - {value: 297.500000}
+  - {value: 298.500000}
+  - {value: 299.500000}
+  - {value: 300.500000}
+  - {value: 301.500000}
+  - {value: 302.500000}
+  - {value: 303.500000}
+  - {value: 304.500000}
+  - {value: 305.500000}
+  - {value: 306.500000}
+  - {value: 307.500000}
+  - {value: 308.500000}
+  - {value: 309.500000}
+  - {value: 310.500000}
+  - {value: 311.500000}
+  - {value: 312.500000}
+  - {value: 313.500000}
+  - {value: 314.500000}
+  - {value: 315.500000}
+  - {value: 316.500000}
+  - {value: 317.500000}
+  - {value: 318.500000}
+  - {value: 319.500000}
+  - {value: 320.500000}
+  - {value: 321.500000}
+  - {value: 322.500000}
+  - {value: 323.500000}
+  - {value: 324.500000}
+  - {value: 325.500000}
+  - {value: 326.500000}
+  - {value: 327.500000}
+  - {value: 328.500000}
+  - {value: 329.500000}
+  - {value: 330.500000}
+  - {value: 331.500000}
+  - {value: 332.500000}
+  - {value: 333.500000}
+  - {value: 334.500000}
+  - {value: 335.500000}
+  - {value: 336.500000}
+  - {value: 337.500000}
+  - {value: 338.500000}
+  - {value: 339.500000}
+  - {value: 340.500000}
+  - {value: 341.500000}
+  - {value: 342.500000}
+  - {value: 343.500000}
+  - {value: 344.500000}
+  - {value: 345.500000}
+  - {value: 346.500000}
+  - {value: 347.500000}
+  - {value: 348.500000}
+  - {value: 349.500000}
+  - {value: 350.500000}
+  - {value: 351.500000}
+  - {value: 352.500000}
+  - {value: 353.500000}
+  - {value: 354.500000}
+  - {value: 355.500000}
+  - {value: 356.500000}
+  - {value: 357.500000}
+  - {value: 358.500000}
+  - {value: 359.500000}
+  - {value: 360.500000}
+  - {value: 361.500000}
+  - {value: 362.500000}
+  - {value: 363.500000}
+  - {value: 364.500000}
+  - {value: 365.500000}
+  - {value: 366.500000}
+  - {value: 367.500000}
+  - {value: 368.500000}
+  - {value: 369.500000}
+  - {value: 370.500000}
+  - {value: 371.500000}
+  - {value: 372.500000}
+  - {value: 373.500000}
+  - {value: 374.500000}
+  - {value: 375.500000}
+  - {value: 376.500000}
+  - {value: 377.500000}
+  - {value: 378.500000}
+  - {value: 379.500000}
+  - {value: 380.500000}
+  - {value: 381.500000}
+  - {value: 382.500000}
+  - {value: 383.500000}
+  - {value: 384.500000}
+  - {value: 385.500000}
+  - {value: 386.500000}
+  - {value: 387.500000}
+  - {value: 388.500000}
+  - {value: 389.500000}
+  - {value: 390.500000}
+  - {value: 391.500000}
+  - {value: 392.500000}
+  - {value: 393.500000}
+  - {value: 394.500000}
+  - {value: 395.500000}
+  - {value: 396.500000}
+  - {value: 397.500000}
+  - {value: 398.500000}
+  - {value: 399.500000}
+  - {value: 400.500000}
+  - {value: 401.500000}
+  - {value: 402.500000}
+  - {value: 403.500000}
+  - {value: 404.500000}
+  - {value: 405.500000}
+  - {value: 406.500000}
+  - {value: 407.500000}
+  - {value: 408.500000}
+  - {value: 409.500000}
+  - {value: 410.500000}
+  - {value: 411.500000}
+  - {value: 412.500000}
+  - {value: 413.500000}
+  - {value: 414.500000}
+  - {value: 415.500000}
+  - {value: 416.500000}
+  - {value: 417.500000}
+  - {value: 418.500000}
+  - {value: 419.500000}
+  - {value: 420.500000}
+  - {value: 421.500000}
+  - {value: 422.500000}
+  - {value: 423.500000}
+  - {value: 424.500000}
+  - {value: 425.500000}
+  - {value: 426.500000}
+  - {value: 427.500000}
+  - {value: 428.500000}
+  - {value: 429.500000}
+  - {value: 430.500000}
+  - {value: 431.500000}
+  - {value: 432.500000}
+  - {value: 433.500000}
+  - {value: 434.500000}
+  - {value: 435.500000}
+  - {value: 436.500000}
+  - {value: 437.500000}
+  - {value: 438.500000}
+  - {value: 439.500000}
+  - {value: 440.500000}
+  - {value: 441.500000}
+  - {value: 442.500000}
+  - {value: 443.500000}
+  - {value: 444.500000}
+  - {value: 445.500000}
+  - {value: 446.500000}
+  - {value: 447.500000}
+  - {value: 448.500000}
+  - {value: 449.500000}
+  - {value: 450.500000}
+  - {value: 451.500000}
+  - {value: 452.500000}
+  - {value: 453.500000}
+  - {value: 454.500000}
+  - {value: 455.500000}
+  - {value: 456.500000}
+  - {value: 457.500000}
+  - {value: 458.500000}
+  - {value: 459.500000}
+  - {value: 460.500000}
+  - {value: 461.500000}
+  - {value: 462.500000}
+  - {value: 463.500000}
+  - {value: 464.500000}
+  - {value: 465.500000}
+  - {value: 466.500000}
+  - {value: 467.500000}
+  - {value: 468.500000}
+  - {value: 469.500000}
+  - {value: 470.500000}
+  - {value: 471.500000}
+  - {value: 472.500000}
+  - {value: 473.500000}
+  - {value: 474.500000}
+  - {value: 475.500000}
+  - {value: 476.500000}
+  - {value: 477.500000}
+  - {value: 478.500000}
+  - {value: 479.500000}
+  - {value: 480.500000}
+  - {value: 481.500000}
+  - {value: 482.500000}
+  - {value: 483.500000}
+  - {value: 484.500000}
+  - {value: 485.500000}
+  - {value: 486.500000}
+  - {value: 487.500000}
+  - {value: 488.500000}
+  - {value: 489.500000}
+  - {value: 490.500000}
+  - {value: 491.500000}
+  - {value: 492.500000}
+  - {value: 493.500000}
+  - {value: 494.500000}
+  - {value: 495.500000}
+  - {value: 496.500000}
+  - {value: 497.500000}
+  - {value: 498.500000}
+  - {value: 499.500000}
+  - {value: 500.500000}
+  - {value: 501.500000}
+  - {value: 502.500000}
+  - {value: 503.500000}
+  - {value: 504.500000}
+  - {value: 505.500000}
+  - {value: 506.500000}
+  - {value: 507.500000}
+  - {value: 508.500000}
+  - {value: 509.500000}
+  - {value: 510.500000}
+  - {value: 511.500000}
+  - {value: 512.500000}
+  - {value: 513.500000}
+  - {value: 514.500000}
+  - {value: 515.500000}
+  - {value: 516.500000}
+  - {value: 517.500000}
+  - {value: 518.500000}
+  - {value: 519.500000}
+  - {value: 520.500000}
+  - {value: 521.500000}
+  - {value: 522.500000}
+  - {value: 523.500000}
+  - {value: 524.500000}
+  - {value: 525.500000}
+  - {value: 526.500000}
+  - {value: 527.500000}
+  - {value: 528.500000}
+  - {value: 529.500000}
+  - {value: 530.500000}
+  - {value: 531.500000}
+  - {value: 532.500000}
+  - {value: 533.500000}
+  - {value: 534.500000}
+  - {value: 535.500000}
+  - {value: 536.500000}
+  - {value: 537.500000}
+  - {value: 538.500000}
+  - {value: 539.500000}
+  - {value: 540.500000}
+  - {value: 541.500000}
+  - {value: 542.500000}
+  - {value: 543.500000}
+  - {value: 544.500000}
+  - {value: 545.500000}
+  - {value: 546.500000}
+  - {value: 547.500000}
+  - {value: 548.500000}
+  - {value: 549.500000}
+  - {value: 550.500000}
+  - {value: 551.500000}
+  - {value: 552.500000}
+  - {value: 553.500000}
+  - {value: 554.500000}
+  - {value: 555.500000}
+  - {value: 556.500000}
+  - {value: 557.500000}
+  - {value: 558.500000}
+  - {value: 559.500000}
+  - {value: 560.500000}
+  - {value: 561.500000}
+  - {value: 562.500000}
+  - {value: 563.500000}
+  - {value: 564.500000}
+  - {value: 565.500000}
+  - {value: 566.500000}
+  - {value: 567.500000}
+  - {value: 568.500000}
+  - {value: 569.500000}
+  - {value: 570.500000}
+  - {value: 571.500000}
+  - {value: 572.500000}
+  - {value: 573.500000}
+  - {value: 574.500000}
+  - {value: 575.500000}
+  - {value: 576.500000}
+  - {value: 577.500000}
+  - {value: 578.500000}
+  - {value: 579.500000}
+  - {value: 580.500000}
+  - {value: 581.500000}
+  - {value: 582.500000}
+  - {value: 583.500000}
+  - {value: 584.500000}
+  - {value: 585.500000}
+  - {value: 586.500000}
+  - {value: 587.500000}
+  - {value: 588.500000}
+  - {value: 589.500000}
+  - {value: 590.500000}
+  - {value: 591.500000}
+  - {value: 592.500000}
+  - {value: 593.500000}
+  - {value: 594.500000}
+  - {value: 595.500000}
+  - {value: 596.500000}
+  - {value: 597.500000}
+  - {value: 598.500000}
+  - {value: 599.500000}
+  - {value: 600.500000}
+  - {value: 601.500000}
+  - {value: 602.500000}
+  - {value: 603.500000}
+  - {value: 604.500000}
+  - {value: 605.500000}
+  - {value: 606.500000}
+  - {value: 607.500000}
+  - {value: 608.500000}
+  - {value: 609.500000}
+  - {value: 610.500000}
+  - {value: 611.500000}
+  - {value: 612.500000}
+  - {value: 613.500000}
+  - {value: 614.500000}
+  - {value: 615.500000}
+  - {value: 616.500000}
+  - {value: 617.500000}
+  - {value: 618.500000}
+  - {value: 619.500000}
+  - {value: 620.500000}
+  - {value: 621.500000}
+  - {value: 622.500000}
+  - {value: 623.500000}
+  - {value: 624.500000}
+  - {value: 625.500000}
+  - {value: 626.500000}
+  - {value: 627.500000}
+  - {value: 628.500000}
+  - {value: 629.500000}
+  - {value: 630.500000}
+  - {value: 631.500000}
+  - {value: 632.500000}
+  - {value: 633.500000}
+  - {value: 634.500000}
+  - {value: 635.500000}
+  - {value: 636.500000}
+  - {value: 637.500000}
+  - {value: 638.500000}
+  - {value: 639.500000}
+  - {value: 640.500000}
+  - {value: 641.500000}
+  - {value: 642.500000}
+  - {value: 643.500000}
+  - {value: 644.500000}
+  - {value: 645.500000}
+  - {value: 646.500000}
+  - {value: 647.500000}
+  - {value: 648.500000}
+  - {value: 649.500000}
+  - {value: 650.500000}
+  - {value: 651.500000}
+  - {value: 652.500000}
+  - {value: 653.500000}
+  - {value: 654.500000}
+  - {value: 655.500000}
+  - {value: 656.500000}
+  - {value: 657.500000}
+  - {value: 658.500000}
+  - {value: 659.500000}
+  - {value: 660.500000}
+  - {value: 661.500000}
+  - {value: 662.500000}
+  - {value: 663.500000}
+  - {value: 664.500000}
+  - {value: 665.500000}
+  - {value: 666.500000}
+  - {value: 667.500000}
+  - {value: 668.500000}
+  - {value: 669.500000}
+  - {value: 670.500000}
+  - {value: 671.500000}
+  - {value: 672.500000}
+  - {value: 673.500000}
+  - {value: 674.500000}
+  - {value: 675.500000}
+  - {value: 676.500000}
+  - {value: 677.500000}
+  - {value: 678.500000}
+  - {value: 679.500000}
+  - {value: 680.500000}
+  - {value: 681.500000}
+  - {value: 682.500000}
+  - {value: 683.500000}
+  - {value: 684.500000}
+  - {value: 685.500000}
+  - {value: 686.500000}
+  - {value: 687.500000}
+  - {value: 688.500000}
+  - {value: 689.500000}
+  - {value: 690.500000}
+  - {value: 691.500000}
+  - {value: 692.500000}
+  - {value: 693.500000}
+  - {value: 694.500000}
+  - {value: 695.500000}
+  - {value: 696.500000}
+  - {value: 697.500000}
+  - {value: 698.500000}
+  - {value: 699.500000}
+  - {value: 700.500000}
+  - {value: 701.500000}
+  - {value: 702.500000}
+  - {value: 703.500000}
+  - {value: 704.500000}
+  - {value: 705.500000}
+  - {value: 706.500000}
+  - {value: 707.500000}
+  - {value: 708.500000}
+  - {value: 709.500000}
+  - {value: 710.500000}
+  - {value: 711.500000}
+  - {value: 712.500000}
+  - {value: 713.500000}
+  - {value: 714.500000}
+  - {value: 715.500000}
+  - {value: 716.500000}
+  - {value: 717.500000}
+  - {value: 718.500000}
+  - {value: 719.500000}
+  - {value: 720.500000}
+  - {value: 721.500000}
+  - {value: 722.500000}
+  - {value: 723.500000}
+  - {value: 724.500000}
+  - {value: 725.500000}
+  - {value: 726.500000}
+  - {value: 727.500000}
+  - {value: 728.500000}
+  - {value: 729.500000}
+  - {value: 730.500000}
+  - {value: 731.500000}
+  - {value: 732.500000}
+  - {value: 733.500000}
+  - {value: 734.500000}
+  - {value: 735.500000}
+  - {value: 736.500000}
+  - {value: 737.500000}
+  - {value: 738.500000}
+  - {value: 739.500000}
+  - {value: 740.500000}
+  - {value: 741.500000}
+  - {value: 742.500000}
+  - {value: 743.500000}
+  - {value: 744.500000}
+  - {value: 745.500000}
+  - {value: 746.500000}
+  - {value: 747.500000}
+  - {value: 748.500000}
+  - {value: 749.500000}
+  - {value: 750.500000}
+  - {value: 751.500000}
+  - {value: 752.500000}
+  - {value: 753.500000}
+  - {value: 754.500000}
+  - {value: 755.500000}
+  - {value: 756.500000}
+  - {value: 757.500000}
+  - {value: 758.500000}
+  - {value: 759.500000}
+  - {value: 760.500000}
+  - {value: 761.500000}
+  - {value: 762.500000}
+  - {value: 763.500000}
+  - {value: 764.500000}
+  - {value: 765.500000}
+  - {value: 766.500000}
+  - {value: 767.500000}
+  - {value: 768.500000}
+  - {value: 769.500000}
+  - {value: 770.500000}
+  - {value: 771.500000}
+  - {value: 772.500000}
+  - {value: 773.500000}
+  - {value: 774.500000}
+  - {value: 775.500000}
+  - {value: 776.500000}
+  - {value: 777.500000}
+  - {value: 778.500000}
+  - {value: 779.500000}
+  - {value: 780.500000}
+  - {value: 781.500000}
+  - {value: 782.500000}
+  - {value: 783.500000}
+  - {value: 784.500000}
+  - {value: 785.500000}
+  - {value: 786.500000}
+  - {value: 787.500000}
+  - {value: 788.500000}
+  - {value: 789.500000}
+  - {value: 790.500000}
+  - {value: 791.500000}
+  - {value: 792.500000}
+  - {value: 793.500000}
+  - {value: 794.500000}
+  - {value: 795.500000}
+  - {value: 796.500000}
+  - {value: 797.500000}
+  - {value: 798.500000}
+  - {value: 799.500000}
+dependent_variables:
+- header: {name: '$dN_{evt}/dN_{ch}^{raw}/N_{evt}$'}
+  qualifiers:
+  - {name: '$N^{raw}_{ch} (|\eta|<0.5)$', value: '62.4 GeV'}
+  values:
+  - value: 8.300010e-003
+    errors:
+    - {symerror: 3.612355e-005, label: 'stat'}
+  - value: 1.764065e-002
+    errors:
+    - {symerror: 5.266334e-005, label: 'stat'}
+  - value: 2.092336e-002
+    errors:
+    - {symerror: 5.735441e-005, label: 'stat'}
+  - value: 2.027153e-002
+    errors:
+    - {symerror: 5.645396e-005, label: 'stat'}
+  - value: 1.903690e-002
+    errors:
+    - {symerror: 5.470780e-005, label: 'stat'}
+  - value: 1.748500e-002
+    errors:
+    - {symerror: 5.243049e-005, label: 'stat'}
+  - value: 1.622584e-002
+    errors:
+    - {symerror: 5.050737e-005, label: 'stat'}
+  - value: 1.504702e-002
+    errors:
+    - {symerror: 4.863807e-005, label: 'stat'}
+  - value: 1.394335e-002
+    errors:
+    - {symerror: 4.682035e-005, label: 'stat'}
+  - value: 1.303117e-002
+    errors:
+    - {symerror: 4.526295e-005, label: 'stat'}
+  - value: 1.219383e-002
+    errors:
+    - {symerror: 4.378458e-005, label: 'stat'}
+  - value: 1.141890e-002
+    errors:
+    - {symerror: 4.237047e-005, label: 'stat'}
+  - value: 1.079805e-002
+    errors:
+    - {symerror: 4.120251e-005, label: 'stat'}
+  - value: 1.016367e-002
+    errors:
+    - {symerror: 3.997389e-005, label: 'stat'}
+  - value: 9.675038e-003
+    errors:
+    - {symerror: 3.900116e-005, label: 'stat'}
+  - value: 9.207944e-003
+    errors:
+    - {symerror: 3.804805e-005, label: 'stat'}
+  - value: 8.810025e-003
+    errors:
+    - {symerror: 3.721686e-005, label: 'stat'}
+  - value: 8.416194e-003
+    errors:
+    - {symerror: 3.637550e-005, label: 'stat'}
+  - value: 8.104745e-003
+    errors:
+    - {symerror: 3.569610e-005, label: 'stat'}
+  - value: 7.721133e-003
+    errors:
+    - {symerror: 3.484108e-005, label: 'stat'}
+  - value: 7.513134e-003
+    errors:
+    - {symerror: 3.436859e-005, label: 'stat'}
+  - value: 7.193195e-003
+    errors:
+    - {symerror: 3.362885e-005, label: 'stat'}
+  - value: 6.930955e-003
+    errors:
+    - {symerror: 3.301016e-005, label: 'stat'}
+  - value: 6.751255e-003
+    errors:
+    - {symerror: 3.257942e-005, label: 'stat'}
+  - value: 6.566838e-003
+    errors:
+    - {symerror: 3.213137e-005, label: 'stat'}
+  - value: 6.370630e-003
+    errors:
+    - {symerror: 3.164771e-005, label: 'stat'}
+  - value: 6.189673e-003
+    errors:
+    - {symerror: 3.119500e-005, label: 'stat'}
+  - value: 6.026323e-003
+    errors:
+    - {symerror: 3.078062e-005, label: 'stat'}
+  - value: 5.899291e-003
+    errors:
+    - {symerror: 3.045447e-005, label: 'stat'}
+  - value: 5.715346e-003
+    errors:
+    - {symerror: 2.997591e-005, label: 'stat'}
+  - value: 5.610953e-003
+    errors:
+    - {symerror: 2.970089e-005, label: 'stat'}
+  - value: 5.496341e-003
+    errors:
+    - {symerror: 2.939598e-005, label: 'stat'}
+  - value: 5.373868e-003
+    errors:
+    - {symerror: 2.906663e-005, label: 'stat'}
+  - value: 5.239133e-003
+    errors:
+    - {symerror: 2.869993e-005, label: 'stat'}
+  - value: 5.167598e-003
+    errors:
+    - {symerror: 2.850332e-005, label: 'stat'}
+  - value: 5.073896e-003
+    errors:
+    - {symerror: 2.824372e-005, label: 'stat'}
+  - value: 4.924068e-003
+    errors:
+    - {symerror: 2.782359e-005, label: 'stat'}
+  - value: 4.837126e-003
+    errors:
+    - {symerror: 2.757686e-005, label: 'stat'}
+  - value: 4.752543e-003
+    errors:
+    - {symerror: 2.733469e-005, label: 'stat'}
+  - value: 4.709780e-003
+    errors:
+    - {symerror: 2.721143e-005, label: 'stat'}
+  - value: 4.633057e-003
+    errors:
+    - {symerror: 2.698889e-005, label: 'stat'}
+  - value: 4.526935e-003
+    errors:
+    - {symerror: 2.667800e-005, label: 'stat'}
+  - value: 4.463262e-003
+    errors:
+    - {symerror: 2.648972e-005, label: 'stat'}
+  - value: 4.378836e-003
+    errors:
+    - {symerror: 2.623798e-005, label: 'stat'}
+  - value: 4.301327e-003
+    errors:
+    - {symerror: 2.600473e-005, label: 'stat'}
+  - value: 4.227906e-003
+    errors:
+    - {symerror: 2.578183e-005, label: 'stat'}
+  - value: 4.170050e-003
+    errors:
+    - {symerror: 2.560482e-005, label: 'stat'}
+  - value: 4.117539e-003
+    errors:
+    - {symerror: 2.544310e-005, label: 'stat'}
+  - value: 4.037830e-003
+    errors:
+    - {symerror: 2.519562e-005, label: 'stat'}
+  - value: 4.038773e-003
+    errors:
+    - {symerror: 2.519857e-005, label: 'stat'}
+  - value: 3.942084e-003
+    errors:
+    - {symerror: 2.489511e-005, label: 'stat'}
+  - value: 3.856400e-003
+    errors:
+    - {symerror: 2.462307e-005, label: 'stat'}
+  - value: 3.826214e-003
+    errors:
+    - {symerror: 2.452651e-005, label: 'stat'}
+  - value: 3.804833e-003
+    errors:
+    - {symerror: 2.445789e-005, label: 'stat'}
+  - value: 3.727953e-003
+    errors:
+    - {symerror: 2.420953e-005, label: 'stat'}
+  - value: 3.676700e-003
+    errors:
+    - {symerror: 2.404253e-005, label: 'stat'}
+  - value: 3.661135e-003
+    errors:
+    - {symerror: 2.399159e-005, label: 'stat'}
+  - value: 3.624189e-003
+    errors:
+    - {symerror: 2.387023e-005, label: 'stat'}
+  - value: 3.572307e-003
+    errors:
+    - {symerror: 2.369876e-005, label: 'stat'}
+  - value: 3.472788e-003
+    errors:
+    - {symerror: 2.336632e-005, label: 'stat'}
+  - value: 3.480178e-003
+    errors:
+    - {symerror: 2.339116e-005, label: 'stat'}
+  - value: 3.421535e-003
+    errors:
+    - {symerror: 2.319325e-005, label: 'stat'}
+  - value: 3.447005e-003
+    errors:
+    - {symerror: 2.327941e-005, label: 'stat'}
+  - value: 3.402826e-003
+    errors:
+    - {symerror: 2.312975e-005, label: 'stat'}
+  - value: 3.314470e-003
+    errors:
+    - {symerror: 2.282749e-005, label: 'stat'}
+  - value: 3.313055e-003
+    errors:
+    - {symerror: 2.282262e-005, label: 'stat'}
+  - value: 3.238062e-003
+    errors:
+    - {symerror: 2.256284e-005, label: 'stat'}
+  - value: 3.253469e-003
+    errors:
+    - {symerror: 2.261645e-005, label: 'stat'}
+  - value: 3.201430e-003
+    errors:
+    - {symerror: 2.243485e-005, label: 'stat'}
+  - value: 3.158824e-003
+    errors:
+    - {symerror: 2.228506e-005, label: 'stat'}
+  - value: 3.151592e-003
+    errors:
+    - {symerror: 2.225954e-005, label: 'stat'}
+  - value: 3.089176e-003
+    errors:
+    - {symerror: 2.203802e-005, label: 'stat'}
+  - value: 3.050029e-003
+    errors:
+    - {symerror: 2.189793e-005, label: 'stat'}
+  - value: 3.052073e-003
+    errors:
+    - {symerror: 2.190527e-005, label: 'stat'}
+  - value: 3.031635e-003
+    errors:
+    - {symerror: 2.183180e-005, label: 'stat'}
+  - value: 2.983211e-003
+    errors:
+    - {symerror: 2.165674e-005, label: 'stat'}
+  - value: 2.982897e-003
+    errors:
+    - {symerror: 2.165560e-005, label: 'stat'}
+  - value: 2.942806e-003
+    errors:
+    - {symerror: 2.150958e-005, label: 'stat'}
+  - value: 2.958528e-003
+    errors:
+    - {symerror: 2.156696e-005, label: 'stat'}
+  - value: 2.856022e-003
+    errors:
+    - {symerror: 2.119005e-005, label: 'stat'}
+  - value: 2.879290e-003
+    errors:
+    - {symerror: 2.127619e-005, label: 'stat'}
+  - value: 2.833226e-003
+    errors:
+    - {symerror: 2.110531e-005, label: 'stat'}
+  - value: 2.797223e-003
+    errors:
+    - {symerror: 2.097078e-005, label: 'stat'}
+  - value: 2.759962e-003
+    errors:
+    - {symerror: 2.083064e-005, label: 'stat'}
+  - value: 2.746756e-003
+    errors:
+    - {symerror: 2.078075e-005, label: 'stat'}
+  - value: 2.756189e-003
+    errors:
+    - {symerror: 2.081640e-005, label: 'stat'}
+  - value: 2.692044e-003
+    errors:
+    - {symerror: 2.057274e-005, label: 'stat'}
+  - value: 2.700062e-003
+    errors:
+    - {symerror: 2.060336e-005, label: 'stat'}
+  - value: 2.674121e-003
+    errors:
+    - {symerror: 2.050414e-005, label: 'stat'}
+  - value: 2.659185e-003
+    errors:
+    - {symerror: 2.044680e-005, label: 'stat'}
+  - value: 2.655726e-003
+    errors:
+    - {symerror: 2.043350e-005, label: 'stat'}
+  - value: 2.600543e-003
+    errors:
+    - {symerror: 2.022009e-005, label: 'stat'}
+  - value: 2.551176e-003
+    errors:
+    - {symerror: 2.002725e-005, label: 'stat'}
+  - value: 2.571615e-003
+    errors:
+    - {symerror: 2.010732e-005, label: 'stat'}
+  - value: 2.514859e-003
+    errors:
+    - {symerror: 1.988419e-005, label: 'stat'}
+  - value: 2.548504e-003
+    errors:
+    - {symerror: 2.001676e-005, label: 'stat'}
+  - value: 2.509514e-003
+    errors:
+    - {symerror: 1.986305e-005, label: 'stat'}
+  - value: 2.526493e-003
+    errors:
+    - {symerror: 1.993013e-005, label: 'stat'}
+  - value: 2.480900e-003
+    errors:
+    - {symerror: 1.974948e-005, label: 'stat'}
+  - value: 2.444111e-003
+    errors:
+    - {symerror: 1.960251e-005, label: 'stat'}
+  - value: 2.400404e-003
+    errors:
+    - {symerror: 1.942644e-005, label: 'stat'}
+  - value: 2.377922e-003
+    errors:
+    - {symerror: 1.933526e-005, label: 'stat'}
+  - value: 2.387512e-003
+    errors:
+    - {symerror: 1.937421e-005, label: 'stat'}
+  - value: 2.403077e-003
+    errors:
+    - {symerror: 1.943726e-005, label: 'stat'}
+  - value: 2.391757e-003
+    errors:
+    - {symerror: 1.939142e-005, label: 'stat'}
+  - value: 2.375878e-003
+    errors:
+    - {symerror: 1.932695e-005, label: 'stat'}
+  - value: 2.330285e-003
+    errors:
+    - {symerror: 1.914061e-005, label: 'stat'}
+  - value: 2.334530e-003
+    errors:
+    - {symerror: 1.915803e-005, label: 'stat'}
+  - value: 2.301514e-003
+    errors:
+    - {symerror: 1.902208e-005, label: 'stat'}
+  - value: 2.297112e-003
+    errors:
+    - {symerror: 1.900388e-005, label: 'stat'}
+  - value: 2.268656e-003
+    errors:
+    - {symerror: 1.888580e-005, label: 'stat'}
+  - value: 2.280604e-003
+    errors:
+    - {symerror: 1.893547e-005, label: 'stat'}
+  - value: 2.237212e-003
+    errors:
+    - {symerror: 1.875447e-005, label: 'stat'}
+  - value: 2.240828e-003
+    errors:
+    - {symerror: 1.876962e-005, label: 'stat'}
+  - value: 2.240671e-003
+    errors:
+    - {symerror: 1.876896e-005, label: 'stat'}
+  - value: 2.224792e-003
+    errors:
+    - {symerror: 1.870233e-005, label: 'stat'}
+  - value: 2.214887e-003
+    errors:
+    - {symerror: 1.866066e-005, label: 'stat'}
+  - value: 2.185802e-003
+    errors:
+    - {symerror: 1.853773e-005, label: 'stat'}
+  - value: 2.173539e-003
+    errors:
+    - {symerror: 1.848565e-005, label: 'stat'}
+  - value: 2.138479e-003
+    errors:
+    - {symerror: 1.833596e-005, label: 'stat'}
+  - value: 2.131562e-003
+    errors:
+    - {symerror: 1.830628e-005, label: 'stat'}
+  - value: 2.128260e-003
+    errors:
+    - {symerror: 1.829210e-005, label: 'stat'}
+  - value: 2.136750e-003
+    errors:
+    - {symerror: 1.832854e-005, label: 'stat'}
+  - value: 2.085025e-003
+    errors:
+    - {symerror: 1.810534e-005, label: 'stat'}
+  - value: 2.087855e-003
+    errors:
+    - {symerror: 1.811763e-005, label: 'stat'}
+  - value: 2.041318e-003
+    errors:
+    - {symerror: 1.791458e-005, label: 'stat'}
+  - value: 2.073391e-003
+    errors:
+    - {symerror: 1.805476e-005, label: 'stat'}
+  - value: 2.048393e-003
+    errors:
+    - {symerror: 1.794559e-005, label: 'stat'}
+  - value: 2.035187e-003
+    errors:
+    - {symerror: 1.788765e-005, label: 'stat'}
+  - value: 2.022138e-003
+    errors:
+    - {symerror: 1.783021e-005, label: 'stat'}
+  - value: 2.006102e-003
+    errors:
+    - {symerror: 1.775937e-005, label: 'stat'}
+  - value: 2.020723e-003
+    errors:
+    - {symerror: 1.782397e-005, label: 'stat'}
+  - value: 2.022295e-003
+    errors:
+    - {symerror: 1.783091e-005, label: 'stat'}
+  - value: 1.988179e-003
+    errors:
+    - {symerror: 1.767986e-005, label: 'stat'}
+  - value: 1.983619e-003
+    errors:
+    - {symerror: 1.765958e-005, label: 'stat'}
+  - value: 1.982676e-003
+    errors:
+    - {symerror: 1.765538e-005, label: 'stat'}
+  - value: 1.968684e-003
+    errors:
+    - {symerror: 1.759297e-005, label: 'stat'}
+  - value: 1.927178e-003
+    errors:
+    - {symerror: 1.740652e-005, label: 'stat'}
+  - value: 1.957836e-003
+    errors:
+    - {symerror: 1.754443e-005, label: 'stat'}
+  - value: 1.902181e-003
+    errors:
+    - {symerror: 1.729326e-005, label: 'stat'}
+  - value: 1.895420e-003
+    errors:
+    - {symerror: 1.726251e-005, label: 'stat'}
+  - value: 1.887402e-003
+    errors:
+    - {symerror: 1.722596e-005, label: 'stat'}
+  - value: 1.903124e-003
+    errors:
+    - {symerror: 1.729755e-005, label: 'stat'}
+  - value: 1.863662e-003
+    errors:
+    - {symerror: 1.711728e-005, label: 'stat'}
+  - value: 1.880956e-003
+    errors:
+    - {symerror: 1.719652e-005, label: 'stat'}
+  - value: 1.853600e-003
+    errors:
+    - {symerror: 1.707101e-005, label: 'stat'}
+  - value: 1.857216e-003
+    errors:
+    - {symerror: 1.708765e-005, label: 'stat'}
+  - value: 1.855801e-003
+    errors:
+    - {symerror: 1.708114e-005, label: 'stat'}
+  - value: 1.839451e-003
+    errors:
+    - {symerror: 1.700573e-005, label: 'stat'}
+  - value: 1.835363e-003
+    errors:
+    - {symerror: 1.698682e-005, label: 'stat'}
+  - value: 1.842438e-003
+    errors:
+    - {symerror: 1.701953e-005, label: 'stat'}
+  - value: 1.814453e-003
+    errors:
+    - {symerror: 1.688978e-005, label: 'stat'}
+  - value: 1.786468e-003
+    errors:
+    - {symerror: 1.675903e-005, label: 'stat'}
+  - value: 1.795430e-003
+    errors:
+    - {symerror: 1.680101e-005, label: 'stat'}
+  - value: 1.801247e-003
+    errors:
+    - {symerror: 1.682820e-005, label: 'stat'}
+  - value: 1.742919e-003
+    errors:
+    - {symerror: 1.655349e-005, label: 'stat'}
+  - value: 1.779236e-003
+    errors:
+    - {symerror: 1.672507e-005, label: 'stat'}
+  - value: 1.760527e-003
+    errors:
+    - {symerror: 1.663690e-005, label: 'stat'}
+  - value: 1.769489e-003
+    errors:
+    - {symerror: 1.667919e-005, label: 'stat'}
+  - value: 1.746535e-003
+    errors:
+    - {symerror: 1.657066e-005, label: 'stat'}
+  - value: 1.740089e-003
+    errors:
+    - {symerror: 1.654005e-005, label: 'stat'}
+  - value: 1.723266e-003
+    errors:
+    - {symerror: 1.645991e-005, label: 'stat'}
+  - value: 1.740718e-003
+    errors:
+    - {symerror: 1.654304e-005, label: 'stat'}
+  - value: 1.707230e-003
+    errors:
+    - {symerror: 1.638314e-005, label: 'stat'}
+  - value: 1.742761e-003
+    errors:
+    - {symerror: 1.655275e-005, label: 'stat'}
+  - value: 1.697011e-003
+    errors:
+    - {symerror: 1.633403e-005, label: 'stat'}
+  - value: 1.687264e-003
+    errors:
+    - {symerror: 1.628706e-005, label: 'stat'}
+  - value: 1.709274e-003
+    errors:
+    - {symerror: 1.639294e-005, label: 'stat'}
+  - value: 1.660694e-003
+    errors:
+    - {symerror: 1.615831e-005, label: 'stat'}
+  - value: 1.671542e-003
+    errors:
+    - {symerror: 1.621100e-005, label: 'stat'}
+  - value: 1.640884e-003
+    errors:
+    - {symerror: 1.606165e-005, label: 'stat'}
+  - value: 1.644029e-003
+    errors:
+    - {symerror: 1.607703e-005, label: 'stat'}
+  - value: 1.627835e-003
+    errors:
+    - {symerror: 1.599766e-005, label: 'stat'}
+  - value: 1.627992e-003
+    errors:
+    - {symerror: 1.599843e-005, label: 'stat'}
+  - value: 1.661165e-003
+    errors:
+    - {symerror: 1.616060e-005, label: 'stat'}
+  - value: 1.642456e-003
+    errors:
+    - {symerror: 1.606934e-005, label: 'stat'}
+  - value: 1.641041e-003
+    errors:
+    - {symerror: 1.606242e-005, label: 'stat'}
+  - value: 1.606139e-003
+    errors:
+    - {symerror: 1.589069e-005, label: 'stat'}
+  - value: 1.593562e-003
+    errors:
+    - {symerror: 1.582835e-005, label: 'stat'}
+  - value: 1.583814e-003
+    errors:
+    - {symerror: 1.577986e-005, label: 'stat'}
+  - value: 1.585858e-003
+    errors:
+    - {symerror: 1.579004e-005, label: 'stat'}
+  - value: 1.575482e-003
+    errors:
+    - {symerror: 1.573830e-005, label: 'stat'}
+  - value: 1.592618e-003
+    errors:
+    - {symerror: 1.582366e-005, label: 'stat'}
+  - value: 1.571394e-003
+    errors:
+    - {symerror: 1.571787e-005, label: 'stat'}
+  - value: 1.547025e-003
+    errors:
+    - {symerror: 1.559552e-005, label: 'stat'}
+  - value: 1.562275e-003
+    errors:
+    - {symerror: 1.567220e-005, label: 'stat'}
+  - value: 1.531303e-003
+    errors:
+    - {symerror: 1.551607e-005, label: 'stat'}
+  - value: 1.537906e-003
+    errors:
+    - {symerror: 1.554949e-005, label: 'stat'}
+  - value: 1.557716e-003
+    errors:
+    - {symerror: 1.564931e-005, label: 'stat'}
+  - value: 1.539950e-003
+    errors:
+    - {symerror: 1.555982e-005, label: 'stat'}
+  - value: 1.562747e-003
+    errors:
+    - {symerror: 1.567456e-005, label: 'stat'}
+  - value: 1.528002e-003
+    errors:
+    - {symerror: 1.549933e-005, label: 'stat'}
+  - value: 1.494671e-003
+    errors:
+    - {symerror: 1.532936e-005, label: 'stat'}
+  - value: 1.485081e-003
+    errors:
+    - {symerror: 1.528010e-005, label: 'stat'}
+  - value: 1.509764e-003
+    errors:
+    - {symerror: 1.540656e-005, label: 'stat'}
+  - value: 1.476120e-003
+    errors:
+    - {symerror: 1.523393e-005, label: 'stat'}
+  - value: 1.479579e-003
+    errors:
+    - {symerror: 1.525177e-005, label: 'stat'}
+  - value: 1.500174e-003
+    errors:
+    - {symerror: 1.535755e-005, label: 'stat'}
+  - value: 1.449550e-003
+    errors:
+    - {symerror: 1.509620e-005, label: 'stat'}
+  - value: 1.480522e-003
+    errors:
+    - {symerror: 1.525663e-005, label: 'stat'}
+  - value: 1.480365e-003
+    errors:
+    - {symerror: 1.525582e-005, label: 'stat'}
+  - value: 1.455839e-003
+    errors:
+    - {symerror: 1.512891e-005, label: 'stat'}
+  - value: 1.454738e-003
+    errors:
+    - {symerror: 1.512319e-005, label: 'stat'}
+  - value: 1.413704e-003
+    errors:
+    - {symerror: 1.490838e-005, label: 'stat'}
+  - value: 1.466372e-003
+    errors:
+    - {symerror: 1.518355e-005, label: 'stat'}
+  - value: 1.449393e-003
+    errors:
+    - {symerror: 1.509538e-005, label: 'stat'}
+  - value: 1.418735e-003
+    errors:
+    - {symerror: 1.493488e-005, label: 'stat'}
+  - value: 1.404586e-003
+    errors:
+    - {symerror: 1.486022e-005, label: 'stat'}
+  - value: 1.421565e-003
+    errors:
+    - {symerror: 1.494977e-005, label: 'stat'}
+  - value: 1.390593e-003
+    errors:
+    - {symerror: 1.478602e-005, label: 'stat'}
+  - value: 1.427697e-003
+    errors:
+    - {symerror: 1.498198e-005, label: 'stat'}
+  - value: 1.395939e-003
+    errors:
+    - {symerror: 1.481441e-005, label: 'stat'}
+  - value: 1.404586e-003
+    errors:
+    - {symerror: 1.486022e-005, label: 'stat'}
+  - value: 1.405843e-003
+    errors:
+    - {symerror: 1.486687e-005, label: 'stat'}
+  - value: 1.395939e-003
+    errors:
+    - {symerror: 1.481441e-005, label: 'stat'}
+  - value: 1.382889e-003
+    errors:
+    - {symerror: 1.474500e-005, label: 'stat'}
+  - value: 1.388235e-003
+    errors:
+    - {symerror: 1.477347e-005, label: 'stat'}
+  - value: 1.369683e-003
+    errors:
+    - {symerror: 1.467443e-005, label: 'stat'}
+  - value: 1.360093e-003
+    errors:
+    - {symerror: 1.462296e-005, label: 'stat'}
+  - value: 1.362294e-003
+    errors:
+    - {symerror: 1.463479e-005, label: 'stat'}
+  - value: 1.364023e-003
+    errors:
+    - {symerror: 1.464408e-005, label: 'stat'}
+  - value: 1.345629e-003
+    errors:
+    - {symerror: 1.454500e-005, label: 'stat'}
+  - value: 1.329435e-003
+    errors:
+    - {symerror: 1.445722e-005, label: 'stat'}
+  - value: 1.333523e-003
+    errors:
+    - {symerror: 1.447943e-005, label: 'stat'}
+  - value: 1.337139e-003
+    errors:
+    - {symerror: 1.449905e-005, label: 'stat'}
+  - value: 1.315129e-003
+    errors:
+    - {symerror: 1.437922e-005, label: 'stat'}
+  - value: 1.311041e-003
+    errors:
+    - {symerror: 1.435685e-005, label: 'stat'}
+  - value: 1.320474e-003
+    errors:
+    - {symerror: 1.440841e-005, label: 'stat'}
+  - value: 1.338397e-003
+    errors:
+    - {symerror: 1.450586e-005, label: 'stat'}
+  - value: 1.310884e-003
+    errors:
+    - {symerror: 1.435599e-005, label: 'stat'}
+  - value: 1.307897e-003
+    errors:
+    - {symerror: 1.433963e-005, label: 'stat'}
+  - value: 1.290445e-003
+    errors:
+    - {symerror: 1.424364e-005, label: 'stat'}
+  - value: 1.300507e-003
+    errors:
+    - {symerror: 1.429906e-005, label: 'stat'}
+  - value: 1.299250e-003
+    errors:
+    - {symerror: 1.429214e-005, label: 'stat'}
+  - value: 1.276767e-003
+    errors:
+    - {symerror: 1.416795e-005, label: 'stat'}
+  - value: 1.317644e-003
+    errors:
+    - {symerror: 1.439296e-005, label: 'stat'}
+  - value: 1.283056e-003
+    errors:
+    - {symerror: 1.420280e-005, label: 'stat'}
+  - value: 1.255700e-003
+    errors:
+    - {symerror: 1.405058e-005, label: 'stat'}
+  - value: 1.267649e-003
+    errors:
+    - {symerror: 1.411727e-005, label: 'stat'}
+  - value: 1.268906e-003
+    errors:
+    - {symerror: 1.412427e-005, label: 'stat'}
+  - value: 1.258844e-003
+    errors:
+    - {symerror: 1.406816e-005, label: 'stat'}
+  - value: 1.248783e-003
+    errors:
+    - {symerror: 1.401182e-005, label: 'stat'}
+  - value: 1.265133e-003
+    errors:
+    - {symerror: 1.410325e-005, label: 'stat'}
+  - value: 1.240764e-003
+    errors:
+    - {symerror: 1.396676e-005, label: 'stat'}
+  - value: 1.240293e-003
+    errors:
+    - {symerror: 1.396411e-005, label: 'stat'}
+  - value: 1.240293e-003
+    errors:
+    - {symerror: 1.396411e-005, label: 'stat'}
+  - value: 1.261046e-003
+    errors:
+    - {symerror: 1.408045e-005, label: 'stat'}
+  - value: 1.220955e-003
+    errors:
+    - {symerror: 1.385482e-005, label: 'stat'}
+  - value: 1.214037e-003
+    errors:
+    - {symerror: 1.381552e-005, label: 'stat'}
+  - value: 1.246581e-003
+    errors:
+    - {symerror: 1.399947e-005, label: 'stat'}
+  - value: 1.199416e-003
+    errors:
+    - {symerror: 1.373207e-005, label: 'stat'}
+  - value: 1.216396e-003
+    errors:
+    - {symerror: 1.382893e-005, label: 'stat'}
+  - value: 1.225671e-003
+    errors:
+    - {symerror: 1.388156e-005, label: 'stat'}
+  - value: 1.203189e-003
+    errors:
+    - {symerror: 1.375365e-005, label: 'stat'}
+  - value: 1.200988e-003
+    errors:
+    - {symerror: 1.374107e-005, label: 'stat'}
+  - value: 1.183852e-003
+    errors:
+    - {symerror: 1.364268e-005, label: 'stat'}
+  - value: 1.205862e-003
+    errors:
+    - {symerror: 1.376892e-005, label: 'stat'}
+  - value: 1.191555e-003
+    errors:
+    - {symerror: 1.368700e-005, label: 'stat'}
+  - value: 1.188568e-003
+    errors:
+    - {symerror: 1.366983e-005, label: 'stat'}
+  - value: 1.170016e-003
+    errors:
+    - {symerror: 1.356273e-005, label: 'stat'}
+  - value: 1.167501e-003
+    errors:
+    - {symerror: 1.354814e-005, label: 'stat'}
+  - value: 1.170645e-003
+    errors:
+    - {symerror: 1.356637e-005, label: 'stat'}
+  - value: 1.169859e-003
+    errors:
+    - {symerror: 1.356182e-005, label: 'stat'}
+  - value: 1.173632e-003
+    errors:
+    - {symerror: 1.358367e-005, label: 'stat'}
+  - value: 1.170016e-003
+    errors:
+    - {symerror: 1.356273e-005, label: 'stat'}
+  - value: 1.167658e-003
+    errors:
+    - {symerror: 1.354905e-005, label: 'stat'}
+  - value: 1.150050e-003
+    errors:
+    - {symerror: 1.344651e-005, label: 'stat'}
+  - value: 1.145176e-003
+    errors:
+    - {symerror: 1.341798e-005, label: 'stat'}
+  - value: 1.142346e-003
+    errors:
+    - {symerror: 1.340139e-005, label: 'stat'}
+  - value: 1.158225e-003
+    errors:
+    - {symerror: 1.349421e-005, label: 'stat'}
+  - value: 1.134957e-003
+    errors:
+    - {symerror: 1.335798e-005, label: 'stat'}
+  - value: 1.117348e-003
+    errors:
+    - {symerror: 1.325395e-005, label: 'stat'}
+  - value: 1.137315e-003
+    errors:
+    - {symerror: 1.337185e-005, label: 'stat'}
+  - value: 1.126467e-003
+    errors:
+    - {symerror: 1.330793e-005, label: 'stat'}
+  - value: 1.113261e-003
+    errors:
+    - {symerror: 1.322969e-005, label: 'stat'}
+  - value: 1.094394e-003
+    errors:
+    - {symerror: 1.311711e-005, label: 'stat'}
+  - value: 1.132284e-003
+    errors:
+    - {symerror: 1.334224e-005, label: 'stat'}
+  - value: 1.103828e-003
+    errors:
+    - {symerror: 1.317352e-005, label: 'stat'}
+  - value: 1.086691e-003
+    errors:
+    - {symerror: 1.307086e-005, label: 'stat'}
+  - value: 1.087320e-003
+    errors:
+    - {symerror: 1.307464e-005, label: 'stat'}
+  - value: 1.105085e-003
+    errors:
+    - {symerror: 1.318102e-005, label: 'stat'}
+  - value: 1.096596e-003
+    errors:
+    - {symerror: 1.313029e-005, label: 'stat'}
+  - value: 1.074428e-003
+    errors:
+    - {symerror: 1.299690e-005, label: 'stat'}
+  - value: 1.096910e-003
+    errors:
+    - {symerror: 1.313217e-005, label: 'stat'}
+  - value: 1.079144e-003
+    errors:
+    - {symerror: 1.302539e-005, label: 'stat'}
+  - value: 1.062636e-003
+    errors:
+    - {symerror: 1.292538e-005, label: 'stat'}
+  - value: 1.052574e-003
+    errors:
+    - {symerror: 1.286404e-005, label: 'stat'}
+  - value: 1.080874e-003
+    errors:
+    - {symerror: 1.303583e-005, label: 'stat'}
+  - value: 1.060593e-003
+    errors:
+    - {symerror: 1.291295e-005, label: 'stat'}
+  - value: 1.058392e-003
+    errors:
+    - {symerror: 1.289954e-005, label: 'stat'}
+  - value: 1.060435e-003
+    errors:
+    - {symerror: 1.291199e-005, label: 'stat'}
+  - value: 1.052103e-003
+    errors:
+    - {symerror: 1.286116e-005, label: 'stat'}
+  - value: 1.052260e-003
+    errors:
+    - {symerror: 1.286212e-005, label: 'stat'}
+  - value: 1.042827e-003
+    errors:
+    - {symerror: 1.280434e-005, label: 'stat'}
+  - value: 1.035752e-003
+    errors:
+    - {symerror: 1.276083e-005, label: 'stat'}
+  - value: 1.036224e-003
+    errors:
+    - {symerror: 1.276374e-005, label: 'stat'}
+  - value: 1.017358e-003
+    errors:
+    - {symerror: 1.264701e-005, label: 'stat'}
+  - value: 1.027420e-003
+    errors:
+    - {symerror: 1.270940e-005, label: 'stat'}
+  - value: 1.025376e-003
+    errors:
+    - {symerror: 1.269675e-005, label: 'stat'}
+  - value: 1.037639e-003
+    errors:
+    - {symerror: 1.277245e-005, label: 'stat'}
+  - value: 1.031350e-003
+    errors:
+    - {symerror: 1.273369e-005, label: 'stat'}
+  - value: 1.014999e-003
+    errors:
+    - {symerror: 1.263235e-005, label: 'stat'}
+  - value: 9.950327e-004
+    errors:
+    - {symerror: 1.250748e-005, label: 'stat'}
+  - value: 1.000535e-003
+    errors:
+    - {symerror: 1.254202e-005, label: 'stat'}
+  - value: 1.024118e-003
+    errors:
+    - {symerror: 1.268896e-005, label: 'stat'}
+  - value: 1.021131e-003
+    errors:
+    - {symerror: 1.267044e-005, label: 'stat'}
+  - value: 1.001950e-003
+    errors:
+    - {symerror: 1.255088e-005, label: 'stat'}
+  - value: 9.867001e-004
+    errors:
+    - {symerror: 1.245500e-005, label: 'stat'}
+  - value: 9.920456e-004
+    errors:
+    - {symerror: 1.248869e-005, label: 'stat'}
+  - value: 9.885868e-004
+    errors:
+    - {symerror: 1.246690e-005, label: 'stat'}
+  - value: 9.785248e-004
+    errors:
+    - {symerror: 1.240329e-005, label: 'stat'}
+  - value: 9.838702e-004
+    errors:
+    - {symerror: 1.243713e-005, label: 'stat'}
+  - value: 9.712928e-004
+    errors:
+    - {symerror: 1.235737e-005, label: 'stat'}
+  - value: 9.550993e-004
+    errors:
+    - {symerror: 1.225393e-005, label: 'stat'}
+  - value: 9.802542e-004
+    errors:
+    - {symerror: 1.241425e-005, label: 'stat'}
+  - value: 9.857568e-004
+    errors:
+    - {symerror: 1.244904e-005, label: 'stat'}
+  - value: 9.727077e-004
+    errors:
+    - {symerror: 1.236637e-005, label: 'stat'}
+  - value: 9.687773e-004
+    errors:
+    - {symerror: 1.234136e-005, label: 'stat'}
+  - value: 9.639035e-004
+    errors:
+    - {symerror: 1.231028e-005, label: 'stat'}
+  - value: 9.668907e-004
+    errors:
+    - {symerror: 1.232934e-005, label: 'stat'}
+  - value: 9.522694e-004
+    errors:
+    - {symerror: 1.223576e-005, label: 'stat'}
+  - value: 9.536844e-004
+    errors:
+    - {symerror: 1.224485e-005, label: 'stat'}
+  - value: 9.538416e-004
+    errors:
+    - {symerror: 1.224586e-005, label: 'stat'}
+  - value: 9.264857e-004
+    errors:
+    - {symerror: 1.206898e-005, label: 'stat'}
+  - value: 9.293156e-004
+    errors:
+    - {symerror: 1.208740e-005, label: 'stat'}
+  - value: 9.417358e-004
+    errors:
+    - {symerror: 1.216790e-005, label: 'stat'}
+  - value: 9.308878e-004
+    errors:
+    - {symerror: 1.209762e-005, label: 'stat'}
+  - value: 9.223980e-004
+    errors:
+    - {symerror: 1.204232e-005, label: 'stat'}
+  - value: 9.236557e-004
+    errors:
+    - {symerror: 1.205053e-005, label: 'stat'}
+  - value: 9.165809e-004
+    errors:
+    - {symerror: 1.200429e-005, label: 'stat'}
+  - value: 9.049468e-004
+    errors:
+    - {symerror: 1.192786e-005, label: 'stat'}
+  - value: 9.164237e-004
+    errors:
+    - {symerror: 1.200326e-005, label: 'stat'}
+  - value: 9.113927e-004
+    errors:
+    - {symerror: 1.197027e-005, label: 'stat'}
+  - value: 9.219263e-004
+    errors:
+    - {symerror: 1.203924e-005, label: 'stat'}
+  - value: 9.192536e-004
+    errors:
+    - {symerror: 1.202178e-005, label: 'stat'}
+  - value: 8.985008e-004
+    errors:
+    - {symerror: 1.188531e-005, label: 'stat'}
+  - value: 9.069906e-004
+    errors:
+    - {symerror: 1.194133e-005, label: 'stat'}
+  - value: 9.073051e-004
+    errors:
+    - {symerror: 1.194339e-005, label: 'stat'}
+  - value: 9.027457e-004
+    errors:
+    - {symerror: 1.191335e-005, label: 'stat'}
+  - value: 8.890678e-004
+    errors:
+    - {symerror: 1.182275e-005, label: 'stat'}
+  - value: 8.678433e-004
+    errors:
+    - {symerror: 1.168078e-005, label: 'stat'}
+  - value: 8.898539e-004
+    errors:
+    - {symerror: 1.182798e-005, label: 'stat'}
+  - value: 8.931554e-004
+    errors:
+    - {symerror: 1.184990e-005, label: 'stat'}
+  - value: 8.830935e-004
+    errors:
+    - {symerror: 1.178296e-005, label: 'stat'}
+  - value: 8.735032e-004
+    errors:
+    - {symerror: 1.171881e-005, label: 'stat'}
+  - value: 8.507066e-004
+    errors:
+    - {symerror: 1.156488e-005, label: 'stat'}
+  - value: 8.613974e-004
+    errors:
+    - {symerror: 1.163732e-005, label: 'stat'}
+  - value: 8.681578e-004
+    errors:
+    - {symerror: 1.168289e-005, label: 'stat'}
+  - value: 8.527504e-004
+    errors:
+    - {symerror: 1.157876e-005, label: 'stat'}
+  - value: 8.601397e-004
+    errors:
+    - {symerror: 1.162882e-005, label: 'stat'}
+  - value: 8.659567e-004
+    errors:
+    - {symerror: 1.166808e-005, label: 'stat'}
+  - value: 8.510210e-004
+    errors:
+    - {symerror: 1.156701e-005, label: 'stat'}
+  - value: 8.524360e-004
+    errors:
+    - {symerror: 1.157663e-005, label: 'stat'}
+  - value: 8.341987e-004
+    errors:
+    - {symerror: 1.145212e-005, label: 'stat'}
+  - value: 8.609257e-004
+    errors:
+    - {symerror: 1.163413e-005, label: 'stat'}
+  - value: 8.384436e-004
+    errors:
+    - {symerror: 1.148122e-005, label: 'stat'}
+  - value: 8.296394e-004
+    errors:
+    - {symerror: 1.142078e-005, label: 'stat'}
+  - value: 8.082577e-004
+    errors:
+    - {symerror: 1.127265e-005, label: 'stat'}
+  - value: 8.359281e-004
+    errors:
+    - {symerror: 1.146398e-005, label: 'stat'}
+  - value: 8.128170e-004
+    errors:
+    - {symerror: 1.130440e-005, label: 'stat'}
+  - value: 8.208352e-004
+    errors:
+    - {symerror: 1.136002e-005, label: 'stat'}
+  - value: 8.340415e-004
+    errors:
+    - {symerror: 1.145104e-005, label: 'stat'}
+  - value: 8.209924e-004
+    errors:
+    - {symerror: 1.136111e-005, label: 'stat'}
+  - value: 8.359281e-004
+    errors:
+    - {symerror: 1.146398e-005, label: 'stat'}
+  - value: 8.356136e-004
+    errors:
+    - {symerror: 1.146183e-005, label: 'stat'}
+  - value: 8.242940e-004
+    errors:
+    - {symerror: 1.138393e-005, label: 'stat'}
+  - value: 8.112449e-004
+    errors:
+    - {symerror: 1.129346e-005, label: 'stat'}
+  - value: 7.871905e-004
+    errors:
+    - {symerror: 1.112477e-005, label: 'stat'}
+  - value: 7.944225e-004
+    errors:
+    - {symerror: 1.117576e-005, label: 'stat'}
+  - value: 8.176908e-004
+    errors:
+    - {symerror: 1.133824e-005, label: 'stat'}
+  - value: 7.675383e-004
+    errors:
+    - {symerror: 1.098503e-005, label: 'stat'}
+  - value: 7.978813e-004
+    errors:
+    - {symerror: 1.120006e-005, label: 'stat'}
+  - value: 7.829456e-004
+    errors:
+    - {symerror: 1.109473e-005, label: 'stat'}
+  - value: 7.766569e-004
+    errors:
+    - {symerror: 1.105009e-005, label: 'stat'}
+  - value: 7.727265e-004
+    errors:
+    - {symerror: 1.102209e-005, label: 'stat'}
+  - value: 7.785435e-004
+    errors:
+    - {symerror: 1.106350e-005, label: 'stat'}
+  - value: 7.895488e-004
+    errors:
+    - {symerror: 1.114142e-005, label: 'stat'}
+  - value: 7.524453e-004
+    errors:
+    - {symerror: 1.087649e-005, label: 'stat'}
+  - value: 7.816879e-004
+    errors:
+    - {symerror: 1.108582e-005, label: 'stat'}
+  - value: 7.595201e-004
+    errors:
+    - {symerror: 1.092750e-005, label: 'stat'}
+  - value: 7.568474e-004
+    errors:
+    - {symerror: 1.090826e-005, label: 'stat'}
+  - value: 7.428550e-004
+    errors:
+    - {symerror: 1.080695e-005, label: 'stat'}
+  - value: 7.585768e-004
+    errors:
+    - {symerror: 1.092071e-005, label: 'stat'}
+  - value: 7.617212e-004
+    errors:
+    - {symerror: 1.094332e-005, label: 'stat'}
+  - value: 7.434839e-004
+    errors:
+    - {symerror: 1.081152e-005, label: 'stat'}
+  - value: 7.522881e-004
+    errors:
+    - {symerror: 1.087535e-005, label: 'stat'}
+  - value: 7.354658e-004
+    errors:
+    - {symerror: 1.075307e-005, label: 'stat'}
+  - value: 7.148702e-004
+    errors:
+    - {symerror: 1.060144e-005, label: 'stat'}
+  - value: 7.356230e-004
+    errors:
+    - {symerror: 1.075422e-005, label: 'stat'}
+  - value: 7.214734e-004
+    errors:
+    - {symerror: 1.065029e-005, label: 'stat'}
+  - value: 7.120403e-004
+    errors:
+    - {symerror: 1.058043e-005, label: 'stat'}
+  - value: 7.351513e-004
+    errors:
+    - {symerror: 1.075077e-005, label: 'stat'}
+  - value: 7.029217e-004
+    errors:
+    - {symerror: 1.051247e-005, label: 'stat'}
+  - value: 7.290198e-004
+    errors:
+    - {symerror: 1.070584e-005, label: 'stat'}
+  - value: 7.175429e-004
+    errors:
+    - {symerror: 1.062124e-005, label: 'stat'}
+  - value: 7.098393e-004
+    errors:
+    - {symerror: 1.056407e-005, label: 'stat'}
+  - value: 6.919164e-004
+    errors:
+    - {symerror: 1.042985e-005, label: 'stat'}
+  - value: 7.216306e-004
+    errors:
+    - {symerror: 1.065145e-005, label: 'stat'}
+  - value: 7.027644e-004
+    errors:
+    - {symerror: 1.051129e-005, label: 'stat'}
+  - value: 6.947463e-004
+    errors:
+    - {symerror: 1.045115e-005, label: 'stat'}
+  - value: 6.838983e-004
+    errors:
+    - {symerror: 1.036924e-005, label: 'stat'}
+  - value: 6.930169e-004
+    errors:
+    - {symerror: 1.043814e-005, label: 'stat'}
+  - value: 6.849988e-004
+    errors:
+    - {symerror: 1.037758e-005, label: 'stat'}
+  - value: 7.060660e-004
+    errors:
+    - {symerror: 1.053595e-005, label: 'stat'}
+  - value: 6.568568e-004
+    errors:
+    - {symerror: 1.016217e-005, label: 'stat'}
+  - value: 6.662899e-004
+    errors:
+    - {symerror: 1.023488e-005, label: 'stat'}
+  - value: 6.680193e-004
+    errors:
+    - {symerror: 1.024815e-005, label: 'stat'}
+  - value: 6.544985e-004
+    errors:
+    - {symerror: 1.014391e-005, label: 'stat'}
+  - value: 6.758802e-004
+    errors:
+    - {symerror: 1.030827e-005, label: 'stat'}
+  - value: 6.596867e-004
+    errors:
+    - {symerror: 1.018404e-005, label: 'stat'}
+  - value: 6.287148e-004
+    errors:
+    - {symerror: 9.942096e-006, label: 'stat'}
+  - value: 6.433360e-004
+    errors:
+    - {symerror: 1.005704e-005, label: 'stat'}
+  - value: 6.287148e-004
+    errors:
+    - {symerror: 9.942096e-006, label: 'stat'}
+  - value: 6.519830e-004
+    errors:
+    - {symerror: 1.012440e-005, label: 'stat'}
+  - value: 6.257276e-004
+    errors:
+    - {symerror: 9.918450e-006, label: 'stat'}
+  - value: 6.067042e-004
+    errors:
+    - {symerror: 9.766516e-006, label: 'stat'}
+  - value: 6.052893e-004
+    errors:
+    - {symerror: 9.755120e-006, label: 'stat'}
+  - value: 6.045032e-004
+    errors:
+    - {symerror: 9.748784e-006, label: 'stat'}
+  - value: 5.990006e-004
+    errors:
+    - {symerror: 9.704312e-006, label: 'stat'}
+  - value: 5.765184e-004
+    errors:
+    - {symerror: 9.520455e-006, label: 'stat'}
+  - value: 5.829643e-004
+    errors:
+    - {symerror: 9.573530e-006, label: 'stat'}
+  - value: 5.738457e-004
+    errors:
+    - {symerror: 9.498361e-006, label: 'stat'}
+  - value: 5.894103e-004
+    errors:
+    - {symerror: 9.626313e-006, label: 'stat'}
+  - value: 5.552940e-004
+    errors:
+    - {symerror: 9.343565e-006, label: 'stat'}
+  - value: 5.573378e-004
+    errors:
+    - {symerror: 9.360744e-006, label: 'stat'}
+  - value: 5.354845e-004
+    errors:
+    - {symerror: 9.175391e-006, label: 'stat'}
+  - value: 5.306107e-004
+    errors:
+    - {symerror: 9.133540e-006, label: 'stat'}
+  - value: 5.186622e-004
+    errors:
+    - {symerror: 9.030118e-006, label: 'stat'}
+  - value: 5.045125e-004
+    errors:
+    - {symerror: 8.906091e-006, label: 'stat'}
+  - value: 5.155178e-004
+    errors:
+    - {symerror: 9.002704e-006, label: 'stat'}
+  - value: 5.214921e-004
+    errors:
+    - {symerror: 9.054719e-006, label: 'stat'}
+  - value: 4.938217e-004
+    errors:
+    - {symerror: 8.811224e-006, label: 'stat'}
+  - value: 4.870614e-004
+    errors:
+    - {symerror: 8.750703e-006, label: 'stat'}
+  - value: 4.924068e-004
+    errors:
+    - {symerror: 8.798591e-006, label: 'stat'}
+  - value: 4.799865e-004
+    errors:
+    - {symerror: 8.686917e-006, label: 'stat'}
+  - value: 4.595482e-004
+    errors:
+    - {symerror: 8.499956e-006, label: 'stat'}
+  - value: 4.546744e-004
+    errors:
+    - {symerror: 8.454762e-006, label: 'stat'}
+  - value: 4.674091e-004
+    errors:
+    - {symerror: 8.572346e-006, label: 'stat'}
+  - value: 4.299912e-004
+    errors:
+    - {symerror: 8.222065e-006, label: 'stat'}
+  - value: 4.193004e-004
+    errors:
+    - {symerror: 8.119210e-006, label: 'stat'}
+  - value: 4.170993e-004
+    errors:
+    - {symerror: 8.097872e-006, label: 'stat'}
+  - value: 4.106534e-004
+    errors:
+    - {symerror: 8.035055e-006, label: 'stat'}
+  - value: 3.974471e-004
+    errors:
+    - {symerror: 7.904798e-006, label: 'stat'}
+  - value: 3.796815e-004
+    errors:
+    - {symerror: 7.726109e-006, label: 'stat'}
+  - value: 3.831403e-004
+    errors:
+    - {symerror: 7.761220e-006, label: 'stat'}
+  - value: 3.760654e-004
+    errors:
+    - {symerror: 7.689230e-006, label: 'stat'}
+  - value: 3.471373e-004
+    errors:
+    - {symerror: 7.387573e-006, label: 'stat'}
+  - value: 3.521683e-004
+    errors:
+    - {symerror: 7.440914e-006, label: 'stat'}
+  - value: 3.414775e-004
+    errors:
+    - {symerror: 7.327101e-006, label: 'stat'}
+  - value: 3.213536e-004
+    errors:
+    - {symerror: 7.107923e-006, label: 'stat'}
+  - value: 3.180520e-004
+    errors:
+    - {symerror: 7.071315e-006, label: 'stat'}
+  - value: 2.976137e-004
+    errors:
+    - {symerror: 6.840338e-006, label: 'stat'}
+  - value: 2.859795e-004
+    errors:
+    - {symerror: 6.705306e-006, label: 'stat'}
+  - value: 2.906961e-004
+    errors:
+    - {symerror: 6.760374e-006, label: 'stat'}
+  - value: 2.795336e-004
+    errors:
+    - {symerror: 6.629307e-006, label: 'stat'}
+  - value: 2.614535e-004
+    errors:
+    - {symerror: 6.411334e-006, label: 'stat'}
+  - value: 2.440023e-004
+    errors:
+    - {symerror: 6.193671e-006, label: 'stat'}
+  - value: 2.507627e-004
+    errors:
+    - {symerror: 6.278886e-006, label: 'stat'}
+  - value: 2.336259e-004
+    errors:
+    - {symerror: 6.060545e-006, label: 'stat'}
+  - value: 2.361414e-004
+    errors:
+    - {symerror: 6.093085e-006, label: 'stat'}
+  - value: 2.191619e-004
+    errors:
+    - {symerror: 5.869940e-006, label: 'stat'}
+  - value: 2.157031e-004
+    errors:
+    - {symerror: 5.823436e-006, label: 'stat'}
+  - value: 1.933781e-004
+    errors:
+    - {symerror: 5.513848e-006, label: 'stat'}
+  - value: 2.021823e-004
+    errors:
+    - {symerror: 5.637970e-006, label: 'stat'}
+  - value: 1.789141e-004
+    errors:
+    - {symerror: 5.303632e-006, label: 'stat'}
+  - value: 1.837878e-004
+    errors:
+    - {symerror: 5.375384e-006, label: 'stat'}
+  - value: 1.688521e-004
+    errors:
+    - {symerror: 5.152339e-006, label: 'stat'}
+  - value: 1.682233e-004
+    errors:
+    - {symerror: 5.142735e-006, label: 'stat'}
+  - value: 1.581613e-004
+    errors:
+    - {symerror: 4.986562e-006, label: 'stat'}
+  - value: 1.462127e-004
+    errors:
+    - {symerror: 4.794505e-006, label: 'stat'}
+  - value: 1.488854e-004
+    errors:
+    - {symerror: 4.838127e-006, label: 'stat'}
+  - value: 1.348930e-004
+    errors:
+    - {symerror: 4.605172e-006, label: 'stat'}
+  - value: 1.267177e-004
+    errors:
+    - {symerror: 4.463441e-006, label: 'stat'}
+  - value: 1.164985e-004
+    errors:
+    - {symerror: 4.279681e-006, label: 'stat'}
+  - value: 1.081660e-004
+    errors:
+    - {symerror: 4.123789e-006, label: 'stat'}
+  - value: 1.153980e-004
+    errors:
+    - {symerror: 4.259418e-006, label: 'stat'}
+  - value: 1.056505e-004
+    errors:
+    - {symerror: 4.075556e-006, label: 'stat'}
+  - value: 9.810403e-005
+    errors:
+    - {symerror: 3.927304e-006, label: 'stat'}
+  - value: 9.543132e-005
+    errors:
+    - {symerror: 3.873438e-006, label: 'stat'}
+  - value: 8.788486e-005
+    errors:
+    - {symerror: 3.717134e-006, label: 'stat'}
+  - value: 7.577907e-005
+    errors:
+    - {symerror: 3.451642e-006, label: 'stat'}
+  - value: 7.970952e-005
+    errors:
+    - {symerror: 3.540024e-006, label: 'stat'}
+  - value: 7.342080e-005
+    errors:
+    - {symerror: 3.397510e-006, label: 'stat'}
+  - value: 6.838983e-005
+    errors:
+    - {symerror: 3.279041e-006, label: 'stat'}
+  - value: 5.990006e-005
+    errors:
+    - {symerror: 3.068773e-006, label: 'stat'}
+  - value: 6.210111e-005
+    errors:
+    - {symerror: 3.124646e-006, label: 'stat'}
+  - value: 5.769900e-005
+    errors:
+    - {symerror: 3.011864e-006, label: 'stat'}
+  - value: 4.653653e-005
+    errors:
+    - {symerror: 2.704881e-006, label: 'stat'}
+  - value: 5.361134e-005
+    errors:
+    - {symerror: 2.903217e-006, label: 'stat'}
+  - value: 4.512156e-005
+    errors:
+    - {symerror: 2.663442e-006, label: 'stat'}
+  - value: 4.244886e-005
+    errors:
+    - {symerror: 2.583355e-006, label: 'stat'}
+  - value: 3.899006e-005
+    errors:
+    - {symerror: 2.475871e-006, label: 'stat'}
+  - value: 3.584570e-005
+    errors:
+    - {symerror: 2.373940e-006, label: 'stat'}
+  - value: 3.254413e-005
+    errors:
+    - {symerror: 2.261973e-006, label: 'stat'}
+  - value: 2.814202e-005
+    errors:
+    - {symerror: 2.103433e-006, label: 'stat'}
+  - value: 3.270134e-005
+    errors:
+    - {symerror: 2.267430e-006, label: 'stat'}
+  - value: 3.050029e-005
+    errors:
+    - {symerror: 2.189793e-006, label: 'stat'}
+  - value: 2.641262e-005
+    errors:
+    - {symerror: 2.037778e-006, label: 'stat'}
+  - value: 2.311105e-005
+    errors:
+    - {symerror: 1.906167e-006, label: 'stat'}
+  - value: 1.918060e-005
+    errors:
+    - {symerror: 1.736530e-006, label: 'stat'}
+  - value: 1.729398e-005
+    errors:
+    - {symerror: 1.648916e-006, label: 'stat'}
+  - value: 1.635067e-005
+    errors:
+    - {symerror: 1.603315e-006, label: 'stat'}
+  - value: 1.650789e-005
+    errors:
+    - {symerror: 1.611005e-006, label: 'stat'}
+  - value: 1.336353e-005
+    errors:
+    - {symerror: 1.449478e-006, label: 'stat'}
+  - value: 1.383518e-005
+    errors:
+    - {symerror: 1.474836e-006, label: 'stat'}
+  - value: 1.462127e-005
+    errors:
+    - {symerror: 1.516155e-006, label: 'stat'}
+  - value: 1.179135e-005
+    errors:
+    - {symerror: 1.361548e-006, label: 'stat'}
+  - value: 1.021917e-005
+    errors:
+    - {symerror: 1.267532e-006, label: 'stat'}
+  - value: 8.804208e-006
+    errors:
+    - {symerror: 1.176512e-006, label: 'stat'}
+  - value: 9.433080e-006
+    errors:
+    - {symerror: 1.217805e-006, label: 'stat'}
+  - value: 9.747516e-006
+    errors:
+    - {symerror: 1.237936e-006, label: 'stat'}
+  - value: 6.760374e-006
+    errors:
+    - {symerror: 1.030947e-006, label: 'stat'}
+  - value: 6.288720e-006
+    errors:
+    - {symerror: 9.943339e-007, label: 'stat'}
+  - value: 5.188194e-006
+    errors:
+    - {symerror: 9.031486e-007, label: 'stat'}
+  - value: 5.659848e-006
+    errors:
+    - {symerror: 9.433080e-007, label: 'stat'}
+  - value: 4.559322e-006
+    errors:
+    - {symerror: 8.466448e-007, label: 'stat'}
+  - value: 4.244886e-006
+    errors:
+    - {symerror: 8.169287e-007, label: 'stat'}
+  - value: 5.030976e-006
+    errors:
+    - {symerror: 8.893593e-007, label: 'stat'}
+  - value: 5.030976e-006
+    errors:
+    - {symerror: 8.893593e-007, label: 'stat'}
+  - value: 3.930450e-006
+    errors:
+    - {symerror: 7.860900e-007, label: 'stat'}
+  - value: 3.773232e-006
+    errors:
+    - {symerror: 7.702077e-007, label: 'stat'}
+  - value: 2.515488e-006
+    errors:
+    - {symerror: 6.288720e-007, label: 'stat'}
+  - value: 2.515488e-006
+    errors:
+    - {symerror: 6.288720e-007, label: 'stat'}
+  - value: 2.358270e-006
+    errors:
+    - {symerror: 6.089027e-007, label: 'stat'}
+  - value: 2.201052e-006
+    errors:
+    - {symerror: 5.882559e-007, label: 'stat'}
+  - value: 2.043834e-006
+    errors:
+    - {symerror: 5.668575e-007, label: 'stat'}
+  - value: 4.716540e-007
+    errors:
+    - {symerror: 2.723096e-007, label: 'stat'}
+  - value: 1.100526e-006
+    errors:
+    - {symerror: 4.159597e-007, label: 'stat'}
+  - value: 1.257744e-006
+    errors:
+    - {symerror: 4.446796e-007, label: 'stat'}
+  - value: 1.100526e-006
+    errors:
+    - {symerror: 4.159597e-007, label: 'stat'}
+  - value: 1.257744e-006
+    errors:
+    - {symerror: 4.446796e-007, label: 'stat'}
+  - value: 1.100526e-006
+    errors:
+    - {symerror: 4.159597e-007, label: 'stat'}
+  - value: 7.860900e-007
+    errors:
+    - {symerror: 3.515501e-007, label: 'stat'}
+  - value: 9.433080e-007
+    errors:
+    - {symerror: 3.851039e-007, label: 'stat'}
+  - value: 6.288720e-007
+    errors:
+    - {symerror: 3.144360e-007, label: 'stat'}
+  - value: 3.144360e-007
+    errors:
+    - {symerror: 2.223398e-007, label: 'stat'}
+  - value: 4.716540e-007
+    errors:
+    - {symerror: 2.723096e-007, label: 'stat'}
+  - value: 4.716540e-007
+    errors:
+    - {symerror: 2.723096e-007, label: 'stat'}
+  - value: 7.860900e-007
+    errors:
+    - {symerror: 3.515501e-007, label: 'stat'}
+  - value: 4.716540e-007
+    errors:
+    - {symerror: 2.723096e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 3.144360e-007
+    errors:
+    - {symerror: 2.223398e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 3.144360e-007
+    errors:
+    - {symerror: 2.223398e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 3.144360e-007
+    errors:
+    - {symerror: 2.223398e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 3.144360e-007
+    errors:
+    - {symerror: 2.223398e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 1.572180e-007
+    errors:
+    - {symerror: 1.572180e-007, label: 'stat'}
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000
+  - value: 0.000000e+000

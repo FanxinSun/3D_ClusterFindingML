@@ -1,0 +1,60 @@
+independent_variables:
+- header: {name: '$\sqrt(s_{NN}) [GeV]$'}
+  values:
+  - {value: 3.32}
+  - {value: 3.84}
+  - {value: 4.30}
+  - {value: 4.86}
+  - {value: 4.76}
+  - {value: 6.30}
+  - {value: 7.60}
+  - {value: 8.80}
+  - {value: 12.30}
+  - {value: 17.30}
+  - {value: 62.40}
+  - {value: 130.00}
+  - {value: 200.00}
+dependent_variables:
+- header: {name: '$K^{+}/K^{-}$'}
+  qualifiers:
+  - {name: '$\sqrt(s_{NN}) [GeV]$', value: '$K^{+}/K^{-}$'}
+  values:
+  - value: 12.320
+    errors:
+    - {symerror: 0.700, label: 'stat'}
+  - value: 7.930
+    errors:
+    - {symerror: 0.300, label: 'stat'}
+  - value: 6.230
+    errors:
+    - {symerror: 0.260, label: 'stat'}
+  - value: 5.230
+    errors:
+    - {symerror: 0.130, label: 'stat'}
+  - value: 4.660
+    errors:
+    - {symerror: 0.610, label: 'stat'}
+  - value: 2.939
+    errors:
+    - {symerror: 0.146, label: 'stat'}
+  - value: 2.718
+    errors:
+    - {symerror: 0.231, label: 'stat'}
+  - value: 2.652
+    errors:
+    - {symerror: 0.201, label: 'stat'}
+  - value: 2.103
+    errors:
+    - {symerror: 0.151, label: 'stat'}
+  - value: 1.762
+    errors:
+    - {symerror: 0.126, label: 'stat'}
+  - value: 1.163
+    errors:
+    - {symerror: 0.048, label: 'stat'}
+  - value: 1.084
+    errors:
+    - {symerror: 0.043, label: 'stat'}
+  - value: 1.036
+    errors:
+    - {symerror: 0.052, label: 'stat'}

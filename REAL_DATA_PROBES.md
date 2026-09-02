@@ -524,3 +524,71 @@ quadrature, removable only by the 3-sigma clip) and the cloud width. Where
 the de-twist IS large is the SIGNED meter: split-half Dsagitta +6.53 ->
 +1.85 mm (previous entry) — a mm-scale bias can be a small RMS share; RMS
 adds in quadrature, bias adds linearly in its own meter.
+
+---------------------------------------------------------------------------------
+
+## 2026-08-31 — C++20 gate on the probe outputs: PASS (bit-identical); timing
+## position updated to switch-now/no-mint
+
+The C++20 build session ran this thread's reproducibility gate (three-way:
+sealed ledgers vs C++17 control vs C++20, stand-in tree, input md5s pinned —
+tpc_geom_table.txt b1233b58 = the V6 bake, digi d0a5df64 = true v6.1):
+  - twist_profile_v61.txt: 0 differing lines of 101 across all three.
+  - twist_probe_v61.txt: C++17 == C++20 exactly; both differ from the SEALED
+    ledger by ONE ADDED line only — the "REAL DE-TWISTED" block, which entered
+    twist_probe.C on 2026-08-24 (de-twist measurement), one day after the v61
+    ledger was sealed. NOT a stack effect; the sealed ledger = the 08-23 macro
+    state and stays untouched as an era record. Every numeric line identical.
+  - trunc_check: full table + COMPLETE 62 | TRUNCATED 38 identical.
+  - lsag_probe.C compiles clean under -std=c++20 (the 6 GNU compound literals
+    are accepted).
+Gate record: /home/rog/sw/cxx20_gate/ (their session). VERDICT for this
+thread: probe outputs proven bit-equivalent C++17/C++20 — no drift, not even
+within the +-1 um fallback.
+TIMING POSITION (superseding the version-boundary recommendation of the same
+day): switch NOW in the no-mint form (provenance notes only, no version
+minted) — objections (a) provenance-fork and (b) response-campaign re-baseline
+are answered by no-mint + measured equivalence; the divergence-window argument
+favors landing at the current idle window. Load-bearing precondition amended:
+the ACLiC wipe at switch time must be FIND-BASED OVER THE WHOLE REPO (census:
+island_post 36 *_C.so, sim_validation_plots 11, sim_validation_plots/src 2,
+Reporting 1, Playground 1), both sessions idle. Adoption itself (env.sh /
+symlinks via adopt-cxx20.sh) remains the user's explicit action. Upon
+adoption, add here: "live stack C++20 as of <date>; sealed v6/v6t/v61 ledgers
+produced under C++17, proven bit-equivalent."
+
+---------------------------------------------------------------------------------
+
+## 2026-08-31 — post-flip validation on the LIVE stack: PASS. Live stack C++20
+## as of 2026-08-31 (user-adopted)
+
+The user directed the flip (three symlinks -> *-cxx20; env.sh untouched; repo
+ACLiC sweep removed 167 by-products). This thread's validation on the landed
+live environment, probes recompiled from clean caches:
+  - trunc_check: COMPLETE 62 | TRUNCATED 38, full 100-row table identical.
+  - twist_probe (tag cxx20live) vs sealed v61 ledgers: twist_profile numeric
+    rows IDENTICAL (96/96); twist_probe ledger identical except the one known
+    "REAL DE-TWISTED" line the macro gained post-seal — whose numbers ALSO
+    reproduce the 08-24 C++17 de-twist run exactly (+1.85 mm, +1.57/+2.09,
+    108/431 um): a bonus cross-stack reproduction of the de-twist measurement.
+PROVENANCE (the step-6 line, adoption date filled): live stack C++20 as of
+2026-08-31 (user-adopted); all probe ledgers proven bit-equivalent
+C++17/C++20 (gate 2026-08-31, /home/rog/sw/cxx20_gate/); sealed v6/v6t/v61
+ledgers produced under C++17.
+OPERATIONAL FINDING (matters beyond this thread): processes launched BEFORE
+the flip inherit the pre-flip environment — including the Claude Code
+harnesses themselves. This session's tool shells inherited ROOTSYS/PATH/
+LD_LIBRARY_PATH pinned to the old real path (ROOT read -std=c++17 while the
+symlinks said cxx20); .bashrc's interactive guard keeps non-interactive
+shells from re-sourcing env.sh. Escape used here and required until harness
+restart: prefix invocations with `. /home/rog/root/bin/thisroot.sh` (via the
+SYMLINK — thisroot.sh then drops the stale lib path and lands on cxx20).
+CAVEAT (2026-08-31, cross-checked by the C++20-build session): this escape is
+FLAKY — reproduced FAILING elsewhere (after sourcing, root-config still
+resolved the C++17 install; thisroot.sh's "shell name was not found" path;
+not deterministic). The ASSERTION IS THEREFORE MANDATORY per use — trust no
+run unless, in the same shell, ROOTSYS, `root-config --cflags` (-std=c++20)
+and the ROOT entry in LD_LIBRARY_PATH ALL read the -cxx20 install (exactly
+what this thread's validation asserted before each run). Reliable
+alternatives: restart the session, or `env -i` + source env.sh fresh.
+A session restart clears it permanently; LANDING.md carries the same caveat.

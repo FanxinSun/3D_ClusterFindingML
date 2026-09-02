@@ -1,0 +1,64 @@
+independent_variables:
+- header: {name: '$p_t [GeV/c]$'}
+  values:
+  - {value: 0.425}
+  - {value: 0.475}
+  - {value: 0.525}
+  - {value: 0.575}
+  - {value: 0.625}
+  - {value: 0.675}
+  - {value: 0.725}
+  - {value: 0.775}
+  - {value: 0.825}
+  - {value: 0.875}
+  - {value: 0.925}
+  - {value: 0.975}
+  - {value: 1.025}
+  - {value: 1.075}
+dependent_variables:
+- header: {name: '$d^2N/(2\pi*p_t*dp_t*dy)[(GeV/c)^{-2}]$'}
+  qualifiers:
+  - {name: '$p_t [GeV/c]$', value: 'dE/dx data'}
+  values:
+  - value: 1.369e-001
+    errors:
+    - {symerror: 1.613e-003, label: 'stat'}
+  - value: 1.224e-001
+    errors:
+    - {symerror: 1.436e-003, label: 'stat'}
+  - value: 1.105e-001
+    errors:
+    - {symerror: 1.294e-003, label: 'stat'}
+  - value: 1.012e-001
+    errors:
+    - {symerror: 1.184e-003, label: 'stat'}
+  - value: 8.998e-002
+    errors:
+    - {symerror: 1.884e-003, label: 'stat'}
+  - value: 8.052e-002
+    errors:
+    - {symerror: 1.688e-003, label: 'stat'}
+  - value: 7.219e-002
+    errors:
+    - {symerror: 8.587e-004, label: 'stat'}
+  - value: 6.374e-002
+    errors:
+    - {symerror: 1.958e-003, label: 'stat'}
+  - value: 5.767e-002
+    errors:
+    - {symerror: 2.911e-003, label: 'stat'}
+  - value: 5.213e-002
+    errors:
+    - {symerror: 2.632e-003, label: 'stat'}
+  - value: 4.566e-002
+    errors:
+    - {symerror: 9.709e-004, label: 'stat'}
+  - value: 3.952e-002
+    errors:
+    - {symerror: 8.464e-004, label: 'stat'}
+  - value: 3.428e-002
+    errors:
+    - {symerror: 2.417e-003, label: 'stat'}
+  - value: 3.030e-002
+    errors:
+    - {symerror: 9.581e-004, label: 'stat'}

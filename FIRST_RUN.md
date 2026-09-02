@@ -1,46 +1,44 @@
 # First run — the detached sPHENIX TPC simulation pipeline (v6.1)
 
-You have just cloned this repository onto a new machine. This page takes you
-from nothing to (a) a working environment, (b) a two-minute demonstration that
+This page takes you to (a) a working environment, (b) a two-minute demonstration that
 the whole chain runs, and (c) a full production run and its post-production
-battery. Read it top to bottom the first time; afterwards §4 is the only part
-you will keep returning to.
+battery.
 
-**What this pipeline is.** It simulates the sPHENIX TPC end to end — proton-proton
+**What this pipeline is.** It simulates the sPHENIX TPC end to end — p-p
 collisions, Geant4 transport, charge drift, electronics, zero suppression,
 clustering — and produces pixel and cluster datasets shaped exactly like the real
 detector's output, for machine-learning cluster finding. It is *detached*: no
 container, no CVMFS, no BNL account. The reference dataset it is calibrated
-against is run 79507 (pp, 200 GeV).
+against is run 79*** (pp, 200 GeV).
 
 ---
 
-## 0. Prerequisites in one command
+## 0. Prerequisites
 
 ```bash
-bash setup_machine.sh            # Linux/WSL (x86_64 or arm64) and macOS (Apple Silicon)
-bash setup_machine.sh --check    # report-only: tells you what is missing, changes nothing
+bash setup_machine.sh            # Linux/WSL (x86_64/arm64) and macOS (Apple Silicon)
+bash setup_machine.sh --check    # report-only: tells what's missing
 ```
 
-It installs or builds ROOT 6.40.02, Geant4 11.4.2 (GDML + multithreaded) and
-Pythia 8.317, ports the repository's hardcoded paths if your `$HOME` differs from
+It builds ROOT 6.40.02, Geant4 11.4.2 (GDML + multithreaded) and
+Pythia 8.317 — all at **C++20**, ports the repository's hardcoded paths if your `$HOME` differs from
 the reference machine, writes `env_v61.sh`, and builds the two in-repo binaries
-(`standalone_tpc`, `gen_pp`). Budget an hour or two, mostly Geant4.
+(`standalone_tpc`, `gen_pp`).
 
-Then, **in every shell you work in**:
+Then,
 
 ```bash
 source env_v61.sh
 ```
 
-### The four files git does not carry
+### The four files too large forgit 
 
-They are large or private, so they are copied in by hand. `setup_machine.sh`
+`setup_machine.sh`
 ends by checking for exactly these and printing OK/MISSING:
 
 | file | size | what it is |
 |---|---|---|
-| `clusters_seeds_island_79507-0.root_ntuplizer.root` | 440 MB | **the real data** — the only authority every meter compares against |
+| `clusters_seeds_island_79***-0.root_ntuplizer.root` | 440 MB | **the real data set** |
 | `CDB_offline/FIELDMAP_GAP/65/a9/…gap_rebuild_v2.root` | 299 MB | magnetic field map (26,144,996 grid points), used by Geant4 |
 | `CDB_offline/TPC_DEADCHANNELMAP/ff/c3/…TPCDeadMap_79471.root` | small | dead-channel mask, used by the readout |
 | `island_post/raw_lib_cmflash_w.root` | 3.8 MB | central-membrane laser-flash library, used by the composer |
@@ -53,7 +51,11 @@ Optionally also copy the v6.1 production artifacts (`island_post/*_v61.root`,
 > identical* production: floating-point differences diverge the transport, so
 > md5s will not match `island_post/production_manifest.txt`. Byte-level
 > reproduction of a sealed artifact is only expected on x86_64 Linux with the
-> reference stack. Copy the artifacts if you need *the* v6.1.
+> reference stack — which, as of the stack adoption recorded in `PIPELINE.md`, is the
+> **C++20** build of ROOT 6.40.02 + Geant4 11.4.2 + Pythia 8.317. The sealed v6.1
+> artifacts were produced under the C++17 build and are bit-identical on both (gate
+> record: `~/sw/cxx20_gate/VERDICT.txt`), so they need no regeneration. Copy the
+> artifacts if you need *the* v6.1.
 
 ---
 
